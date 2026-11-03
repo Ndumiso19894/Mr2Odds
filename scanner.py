@@ -1201,7 +1201,13 @@ def add_picks(t: pd.DataFrame, picks: dict[str, list[MatchRow]], today: datetime
             if key in existing:
                 continue
             existing.add(key)
-            odds = r.fx["odds_over"] if mkt == "O25" else float("nan")
+            # first-published price: O25 keeps its long-standing source; O15/BTTS record the
+            # Sportybet price when available (presentation record only — never a model input)
+            if mkt == "O25":
+                odds = r.fx["odds_over"]
+            else:
+                sp = sb_price(r, mkt)
+                odds = sp if sp is not None else float("nan")
             new.append({
                 "match_date": key[0], "kickoff": r.fx["kickoff"].strftime("%Y-%m-%d %H:%M"),
                 "country": r.fx["country"], "div": r.fx["div"], "league": r.fx["league"],
@@ -1223,6 +1229,58 @@ def tracker_summary(t: pd.DataFrame, today: datetime) -> dict:
     if t.empty:
         return out
     recent_cut = (today - timedelta(days=30)).strftime("%Y-%m-%d")
+    # overall live record (all tracked picks) — presentation of the tracker, no model input
+    settled_all = t[t["status"].isin(["hit", "miss"])]
+    wins_all = int((settled_all["status"] == "hit").sum())
+    w_odds = settled_all[settled_all["odds"].astype(str).str.strip() != ""]
+    odds_n = len(w_odds)
+    if odds_n:
+        od = pd.to_numeric(w_odds["odds"], errors="coerce").dropna()
+        won = (w_odds.loc[od.index, "status"] == "hit").astype(float)
+        profit_units = float((od * won).sum() - len(od))
+        out["overall"] = {"settled": len(settled_all), "wins": wins_all, "losses": len(settled_all) - wins_all,
+                          "pending": int((t["status"] == "pending").sum()), "void": int((t["status"] == "void").sum()),
+                          "hit_rate": wins_all / len(settled_all),
+                          "roi": profit_units / len(od) if len(od) else float("nan"),
+                          "profit_units": profit_units, "odds_n": odds_n,
+                          "first_date": str(t["report_date"].min())}
+    else:
+        out["overall"] = {"settled": len(settled_all), "wins": wins_all, "losses": len(settled_all) - wins_all,
+                          "pending": int((t["status"] == "pending").sum()), "void": int((t["status"] == "void").sum()),
+                          "hit_rate": wins_all / len(settled_all) if len(settled_all) else float("nan"),
+                          "roi": float("nan"), "profit_units": 0.0, "odds_n": 0,
+                          "first_date": str(t["report_date"].min())}
+    # shortlist-class report card: primary = ⭐⭐⭐ tier, watchlist = ⭐⭐ tier (frozen thresholds, read-only)
+    classes = {}
+    for cls in ("primary", "watchlist"):
+        rows = []
+        for mkt, cfg in CONFIG["THRESHOLDS"].items():
+            t2, t3 = cfg["tiers"]
+            lo, hi = (t3, 2.0) if cls == "primary" else (t2, t3)
+            s = t[(t["market"] == mkt) & (pd.to_numeric(t["p_final"], errors="coerce") >= lo) &
+                  (pd.to_numeric(t["p_final"], errors="coerce") < hi)]
+            rows.append(s)
+        c = pd.concat(rows, ignore_index=True) if rows else t.iloc[0:0]
+        c_settled = c[c["status"].isin(["hit", "miss"])]
+        c_hits = int((c_settled["status"] == "hit").sum())
+        c_odds = pd.to_numeric(c_settled["odds"].astype(str).str.strip().replace("", "nan"), errors="coerce").dropna()
+        c_roi = None
+        if len(c_odds):
+            c_won = (c_settled.loc[c_odds.index, "status"] == "hit").astype(float)
+            c_roi = float((c_odds * c_won).sum() - len(c_odds)) / len(c_odds)
+        classes[cls] = {"n": len(c_settled),
+                        "hit_rate": (c_hits / len(c_settled)) if len(c_settled) else None,
+                        "expected": (float(pd.to_numeric(c_settled["p_final"], errors="coerce").mean())
+                                     if len(c_settled) else None),
+                        "roi": c_roi, "pending": int((c["status"] == "pending").sum())}
+    out["classes"] = classes
+    # most recent ledger rows (newest first) for the advisor's selection ledger
+    rec = t.sort_values(["report_date", "match_date"], ascending=False).head(20)
+    out["recent"] = [{"home": r["home"], "away": r["away"], "market": r["market"],
+                      "odds": (None if str(r["odds"]).strip() == "" else float(r["odds"])),
+                      "match_date": str(r["match_date"]), "status": r["status"],
+                      "score": (str(r["score"]) if str(r["score"]).strip() not in ("", "nan") else None)}
+                     for _, r in rec.iterrows()]
     for mkt in MARKETS:
         s = t[t["market"] == mkt]
         settled = s[s["status"].isin(["hit", "miss"])]

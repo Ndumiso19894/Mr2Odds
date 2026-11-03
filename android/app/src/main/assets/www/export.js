@@ -1,4 +1,4 @@
-/* PlayReport — CSV exports (Google Sheets / Excel friendly): one analysed match, or the whole day's analysis. */
+/* Mr 2 Odds — CSV exports (Google Sheets / Excel friendly): one analysed match, or the whole day's analysis. */
 (function (PR) {
   'use strict';
   const { state, toast, selLabel, tzNow, ymd } = PR;
@@ -47,7 +47,7 @@
     const L = [];
     const teams = x.teams || { home: {}, away: {} };
     const xg = x.xg || {}; const p = x.p || {}; const x12 = x.x12 || {}; const tg = x.team_goals || {};
-    L.push(row(['PlayReport match analysis']));
+    L.push(row(['Mr 2 Odds match analysis']));
     L.push(row(['Match', `${x.home} v ${x.away}`]));
     L.push(row(['Competition', x.competition, 'Country', x.country]));
     L.push(row(['Kick-off (SAST)', x.kickoff, 'Date', x.date]));
@@ -130,8 +130,77 @@
   };
 
   PR.downloadMatchCsv = function (x, live, extraStats) {
-    const name = fileName(`PlayReport_${x.date}_${x.home}_v_${x.away}`) + '.csv';
+    const name = fileName(`Mr 2 Odds_${x.date}_${x.home}_v_${x.away}`) + '.csv';
     PR.saveTextFile(name, PR.matchCsv(x, live, extraStats), 'text/csv');
+  };
+
+  /** Filled Google Sheet V1 (MATCH_INPUT + MARKETS) for this match. */
+  PR.sheetCsv = function (x) {
+    const sm = x.sheet_model || {};
+    const inp = sm.inputs || {};
+    const eng = sm.model || {};
+    const L = [];
+    L.push(row(['BOOKMAKER-STYLE FOOTBALL MODEL — V1 (filled for this match)']));
+    L.push(row(['Source', 'Google Sheet MATCH_INPUT / MODEL_ENGINE / SCORE_MATRIX / MARKETS — formulas unchanged']));
+    L.push(row(['Note', sm.note || 'Comparison only. Mr 2 Odds model is not changed.']));
+    L.push('');
+    L.push(row(['MATCH INFORMATION']));
+    L.push(row(['Competition', inp.competition || '']));
+    L.push(row(['Season', inp.season || '']));
+    L.push(row(['Round', inp.round || '']));
+    L.push(row(['Date', inp.date || '']));
+    L.push(row(['Home Team', inp.home || x.home || '']));
+    L.push(row(['Away Team', inp.away || x.away || '']));
+    L.push(row(['Venue', inp.venue || '']));
+    L.push('');
+    L.push(row(['CORE STATISTICAL INPUTS (V1)']));
+    L.push(row(['Home goals scored / home game', inp.home_gf_home]));
+    L.push(row(['Home goals conceded / home game', inp.home_ga_home]));
+    L.push(row(['Away goals scored / away game', inp.away_gf_away]));
+    L.push(row(['Away goals conceded / away game', inp.away_ga_away]));
+    L.push(row(['League average home goals / game', inp.lg_home]));
+    L.push(row(['League average away goals / game', inp.lg_away]));
+    L.push('');
+    L.push(row(['SUPPLIED CONTEXT (NOT USED BY V1 ENGINE)']));
+    L.push(row(['Home xG / match', inp.home_xg]));
+    L.push(row(['Home xGA / match', inp.home_xga]));
+    L.push(row(['Home shots / match', inp.home_shots]));
+    L.push(row(['Home shots on target / match', inp.home_sot]));
+    L.push(row(['Away xG / match', inp.away_xg]));
+    L.push(row(['Away xGA / match', inp.away_xga]));
+    L.push(row(['Away shots / match', inp.away_shots]));
+    L.push(row(['Away shots on target / match', inp.away_sot]));
+    L.push(row(['Home clean-sheet rate', inp.home_cs]));
+    L.push(row(['Away clean-sheet rate', inp.away_cs]));
+    L.push(row(['Home recent goals scored / game', inp.home_recent_gf]));
+    L.push(row(['Home recent goals conceded / game', inp.home_recent_ga]));
+    L.push(row(['Away recent goals scored / game', inp.away_recent_gf]));
+    L.push(row(['Away recent goals conceded / game', inp.away_recent_ga]));
+    L.push('');
+    L.push(row(['MODEL ENGINE']));
+    L.push(row(['Home attack strength', eng.home_attack]));
+    L.push(row(['Home defensive strength', eng.home_defence]));
+    L.push(row(['Away attack strength', eng.away_attack]));
+    L.push(row(['Away defensive strength', eng.away_defence]));
+    L.push(row(['Expected home goals (λH)', eng.lambda_h]));
+    L.push(row(['Expected away goals (λA)', eng.lambda_a]));
+    L.push(row(['Expected total goals', eng.lambda_total]));
+    L.push(row(['1X2 probability sum (0–7 matrix)', eng.x12_sum]));
+    L.push(row(['Residual outside 0–7', eng.matrix_residual]));
+    L.push('');
+    L.push(row(['MARKET PROBABILITIES & FAIR ODDS']));
+    L.push(row(['Market', 'Sheet probability', 'Fair odds', 'Mr 2 Odds (comparison only)']));
+    (sm.markets || []).forEach((m) => L.push(row([m.name, m.p, m.fair, m.playreport])));
+    L.push('');
+    L.push(row(['Inputs used', (sm.used || []).join('; ')]));
+    L.push(row(['Inputs not available', (sm.missing || []).join('; ')]));
+    return BOM + L.join('\r\n') + '\r\n';
+  };
+
+  PR.downloadSheetCsv = function (x) {
+    if (!x || !x.sheet_model) { toast('Sheet model is not on this match yet'); return; }
+    const name = fileName(`SheetModel_${x.date}_${x.home}_v_${x.away}`) + '.csv';
+    PR.saveTextFile(name, PR.sheetCsv(x), 'text/csv');
   };
 
   /** the day's analysis table published with every report (reports/<date>.csv) */
@@ -142,7 +211,7 @@
       const r = await PR.nfetch(PR.rawUrl(`reports/${d}.csv`) + '?t=' + Math.floor(Date.now() / 300000));
       if (r.code !== 200) throw new Error(`HTTP ${r.code}`);
       const text = r.body.charCodeAt(0) === 0xfeff ? r.body : BOM + r.body;
-      PR.saveTextFile(`PlayReport_${d}_analysis.csv`, text, 'text/csv');
+      PR.saveTextFile(`Mr 2 Odds_${d}_analysis.csv`, text, 'text/csv');
     } catch (e) {
       toast(`Today's data file is not available yet (${e.message})`);
     }

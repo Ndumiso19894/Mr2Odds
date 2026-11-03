@@ -20,10 +20,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      # Fresh repository: the version re-bases to 1.7.x (the 1.6.x line belongs to the old, retired repo)
-      # (no arithmetic in env expressions - GitHub's env parser does not accept '+')
+      # Version line: 1.6.x belonged to the retired repo, 1.7.x was the first Mr2Odds line,
+      # 1.8.x integrates the full legacy app feature set (rebrand to Mr 2 Odds, offline cache,
+      # live scores, tickets, advisor). (no arithmetic in env expressions - GitHub's env parser
+      # does not accept '+')
       APP_VERSION_CODE: ${{ github.run_number }}
-      APP_VERSION_NAME: 1.7.${{ github.run_number }}
+      APP_VERSION_NAME: 1.8.${{ github.run_number }}
       APP_REPO: ${{ github.repository }}
     steps:
       - uses: actions/checkout@v4
@@ -73,5 +75,5 @@ jobs:
         run: |
           TAG="app-v${APP_VERSION_NAME}"
           # release notes = android/RELEASE_NOTES.md (shown inside the app before and after updating)
-          { cat android/RELEASE_NOTES.md; printf '\n\nPlayReport for Android v%s (build %s). Download PlayReport.apk and install it. Installed apps update themselves automatically.\n' "$APP_VERSION_NAME" "$APP_VERSION_CODE"; } > "$RUNNER_TEMP/notes.md"
-          gh release create "$TAG" "$RUNNER_TEMP/PlayReport.apk" --repo "$GITHUB_REPOSITORY" --title "PlayReport v${APP_VERSION_NAME}" --notes-file "$RUNNER_TEMP/notes.md" --latest
+          { cat android/RELEASE_NOTES.md; printf '\n\nMr 2 Odds for Android v%s (build %s). Download PlayReport.apk and install it. Installed apps update themselves automatically.\n' "$APP_VERSION_NAME" "$APP_VERSION_CODE"; } > "$RUNNER_TEMP/notes.md"
+          gh release create "$TAG" "$RUNNER_TEMP/PlayReport.apk" --repo "$GITHUB_REPOSITORY" --title "Mr 2 Odds v${APP_VERSION_NAME}" --notes-file "$RUNNER_TEMP/notes.md" --latest

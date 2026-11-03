@@ -236,6 +236,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
     conf_by_key: dict = {}
     badges = update_badges(app_dir / "badges.json", rows, ls_map, extra_badges, src=live_dir / "badges.json")
     live_eids = []
+    value_cands = []   # priced selections with a model-vs-market edge (advisor "biggest edges" card)
     # the fixture-id map must cover every analysed fixture, not just the published window: shortlist picks
     # (and the high-probability list) can point at matches weeks ahead of the app window
     for r in all_rows or []:
@@ -268,6 +269,10 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
         hi = sorted([[d["sel"], round(d["p"], 3), round(d["odds"], 2) if d.get("odds") else None] for d in sels
                      if d.get("p") is not None and d["p"] >= 0.70 and not d["diff"] and d["group"] in ("goals", "btts", "team", "corners", "cards")
                      and (not d.get("odds") or d["odds"] >= 1.15)], key=lambda x: -x[1])[:12]
+        for d in sels:   # biggest model-vs-market edges (already-computed EV, presentation only)
+            if d.get("odds") and d.get("ev") is not None and d["p"] is not None and not d.get("diff"):
+                value_cands.append({"id": fid, "sel": d["sel"], "odds": round(d["odds"], 2),
+                                    "ev": round(d["ev"], 3), "p": round(d["p"], 3)})
         safe_best = _best(sels, safe_groups or None, min_odds, min_p) if r.data_ok else None
         eid = (ls or {}).get("eid")
         slim = {
@@ -385,7 +390,8 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
             live_eids.append(f["livescore_id"])
 
     tracker_out = {m: {k: (_f(v) if isinstance(v, float) else v) for k, v in info.items()}
-                   for m, info in (tracker_summary or {}).items()}
+                   for m, info in (tracker_summary or {}).items()
+                   if isinstance(info, dict) and "settled" in info and m in ("O15", "O25", "BTTS")}
     reports = sorted({p.stem for p in reports_dir.glob("20??-??-??.md")}, reverse=True)[:60]
     meta = {
         "generated": now.strftime("%Y-%m-%d %H:%M"), "tz": tz_label, "run": ctx["run"], "report_run": bool(report_run),
@@ -397,9 +403,87 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
         "next_run": ctx["window_end"].strftime("%Y-%m-%d %H:%M"), "refresh_minutes": 30,
         "coverage": coverage or {},
     }
+    # ---- blocks for the Mr 2 Odds web layer: advisor live record, shortlist report card, value/strong groups.
+    # Pure presentation of what the tracker and picks already contain — no new model maths.
+    def _nanfree(x):
+        return None if (x is None or (isinstance(x, float) and math.isnan(x))) else _f(x)
+
+    _ov = tracker_summary.get("overall") or {}
+    _SELBLBL = {"O15": "Over 1.5 goals", "O25": "Over 2.5 goals", "BTTS": "Both teams to score"}
+    advisor = {
+        "hit_rate": _nanfree(_ov.get("hit_rate")), "settled": _ov.get("settled", 0),
+        "wins": _ov.get("wins", 0), "losses": _ov.get("losses", 0),
+        "pending": _ov.get("pending", 0), "void": _ov.get("void", 0),
+        "roi": _nanfree(_ov.get("roi")), "profit_units": _f(_ov.get("profit_units") or 0.0, 2),
+        "since": _ov.get("first_date") or None,
+        "markets": {m: {"wins": i.get("hits", 0), "losses": i["settled"] - i.get("hits", 0),
+                        "hit_rate": _nanfree(i.get("rate")), "roi": _nanfree(i.get("roi"))}
+                    for m, i in tracker_summary.items()
+                    if isinstance(i, dict) and "settled" in i and m in ("O15", "O25", "BTTS")},
+        "recent": [{"home": x["home"], "away": x["away"], "sel": x["market"],
+                    "label": _SELBLBL.get(x["market"], x["market"]), "odds": x["odds"],
+                    "match_date": x["match_date"], "status": x["status"], "score": x.get("score")}
+                   for x in (tracker_summary.get("recent") or [])],
+    }
+    advisor_picks, shown_today = [], []
+    for _mkt, _lst in picks.items():
+        for _r in _lst:
+            if _r.fx["date"].strftime("%Y-%m-%d") != now.strftime("%Y-%m-%d"):
+                continue
+            _sp = helpers["sb_price"](_r, _mkt)
+            advisor_picks.append({"home": _r.fx["home"], "away": _r.fx["away"], "sel": _mkt,
+                                  "p": _f(_r.p_final[_mkt]), "odds": _f(_sp, 2),
+                                  "kickoff": _r.fx["kickoff"].strftime("%Y-%m-%d %H:%M")})
+            if _r.fx["kickoff"] <= now:
+                shown_today.append({"home": _r.fx["home"], "away": _r.fx["away"]})
+    advisor["picks"] = advisor_picks
+    advisor["shown_today"] = shown_today
+
+    _classes = tracker_summary.get("classes") or {}
+    shortlist = {"track": {c: {k: v for k, v in i.items()} for c, i in _classes.items()},
+                 "rules": {"calibration": {"status": "raw model — the calibration map goes live only after it "
+                                                  "beats the raw model on recent, unseen picks", "groups": {}}}}
+
+    # strong signals (>=70% already filtered upstream) with the fixture's data-quality label
+    strong_cands = [(s[1], s[0], f["id"], f.get("q")) for f in index for s in (f.get("hi") or [])[:2]]
+    strong_sorted = sorted(strong_cands, key=lambda x: -x[0])[:5]
+    groups = {"value": sorted(value_cands, key=lambda x: -x["ev"])[:5],
+              "strong": [{"id": fid, "sel": sel, "p": p, "q": q} for p, sel, fid, q in strong_sorted]}
+
+    # ---- strong markets for the day (home section): the model's high-probability Over 1.5 total
+    # goals and total corners that carry a real Sportybet price. One row per market, per family caps
+    # so one family cannot fill the section. (Presentation of already-published probabilities/prices.)
+    STRONG_MIN_P, STRONG_MIN_ODDS = 0.78, 1.16
+    STRONG_CAPS = {"o15": 10, "corner_total": 8}
+    strong_by_fam: dict = {}
+    for r in rows:
+        fx = r.fx
+        fid = fixture_id(fx["date"].strftime("%Y-%m-%d"), fx["country"], fx["home"], fx["away"])
+        for d in selections(r):
+            sel = d["sel"]
+            family = "o15" if sel == "O15" else ("corner_total" if sel.startswith("CO") else None)
+            if family is None:
+                continue
+            if d["p"] is None or d["p"] < STRONG_MIN_P or d.get("diff"):
+                continue
+            if not d.get("odds") or d["odds"] < STRONG_MIN_ODDS:
+                continue
+            strong_by_fam.setdefault(family, []).append(
+                {"id": fid, "sel": sel, "label": d.get("label"), "family": family,
+                 "kickoff": fx["kickoff"].strftime("%Y-%m-%d %H:%M"), "country": fx["country"],
+                 "home": fx["home"], "away": fx["away"], "odds": d["odds"], "p": d["p"]})
+    strong_bets = [b for fam in ("o15", "corner_total") for b in sorted(strong_by_fam.get(fam, []),
+                 key=lambda x: -x["p"])[:STRONG_CAPS[fam]]]
+    strong_markets = {"bets": sorted(strong_bets, key=lambda x: -x["p"]),
+                      "min_p": STRONG_MIN_P, "min_odds": STRONG_MIN_ODDS}
+
+    # safe.botd = the bets-of-the-day settlement record (performance page reads it at the top level)
+    safe_out["botd"] = (safe_summary or {}).get("botd") or {}
     data = {
         "version": VERSION, "meta": meta,
         "fixtures": index, "picks": picks_out, "safe": safe_out, "tracker": tracker_out,
+        "advisor": advisor, "shortlist": shortlist, "groups": groups,
+        "strong_markets": strong_markets,
         "tracked": sorted(tracked), "history": {"reports": reports, "days": days_index or []},
     }
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -407,10 +491,15 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
     # heartbeat + alerts for the background checker
     alerts = alerts or []
     _write(app_dir / "alerts.json", alerts[-50:])
-    _write(app_dir / "meta.json", {
+    app_meta = {
         "version": VERSION, "generated": meta["generated"], "run": meta["run"], "report_run": bool(report_run),
         "next_run": meta["next_run"], "fixtures": len(rows), "safe_bets": len(safe_out["bets"]),
         "botd": [b["id"] for b in safe_out["today"]["bets"]],
         "alerts": [a["id"] for a in alerts[-30:]], "tracked_eids": sorted(set(live_eids)),
-    })
+    }
+    if report_run:
+        # shortlist picks published in this full analysis run (the "Shortlist is live — N pick(s)"
+        # notification); refresh runs omit it so the worker does not re-announce an unchanged shortlist
+        app_meta["counts_shortlist"] = {"primary": sum(len(_l) for _l in picks.values())}
+    _write(app_dir / "meta.json", app_meta)
     return path

@@ -1,7 +1,7 @@
-/* PlayReport — bet slip and tickets (kept on the phone; graded automatically from scores and match statistics). */
+/* Mr 2 Odds — bet slip and tickets (kept on the phone; graded automatically from scores and match statistics). */
 (function (PR) {
   'use strict';
-  const { $, $$, esc, pct, f2, state, settings, fx, koShort, koTime, dayName, toast, selLabel, selGroup, settleSel, liveVerdict, isLive, isFT, icon, flag, badge, contactCard, parseLocal, tzNow, ymd } = PR;
+  const { $, $$, esc, pct, f2, state, settings, fx, koShort, koTime, dayName, toast, selLabel, selGroup, settleSel, liveVerdict, isLive, isFT, icon, flag, badge, contactCard, parseLocal, tzNow, ymd, teamSpan } = PR;
   const view = () => $('#view');
   const head = (title, sub) => `<div class="detail-head"><button class="back" id="back" aria-label="Back">${icon('back')}</button><div class="grow"><div class="b">${title}</div>${sub ? `<div class="tiny muted">${sub}</div>` : ''}</div></div>`;
   const line = (code) => parseInt(code.replace(/\D/g, ''), 10) / 10;
@@ -11,7 +11,7 @@
   if (!tickets) { try { tickets = JSON.parse(localStorage.getItem('pr_tickets')) || []; } catch (e) { tickets = []; } }   // pre-1.4 key
   const saveSlip = () => PR.persist('pr_slip', JSON.stringify(slip));
   function saveTickets() {
-    localStorage.setItem('pr_tickets', JSON.stringify(tickets));
+    try { localStorage.setItem('pr_tickets', JSON.stringify(tickets)); } catch (e) { /* quota: the full copy below is the durable one */ }
     PR.persist('pr_tickets_full', JSON.stringify(tickets));
     if (PR.native && PR.native.setString) { try { PR.native.setString('tickets', JSON.stringify(tickets.filter((t) => t.status === 'pending').map((t) => ({ id: t.id, odds: t.odds, stake: t.stake, legs: t.legs.map((l) => ({ eid: l.eid, sel: l.sel, sport: l.sport || 'football', market: l.market || '', selection: l.selection || '', line: l.line == null ? null : l.line, home: l.home, away: l.away, kickoff: l.kickoff, label: l.label })) })))); } catch (e) { /* ignore */ } }
   }
@@ -22,9 +22,9 @@
     return { fixture: f.id, d: f.d || null, eid: f.livescore_id || null, home: f.home, away: f.away, kickoff: f.kickoff, competition: f.competition, country: f.country,
       badges: f.badges || null, sb: f.sportybet_event || null, sel: s.sel, label: selLabel(s.sel, f.home, f.away), odds: +s.odds, p: s.p };
   }
-  const sbLink = (l) => (l && l.sb && PR.sbEventUrl(l.sb)) ? `<a class="link sb-open" href="${esc(PR.sbEventUrl(l.sb))}" title="Open this match in Sportybet">${icon('target', 'sm')} SB</a>` : '';
+  const sbLink = (l) => (l && l.sb && PR.fittedSbEvent({ home: l.home, away: l.away, sportybet_event: l.sb }) && PR.sbEventUrl(l.sb)) ? `<a class="link sb-open" href="${esc(PR.sbEventUrl(l.sb))}" title="Open this match in Sportybet">${icon('target', 'sm')} SB</a>` : '';
   function ticketText(t) {
-    const lines = [`PlayReport ticket ${t.id} · odds ${f2(t.final_odds || t.odds)}${t.stake ? ` · stake ${f2(t.stake)}` : ''}`, ''];
+    const lines = [`Mr 2 Odds ticket ${t.id} · odds ${f2(t.final_odds || t.odds)}${t.stake ? ` · stake ${f2(t.stake)}` : ''}`, ''];
     t.legs.forEach((l, i) => lines.push(`${i + 1}. ${l.label} — ${l.home} v ${l.away} · ${koShort(l.kickoff)} @${f2(l.odds)}`));
     return lines.join('\n');
   }
@@ -168,12 +168,12 @@
       if (tickets.length) parts.push(`<div class="card compact tap" id="go-tickets"><div class="row"><span class="ico">${icon('ticket')}</span><div class="grow b">My tickets (${tickets.length})</div>${icon('next')}</div></div>`);
     } else {
       const odds = totalOdds(slip.items); const stake = parseFloat(slip.stake) || 0;
-      parts.push(`<div class="card compact"><table class="tbl">${slip.items.map((l, i) => `<tr><td class="tiny muted nowrap">${esc(koShort(l.kickoff))}</td><td><div class="row" style="gap:6px">${badge(l.home, l.badges && l.badges.home, 20)}${badge(l.away, l.badges && l.badges.away, 20)}<div class="b grow">${esc(l.home)} <span class="muted">v</span> ${esc(l.away)}</div>${sbLink(l)}</div><div class="sel"><b>${esc(l.label)}</b>${l.sport === 'tennis' ? '<span class="sport-chip">🎾 tennis</span>' : ''}</div><div class="tiny muted">${flag(l.country)} ${esc(l.competition)} · ${pct(l.p)}</div></td><td class="right nowrap"><b>${f2(l.odds)}</b></td><td class="right"><button class="link" data-rm="${i}" aria-label="Remove">${icon('x')}</button></td></tr>`).join('')}</table></div>`);
+      parts.push(`<div class="card compact"><table class="tbl">${slip.items.map((l, i) => `<tr><td class="tiny muted nowrap">${esc(koShort(l.kickoff))}</td><td><div class="row" style="gap:6px">${badge(l.home, l.badges && l.badges.home, 20)}${badge(l.away, l.badges && l.badges.away, 20)}<div class="b grow">${teamSpan(l.home, l.country, l.div)} <span class="muted">v</span> ${teamSpan(l.away, l.country, l.div)}</div>${sbLink(l)}</div><div class="sel"><b>${esc(l.label)}</b>${l.sport === 'tennis' ? '<span class="sport-chip">🎾 tennis</span>' : ''}</div><div class="tiny muted">${flag(l.country)} ${esc(l.competition)} · ${pct(l.p)}</div></td><td class="right nowrap"><b>${f2(l.odds)}</b></td><td class="right"><button class="link" data-rm="${i}" aria-label="Remove">${icon('x')}</button></td></tr>`).join('')}</table></div>`);
       parts.push(`<div class="card"><div class="row"><div class="grow"><div class="k tiny muted">Total odds</div><div class="v" style="font-size:24px;font-weight:800">${f2(odds)}</div></div><div class="grow"><label class="tiny muted">Stake (optional)</label><input id="slip-stake" type="number" inputmode="decimal" placeholder="e.g. 50" value="${esc(slip.stake)}"></div></div>
         ${stake ? `<div class="small" style="margin-top:8px">Potential return <b>${f2(stake * odds)}</b> · profit ${f2(stake * odds - stake)}</div>` : ''}
         <div class="tiny muted" style="margin-top:8px">Model probability that every leg wins: <b>${pct(slip.items.reduce((a, l) => a * (l.p || 0), 1))}</b> (fair odds ${f2(1 / Math.max(1e-6, slip.items.reduce((a, l) => a * (l.p || 0), 1)))}). Prices are the Sportybet prices at the last analysis — check them before you bet.</div>
         <div class="row" style="margin-top:12px;gap:8px"><button class="btn primary grow" id="slip-place">${icon('lock', 'sm')} Done — lock this ticket</button><button class="btn" id="slip-copy">Copy</button><button class="btn" id="slip-clear">Clear</button></div>
-        <div class="tiny muted" style="margin-top:6px">A locked ticket cannot be edited. PlayReport follows the scores and tells you when it is won or lost. This records your bet — it does not place it anywhere.</div></div>`);
+        <div class="tiny muted" style="margin-top:6px">A locked ticket cannot be edited. Mr 2 Odds follows the scores and tells you when it is won or lost. This records your bet — it does not place it anywhere.</div></div>`);
       if (tickets.length) parts.push(`<div class="card compact tap" id="go-tickets"><div class="row"><span class="ico">${icon('ticket')}</span><div class="grow b">My tickets (${tickets.length})</div>${icon('next')}</div></div>`);
     }
     parts.push(`<div class="card compact"><div class="row" style="gap:8px;align-items:center"><div class="grow"><div class="b">${icon('target', 'sm')} Sportybet booking code</div><div class="tiny muted">Paste a code (from SportyBet's daily picks, Telegram or a tipster) to load that slip in Sportybet, then add the selections you like here.</div></div><input id="sb-code" type="text" autocomplete="off" placeholder="e.g. 82J2ZU" style="width:104px"><button class="btn" id="sb-code-load">Load</button></div></div>`);
@@ -298,9 +298,9 @@
     parts.push(`<div class="card"><div class="row"><div class="grow"><div class="k tiny muted">Total odds</div><div class="v" style="font-size:24px;font-weight:800">${f2(t.final_odds || t.odds)}</div></div>${stChip(t.status)}</div>
       ${t.stake ? `<div class="small" style="margin-top:6px">Stake ${f2(t.stake)} · ${t.status === 'won' ? `<b class="good">return ${f2(t.stake * (t.final_odds || t.odds))}</b>` : t.status === 'lost' ? '<b class="bad">lost</b>' : `potential return ${f2(t.stake * t.odds)}`}</div>` : ''}
       ${t.settled ? `<div class="tiny muted">Settled ${esc(t.settled)}</div>` : '<div class="tiny muted">Locked — follows the live scores automatically.</div>'}
-      <div class="row" style="margin-top:10px;gap:8px"><button class="btn" id="tk-copy">${icon('doc', 'sm')} Copy ticket</button><span class="tiny muted" style="align-self:center">Tap the <b>SB</b> link on a match to open it in Sportybet and add the selection to their slip.</span></div></div>`);
-    parts.push(`<div class="card compact"><table class="tbl">${t.legs.map((l) => { const sc = scoreFor(l); const v = legLive(l, sc); const f = fx(l.fixture);
-      return `<tr ${f ? `class="tap" data-fx="${esc(l.fixture)}"` : ''}><td class="tiny muted nowrap">${esc(koShort(l.kickoff))}</td><td><div class="row" style="gap:6px">${badge(l.home, l.badges && l.badges.home, 20)}${badge(l.away, l.badges && l.badges.away, 20)}<div class="b grow">${esc(l.home)} <span class="muted">v</span> ${esc(l.away)}</div>${sbLink(l)}</div><div class="sel"><b>${esc(l.label)}</b></div><div class="tiny"><span class="${v.cls}">${esc(v.text)}</span>${sc && sc.hg != null ? ` · <b>${sc.hg}–${sc.ag}</b>${sc.live ? ' ' + esc(sc.status) : sc.ft ? ' FT' : ''}` : ''}</div></td><td class="right nowrap"><b>${f2(l.odds)}</b></td></tr>`; }).join('')}</table></div>`);
+      <div class="row" style="margin-top:10px;gap:8px"><button class="btn primary grow" id="tk-copy">${icon('doc', 'sm')} Copy ticket</button><span class="tiny muted" style="align-self:center">Tap the <b>SB</b> link on a match to open it in Sportybet and add the selection to their slip.</span></div></div>`);
+    parts.push(`<div class="card compact"><table class="tbl">${t.legs.map((l) => { const sc = scoreFor(l); const v = legLive(l, sc);
+      return `<tr class="tap" data-fx="${esc(l.fixture)}"><td class="tiny muted nowrap">${esc(koShort(l.kickoff))}</td><td><div class="row" style="gap:6px">${badge(l.home, l.badges && l.badges.home, 20)}${badge(l.away, l.badges && l.badges.away, 20)}<div class="b grow">${teamSpan(l.home, l.country, l.div)} <span class="muted">v</span> ${teamSpan(l.away, l.country, l.div)}</div>${sbLink(l)}</div><div class="sel"><b>${esc(l.label)}</b></div><div class="tiny"><span class="${v.cls}">${esc(v.text)}</span>${sc && sc.hg != null ? ` · <b>${sc.hg}–${sc.ag}</b>${sc.live ? ' ' + esc(sc.status) : sc.ft ? ' FT' : ''}` : ''}</div></td><td class="right nowrap"><b>${f2(l.odds)}</b></td></tr>`; }).join('')}</table></div>`);
     view().innerHTML = parts.join('');
     $('#back').onclick = () => PR.back();
     const tk = $('#tk-copy'); if (tk) tk.onclick = async () => { const ok = await PR.copyText(ticketText(t)); PR.toast(ok ? 'Ticket copied' : 'Could not copy'); };

@@ -1,3 +1,13 @@
+## What's new in Mr 2 Odds 1.8 — 🐾 Full integration: offline cache, live scores, advisor, tickets
+- 🐾 **Rebranded to Mr 2 Odds** — the name, the dark-green theme and the football-intelligence look you know from the shared build, now running on the new worldwide pipeline.
+- 📡 **Offline resource cache** — the app now keeps a phone-side cache of every analysis file (SQLite-backed, 32 MB, conditional revalidation with ETags). It opens instantly from cache and refreshes in the background every 15 minutes, even with the app closed.
+- ⚽ **Live scores & goal alerts** — tracked matches (bets of the day, high-probability selections, shortlist and your tickets) are followed live: kick-off reminders, goal notifications with the scorer, optional half-time and full-time.
+- 🎟️ **Ticket settlement** — save your locked tickets on the bets screen; when a leg's match finishes the app settles it from the official score and tells you whether the ticket won or lost.
+- 🧠 **Bet Advisor with a live record** — the advisor tab now carries the tracker's settled history: hit rate, flat-stake ROI, per-market record and the selection ledger, plus the day's card (strongest signals, biggest model-vs-market edges, high-confidence list) and the daily briefing.
+- 📈 **Strong markets for the day** — a dedicated home section for the model's ≥78% Over 1.5 goals and total corners that carry a real Sportybet price.
+- 🔔 **Notification channels** — separate channels (analysis, goals, selections, kick-offs, half/full-time, tennis, tickets, updates) with distinct sounds; each notification opens exactly where you need to be.
+- 🧊 **Model untouched** — identical input, identical numbers. Everything new is data plumbing, caching and presentation.
+
 ## What's new in PlayReport 1.6.2x — 📅 60-day fixture coverage + Sportybet deep links
 - 📅 **Fixtures covered up to 60 days ahead, in every league** — the scanner now discovers and analyses matches across the next 60 days worldwide (not just today), so the model gathers form, statistics and context early and every match is analysed well before kick-off. The Leagues tab's fixture lists span the same window; the Matches tab still shows today's games as before.
 - 🎫 **PlayReport tickets meet Sportybet** — every priced match, slip leg and ticket leg now has an **SB** link that opens the match directly in Sportybet (their live odds and slip), and tickets can be copied to the clipboard in one tap.

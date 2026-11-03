@@ -19,7 +19,7 @@ android {
         targetSdk = 34
         versionCode = appVersionCode
         versionName = appVersionName
-        buildConfigField("String", "REPO", "\"${System.getenv("APP_REPO") ?: "perfectndumiso1-netizen/goals-scanner"}\"")
+        buildConfigField("String", "REPO", "\"${System.getenv("APP_REPO") ?: "Ndumiso19894/Mr2Odds"}\"")
     }
 
     signingConfigs {

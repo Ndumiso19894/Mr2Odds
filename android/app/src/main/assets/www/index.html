@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#0e131a">
-<title>PlayReport</title>
+<meta name="theme-color" content="#07110e">
+<title>Mr 2 Odds</title>
 <link rel="stylesheet" href="app.css">
 <script>try{var t=JSON.parse(localStorage.getItem('pr_settings')||'{}').theme;if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head>
@@ -52,34 +52,33 @@
 <header id="top">
   <div class="logo" aria-hidden="true"><img src="logo.png" alt="" width="34" height="34"></div>
   <div class="brand">
-    <div class="title">PlayReport</div>
-    <div class="sub" id="status-line">Football analysis · loading…</div>
+    <div class="title">Mr 2 Odds</div>
+    <div class="sub">Football intelligence · better decisions</div>
   </div>
   <button class="icon-btn" id="btn-search" title="Search matches" aria-label="Search matches"><svg class="ic"><use href="#i-search"/></svg></button>
   <button class="icon-btn" id="btn-refresh" title="Refresh" aria-label="Refresh"><svg class="ic"><use href="#i-refresh"/></svg></button>
   <button class="icon-btn" id="btn-menu" title="Menu" aria-label="Menu"><svg class="ic"><use href="#i-more"/></svg></button>
   <div id="menu" class="menu">
+    <button data-page="best"><svg class="ic"><use href="#i-sparkle"/></svg>Best of the day</button>
+    <button data-page="advisor"><svg class="ic"><use href="#i-shield"/></svg>Bet advisor of the day</button>
     <button data-page="tickets"><svg class="ic"><use href="#i-ticket"/></svg>My tickets</button>
     <button data-page="guide"><svg class="ic"><use href="#i-info"/></svg>Guide to the markets</button>
     <button data-page="performance"><svg class="ic"><use href="#i-chart"/></svg>Performance</button>
     <button data-page="analysis"><svg class="ic"><use href="#i-doc"/></svg>Full analysis (report)</button>
     <button data-csv="1"><svg class="ic"><use href="#i-download"/></svg>Download today's data (CSV)</button>
-    <button data-page="tennis">🎾 Tennis (separate section)</button>
     <button data-page="settings"><svg class="ic"><use href="#i-settings"/></svg>Settings</button>
     <button data-contact="1"><svg class="ic"><use href="#i-chat"/></svg>Contact on WhatsApp</button>
   </div>
 </header>
 
-<div id="banner"></div>
 <main id="view"></main>
 
-<nav id="tabs">
-  <button data-tab="home" class="active"><span class="ic-wrap"><svg class="ic"><use href="#i-home"/></svg></span>Home</button>
-  <button data-tab="bets"><span class="ic-wrap"><svg class="ic"><use href="#i-target"/></svg></span>Bets</button>
-  <button data-tab="live"><span class="ic-wrap"><svg class="ic"><use href="#i-live"/></svg><span class="dot" id="live-dot"></span></span>Live</button>
-  <button data-tab="matches"><span class="ic-wrap"><svg class="ic"><use href="#i-calendar"/></svg></span>Matches</button>
-  <button data-tab="days"><span class="ic-wrap"><svg class="ic"><use href="#i-history"/></svg></span>Days</button>
-  <button data-tab="leagues"><span class="ic-wrap"><svg class="ic"><use href="#i-trophy"/></svg></span>Leagues</button>
+<nav id="tabs" aria-label="Primary navigation">
+  <button data-tab="home" class="active" aria-label="Home" aria-current="page"><span class="ic-wrap"><svg class="ic"><use href="#i-home"/></svg></span>Home</button>
+  <button data-tab="bets" aria-label="Scan"><span class="ic-wrap"><svg class="ic"><use href="#i-trend"/></svg></span>Scan</button>
+  <button data-tab="live" aria-label="Live"><span class="ic-wrap"><svg class="ic"><use href="#i-live"/></svg><span class="dot" id="live-dot"></span></span>Live</button>
+  <button data-tab="matches" aria-label="Matches"><span class="ic-wrap"><svg class="ic"><use href="#i-calendar"/></svg></span>Matches</button>
+  <button data-tab="more" aria-label="More"><span class="ic-wrap"><svg class="ic"><use href="#i-more"/></svg></span>More</button>
 </nav>
 
 <div id="slipbar"></div>
@@ -87,13 +86,13 @@
 <div id="toast"></div>
 
 <script src="marked.min.js"></script>
+<script src="resource-cache.js"></script>
 <script src="core.js"></script>
 <script src="views.js"></script>
 <script src="leagues.js"></script>
 <script src="pages.js"></script>
 <script src="slip.js"></script>
 <script src="export.js"></script>
-<script src="tennis.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

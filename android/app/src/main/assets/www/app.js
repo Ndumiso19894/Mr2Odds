@@ -1,4 +1,4 @@
-/* PlayReport — boot: header menu, update banner, native callbacks, timers. */
+/* Mr 2 Odds — boot: header menu, update banner, native callbacks, timers. */
 (function (PR) {
   'use strict';
   const { $, $$, state, settings, esc, toast } = PR;
@@ -11,67 +11,112 @@
   $$('#menu [data-page]').forEach((b) => { b.onclick = () => { PR.closeMenu(); const t = b.dataset.page; state.stack = []; PR.push({ type: t }); }; });
   $('#menu [data-csv]').onclick = () => { PR.closeMenu(); PR.downloadDayCsv(); };
   $('#menu [data-contact]').onclick = () => { PR.closeMenu(); if (PR.native && PR.native.openUrl) PR.native.openUrl(`https://wa.me/${PR.CONTACT.whatsapp}`); else window.open(`https://wa.me/${PR.CONTACT.whatsapp}`); };
-  document.addEventListener('visibilitychange', () => { if (!document.hidden && (state.tab === 'live' || state.tab === 'home')) PR.live.refresh(false); });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) { if (state.tab === 'live' || state.tab === 'home') PR.live.refresh(false); updateCheck(); } });
 
-  // updates
+  // updates — instant check (launch, foreground, worker); no banner/popup: the Android notification
+  // reports a new version and tapping it starts the install immediately.
+  const UPDATE_MIN_GAP = 120000; let lastUpdateCheck = 0;
+  function updateCheck() {
+    if (!PR.native || !PR.native.checkUpdate) return;
+    const now = Date.now(); if (now - lastUpdateCheck < UPDATE_MIN_GAP) return;
+    lastUpdateCheck = now;
+    try { PR.native.checkUpdate(); } catch (e) { /* ignore */ }
+  }
   PR.startUpdate = function () {
     if (!state.update || !PR.native || !PR.native.installUpdate) return;
-    state.updateStage = 'downloading'; renderBanner(); toast('Downloading update…');
+    state.updateStage = 'downloading'; toast('Opening the download…');
     PR.native.installUpdate(state.update.url);
   };
-  function renderBanner() {
-    const b = $('#banner'); const u = state.update;
-    if (!u) { b.innerHTML = ''; return; }
-    const stage = state.updateStage;
-    b.innerHTML = `<div class="update"><div class="grow"><b>PlayReport v${esc(u.version)} is ready</b><div class="tiny">${stage === 'downloading' ? 'Downloading…' : stage === 'installing' ? 'Opening the installer — tap Install when Android asks.' : stage === 'failed' ? 'Download failed — check your connection and try again.' : 'Tap Update to install the new version.'}</div></div>
-      ${stage === 'downloading' || stage === 'installing' ? '<span class="spinner"></span>' : '<button class="btn primary" id="b-update">Update</button>'}</div>`;
-    const btn = $('#b-update'); if (btn) btn.onclick = PR.startUpdate;
-  }
   /** release notes (markdown-ish) -> list items */
   PR.notesList = function (notes) {
-    return String(notes || '').split(/\r?\n/).map((l) => l.trim()).filter((l) => l && !/^#/.test(l) && !/^PlayReport for Android/.test(l) && !/^Download PlayReport/.test(l))
+    return String(notes || '').replace(/PlayReport(?: ZA)?/g, 'Mr 2 Odds').split(/\r?\n/).map((l) => l.trim()).filter((l) => l && !/^#/.test(l) && !/^Mr 2 Odds for Android/.test(l) && !/^Download Mr 2 Odds/.test(l))
       .map((l) => l.replace(/^[-*•]\s*/, '')).slice(0, 10);
   };
-  /** in-app pop-up: a new version is available (shown once per version, again on demand from Settings) */
-  PR.showUpdateModal = function (info, force) {
-    const m = $('#modal'); if (!m || !info) return;
-    if (!force && settings.updateSeen === info.version) return;
-    settings.updateSeen = info.version; PR.saveSettings();
-    const items = PR.notesList(info.notes);
-    $('#modal-title').textContent = `PlayReport ${info.version} is available`;
-    $('#modal-text').innerHTML = `<div class="small">Your tickets, favourites and settings are kept through the update.</div>${items.length ? `<div class="b" style="margin-top:8px">What's new</div><ul class="notes">${items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}`;
-    $('#modal-ok').textContent = 'Update now'; $('#modal-cancel').textContent = 'Later';
-    m.hidden = false;
-    const done = (v) => { m.hidden = true; $('#modal-ok').onclick = null; $('#modal-cancel').onclick = null; m.onclick = null; $('#modal-cancel').textContent = 'Cancel'; if (v) PR.startUpdate(); };
-    $('#modal-ok').onclick = () => done(true); $('#modal-cancel').onclick = () => done(false); m.onclick = (e) => { if (e.target === m) done(false); };
-  };
   window.__updateInfo = function (info) {
-    state.update = info || null; state.updateStage = null; renderBanner();
-    if (state.updateChecked === 'manual') { toast(info ? `Version ${info.version} available` : 'You have the latest version'); state.updateChecked = null; if (info) PR.showUpdateModal(info, true); }
-    else if (info) PR.showUpdateModal(info, false);
+    state.update = info || null; state.updateStage = null;
+    if (state.updateChecked === 'manual') {
+      state.updateChecked = null;
+      if (info) { toast(`Version ${info.version} available — starting download…`); PR.startUpdate(); }
+      else toast('You have the latest version');
+    }
+    // automatic checks stay silent — the native notification is the single update surface
     const top = state.stack[state.stack.length - 1]; if (top && top.type === 'settings') PR.render();
   };
+  /** The download finished and Android is asking to install it — the app never installs by itself. */
+  window.__updateInstalling = function () { toast('Verified — Android will ask you to install it'); };
   /** CSV "save as" result from the native picker */
   window.__saveDone = function (ok) { toast(ok ? 'Saved — open it with Google Sheets or Excel' : 'Not saved'); };
-  window.__updateProgress = function (stage) { state.updateStage = stage; renderBanner(); if (stage === 'failed') toast('Update download failed'); };
+  window.__updateProgress = function (stage) { state.updateStage = stage; if (stage === 'failed') toast('Could not open the download — try again'); else if (stage === 'browser') toast('Downloading — when it finishes, tap the file and choose Install'); };
 
   // native entry points
   window.app = {
     refresh() { PR.loadData(true).then(() => { if (state.tab === 'live' || state.tab === 'home') PR.live.refresh(true); }); },
     back: () => PR.back(),
-    setTab: (t) => PR.setTab(t),
-    onResume() { if (state.data && Date.now() - (state.data._loadedAt || 0) > 5 * 60000) PR.loadData(false); if (state.tab === 'live' || state.tab === 'home') PR.live.refresh(false); const top = state.stack[state.stack.length - 1]; if (top && top.type === 'settings') PR.render(); },
+    // "safest" is the signals destination (Scan → High prob.) — used by signal notifications
+    setTab: (t) => { if (t === 'safest') { state.betsView = 'safest'; PR.setTab('bets'); } else PR.setTab(t); },
+    /** A match notification was tapped: key is "match|<fixture id or livescore id>" — open that match directly. */
+    openNotifMatch(key) {
+      const k = String(key || '').replace(/^match\|/, '');
+      if (!k) return;
+      let tries = 0, dayTried = false;
+      const hit = (list) => (list || []).find((x) => x && (x.id === k || (x.livescore_id != null && String(x.livescore_id) === k)));
+      const open = (f) => { PR.openMatch(f.id); PR.render(); };
+      const tick = () => {
+        const d = PR.state.data;
+        const f = d && ((d._byId && d._byId[k]) || hit(d.fixtures));
+        if (f) { open(f); return; }
+        if (/^\d{4}-\d{2}-\d{2}/.test(k)) {           // fixture id of a future/past day -> its day file
+          if (!dayTried) {
+            dayTried = true;
+            // the tap can arrive while the phone is still connecting: give the day file a few tries
+            const dayFile = (left) => PR.loadDay(k.slice(0, 10)).then((rec) => {
+              const g = hit(rec && rec.fixtures);
+              if (g) open(g);
+              else if (left > 1) setTimeout(() => dayFile(left - 1), 1200);
+              else toast('Stats for this match are not available yet.');
+            }).catch(() => { if (left > 1) setTimeout(() => dayFile(left - 1), 1200); else toast('Stats for this match are not available yet.'); });
+            dayFile(3);
+          }
+          return;
+        }
+        if (d && !dayTried && tries >= 4) {              // livescore id: yesterday's games live in the day files
+          dayTried = true;
+          const y = PR.ymd(new Date(PR.tzNow().getTime() - 86400000));
+          Promise.all([PR.loadDay(PR.ymd(PR.tzNow())).catch(() => null), PR.loadDay(y).catch(() => null)])
+            .then((recs) => {
+              const g = recs.map((r) => r && hit(r.fixtures)).find(Boolean);
+              g ? open(g) : toast('Stats for this match are not available yet.');
+            });
+          return;
+        }
+        if (tries++ < 60) setTimeout(tick, 500);
+        else toast('Stats for this match are not available yet.');
+      };
+      tick();
+    },
+    /** A tennis notification was tapped: key is "tennis|<livescore id>" — switch to the tennis section
+     *  and open that exact match (the match page loads its own detail file, newest first). */
+    openNotifTennis(key) {
+      const k = String(key || '').replace(/^tennis\|/, '');
+      if (!k) return;
+      const go = () => PR.push({ type: 'tennisMatch', id: k });
+      if (PR.tennis && PR.tennis.setSport && settings.sport !== 'tennis') {
+        PR.tennis.setSport('tennis');
+        setTimeout(go, 80);                       // let the sport switch finish before stacking the page
+      } else go();
+    },
+    onResume() { PR.refreshVisible(true); if (state.data && Date.now() - (state.data._loadedAt || 0) > 5 * 60000) PR.loadData(false); if (state.tab === 'live' || state.tab === 'home') PR.live.refresh(false); updateCheck(); const top = state.stack[state.stack.length - 1]; if (top && top.type === 'settings') PR.render(); },
     onPermission(granted) { toast(granted ? 'Notifications on — new bets, analysis, goals and updates' : 'Notifications are off — you can enable them in Settings'); const top = state.stack[state.stack.length - 1]; if (top && top.type === 'settings') PR.render(); },
     state, settings, PR,
   };
 
   // boot: cached first, then network
-  const cached = localStorage.getItem('pr_latest');
-  if (cached) { try { state.data = PR.indexData(JSON.parse(cached)); PR.statusLine(); PR.render(); } catch (e) { /* ignore */ } }
+  const cached = PR.stored ? PR.stored('pr_latest') : localStorage.getItem('pr_latest');
+  if (cached) { try { const saved = JSON.parse(cached); if (!PR.validResource(PR.rawUrl('data/app/latest.json'), saved)) throw new Error('Invalid saved copy'); state.data = PR.indexData(saved); PR.statusLine(); PR.render(); } catch (e) { /* ignore */ } }
   PR.loadBadges().then(() => { if (state.data) PR.render(); });
   PR.loadData(false).then(() => { if (state.data) { PR.live.refresh(false); setTimeout(() => PR.prefetchDetails(), 1500); } });
   PR.live.schedule();
-  if (PR.native && PR.native.setPref) { try { PR.native.setPref('goals', !!settings.goalAlerts); PR.native.setPref('ht', !!settings.htAlerts); PR.native.setPref('ft', settings.ftAlerts !== false); PR.native.setPref('ko', settings.koAlerts !== false); if (PR.saveFavs) PR.saveFavs(); PR.native.setPref('bets', settings.betAlerts !== false); PR.native.setPref('reports', settings.reportAlerts !== false); } catch (e) { /* ignore */ } }
+  if (PR.native && PR.native.setPref) { try { PR.native.setPref('goals', !!settings.goalAlerts); PR.native.setPref('ht', !!settings.htAlerts); PR.native.setPref('ft', settings.ftAlerts !== false); PR.native.setPref('ko', settings.koAlerts !== false); if (PR.saveFavs) PR.saveFavs(); PR.native.setPref('bets', settings.betAlerts !== false); PR.native.setPref('reports', settings.reportAlerts !== false); PR.native.setPref('tennis', false); } catch (e) { /* ignore */ } }
   if (PR.reconcileTickets) setTimeout(() => PR.reconcileTickets(), 2500);
-  if (PR.native && PR.native.checkUpdate) setTimeout(() => { try { PR.native.checkUpdate(); } catch (e) { /* ignore */ } }, 4000);
+  updateCheck(); // instant — no startup delay
 })(window.PR);
