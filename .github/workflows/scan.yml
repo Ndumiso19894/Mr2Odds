@@ -4,6 +4,7 @@ on:
   schedule:
     # GitHub cron is UTC. A run every half hour; the ones nearest 05:00 / 10:00 / 15:00 UTC
     # (07:00 / 12:00 / 17:00 SAST) are the full-report runs, the others refresh prices / results and alert new bets.
+    # Note 2026-11-03: the schedule did not register after the repo migration — this file edit re-triggers registration.
     - cron: "*/30 * * * *"
   workflow_dispatch:        # run it manually from the Actions tab at any time
 
