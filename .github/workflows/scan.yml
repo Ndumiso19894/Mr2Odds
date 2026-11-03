@@ -17,7 +17,7 @@ concurrency:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 45   # the 60-day coverage window analyses ~17k fixtures per run
+    timeout-minutes: 60   # the 60-day coverage window analyses ~17k fixtures per run; extra headroom for cold starts (no cached state)
     env:
       TIMEZONE: "Africa/Johannesburg"   # timezone for all displayed times and the scan window
       TZ_LABEL: "SAST"

@@ -20,8 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      APP_VERSION_CODE: ${{ github.run_number }}
-      APP_VERSION_NAME: 1.6.${{ github.run_number }}
+      # Fresh repository: the version re-bases to 1.7.x (the 1.6.x line belongs to the old, retired repo)
+      APP_VERSION_CODE: ${{ 100 + github.run_number }}
+      APP_VERSION_NAME: 1.7.${{ github.run_number }}
       APP_REPO: ${{ github.repository }}
     steps:
       - uses: actions/checkout@v4
