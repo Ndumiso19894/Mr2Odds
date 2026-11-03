@@ -62,6 +62,8 @@ class AnalysisCache:
         self._touched: set = set()
         self.hits = 0
         self.misses = 0
+        self.page_hits = 0
+        self.page_misses = 0
         if path is None:
             return
         try:
@@ -103,15 +105,13 @@ class AnalysisCache:
 
     # ---- team pages (per-division JSON) ------------------------------------------------------
     def page_get(self, key: tuple) -> tuple[str, dict] | None:
-        if key in self._touched:
-            self.hits += 1
-            return self.pages.get(key)
-        self._touched.add(key)
+        if key not in self._touched:
+            self._touched.add(key)
         hit = self.pages.get(key)
         if hit is not None:
-            self.hits += 1
+            self.page_hits += 1
         else:
-            self.misses += 1
+            self.page_misses += 1
         return hit
 
     def page_put(self, key: tuple, body: str, index_entry: list[dict]) -> None:
@@ -133,7 +133,8 @@ class AnalysisCache:
             tmp = path.with_suffix(path.suffix + ".tmp")
             tmp.write_bytes(blob)
             tmp.replace(path)
-            log.info("Analysis cache: saved %d profile(s), %d page(s), %d hit(s), %d miss(es) -> %s (%.1f MB)",
-                     len(self.profiles), len(self.pages), self.hits, self.misses, path, len(blob) / 1e6)
+            log.info("Analysis cache: saved %d profile(s), %d page(s) -> %s (%.1f MB) | profiles: %d hit / %d miss | pages: %d hit / %d miss",
+                     len(self.profiles), len(self.pages), path, len(blob) / 1e6,
+                     self.hits, self.misses, self.page_hits, self.page_misses)
         except Exception as exc:  # noqa: BLE001
             log.warning("Analysis cache: save failed (%s) — next run recomputes from scratch", exc)

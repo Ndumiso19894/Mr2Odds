@@ -2651,6 +2651,12 @@ def main() -> None:
         log.warning("Team pages failed: %s", exc)
     try:
         ACACHE.save()   # persist this run's evidence for the next run (best effort; never fatal)
+        cfile = DATA_DIR / "analysis_cache.bin"
+        ctx["analysis_cache"] = {
+            "profiles_hit": ACACHE.hits, "profiles_miss": ACACHE.misses,
+            "pages_hit": ACACHE.page_hits, "pages_miss": ACACHE.page_misses,
+            "file_mb": round(cfile.stat().st_size / 1e6, 1) if cfile.exists() else 0,
+        }
     except Exception as exc:  # noqa: BLE001
         log.warning("Analysis cache save failed: %s", exc)
 

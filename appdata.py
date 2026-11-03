@@ -497,6 +497,8 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
         "botd": [b["id"] for b in safe_out["today"]["bets"]],
         "alerts": [a["id"] for a in alerts[-30:]], "tracked_eids": sorted(set(live_eids)),
     }
+    if ctx.get("analysis_cache"):
+        app_meta["analysis_cache"] = ctx["analysis_cache"]
     if report_run:
         # shortlist picks published in this full analysis run (the "Shortlist is live — N pick(s)"
         # notification); refresh runs omit it so the worker does not re-announce an unchanged shortlist

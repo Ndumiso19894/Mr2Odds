@@ -146,7 +146,7 @@ def test_team_pages_cache_hit_reuses_identical_output(tmp_path):
     bodies = {f.name: f.read_text() for f in out.iterdir()}
     c2 = acache.AnalysisCache(tmp_path / "c.bin")
     teamstats.export(_results(), NOW, out, page_cache=c2)
-    assert c2.hits >= 1 and c2.misses == 0
+    assert c2.page_hits >= 1 and c2.page_misses == 0
     for name, body in bodies.items():
         assert (out / name).read_text() == body, name
 
@@ -159,7 +159,7 @@ def test_team_pages_hit_without_file_recomputes_identically(tmp_path):
         f.unlink()
     c2 = acache.AnalysisCache(tmp_path / "c.bin")
     teamstats.export(_results(), NOW, out, page_cache=c2)
-    assert c2.hits >= 1
+    assert c2.page_hits >= 1
     for name, body in bodies.items():
         assert (out / name).read_text() == body, name
 
@@ -171,7 +171,7 @@ def test_team_pages_cache_invalidates_on_new_result(tmp_path):
         f.unlink()
     c2 = acache.AnalysisCache(tmp_path / "c.bin")
     teamstats.export(_results(extra=1), NOW, out, page_cache=c2)   # one more result played
-    assert c2.misses >= 1                                           # the division was recomputed
+    assert c2.page_misses >= 1                                      # the division was recomputed
     new = json.loads((out / "Div0.json").read_text())
     assert new["matches"] == json.loads(old)["matches"] + 1
 
