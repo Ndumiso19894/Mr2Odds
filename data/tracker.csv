@@ -1,0 +1,241 @@
+match_date,kickoff,country,div,league,home,away,market,p_model,p_market,p_final,odds,status,score,total_goals,settled_on,report_date
+2026-11-21,2026-11-21 13:00,England,LS:england/premier-league-u18,Premier League U18,Blackburn Rovers U18,Manchester City U18,O15,0.975,,0.975,,pending,,,,2026-11-03
+2026-12-12,2026-12-12 14:30,England,LS:england/premier-league-u18,Premier League U18,Manchester United U18,Sunderland U18,O15,0.973,,0.973,,pending,,,,2026-11-03
+2026-11-04,2026-11-04 19:30,Denmark,LS:denmark/kvinde-lp,Kvinde LP,HB Koege W,FC Nordsjaelland W,O15,0.968,,0.968,,hit,2-0,2,2026-11-04,2026-11-03
+2026-11-14,2026-11-14 14:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,BTS Neustadt,SV Hemelingen,O15,0.965,,0.965,,hit,0-5,5,2026-11-14,2026-11-03
+2026-12-12,2026-12-12 17:00,England,LS:england/isthmian-league-north-division,Isthmian League: North Division,Felixstowe & Walton United,Lowestoft Town,O15,0.963,,0.963,,pending,,,,2026-11-03
+2026-11-28,2026-11-28 13:00,England,LS:england/premier-league-u18,Premier League U18,Fulham U18,Reading U18,O15,0.962,,0.962,,pending,,,,2026-11-03
+2026-11-08,2026-11-08 15:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,SV Hemelingen,Werder Bremen III,O15,0.962,,0.962,,hit,5-1,6,2026-11-08,2026-11-03
+2026-11-16,2026-11-16 00:00,Mexico,LS:mexico/liga-premier-serie-a-clausura,Liga Premier: Serie A Clausura,Acambaro,Heroes de Zaci,O15,0.962,,0.962,,pending,,,,2026-11-03
+2026-11-22,2026-11-22 15:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,SV Hemelingen,SV Grohn,O15,0.961,,0.961,,pending,,,,2026-11-03
+2026-12-28,2026-12-28 17:00,England,LS:england/isthmian-league-north-division,Isthmian League: North Division,Gorleston,Lowestoft Town,O15,0.961,,0.961,,pending,,,,2026-11-03
+2026-12-19,2026-12-19 14:00,England,LS:england/premier-league-u18,Premier League U18,Manchester United U18,Leicester City U18,O15,0.961,,0.961,,pending,,,,2026-11-03
+2026-12-12,2026-12-12 13:00,England,LS:england/premier-league-u18,Premier League U18,Tottenham Hotspur U18,Brentford U18,O15,0.961,,0.961,,pending,,,,2026-11-03
+2026-12-11,2026-12-11 20:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,OSC Bremerhaven,BTS Neustadt,O15,0.961,,0.961,,pending,,,,2026-11-03
+2026-12-19,2026-12-19 14:00,England,LS:england/premier-league-u18,Premier League U18,Wolves U18,Manchester City U18,O15,0.960,,0.960,,pending,,,,2026-11-03
+2026-12-12,2026-12-12 13:00,England,LS:england/premier-league-u18,Premier League U18,Blackburn Rovers U18,Liverpool U18,O15,0.960,,0.960,,pending,,,,2026-11-03
+2026-11-21,2026-11-21 13:00,England,LS:england/premier-league-u18,Premier League U18,Blackburn Rovers U18,Manchester City U18,O25,0.912,,0.912,,pending,,,,2026-11-03
+2026-12-12,2026-12-12 14:30,England,LS:england/premier-league-u18,Premier League U18,Manchester United U18,Sunderland U18,O25,0.907,,0.907,,pending,,,,2026-11-03
+2026-11-04,2026-11-04 19:30,Denmark,LS:denmark/kvinde-lp,Kvinde LP,HB Koege W,FC Nordsjaelland W,O25,0.893,,0.893,,miss,2-0,2,2026-11-04,2026-11-03
+2026-11-14,2026-11-14 14:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,BTS Neustadt,SV Hemelingen,O25,0.888,,0.888,,hit,0-5,5,2026-11-14,2026-11-03
+2026-12-12,2026-12-12 17:00,England,LS:england/isthmian-league-north-division,Isthmian League: North Division,Felixstowe & Walton United,Lowestoft Town,O25,0.882,,0.882,,pending,,,,2026-11-03
+2026-11-08,2026-11-08 15:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,SV Hemelingen,Werder Bremen III,O25,0.879,,0.879,,hit,5-1,6,2026-11-08,2026-11-03
+2026-11-16,2026-11-16 00:00,Mexico,LS:mexico/liga-premier-serie-a-clausura,Liga Premier: Serie A Clausura,Acambaro,Heroes de Zaci,O25,0.879,,0.879,,pending,,,,2026-11-03
+2026-11-22,2026-11-22 15:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,SV Hemelingen,SV Grohn,O25,0.878,,0.878,,pending,,,,2026-11-03
+2026-11-28,2026-11-28 13:00,England,LS:england/premier-league-u18,Premier League U18,Fulham U18,Reading U18,O25,0.877,,0.877,,pending,,,,2026-11-03
+2026-12-28,2026-12-28 17:00,England,LS:england/isthmian-league-north-division,Isthmian League: North Division,Gorleston,Lowestoft Town,O25,0.877,,0.877,,pending,,,,2026-11-03
+2026-12-19,2026-12-19 14:00,England,LS:england/premier-league-u18,Premier League U18,Manchester United U18,Leicester City U18,O25,0.875,,0.875,,pending,,,,2026-11-03
+2026-12-11,2026-12-11 20:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,OSC Bremerhaven,BTS Neustadt,O25,0.874,,0.874,,pending,,,,2026-11-03
+2026-11-14,2026-11-14 19:00,France,LS:france/division-1-women,Premiere Ligue Femenine,Lyon W,Saint Malo,O25,0.874,,0.874,,miss,1-0,1,2026-11-14,2026-11-03
+2026-12-19,2026-12-19 14:00,England,LS:england/premier-league-u18,Premier League U18,Wolves U18,Manchester City U18,O25,0.873,,0.873,,pending,,,,2026-11-03
+2026-12-12,2026-12-12 13:00,England,LS:england/premier-league-u18,Premier League U18,Blackburn Rovers U18,Liverpool U18,O25,0.873,,0.873,,pending,,,,2026-11-03
+2026-11-03,2026-11-03 21:00,England,LS:england/premier-league-u18,Premier League U18,Brentford U18,Brighton U18,BTTS,0.822,,0.822,,hit,1-2,3,2026-11-03,2026-11-03
+2026-12-12,2026-12-12 13:00,England,LS:england/premier-league-u18,Premier League U18,West Ham United U18,Fulham U18,BTTS,0.821,,0.821,,pending,,,,2026-11-03
+2026-12-19,2026-12-19 13:00,England,LS:england/premier-league-u18,Premier League U18,Tottenham Hotspur U18,Chelsea U18,BTTS,0.818,,0.818,,pending,,,,2026-11-03
+2026-11-21,2026-11-21 13:00,England,LS:england/premier-league-u18,Premier League U18,Brighton U18,Fulham U18,BTTS,0.817,,0.817,,pending,,,,2026-11-03
+2026-12-19,2026-12-19 13:30,England,LS:england/premier-league-u18,Premier League U18,Brentford U18,Crystal Palace U18,BTTS,0.817,,0.817,,pending,,,,2026-11-03
+2026-12-12,2026-12-12 13:00,England,LS:england/premier-league-u18,Premier League U18,Chelsea U18,Southampton U18,BTTS,0.812,,0.812,,pending,,,,2026-11-03
+2026-11-21,2026-11-21 13:00,England,LS:england/premier-league-u18,Premier League U18,Norwich City U18,Brentford U18,BTTS,0.810,,0.810,,pending,,,,2026-11-03
+2026-11-28,2026-11-28 14:00,England,LS:england/premier-league-u18,Premier League U18,Southampton U18,West Ham United U18,BTTS,0.808,,0.808,,pending,,,,2026-11-03
+2026-11-28,2026-11-28 13:00,England,LS:england/premier-league-u18,Premier League U18,Ipswich Town U18,Norwich City U18,BTTS,0.808,,0.808,,pending,,,,2026-11-03
+2026-12-19,2026-12-19 13:00,England,LS:england/premier-league-u18,Premier League U18,West Ham United U18,Brighton U18,BTTS,0.807,,0.807,,pending,,,,2026-11-03
+2026-12-12,2026-12-12 14:00,England,LS:england/premier-league-u18,Premier League U18,Stoke City U18,Leeds United U18,BTTS,0.807,,0.807,,pending,,,,2026-11-03
+2026-11-03,2026-11-03 15:00,England,LS:england/premier-league-u18,Premier League U18,Fulham U18,Norwich City U18,BTTS,0.806,,0.806,,pending,,,,2026-11-03
+2026-11-28,2026-11-28 13:00,England,LS:england/premier-league-u18,Premier League U18,Crystal Palace U18,Chelsea U18,BTTS,0.805,,0.805,,pending,,,,2026-11-03
+2026-11-21,2026-11-21 13:00,England,LS:england/premier-league-u18,Premier League U18,Stoke City U18,Liverpool U18,BTTS,0.805,,0.805,,pending,,,,2026-11-03
+2026-12-19,2026-12-19 13:00,England,LS:england/premier-league-u18,Premier League U18,Fulham U18,Arsenal U18,BTTS,0.803,,0.803,,pending,,,,2026-11-03
+2026-12-05,2026-12-05 14:00,England,LS:england/premier-league-u18,Premier League U18,West Bromwich Albion U18,Reading U18,BTTS,0.803,,0.803,,pending,,,,2026-11-03
+2026-11-14,2026-11-14 19:00,France,LS:france/division-1-women,Premiere Ligue Femenine,Lyon W,Saint Malo,O15,0.960,,0.960,,miss,1-0,1,2026-11-14,2026-11-03
+2026-11-07,2026-11-07 15:00,Germany,LS:germany/oberliga-flens,Oberliga: Flens,FC Kilia Kiel,Kaltenkirchener TS,O15,0.959,,0.959,,hit,5-1,6,2026-11-07,2026-11-03
+2026-11-21,2026-11-21 17:00,England,LS:england/isthmian-league-north-division,Isthmian League: North Division,Redbridge,Lowestoft Town,O15,0.958,,0.958,,pending,,,,2026-11-03
+2026-11-04,2026-11-04 19:00,Denmark,LS:denmark/kvinde-lp,Kvinde LP,B93 W,Broendby W,O15,0.957,,0.957,,hit,0-6,6,2026-11-04,2026-11-03
+2026-11-21,2026-11-21 17:00,England,LS:england/isthmian-league-north-division,Isthmian League: North Division,Redbridge,Lowestoft Town,O25,0.870,,0.870,,pending,,,,2026-11-03
+2026-11-07,2026-11-07 15:00,Germany,LS:germany/oberliga-flens,Oberliga: Flens,FC Kilia Kiel,Kaltenkirchener TS,O25,0.869,,0.869,,hit,5-1,6,2026-11-07,2026-11-03
+2026-11-04,2026-11-04 19:00,Denmark,LS:denmark/kvinde-lp,Kvinde LP,B93 W,Broendby W,O25,0.867,,0.867,,hit,0-6,6,2026-11-04,2026-11-03
+2027-01-01,2027-01-01 16:30,Wales,LS:wales/cymru-premier,JD Cymru Premier,TNS,Holywell Town,O25,0.865,,0.865,,pending,,,,2026-11-03
+2026-12-19,2026-12-19 14:00,England,LS:england/premier-league-u18,Premier League U18,Southampton U18,Aston Villa U18,BTTS,0.801,,0.801,,pending,,,,2026-11-03
+2026-11-21,2026-11-21 13:00,England,LS:england/premier-league-u18,Premier League U18,Reading U18,Ipswich Town U18,BTTS,0.796,,0.796,,pending,,,,2026-11-03
+2026-11-15,2026-11-15 12:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,Geestemuende,SG Aumund-Vegesack,BTTS,0.796,,0.796,,pending,,,,2026-11-03
+2026-11-03,2026-11-03 15:30,England,LS:england/premier-league-u18,Premier League U18,Sunderland U18,Stoke City U18,BTTS,0.794,,0.794,,hit,4-1,5,2026-11-03,2026-11-03
+2026-11-15,2026-11-15 14:00,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,VfL Pinneberg,TSV Buchholz,BTTS,0.805,,0.805,,pending,,,,2026-11-03
+2026-11-29,2026-11-29 15:00,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,TSV Buchholz,TSV Sasel,BTTS,0.798,,0.798,,pending,,,,2026-11-03
+2026-11-06,2026-11-06 20:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,OSC Bremerhaven,Vatan Sport Bremen,O15,0.963,,0.963,,hit,1-1,2,2026-11-06,2026-11-03
+2026-11-13,2026-11-13 19:30,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,Brinkumer SV,Oberneuland,O15,0.960,,0.960,,hit,5-0,5,2026-11-14,2026-11-03
+2026-12-04,2026-12-04 19:30,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,Brinkumer SV,TS Woltmershausen,O15,0.959,,0.959,,pending,,,,2026-11-03
+2026-11-20,2026-11-20 20:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,OSC Bremerhaven,Geestemuende,O15,0.958,,0.958,,pending,,,,2026-11-03
+2026-11-06,2026-11-06 20:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,OSC Bremerhaven,Vatan Sport Bremen,O25,0.879,,0.879,,miss,1-1,2,2026-11-06,2026-11-03
+2026-11-13,2026-11-13 19:30,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,Brinkumer SV,Oberneuland,O25,0.874,,0.874,,hit,5-0,5,2026-11-14,2026-11-03
+2026-12-04,2026-12-04 19:30,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,Brinkumer SV,TS Woltmershausen,O25,0.870,,0.870,,pending,,,,2026-11-03
+2026-12-05,2026-12-05 14:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,BTS Neustadt,SG Aumund-Vegesack,BTTS,0.816,,0.816,,pending,,,,2026-11-03
+2026-12-05,2026-12-05 16:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,Geestemuende,Vatan Sport Bremen,BTTS,0.812,,0.812,,pending,,,,2026-11-03
+2026-12-18,2026-12-18 22:00,Gibraltar,LS:gibraltar/national-league,National League,FC Hound Dogs,Bruno's Magpies,O15,0.959,,0.959,,pending,,,,2026-11-03
+2026-12-18,2026-12-18 22:00,Gibraltar,LS:gibraltar/national-league,National League,FC Hound Dogs,Bruno's Magpies,O25,0.873,,0.873,,pending,,,,2026-11-03
+2026-11-22,2026-11-22 09:00,Philippines,LS:philippines/pfl,PFL,Manila Digger,Mendiola FC 1991,O15,0.963,,0.963,,pending,,,,2026-11-03
+2026-11-08,2026-11-08 11:45,Philippines,LS:philippines/pfl,PFL,Davao Aguilas,Philippine Army,O15,0.962,,0.962,,hit,10-0,10,2026-11-08,2026-11-03
+2026-11-04,2026-11-04 14:30,Philippines,LS:philippines/pfl,PFL,Manila Digger,Tuloy,O15,0.962,,0.962,,hit,6-0,6,2026-11-04,2026-11-03
+2026-11-22,2026-11-22 11:45,Philippines,LS:philippines/pfl,PFL,Philippine Army,Cebu FC,O15,0.959,,0.959,,pending,,,,2026-11-03
+2026-11-22,2026-11-22 09:00,Philippines,LS:philippines/pfl,PFL,Manila Digger,Mendiola FC 1991,O25,0.882,,0.882,,pending,,,,2026-11-03
+2026-11-04,2026-11-04 14:30,Philippines,LS:philippines/pfl,PFL,Manila Digger,Tuloy,O25,0.879,,0.879,,hit,6-0,6,2026-11-04,2026-11-03
+2026-11-08,2026-11-08 11:45,Philippines,LS:philippines/pfl,PFL,Davao Aguilas,Philippine Army,O25,0.879,,0.879,,hit,10-0,10,2026-11-08,2026-11-03
+2026-12-05,2026-12-05 13:00,Philippines,LS:philippines/pfl,PFL,Manila Digger,Philippine Army,O25,0.872,,0.872,,pending,,,,2026-11-03
+2026-12-05,2026-12-05 13:00,Philippines,LS:philippines/pfl,PFL,Manila Digger,Philippine Army,O15,0.959,,0.959,,pending,,,,2026-11-04
+2026-11-22,2026-11-22 11:45,Philippines,LS:philippines/pfl,PFL,Philippine Army,Cebu FC,O25,0.871,,0.871,,pending,,,,2026-11-04
+2026-11-14,2026-11-14 15:00,Germany,LS:germany/oberliga-flens,Oberliga: Flens,1. FC Phoenix Luebeck II,SC Rapid Luebeck,BTTS,0.794,,0.794,,hit,6-3,9,2026-11-14,2026-11-04
+2026-12-05,2026-12-05 15:00,Germany,LS:germany/oberliga-flens,Oberliga: Flens,Union Neumuenster,Oldenburger SV,BTTS,0.792,,0.792,,pending,,,,2026-11-04
+2026-11-07,2026-11-07 16:30,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,Altonaer FC 93,Vorwarts-Wacker,BTTS,0.791,,0.791,,hit,2-1,3,2026-11-07,2026-11-04
+2026-12-05,2026-12-05 13:30,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,HT 16,Niendorfer TSV,BTTS,0.790,,0.790,,pending,,,,2026-11-04
+2026-12-12,2026-12-12 16:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,Vatan Sport Bremen,Werder Bremen III,BTTS,0.790,,0.790,,pending,,,,2026-11-04
+2026-11-21,2026-11-21 15:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,SG Aumund-Vegesack,Werder Bremen III,BTTS,0.786,,0.786,,pending,,,,2026-11-04
+2026-11-28,2026-11-28 16:30,Germany,LS:germany/oberliga-flens,Oberliga: Flens,VfB Lubeck II,SC Rapid Luebeck,BTTS,0.785,,0.785,,pending,,,,2026-11-04
+2026-11-22,2026-11-22 11:45,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,Uhlenhorster SC Paloma,Niendorfer TSV,BTTS,0.783,,0.783,,pending,,,,2026-11-04
+2026-12-06,2026-12-06 16:00,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,TSV Sasel,Altonaer FC 93,BTTS,0.782,,0.782,,pending,,,,2026-11-04
+2026-11-21,2026-11-21 16:30,Germany,LS:germany/oberliga-flens,Oberliga: Flens,SC Rapid Luebeck,Eckernfoerder SV,BTTS,0.781,,0.781,,pending,,,,2026-11-04
+2026-11-09,2026-11-09 22:05,England,LS:england/baller-league-uk,Baller League UK,Deportrio,VZN FC,O15,0.990,,0.990,,hit,7-8,15,2026-11-09,2026-11-04
+2026-11-09,2026-11-09 21:00,England,LS:england/baller-league-uk,Baller League UK,Clutch FC,Gold Devils,O15,0.989,,0.989,,hit,4-4,8,2026-11-09,2026-11-04
+2026-11-09,2026-11-09 23:50,England,LS:england/baller-league-uk,Baller League UK,SDS FC,Wembley Rangers,O15,0.987,,0.987,,miss,0-1,1,2026-11-10,2026-11-04
+2026-11-09,2026-11-09 22:05,England,LS:england/baller-league-uk,Baller League UK,Deportrio,VZN FC,O25,0.958,,0.958,,hit,7-8,15,2026-11-09,2026-11-04
+2026-11-09,2026-11-09 21:00,England,LS:england/baller-league-uk,Baller League UK,Clutch FC,Gold Devils,O25,0.955,,0.955,,hit,4-4,8,2026-11-09,2026-11-04
+2026-11-09,2026-11-09 23:50,England,LS:england/baller-league-uk,Baller League UK,SDS FC,Wembley Rangers,O25,0.950,,0.950,,miss,0-1,1,2026-11-10,2026-11-04
+2026-11-09,2026-11-09 21:00,England,LS:england/baller-league-uk,Baller League UK,Clutch FC,Gold Devils,BTTS,0.923,,0.923,,hit,4-4,8,2026-11-09,2026-11-04
+2026-11-09,2026-11-09 23:50,England,LS:england/baller-league-uk,Baller League UK,SDS FC,Wembley Rangers,BTTS,0.912,,0.912,,miss,0-1,1,2026-11-10,2026-11-04
+2026-11-09,2026-11-09 22:05,England,LS:england/baller-league-uk,Baller League UK,Deportrio,VZN FC,BTTS,0.912,,0.912,,hit,7-8,15,2026-11-09,2026-11-04
+2026-11-14,2026-11-14 15:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,Brinkumer SV,Oberneuland,O15,0.959,,0.959,,hit,5-0,5,2026-11-14,2026-11-07
+2026-11-14,2026-11-14 15:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,Brinkumer SV,Oberneuland,O25,0.871,,0.871,,hit,5-0,5,2026-11-14,2026-11-07
+2026-11-15,2026-11-15 15:00,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,Niendorfer TSV,Tesla Hamburg,BTTS,0.780,,0.780,,pending,,,,2026-11-07
+2027-01-01,2027-01-01 16:30,Wales,LS:wales/cymru-premier,JD Cymru Premier,TNS,Holywell Town,O15,0.957,,0.957,,pending,,,,2026-11-07
+2026-11-20,2026-11-20 21:45,Wales,LS:wales/cymru-premier,JD Cymru Premier,TNS,Trefelin BGC,O15,0.956,,0.956,,pending,,,,2026-11-08
+2026-11-20,2026-11-20 21:45,Wales,LS:wales/cymru-premier,JD Cymru Premier,TNS,Trefelin BGC,O25,0.864,,0.864,,pending,,,,2026-11-08
+2026-12-04,2026-12-04 21:00,Germany,LS:germany/oberliga-mittelrhein,Oberliga: Mittelrhein,SSV Merten,Chlodwig Zuelpich,O15,0.955,,0.955,,pending,,,,2026-11-08
+2026-12-05,2026-12-05 14:00,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,TuS Dassendorf,TSV Buchholz,O15,0.972,,0.972,,pending,,,,2026-11-08
+2026-12-06,2026-12-06 15:00,Germany,LS:germany/oberliga-flens,Oberliga: Flens,Holstein Kiel II,VfB Lubeck II,O15,0.970,,0.970,,pending,,,,2026-11-08
+2026-12-19,2026-12-19 17:00,England,LS:england/isthmian-league-south-central-division,Isthmian League: South Central Division,Winchester City,Ascot United,O15,0.967,,0.967,,pending,,,,2026-11-08
+2026-11-15,2026-11-15 14:00,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,VfL Pinneberg,TSV Buchholz,O15,0.966,,0.966,,pending,,,,2026-11-08
+2026-11-21,2026-11-21 15:00,Germany,LS:germany/oberliga-flens,Oberliga: Flens,MTSV Hohenwestedt,FC Kilia Kiel,O15,0.963,,0.963,,pending,,,,2026-11-08
+2026-11-20,2026-11-20 20:00,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,TSV Concordia,TuS Dassendorf,O15,0.963,,0.963,,pending,,,,2026-11-08
+2026-11-15,2026-11-15 12:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,Geestemuende,SG Aumund-Vegesack,O15,0.962,,0.962,,pending,,,,2026-11-08
+2026-11-14,2026-11-14 15:00,Germany,LS:germany/oberliga-flens,Oberliga: Flens,1. FC Phoenix Luebeck II,SC Rapid Luebeck,O15,0.960,,0.960,,hit,6-3,9,2026-11-14,2026-11-08
+2026-12-04,2026-12-04 20:45,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,Teutonia Ottensen,ETSV Hamburg,O15,0.959,,0.959,,pending,,,,2026-11-08
+2026-11-29,2026-11-29 13:00,Moldova,LS:moldova/super-liga,Super Liga,FC Zaria Balti,FC Sheriff,O15,0.958,,0.958,,pending,,,,2026-11-08
+2026-12-05,2026-12-05 14:00,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,TuS Dassendorf,TSV Buchholz,O25,0.903,,0.903,,pending,,,,2026-11-08
+2026-12-06,2026-12-06 15:00,Germany,LS:germany/oberliga-flens,Oberliga: Flens,Holstein Kiel II,VfB Lubeck II,O25,0.898,,0.898,,pending,,,,2026-11-08
+2026-12-04,2026-12-04 21:00,Germany,LS:germany/oberliga-mittelrhein,Oberliga: Mittelrhein,SSV Merten,Chlodwig Zuelpich,O25,0.891,,0.891,,pending,,,,2026-11-08
+2026-12-19,2026-12-19 17:00,England,LS:england/isthmian-league-south-central-division,Isthmian League: South Central Division,Winchester City,Ascot United,O25,0.891,,0.891,,pending,,,,2026-11-08
+2026-11-15,2026-11-15 14:00,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,VfL Pinneberg,TSV Buchholz,O25,0.887,,0.887,,pending,,,,2026-11-08
+2026-11-21,2026-11-21 15:00,Germany,LS:germany/oberliga-flens,Oberliga: Flens,MTSV Hohenwestedt,FC Kilia Kiel,O25,0.881,,0.881,,pending,,,,2026-11-08
+2026-11-20,2026-11-20 20:00,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,TSV Concordia,TuS Dassendorf,O25,0.880,,0.880,,pending,,,,2026-11-08
+2026-11-15,2026-11-15 12:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,Geestemuende,SG Aumund-Vegesack,O25,0.876,,0.876,,pending,,,,2026-11-08
+2026-11-14,2026-11-14 15:00,Germany,LS:germany/oberliga-flens,Oberliga: Flens,1. FC Phoenix Luebeck II,SC Rapid Luebeck,O25,0.871,,0.871,,hit,6-3,9,2026-11-14,2026-11-08
+2026-12-04,2026-12-04 20:45,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,Teutonia Ottensen,ETSV Hamburg,O25,0.870,,0.870,,pending,,,,2026-11-08
+2026-11-29,2026-11-29 13:00,Moldova,LS:moldova/super-liga,Super Liga,FC Zaria Balti,FC Sheriff,O25,0.870,,0.870,,pending,,,,2026-11-08
+2026-12-05,2026-12-05 14:00,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,TuS Dassendorf,TSV Buchholz,BTTS,0.821,,0.821,,pending,,,,2026-11-08
+2026-11-22,2026-11-22 15:00,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,TSV Buchholz,FC Suederelbe,BTTS,0.810,,0.810,,pending,,,,2026-11-08
+2026-12-13,2026-12-13 16:30,Germany,LS:germany/oberliga-mittelrhein,Oberliga: Mittelrhein,SSV Bornheim 1924,Eintracht Hohkeppel,BTTS,0.809,,0.809,,pending,,,,2026-11-08
+2026-11-29,2026-11-29 13:30,Singapore,LS:singapore/sg-premier-league,Premier League,Young Lions,Lion City Sailors FC,O15,0.932,,0.932,,pending,,,,2026-11-08
+2026-12-05,2026-12-05 21:30,Switzerland,LS:switzerland/super-league,Super League,FC Zurich,Lugano,O15,0.930,,0.930,,pending,,,,2026-11-08
+2026-12-13,2026-12-13 19:00,Denmark,LS:denmark/dbu-pokalen,DBU Pokalen,FC Midtjylland,FC Copenhagen,O15,0.928,,0.928,,pending,,,,2026-11-08
+2026-11-21,2026-11-21 17:00,Scotland,LS:scotland/league-2,League 2,Clyde,Stirling Albion,O15,0.919,,0.919,,pending,,,,2026-11-08
+2026-11-29,2026-11-29 15:00,Switzerland,LS:switzerland/super-league,Super League,Luzern,Lugano,O15,0.919,,0.919,,pending,,,,2026-11-08
+2027-01-02,2027-01-02 17:00,Northern Ireland,LS:northern-ireland/championship,Championship,Annagh United,Dundela,O15,0.905,,0.905,,pending,,,,2026-11-08
+2026-12-13,2026-12-13 16:00,Armenia,LS:armenia/premier-league,Premier League,Gandzasar,FC Noah,O15,0.898,,0.898,,pending,,,,2026-11-08
+2026-11-08,2026-11-08 18:00,Scotland,SC0,Premiership,Celtic,Kilmarnock,O15,0.890,,0.890,1.07,miss,1-0,1,2026-11-08,2026-11-08
+2026-11-08,2026-11-08 18:30,Germany,D1,Bundesliga,Freiburg,Union Berlin,O15,0.890,,0.890,1.23,hit,2-0,2,2026-11-08,2026-11-08
+2026-11-28,2026-11-28 18:00,Armenia,LS:armenia/premier-league,Premier League,FC Noah,BKMA,O15,0.889,,0.889,,pending,,,,2026-11-08
+2026-11-08,2026-11-08 21:00,Netherlands,N1,Eredivisie,Utrecht,Nijmegen,O15,0.888,,0.888,1.14,hit,2-3,5,2026-11-08,2026-11-08
+2026-11-27,2026-11-27 13:30,Singapore,LS:singapore/sg-premier-league,Premier League,Geylang International FC,Tanjong Pagar United FC,O15,0.885,,0.885,,pending,,,,2026-11-08
+2026-12-12,2026-12-12 19:00,Slovakia,LS:slovakia/fortuna-liga,Super Liga,Zeleziarne Podbrezova,Zilina,O15,0.885,,0.885,,pending,,,,2026-11-08
+2026-12-12,2026-12-12 21:30,Switzerland,LS:switzerland/super-league,Super League,Young Boys,Lausanne,O15,0.884,,0.884,,pending,,,,2026-11-08
+2026-12-12,2026-12-12 19:00,Israel,LS:israel/premier-league,Premier League,Maccabi Tel Aviv,Hapoel Jerusalem,O15,0.882,,0.882,,pending,,,,2026-11-08
+2026-11-29,2026-11-29 13:30,Singapore,LS:singapore/sg-premier-league,Premier League,Young Lions,Lion City Sailors FC,O25,0.807,,0.807,,pending,,,,2026-11-08
+2026-12-05,2026-12-05 21:30,Switzerland,LS:switzerland/super-league,Super League,FC Zurich,Lugano,O25,0.801,,0.801,,pending,,,,2026-11-08
+2026-12-13,2026-12-13 19:00,Denmark,LS:denmark/dbu-pokalen,DBU Pokalen,FC Midtjylland,FC Copenhagen,O25,0.799,,0.799,,pending,,,,2026-11-08
+2026-11-21,2026-11-21 17:00,Scotland,LS:scotland/league-2,League 2,Clyde,Stirling Albion,O25,0.778,,0.778,,pending,,,,2026-11-08
+2026-11-29,2026-11-29 15:00,Switzerland,LS:switzerland/super-league,Super League,Luzern,Lugano,O25,0.777,,0.777,,pending,,,,2026-11-08
+2027-01-02,2027-01-02 17:00,Northern Ireland,LS:northern-ireland/championship,Championship,Annagh United,Dundela,O25,0.750,,0.750,,pending,,,,2026-11-08
+2026-12-13,2026-12-13 16:00,Armenia,LS:armenia/premier-league,Premier League,Gandzasar,FC Noah,O25,0.738,,0.738,,pending,,,,2026-11-08
+2026-11-08,2026-11-08 18:00,Scotland,SC0,Premiership,Celtic,Kilmarnock,O25,0.721,0.748,0.721,1.25,miss,1-0,1,2026-11-08,2026-11-08
+2026-11-08,2026-11-08 18:30,Germany,D1,Bundesliga,Freiburg,Union Berlin,O25,0.720,0.587,0.720,1.59,miss,2-0,2,2026-11-08,2026-11-08
+2026-11-28,2026-11-28 18:00,Armenia,LS:armenia/premier-league,Premier League,FC Noah,BKMA,O25,0.719,,0.719,,pending,,,,2026-11-08
+2026-11-08,2026-11-08 21:00,Netherlands,N1,Eredivisie,Utrecht,Nijmegen,O25,0.714,0.636,0.714,1.46,hit,2-3,5,2026-11-08,2026-11-08
+2026-11-27,2026-11-27 13:30,Singapore,LS:singapore/sg-premier-league,Premier League,Geylang International FC,Tanjong Pagar United FC,O25,0.712,,0.712,,pending,,,,2026-11-08
+2026-12-12,2026-12-12 19:00,Slovakia,LS:slovakia/fortuna-liga,Super Liga,Zeleziarne Podbrezova,Zilina,O25,0.708,,0.708,,pending,,,,2026-11-08
+2026-12-12,2026-12-12 21:30,Switzerland,LS:switzerland/super-league,Super League,Young Boys,Lausanne,O25,0.708,,0.708,,pending,,,,2026-11-08
+2026-12-12,2026-12-12 19:00,Israel,LS:israel/premier-league,Premier League,Maccabi Tel Aviv,Hapoel Jerusalem,O25,0.705,,0.705,,pending,,,,2026-11-08
+2026-11-08,2026-11-08 21:00,Netherlands,N1,Eredivisie,Utrecht,Nijmegen,BTTS,0.712,,0.712,1.42,hit,2-3,5,2026-11-08,2026-11-08
+2026-12-19,2026-12-19 21:30,Switzerland,LS:switzerland/super-league,Super League,Basel,FC Zurich,BTTS,0.697,,0.697,,pending,,,,2026-11-08
+2026-12-12,2026-12-12 19:00,Switzerland,LS:switzerland/super-league,Super League,FC Zurich,Grasshopper,BTTS,0.693,,0.693,,pending,,,,2026-11-08
+2026-12-12,2026-12-12 19:00,Slovakia,LS:slovakia/fortuna-liga,Super Liga,Zeleziarne Podbrezova,Zilina,BTTS,0.687,,0.687,,pending,,,,2026-11-08
+2026-12-12,2026-12-12 17:00,Scotland,LS:scotland/league-2,League 2,Spartans,Stirling Albion,BTTS,0.685,,0.685,,pending,,,,2026-11-08
+2026-12-20,2026-12-20 17:30,Switzerland,LS:switzerland/super-league,Super League,Servette,Young Boys,BTTS,0.681,,0.681,,pending,,,,2026-11-08
+2026-11-23,2026-11-23 20:00,Denmark,LS:denmark/superliga,Superliga,Broendby IF,FC Midtjylland,BTTS,0.677,,0.677,,pending,,,,2026-11-08
+2026-12-19,2026-12-19 19:00,Switzerland,LS:switzerland/super-league,Super League,Grasshopper,Luzern,BTTS,0.676,,0.676,,pending,,,,2026-11-08
+2026-11-29,2026-11-29 17:30,Switzerland,LS:switzerland/super-league,Super League,Sion,Young Boys,BTTS,0.675,,0.675,,pending,,,,2026-11-08
+2026-11-21,2026-11-21 17:00,Scotland,LS:scotland/league-2,League 2,Clyde,Stirling Albion,BTTS,0.675,,0.675,,pending,,,,2026-11-08
+2026-11-22,2026-11-22 15:00,Switzerland,LS:switzerland/super-league,Super League,FC Zurich,St. Gallen,BTTS,0.675,,0.675,,pending,,,,2026-11-08
+2026-12-12,2026-12-12 21:30,Switzerland,LS:switzerland/super-league,Super League,Young Boys,Lausanne,BTTS,0.672,,0.672,,pending,,,,2026-11-08
+2026-11-14,2026-11-14 17:00,Scotland,LS:scotland/league-2,League 2,Edinburgh City,Clyde,BTTS,0.671,,0.671,1.49,hit,2-6,8,2026-11-14,2026-11-08
+2026-11-28,2026-11-28 17:00,England,LS:england/southern-premier-division-south,Southern League Premier: South,Taunton Town,Gosport Borough,BTTS,0.671,,0.671,,pending,,,,2026-11-08
+2026-12-05,2026-12-05 21:30,Switzerland,LS:switzerland/super-league,Super League,FC Zurich,Lugano,BTTS,0.667,,0.667,,pending,,,,2026-11-08
+2026-12-12,2026-12-12 17:00,Scotland,LS:scotland/league-2,League 2,Spartans,Stirling Albion,O15,0.882,,0.882,,pending,,,,2026-11-08
+2026-12-12,2026-12-12 17:00,Scotland,LS:scotland/league-2,League 2,Spartans,Stirling Albion,O25,0.703,,0.703,,pending,,,,2026-11-08
+2026-12-06,2026-12-06 15:00,Denmark,LS:denmark/superliga,Superliga,FC Midtjylland,Silkeborg,O15,0.881,,0.881,,pending,,,,2026-11-08
+2026-12-12,2026-12-12 17:00,Northern Ireland,LS:northern-ireland/championship,Championship,Annagh United,Armagh,O25,0.702,,0.702,,pending,,,,2026-11-08
+2026-12-12,2026-12-12 17:00,Northern Ireland,LS:northern-ireland/championship,Championship,Annagh United,Armagh,O15,0.880,,0.880,,pending,,,,2026-11-08
+2026-12-06,2026-12-06 15:00,Denmark,LS:denmark/superliga,Superliga,FC Midtjylland,Silkeborg,O25,0.702,,0.702,,pending,,,,2026-11-08
+2026-12-13,2026-12-13 15:00,Switzerland,LS:switzerland/super-league,Super League,Luzern,Servette,BTTS,0.667,,0.667,,pending,,,,2026-11-08
+2026-11-29,2026-11-29 15:00,Switzerland,LS:switzerland/super-league,Super League,Luzern,Lugano,BTTS,0.698,,0.698,,pending,,,,2026-11-09
+2026-11-29,2026-11-29 17:00,Scotland,LS:scotland/scotland-premiership,Premiership,Hearts,Celtic,BTTS,0.673,,0.673,,pending,,,,2026-11-09
+2026-11-21,2026-11-21 19:45,Scotland,LS:scotland/scotland-premiership,Premiership,Dundee FC,Hearts,BTTS,0.666,,0.666,1.53,pending,,,,2026-11-09
+2026-11-22,2026-11-22 17:30,Switzerland,LS:switzerland/super-league,Super League,Basel,Luzern,BTTS,0.666,,0.666,,pending,,,,2026-11-09
+2026-12-13,2026-12-13 16:45,Germany,LS:germany/oberliga-mittelrhein,Oberliga: Mittelrhein,VfL Vichttal,Koenigsdorf,O15,0.955,,0.955,,pending,,,,2026-11-09
+2026-12-05,2026-12-05 14:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,BTS Neustadt,SG Aumund-Vegesack,O15,0.953,,0.953,,pending,,,,2026-11-09
+2026-11-22,2026-11-22 11:45,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,Uhlenhorster SC Paloma,Niendorfer TSV,O15,0.951,,0.951,,pending,,,,2026-11-09
+2026-11-14,2026-11-14 15:00,Germany,LS:germany/oberliga-flens,Oberliga: Flens,FC Kilia Kiel,VfR Neumunster,O15,0.951,,0.951,,hit,8-1,9,2026-11-14,2026-11-09
+2026-12-05,2026-12-05 15:00,Germany,LS:germany/oberliga-flens,Oberliga: Flens,TuS Rotenhof,FC Kilia Kiel,O15,0.950,,0.950,,pending,,,,2026-11-09
+2026-11-27,2026-11-27 20:30,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,ETSV Hamburg,TuS Dassendorf,O15,0.948,,0.948,,pending,,,,2026-11-09
+2026-11-22,2026-11-22 15:00,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,TSV Buchholz,FC Suederelbe,O15,0.948,,0.948,,pending,,,,2026-11-09
+2026-11-15,2026-11-15 16:30,Germany,LS:germany/oberliga-mittelrhein,Oberliga: Mittelrhein,Koenigsdorf,SpVg Frechen 20,O15,0.948,,0.948,,pending,,,,2026-11-09
+2026-12-13,2026-12-13 16:45,Germany,LS:germany/oberliga-mittelrhein,Oberliga: Mittelrhein,VfL Vichttal,Koenigsdorf,O25,0.859,,0.859,,pending,,,,2026-11-09
+2026-12-05,2026-12-05 14:00,Germany,LS:germany/oberliga-bremen,Oberliga: Bremen,BTS Neustadt,SG Aumund-Vegesack,O25,0.853,,0.853,,pending,,,,2026-11-09
+2026-11-14,2026-11-14 15:00,Germany,LS:germany/oberliga-flens,Oberliga: Flens,FC Kilia Kiel,VfR Neumunster,O25,0.850,,0.850,,hit,8-1,9,2026-11-14,2026-11-09
+2026-11-22,2026-11-22 11:45,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,Uhlenhorster SC Paloma,Niendorfer TSV,O25,0.849,,0.849,,pending,,,,2026-11-09
+2026-12-05,2026-12-05 15:00,Germany,LS:germany/oberliga-flens,Oberliga: Flens,TuS Rotenhof,FC Kilia Kiel,O25,0.847,,0.847,,pending,,,,2026-11-09
+2026-11-27,2026-11-27 20:30,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,ETSV Hamburg,TuS Dassendorf,O25,0.842,,0.842,,pending,,,,2026-11-09
+2026-11-22,2026-11-22 15:00,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,TSV Buchholz,FC Suederelbe,O25,0.841,,0.841,,pending,,,,2026-11-09
+2026-11-15,2026-11-15 16:30,Germany,LS:germany/oberliga-mittelrhein,Oberliga: Mittelrhein,Koenigsdorf,SpVg Frechen 20,O25,0.841,,0.841,,pending,,,,2026-11-09
+2026-11-27,2026-11-27 20:30,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,ETSV Hamburg,TuS Dassendorf,BTTS,0.799,,0.799,,pending,,,,2026-11-09
+2026-11-29,2026-11-29 15:30,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,Tesla Hamburg,Vorwarts-Wacker,BTTS,0.792,,0.792,,pending,,,,2026-11-09
+2026-11-20,2026-11-20 20:30,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,ETSV Hamburg,TSV Sasel,BTTS,0.792,,0.792,,pending,,,,2026-11-09
+2026-12-18,2026-12-18 21:00,Netherlands,LS:holland/eerste-divisie,Eerste Divisie,Helmond Sport,Jong AZ Alkmaar,BTTS,0.789,,0.789,,pending,,,,2026-11-09
+2026-11-15,2026-11-15 16:30,Germany,LS:germany/oberliga-mittelrhein,Oberliga: Mittelrhein,Koenigsdorf,SpVg Frechen 20,BTTS,0.788,,0.788,,pending,,,,2026-11-09
+2026-12-04,2026-12-04 20:45,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,Teutonia Ottensen,ETSV Hamburg,BTTS,0.786,,0.786,,pending,,,,2026-11-09
+2026-12-06,2026-12-06 16:30,Germany,LS:germany/oberliga-niederrhein,Oberliga: Niederrhein,Solingen-Wald,SpVg Schonnebeck,O15,0.959,,0.959,,pending,,,,2026-11-09
+2026-11-27,2026-11-27 20:00,Germany,LS:germany/oberliga-hamburg,Oberliga: Hamburg,TSV Concordia,Teutonia Ottensen,BTTS,0.802,,0.802,,pending,,,,2026-11-09
+2027-01-08,2027-01-08 18:00,Mexico,LS:mexico/liga-premier-serie-b,Liga Premier: Serie B,Celaya II,Atletico Hidalgo,O15,0.964,,0.964,,pending,,,,2026-11-09
+2027-01-08,2027-01-08 18:00,Mexico,LS:mexico/liga-premier-serie-b,Liga Premier: Serie B,Celaya II,Atletico Hidalgo,O25,0.885,,0.885,,pending,,,,2026-11-09
+2026-11-10,2026-11-10 00:00,England,LS:england/baller-league-uk,Baller League UK,SDS FC,Wembley Rangers,O15,0.992,,0.992,,miss,0-1,1,2026-11-10,2026-11-10
+2026-11-10,2026-11-10 00:00,England,LS:england/baller-league-uk,Baller League UK,SDS FC,Wembley Rangers,O25,0.964,,0.964,,miss,0-1,1,2026-11-10,2026-11-10
+2026-11-10,2026-11-10 00:00,England,LS:england/baller-league-uk,Baller League UK,SDS FC,Wembley Rangers,BTTS,0.926,,0.926,,miss,0-1,1,2026-11-10,2026-11-10
+2026-12-06,2026-12-06 16:30,Germany,LS:germany/oberliga-niederrhein,Oberliga: Niederrhein,Solingen-Wald,SpVg Schonnebeck,O25,0.870,,0.870,,pending,,,,2026-11-10
+2026-11-29,2026-11-29 16:45,Germany,LS:germany/oberliga-mittelrhein,Oberliga: Mittelrhein,VfL Vichttal,Eintracht Hohkeppel,BTTS,0.795,,0.795,,pending,,,,2026-11-10
+2027-01-02,2027-01-02 17:00,England,LS:england/isthmian-league-south-central-division,Isthmian League: South Central Division,Winchester City,Littlehampton Town,O15,0.962,,0.962,,pending,,,,2026-11-11
+2026-11-28,2026-11-28 17:00,England,LS:england/isthmian-league-south-central-division,Isthmian League: South Central Division,Binfield,Winchester City,O15,0.959,,0.959,,pending,,,,2026-11-11
+2027-01-02,2027-01-02 17:00,England,LS:england/isthmian-league-south-central-division,Isthmian League: South Central Division,Winchester City,Littlehampton Town,O25,0.877,,0.877,,pending,,,,2026-11-11
+2026-11-28,2026-11-28 17:00,England,LS:england/isthmian-league-south-central-division,Isthmian League: South Central Division,Binfield,Winchester City,O25,0.870,,0.870,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 19:15,England,LS:england/baller-league-uk,Baller League UK,Deportrio,N5 FC,O15,0.997,,0.997,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 22:05,England,LS:england/baller-league-uk,Baller League UK,VZN FC,Clutch FC,O15,0.997,,0.997,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 23:50,England,LS:england/baller-league-uk,Baller League UK,NDL FC,Toma,O15,0.995,,0.995,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 20:05,England,LS:england/baller-league-uk,Baller League UK,RTG FC,P17 FC,O15,0.994,,0.994,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 23:00,England,LS:england/baller-league-uk,Baller League UK,SDS FC,Prime FC,O15,0.989,,0.989,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 21:00,England,LS:england/baller-league-uk,Baller League UK,Wembley Rangers,Gold Devils,O15,0.985,,0.985,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 19:15,England,LS:england/baller-league-uk,Baller League UK,Deportrio,N5 FC,O25,0.986,,0.986,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 22:05,England,LS:england/baller-league-uk,Baller League UK,VZN FC,Clutch FC,O25,0.986,,0.986,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 23:50,England,LS:england/baller-league-uk,Baller League UK,NDL FC,Toma,O25,0.975,,0.975,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 20:05,England,LS:england/baller-league-uk,Baller League UK,RTG FC,P17 FC,O25,0.973,,0.973,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 23:00,England,LS:england/baller-league-uk,Baller League UK,SDS FC,Prime FC,O25,0.954,,0.954,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 21:00,England,LS:england/baller-league-uk,Baller League UK,Wembley Rangers,Gold Devils,O25,0.942,,0.942,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 22:05,England,LS:england/baller-league-uk,Baller League UK,VZN FC,Clutch FC,BTTS,0.962,,0.962,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 19:15,England,LS:england/baller-league-uk,Baller League UK,Deportrio,N5 FC,BTTS,0.959,,0.959,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 23:50,England,LS:england/baller-league-uk,Baller League UK,NDL FC,Toma,BTTS,0.943,,0.943,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 20:05,England,LS:england/baller-league-uk,Baller League UK,RTG FC,P17 FC,BTTS,0.939,,0.939,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 23:00,England,LS:england/baller-league-uk,Baller League UK,SDS FC,Prime FC,BTTS,0.921,,0.921,,pending,,,,2026-11-11
+2026-11-16,2026-11-16 21:00,England,LS:england/baller-league-uk,Baller League UK,Wembley Rangers,Gold Devils,BTTS,0.905,,0.905,,pending,,,,2026-11-11
