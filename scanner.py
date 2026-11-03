@@ -837,15 +837,7 @@ def build_profile(long: pd.DataFrame, country: str, team: str, venue: str, now: 
     season_start = SEASON_STARTS.get(str(rows["div"].iloc[0])) if len(rows) else None
     p.matches = [quality.match_record(r, season_start) for r in rows.itertuples()]
     # opponent context (information only): average raw rating of the opponents in the sample
-    if RAW_RATINGS:
-        keys = [rating_key(r.country, r.opp, r.opp_id) for r in rows.itertuples()]
-        oa = np.array([RAW_RATINGS.get(k, (np.nan, np.nan))[0] for k in keys], dtype=float)
-        od = np.array([RAW_RATINGS.get(k, (np.nan, np.nan))[1] for k in keys], dtype=float)
-        p.opp_att, p.opp_def = wmean(oa, w), wmean(od, w)
-        if not math.isnan(p.opp_def) and p.opp_def > 0:
-            p.att_opp_adj = att_all / p.opp_def
-        if not math.isnan(p.opp_att) and p.opp_att > 0:
-            p.def_opp_adj = def_all / p.opp_att
+    apply_opp_context(p, rows, now, att_all, def_all)
 
     vmask = (rows["venue"] == venue).to_numpy()
     p.venue_n = int(vmask.sum())
@@ -902,11 +894,32 @@ def _profile_sample_rows(rows: pd.DataFrame) -> pd.DataFrame:
     return rows.head(CONFIG["MAX_MATCHES_PER_TEAM"])
 
 
+def apply_opp_context(p: TeamProfile, sample: pd.DataFrame, now: datetime, att_all: float, def_all: float) -> None:
+    """The opponent-context fields (information only): the average raw rating of the opponents faced.
+
+    Cheap by design: called at the end of build_profile, and again on a cross-run cache hit with the
+    current RAW_RATINGS, so the expensive profile core can be cached per-run while this context always
+    reflects the current pool (opponent ratings churn as new results / statistics arrive)."""
+    p.opp_att = p.opp_def = p.att_opp_adj = p.def_opp_adj = float("nan")
+    if not RAW_RATINGS or sample.empty:
+        return
+    keys = [rating_key(r.country, r.opp, r.opp_id) for r in sample.itertuples(index=False)]
+    w = decay_weights(sample["date"], now)
+    oa = np.array([RAW_RATINGS.get(k, (np.nan, np.nan))[0] for k in keys], dtype=float)
+    od = np.array([RAW_RATINGS.get(k, (np.nan, np.nan))[1] for k in keys], dtype=float)
+    p.opp_att, p.opp_def = wmean(oa, w), wmean(od, w)
+    if not math.isnan(p.opp_def) and p.opp_def > 0:
+        p.att_opp_adj = att_all / p.opp_def
+    if not math.isnan(p.opp_att) and p.opp_att > 0:
+        p.def_opp_adj = def_all / p.opp_att
+
+
 def profile_cached(long: pd.DataFrame, country: str, team: str, venue: str, now: datetime, team_id=None) -> TeamProfile:
-    """build_profile with the cross-run memo (acache): when everything the profile consumes — the
-    team's history rows, the opponents' raw ratings, the season-start context and the calendar day —
-    is byte-identical to the previous run, the previously computed profile is reused as-is. Pure
-    memoization: a hit returns exactly what build_profile computed before, so outputs are unchanged."""
+    """build_profile with the cross-run memo (acache): when the team's own history rows, the
+    season-start context and the calendar day are byte-identical to the previous run, the expensive
+    profile core is reused. The light opponent context (information only, depends on opponents'
+    ratings which churn as any new result / statistic lands) is refreshed on every hit, so a hit is
+    still exactly what a cold build_profile would produce. Pure memoization: outputs are unchanged."""
     if ACACHE is None:
         return build_profile(long, country, team, venue, now, team_id)
     try:
@@ -914,16 +927,13 @@ def profile_cached(long: pd.DataFrame, country: str, team: str, venue: str, now:
         if rows is None or rows.empty:
             return build_profile(long, country, team, venue, now, team_id)
         sample = _profile_sample_rows(rows)
-        if RAW_RATINGS:
-            opp_vals = [RAW_RATINGS.get(rating_key(r.country, r.opp, r.opp_id)) for r in sample.itertuples(index=False)]
-        else:
-            opp_vals = []
         ss = SEASON_STARTS.get(str(sample["div"].iloc[0])) if len(sample) else None
-        key = ("p", acache.SCHEMA, now.date().isoformat(), country, team, venue, team_id,
-               acache.digest_rows(rows), acache.digest_seq(opp_vals),
+        key = ("p2", acache.SCHEMA, now.date().isoformat(), country, team, venue, team_id,
+               acache.digest_rows(rows),
                ss.strftime("%Y-%m-%d") if ss is not None else None)
         hit = ACACHE.profile_get(key)
         if hit is not None:
+            apply_opp_context(hit, sample, now, hit.att_raw, hit.def_raw)
             return hit
         p = build_profile(long, country, team, venue, now, team_id)
         ACACHE.profile_put(key, p)

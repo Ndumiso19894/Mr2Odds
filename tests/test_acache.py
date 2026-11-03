@@ -113,6 +113,59 @@ def test_schema_mismatch_starts_cold(tmp_path):
     assert c.profiles == {}
 
 
+# ---------------------------------------------------------------- opp context refresh on hit
+def _long(rows):
+    cols = dict(eid=None, friendly=False, xg_for=None, xg_against=None, s_for=None, s_against=None,
+                sot_for=None, sot_against=None, c_for=None, c_against=None, k_for=None, k_against=None)
+    out = []
+    for r in rows:
+        base = dict(country="X", date=pd.Timestamp(r[0]), div="Div0", league="L",
+                    team_id=None, opp_id=None, team=r[1], opp=r[2], venue="H",
+                    gf=r[3], ga=r[4], gf_norm=r[3], ga_norm=r[4])
+        base.update(cols)
+        base["total"] = base["gf"] + base["ga"]
+        base["o15"] = float(base["total"] >= 2)
+        base["o25"] = float(base["total"] >= 3)
+        base["o35"] = float(base["total"] >= 4)
+        base["btts"] = float(base["gf"] > 0 and base["ga"] > 0)
+        base["cs"] = float(base["ga"] == 0)
+        base["fts"] = float(base["gf"] == 0)
+        out.append(base)
+    return pd.DataFrame(out).sort_values("date", ascending=False).reset_index(drop=True)
+
+
+def test_profile_hit_equals_cold_rebuild_after_rating_change(tmp_path):
+    import scanner
+    now = datetime(2026, 11, 3, 12, 0)
+    long = _long([("2026-10-30", "A FC", "B FC", 2, 1),
+                  ("2026-10-25", "A FC", "C FC", 1, 1),
+                  ("2026-10-20", "A FC", "B FC", 3, 0),
+                  ("2026-10-30", "B FC", "A FC", 1, 2)])
+    cache = acache.AnalysisCache(tmp_path / "c.bin")
+    old = scanner.ACACHE
+    scanner.ACACHE = cache
+    try:
+        # v1 ratings: cold miss, computes + stores
+        scanner.RAW_RATINGS.clear()
+        scanner.RAW_RATINGS.update({("name", "X", "B FC"): (1.5, 0.8), ("name", "X", "C FC"): (1.1, 1.0)})
+        p1 = scanner.profile_cached(long, "X", "A FC", "H", now, None)
+        cache.save()
+
+        # v2 ratings (B FC played a new match): same rows, new opponent context.
+        # The hit must refresh the opp fields to exactly what a cold rebuild produces.
+        scanner.RAW_RATINGS.update({("name", "X", "B FC"): (1.7, 0.6)})
+        p2 = scanner.profile_cached(long, "X", "A FC", "H", now, None)
+        scanner.PROFILE_CACHE.clear()   # force a true cold rebuild for the comparison
+        cold = scanner.build_profile(long, "X", "A FC", "H", now, None)
+        for f in ("opp_att", "opp_def", "att_opp_adj", "def_opp_adj", "att", "dfc", "n_eff", "rate_o15"):
+            assert p2.__getattribute__(f) == cold.__getattribute__(f), f
+        assert p2.opp_att != p1.opp_att                      # context did refresh
+        assert cache.hits == 1                               # and via a cache hit
+    finally:
+        scanner.ACACHE = old
+        scanner.RAW_RATINGS.clear()
+
+
 # ---------------------------------------------------------------- team pages
 NOW = datetime(2026, 11, 3, 12, 0)
 

@@ -11,6 +11,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+import acache
+
 CALENDAR_YEAR = {"USA", "Brazil", "Argentina", "Japan", "China", "Norway", "Sweden", "Finland", "Ireland", "Canada",
                  "Chile", "Colombia", "Uruguay", "Paraguay", "Peru", "Ecuador", "Bolivia", "Venezuela", "Iceland",
                  "Estonia", "Latvia", "Lithuania", "Belarus", "Kazakhstan", "South Korea", "Korea Republic", "Vietnam",
@@ -140,10 +142,12 @@ def team_record(lg_team: pd.DataFrame, season: pd.DataFrame, name: str, country:
     return rec
 
 
-def _page_key(country: str, div: str, league: str, since: pd.Timestamp, df: pd.DataFrame,
+def _page_key(country: str, div: str, league: str, since: pd.Timestamp, cross_digest: str,
               teams: list[str], squad_lookup, now: datetime) -> tuple:
-    """Everything a division page is computed from: its exact result rows, the season boundary,
-    the squad values, and the calendar day. A hit means the previous run's page is still current."""
+    """Everything a division page is computed from: the exact rows it reads (this division's season
+    rows plus every row of the page's teams, cross-division, which feeds the previous-season and
+    last-10 context), the season boundary, the squad values and the calendar day. A hit means the
+    previous run's page is still current."""
     import acache
     if squad_lookup is None:
         squad_vals = []
@@ -154,8 +158,8 @@ def _page_key(country: str, div: str, league: str, since: pd.Timestamp, df: pd.D
                 squad_vals.append(squad_lookup(div, t))
             except Exception:  # noqa: BLE001 — same tolerance as the page build itself
                 squad_vals.append(None)
-    return ("t", acache.SCHEMA, now.date().isoformat(), country, div, league,
-            since.strftime("%Y-%m-%d"), acache.digest_rows(df), acache.digest_seq(squad_vals))
+    return ("t2", acache.SCHEMA, now.date().isoformat(), country, div, league,
+            since.strftime("%Y-%m-%d"), cross_digest, acache.digest_seq(squad_vals))
 
 
 def export(results: pd.DataFrame, now: datetime, out_dir: Path, squad_lookup=None,
@@ -189,7 +193,11 @@ def export(results: pd.DataFrame, now: datetime, out_dir: Path, squad_lookup=Non
         key = None
         if page_cache is not None:
             try:
-                key = _page_key(country, div, league, since, df, teams, squad_lookup, now)
+                # the page reads lg_all rows for every team name in the division (cross-division,
+                # same as the original isin() build) — digest exactly that input set
+                union = sorted({i for t in teams for i in lg_all_pos.get(t, ())})
+                cross_digest = acache.digest_rows(lg_all.iloc[union]) if union else ""
+                key = _page_key(country, div, league, since, cross_digest, teams, squad_lookup, now)
                 hit = page_cache.page_get(key)
             except Exception:  # noqa: BLE001
                 key, hit = None, None
