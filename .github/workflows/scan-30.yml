@@ -4,19 +4,80 @@ on:
   schedule:
     # GitHub cron is UTC. A run every half hour; the ones nearest 05:00 / 10:00 / 15:00 UTC
     # (07:00 / 12:00 / 17:00 SAST) are the full-report runs, the others refresh prices / results and alert new bets.
-    # Note 2026-11-03: the schedule did not register after the repo migration — this file edit re-triggers registration.
+    # Note 2026-11-03: the schedule never fired after the account migration (0 schedule runs,
+    # idle-slot tests at 12:00 and 12:30 UTC missed even after re-registering the workflow) —
+    # the cadence is therefore kept alive by the self-dispatch chain in the `gate` job below.
     - cron: "*/30 * * * *"
   workflow_dispatch:        # run it manually from the Actions tab at any time
 
 permissions:
   contents: write           # push the state branch
+  actions: write            # the chain: the gate dispatches the next run
 
 concurrency:
   group: goals-scan
   cancel-in-progress: false
 
 jobs:
+  gate:
+    # [CADENCE CHAIN — 2026-11-03]
+    # This repo's schedule cron has never fired since the account migration, so the gate job
+    # keeps a self-dispatch chain alive:
+    #   gate (~30 s) -> dispatches the next run immediately -> the next run's scan job only
+    #   executes when NO run of this workflow started in the last 25 minutes; otherwise the
+    #   run is a cheap heartbeat (gate only, ~30 s). Effect: a real scan ~every 30 minutes,
+    #   indefinitely, without relying on the broken scheduler.
+    # Stopping the chain: rename this file or disable the workflow in the Actions tab.
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    concurrency:
+      group: scan-chain-gate
+      cancel-in-progress: true
+    steps:
+      - name: Cadence check
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - "${GITHUB_OUTPUT}" <<'EOF'
+          import datetime, json, os, sys, urllib.request
+          out = sys.argv[1]
+          token, repo = os.environ["GH_TOKEN"], os.environ["GITHUB_REPOSITORY"]
+          me = int(os.environ["GITHUB_RUN_ID"])
+          req = urllib.request.Request(
+              "https://api.github.com/repos/%s/actions/runs?per_page=15" % repo,
+              headers={"Authorization": "token " + token, "Accept": "application/vnd.github+json"})
+          runs = json.load(urllib.request.urlopen(req))["workflow_runs"]
+          last = 0.0
+          for r in runs:
+              if r["id"] == me or r["name"] != "PlayReport scan (every 30 min)":
+                  continue
+              started = r.get("run_started_at") or r.get("created_at")
+              if not started:
+                  continue
+              ts = datetime.datetime.fromisoformat(started.replace("Z", "+00:00")).timestamp()
+              last = max(last, ts)
+          age = datetime.datetime.now(datetime.timezone.utc).timestamp() - last
+          print("last run of this workflow started %.0fs ago" % age)
+          with open(out, "a") as f:
+              f.write("skip=%s\n" % ("true" if age < 1500 else "false"))
+          EOF
+
+      - name: Dispatch next scan (chain)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+            -H "Authorization: token ${GH_TOKEN}" -H "Accept: application/vnd.github+json" \
+            -H "Content-Type: application/json" -d '{"ref":"main"}' \
+            "https://api.github.com/repos/Ndumiso19894/Mr2Odds/actions/workflows/scan-30.yml/dispatches")
+          echo "next run dispatch -> HTTP $code"
+          [ "$code" = "204" ] || { echo "CHAIN BROKEN: dispatch refused (HTTP $code)"; exit 1; }
+
   scan:
+    needs: gate
+    if: needs.gate.outputs.skip != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 60   # the 60-day coverage window analyses ~17k fixtures per run; extra headroom for cold starts (no cached state)
     env:
@@ -64,7 +125,7 @@ jobs:
             echo "no state branch yet - bootstrapping from the code branch"
             mkdir -p state
             cp -r data state/ 2>/dev/null || true
-            cp -r reports state/ 2>/dev/null || true
+            cp -r reports state/reports 2>/dev/null || true
             rm -rf state/reports/pdf
             git -C state init -q -b data
           fi
@@ -90,6 +151,8 @@ jobs:
           echo "published $(git rev-parse --short HEAD)"
 
   unit-tests:
+    needs: gate
+    if: needs.gate.outputs.skip != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
