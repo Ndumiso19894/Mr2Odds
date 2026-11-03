@@ -24,8 +24,8 @@ object PublishedSync {
         if (now < prefs.getLong("cache_meta_after", 0L)) return Net.Response(0, "cooldown")
 
         val cached = try { shared.read(Net.META_JSON) } catch (e: Exception) { null }
-        val response = Net.get(Net.META_JSON, etag = cached?.optString("etag").takeIf { it.isNotEmpty() },
-                               modified = cached?.optString("modified").takeIf { it.isNotEmpty() })
+        val response = Net.get(Net.META_JSON, etag = cached?.optString("etag")?.takeIf { it.isNotEmpty() },
+                               modified = cached?.optString("modified")?.takeIf { it.isNotEmpty() })
         return when (response.code) {
             304 -> {
                 val body = cached?.optString("body").orEmpty()
@@ -65,8 +65,8 @@ object PublishedSync {
         val cached = try { shared.read(Net.LATEST_JSON) } catch (e: Exception) { null }
         if (cached?.optLong("retryAt") ?: 0L > now) return
 
-        val response = Net.get(Net.LATEST_JSON, etag = cached?.optString("etag").takeIf { it.isNotEmpty() },
-                               modified = cached?.optString("modified").takeIf { it.isNotEmpty() })
+        val response = Net.get(Net.LATEST_JSON, etag = cached?.optString("etag")?.takeIf { it.isNotEmpty() },
+                               modified = cached?.optString("modified")?.takeIf { it.isNotEmpty() })
         when (response.code) {
             304 -> {
                 if (cached != null) {

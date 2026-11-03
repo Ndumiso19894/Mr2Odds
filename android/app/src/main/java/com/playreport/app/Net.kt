@@ -29,9 +29,9 @@ object Net {
             etag: String? = null, modified: String? = null): Response {
         val key = listOf(url, userAgent, accept, etag.orEmpty(), modified.orEmpty()).joinToString("\n")
         val own = CompletableFuture<Response>()
-        val slot = pending.putIfAbsent(key, own)
-        if (slot !== own) {
-            try { return slot.get(50, TimeUnit.SECONDS) } catch (_: Exception) { return Response(0, "request timeout") }
+        val previous = pending.putIfAbsent(key, own)
+        if (previous != null && previous !== own) {
+            try { return previous.get(50, TimeUnit.SECONDS) } catch (_: Exception) { return Response(0, "request timeout") }
         }
         try {
             val r = request(url, userAgent, accept, etag, modified)

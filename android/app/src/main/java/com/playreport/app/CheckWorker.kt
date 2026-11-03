@@ -97,7 +97,7 @@ class CheckWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx,
         val prefs = ctx.getSharedPreferences(Notifier.PREFS, Context.MODE_PRIVATE)
         val ids = meta.optJSONArray("alerts") ?: return
         val seen = prefs.getString("alerts_seen", null)
-            ?.split("\n")?.filter { it.isNotEmpty() }.toMutableSet() ?: mutableSetOf()
+            ?.split("\n")?.filter { it.isNotEmpty() }?.toMutableSet() ?: mutableSetOf()
         val fresh = mutableListOf<String>()
         for (i in 0 until ids.length()) {
             val id = ids.getString(i)
@@ -105,7 +105,7 @@ class CheckWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx,
         }
         if (fresh.isEmpty()) return
         seen.addAll(fresh)
-        prefs.edit().putString("alerts_seen", seen.takeLast(20).joinToString("\n")).apply()
+        prefs.edit().putString("alerts_seen", seen.toList().takeLast(20).joinToString("\n")).apply()
         if (!prefs.getBoolean("pref_bets", true)) return
         if (seen.isEmpty()) return
         val response = Net.get(Net.ALERTS_JSON + "?t=" + System.currentTimeMillis())
@@ -155,16 +155,11 @@ class CheckWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx,
                 if (id.isNotEmpty()) track.add(id)
             }
         }
-        val ticketLegs = mutableListOf<JSONObject>()
         for (t in 0 until tickets.length()) {
             val legs = tickets.getJSONObject(t).optJSONArray("legs") ?: continue
             for (i in 0 until legs.length()) {
-                val leg = legs.getJSONObject(i)
-                val eid = leg.optString("eid")
-                if (eid.isNotEmpty()) {
-                    track.add(eid)
-                    ticketLegs.add(leg)
-                }
+                val eid = legs.getJSONObject(i).optString("eid")
+                if (eid.isNotEmpty()) track.add(eid)
             }
         }
 

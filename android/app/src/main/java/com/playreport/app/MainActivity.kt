@@ -370,7 +370,7 @@ class MainActivity : AppCompatActivity() {
 
         @android.webkit.JavascriptInterface
         fun saveBase64(name: String, mime: String, b64: String) {
-            val bytes = try { java.util.Base64.decode(b64) } catch (e: Exception) { null }
+            val bytes = try { java.util.Base64.getDecoder().decode(b64) } catch (e: Exception) { null }
             if (bytes == null) {
                 js("window.__saveDone && window.__saveDone(false);")
                 return
