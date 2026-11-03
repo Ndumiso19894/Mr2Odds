@@ -8,6 +8,7 @@ import re
 from datetime import datetime
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 CALENDAR_YEAR = {"USA", "Brazil", "Argentina", "Japan", "China", "Norway", "Sweden", "Finland", "Ireland", "Canada",
@@ -61,7 +62,7 @@ def _long(df: pd.DataFrame) -> pd.DataFrame:
         h.loc[df["hy"].isna().to_numpy(), ["kf", "ka"]] = float("nan")
         a.loc[df["ay"].isna().to_numpy(), ["kf", "ka"]] = float("nan")
     lg = pd.concat([h, a], ignore_index=True)
-    lg["res"] = lg.apply(lambda r: "W" if r.gf > r.ga else ("L" if r.gf < r.ga else "D"), axis=1)
+    lg["res"] = np.where(lg["gf"] > lg["ga"], "W", np.where(lg["gf"] < lg["ga"], "L", "D"))
     lg["pts"] = lg["res"].map({"W": 3, "D": 1, "L": 0})
     return lg.sort_values("date", ascending=False).reset_index(drop=True)
 
@@ -139,14 +140,42 @@ def team_record(lg_team: pd.DataFrame, season: pd.DataFrame, name: str, country:
     return rec
 
 
-def export(results: pd.DataFrame, now: datetime, out_dir: Path, squad_lookup=None) -> list[str]:
-    """Write one JSON per division; returns the list of div slugs written."""
+def _page_key(country: str, div: str, league: str, since: pd.Timestamp, df: pd.DataFrame,
+              teams: list[str], squad_lookup, now: datetime) -> tuple:
+    """Everything a division page is computed from: its exact result rows, the season boundary,
+    the squad values, and the calendar day. A hit means the previous run's page is still current."""
+    import acache
+    if squad_lookup is None:
+        squad_vals = []
+    else:
+        squad_vals = []
+        for t in teams:
+            try:
+                squad_vals.append(squad_lookup(div, t))
+            except Exception:  # noqa: BLE001 — same tolerance as the page build itself
+                squad_vals.append(None)
+    return ("t", acache.SCHEMA, now.date().isoformat(), country, div, league,
+            since.strftime("%Y-%m-%d"), acache.digest_rows(df), acache.digest_seq(squad_vals))
+
+
+def export(results: pd.DataFrame, now: datetime, out_dir: Path, squad_lookup=None,
+           page_cache=None) -> list[str]:
+    """Write one JSON per division; returns the list of div slugs written.
+
+    With page_cache (the cross-run incremental cache), a division whose inputs are unchanged since
+    the previous run is not recomputed — its existing page file is reused as-is."""
     if results is None or results.empty:
         return []
     out_dir.mkdir(parents=True, exist_ok=True)
     written = []
     index: list[dict] = []
     lg_all = _long(results)
+    # position index over the full perspective table: replaces the per-division isin() scan of lg_all
+    lg_all_pos: dict = {}
+    if not lg_all.empty:
+        tm = lg_all["team"].to_numpy()
+        for i, t in enumerate(tm):
+            lg_all_pos.setdefault(t, []).append(i)
     for (country, div), df in results.groupby(["country", "div"]):
         league = str(df["league"].iloc[0])
         since = season_start(country, now)
@@ -155,16 +184,29 @@ def export(results: pd.DataFrame, now: datetime, out_dir: Path, squad_lookup=Non
             # season not started in the feed yet: fall back to the last 180 days so the page is never empty
             since = pd.Timestamp(now.date()) - pd.Timedelta(days=180)
             season_df = df[df["date"] >= since]
-        lg_season = _long(season_df) if not season_df.empty else lg_all.iloc[0:0]
         teams = sorted(set(season_df["home"]) | set(season_df["away"]))
+        path = out_dir / f"{slug(div)}.json"
+        key = None
+        if page_cache is not None:
+            try:
+                key = _page_key(country, div, league, since, df, teams, squad_lookup, now)
+                hit = page_cache.page_get(key)
+            except Exception:  # noqa: BLE001
+                key, hit = None, None
+            if hit is not None and path.exists():
+                _, index_entries = hit
+                index.extend(index_entries)
+                written.append(slug(div))
+                continue
+        lg_season = _long(season_df) if not season_df.empty else lg_all.iloc[0:0]
         table = []
         records = {}
-        lg_country = lg_all[lg_all["team"].isin(teams)]
         for t in teams:
-            s = lg_season[lg_season["team"] == t]
-            prev = lg_country[(lg_country["team"] == t) & (lg_country["date"] < since)]
-            rec = team_record(lg_country[lg_country["team"] == t], s, t, country, league, div, since,
-                              prev=prev if len(prev) else None)
+            s = lg_season[lg_season["team"] == t] if not lg_season.empty else lg_season
+            pos = lg_all_pos.get(t)
+            g_all = lg_all.iloc[pos] if pos else lg_all.iloc[0:0]
+            prev = g_all[g_all["date"] < since] if not g_all.empty else g_all
+            rec = team_record(g_all, s, t, country, league, div, since, prev=prev if len(prev) else None)
             if squad_lookup is not None:
                 try:
                     rec["squad"] = squad_lookup(div, t)
@@ -186,10 +228,14 @@ def export(results: pd.DataFrame, now: datetime, out_dir: Path, squad_lookup=Non
                 "o25_rate": _rate(season_df["hg"] + season_df["ag"] >= 3) if len(season_df) else None,
                 "btts_rate": _rate((season_df["hg"] > 0) & (season_df["ag"] > 0)) if len(season_df) else None,
                 "table": table, "teams": records}
-        path = out_dir / f"{slug(div)}.json"
         body = json.dumps(data, ensure_ascii=False, separators=(",", ":"), default=str)
         if not path.exists() or path.read_text(encoding="utf-8") != body:
             path.write_text(body, encoding="utf-8")
+        if page_cache is not None and key is not None:
+            try:
+                page_cache.page_put(key, body, [{"n": t, "c": country, "d": div, "l": league} for t in teams])
+            except Exception:  # noqa: BLE001
+                pass
         written.append(slug(div))
     # global team index for the app's search (club -> its team page), one compact file
     index.sort(key=lambda x: (x["n"].lower(), x["c"].lower(), x["d"]))

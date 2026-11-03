@@ -56,6 +56,7 @@ import parlays as parlay_mod
 import sporty
 import livescore
 import trends as trends_mod
+import acache
 import squads as squads_mod
 import worldfeed
 import appdata
@@ -677,6 +678,59 @@ def _valid_id(x) -> bool:
 TEAM_HIST_CACHE: dict = {}   # (id(long), country, team, team_id) -> slice; pure lookups, cleared per run
 H2H_CACHE: dict = {}         # (id(results), country, home, away, limit, home_id, away_id) -> list; cleared per run
 PROFILE_CACHE: dict = {}     # (id(long), country, team, venue, id(now), team_id) -> TeamProfile; cleared per run
+LONG_INDEX: dict = {}        # rating_key -> a team's perspective rows (date desc); built once per run, read-only
+H2H_INDEX: dict = {}         # (home_id, away_id) / ("n", country, home, away) -> past meetings; built once per run
+ACACHE: "acache.AnalysisCache | None" = None   # the cross-run incremental cache (set in main)
+
+
+def build_long_index(long: pd.DataFrame) -> None:
+    """Index the perspective table by team once per run (position lists, no frame copies). Every
+    later team lookup becomes an iloc slice instead of a full-frame boolean mask; positions are
+    ascending, so the slice preserves the frame's (date-desc) row order exactly."""
+    LONG_INDEX.clear()
+    if long.empty:
+        return
+    if "team_id" in long.columns:
+        ti = long["team_id"].to_numpy()
+        for i, t in enumerate(ti):
+            if _valid_id(t):
+                LONG_INDEX.setdefault(("id", t), []).append(i)
+    co = long["country"].to_numpy()
+    te = long["team"].to_numpy()
+    for i in range(len(long)):
+        LONG_INDEX.setdefault(("name", co[i], te[i]), []).append(i)
+
+
+def build_h2h_index(results: pd.DataFrame) -> None:
+    """Index past meetings by team pair once per run (both orderings, id-based and name-based)."""
+    H2H_INDEX.clear()
+    if results.empty:
+        return
+    if "home_id" in results.columns and "away_id" in results.columns:
+        hi = results["home_id"].to_numpy()
+        ai = results["away_id"].to_numpy()
+        for i in range(len(results)):
+            h, a = hi[i], ai[i]
+            if _valid_id(h) and _valid_id(a):
+                H2H_INDEX.setdefault((h, a), []).append(i)
+                H2H_INDEX.setdefault((a, h), []).append(i)
+    co = results["country"].to_numpy()
+    ho = results["home"].to_numpy()
+    aw = results["away"].to_numpy()
+    for i in range(len(results)):
+        H2H_INDEX.setdefault(("n", co[i], ho[i], aw[i]), []).append(i)
+        H2H_INDEX.setdefault(("n", co[i], aw[i], ho[i]), []).append(i)
+
+
+def _h2h_pair_mask(results: pd.DataFrame, country: str, home: str, away: str,
+                   home_id=None, away_id=None) -> pd.DataFrame:
+    """The original mask-based pair lookup (kept as the exact fallback when no index is built)."""
+    if _valid_id(home_id) and _valid_id(away_id) and "home_id" in results.columns:
+        return results[((results["home_id"] == home_id) & (results["away_id"] == away_id)) |
+                       ((results["home_id"] == away_id) & (results["away_id"] == home_id))]
+    return results[(results["country"] == country) &
+                   (((results["home"] == home) & (results["away"] == away)) |
+                    ((results["home"] == away) & (results["away"] == home)))]
 
 
 def team_history(long: pd.DataFrame, country: str, team: str, team_id=None) -> pd.DataFrame:
@@ -687,6 +741,18 @@ def team_history(long: pd.DataFrame, country: str, team: str, team_id=None) -> p
         return hit
     if long.empty:
         return long
+    if LONG_INDEX:
+        if _valid_id(team_id) and "team_id" in long.columns:
+            pos = LONG_INDEX.get(("id", team_id))
+            if pos is not None:
+                rows = long.iloc[pos]
+                TEAM_HIST_CACHE[key] = rows
+                return rows
+        pos = LONG_INDEX.get(("name", country, team))
+        if pos is not None:
+            out = long.iloc[pos]
+            TEAM_HIST_CACHE[key] = out
+            return out
     if _valid_id(team_id) and "team_id" in long.columns:
         rows = long[long["team_id"] == team_id]
         if not rows.empty:
@@ -827,6 +893,46 @@ def build_profile(long: pd.DataFrame, country: str, team: str, venue: str, now: 
     return p
 
 
+def _profile_sample_rows(rows: pd.DataFrame) -> pd.DataFrame:
+    """The exact sample build_profile consumes: the friendly-exclusion rule, then the latest MAX matches."""
+    if "friendly" in rows.columns and rows["friendly"].any():
+        competitive = rows[~rows["friendly"]]
+        if len(competitive) >= quality.FRIENDLY_MIN_COMPETITIVE:
+            rows = competitive
+    return rows.head(CONFIG["MAX_MATCHES_PER_TEAM"])
+
+
+def profile_cached(long: pd.DataFrame, country: str, team: str, venue: str, now: datetime, team_id=None) -> TeamProfile:
+    """build_profile with the cross-run memo (acache): when everything the profile consumes — the
+    team's history rows, the opponents' raw ratings, the season-start context and the calendar day —
+    is byte-identical to the previous run, the previously computed profile is reused as-is. Pure
+    memoization: a hit returns exactly what build_profile computed before, so outputs are unchanged."""
+    if ACACHE is None:
+        return build_profile(long, country, team, venue, now, team_id)
+    try:
+        rows = team_history(long, country, team, team_id)
+        if rows is None or rows.empty:
+            return build_profile(long, country, team, venue, now, team_id)
+        sample = _profile_sample_rows(rows)
+        if RAW_RATINGS:
+            opp_vals = [RAW_RATINGS.get(rating_key(r.country, r.opp, r.opp_id)) for r in sample.itertuples(index=False)]
+        else:
+            opp_vals = []
+        ss = SEASON_STARTS.get(str(sample["div"].iloc[0])) if len(sample) else None
+        key = ("p", acache.SCHEMA, now.date().isoformat(), country, team, venue, team_id,
+               acache.digest_rows(rows), acache.digest_seq(opp_vals),
+               ss.strftime("%Y-%m-%d") if ss is not None else None)
+        hit = ACACHE.profile_get(key)
+        if hit is not None:
+            return hit
+        p = build_profile(long, country, team, venue, now, team_id)
+        ACACHE.profile_put(key, p)
+        return p
+    except Exception:  # noqa: BLE001 — a cache hiccup must never change the model output
+        pass
+    return build_profile(long, country, team, venue, now, team_id)
+
+
 def head_to_head(results: pd.DataFrame, country: str, home: str, away: str, limit: int = 10,
                  home_id=None, away_id=None) -> list[dict]:
     key = (id(results), country, home, away, limit, home_id, away_id)
@@ -835,13 +941,16 @@ def head_to_head(results: pd.DataFrame, country: str, home: str, away: str, limi
         return hit
     if results.empty:
         return []
-    if _valid_id(home_id) and _valid_id(away_id) and "home_id" in results.columns:
-        m = results[((results["home_id"] == home_id) & (results["away_id"] == away_id)) |
-                    ((results["home_id"] == away_id) & (results["away_id"] == home_id))]
+    if H2H_INDEX:
+        if _valid_id(home_id) and _valid_id(away_id) and "home_id" in results.columns:
+            p1, p2 = H2H_INDEX.get((home_id, away_id)), H2H_INDEX.get((away_id, home_id))
+            pos = sorted(set(p1 or ()) | set(p2 or ())) if (p1 or p2) else None
+        else:
+            p1, p2 = H2H_INDEX.get(("n", country, home, away)), H2H_INDEX.get(("n", country, away, home))
+            pos = sorted(set(p1 or ()) | set(p2 or ())) if (p1 or p2) else None
+        m = results.iloc[pos] if pos else _h2h_pair_mask(results, country, home, away, home_id, away_id)
     else:
-        m = results[(results["country"] == country) &
-                    (((results["home"] == home) & (results["away"] == away)) |
-                     ((results["home"] == away) & (results["away"] == home)))]
+        m = _h2h_pair_mask(results, country, home, away, home_id, away_id)
     m = m.sort_values("date", ascending=False).head(limit)
     out = [{"date": r.date, "home": r.home, "away": r.away, "hg": int(r.hg), "ag": int(r.ag),
             "league": r.league} for r in m.itertuples()]
@@ -894,8 +1003,8 @@ def analyse(fx: pd.Series, long: pd.DataFrame, results: pd.DataFrame,
     g = div_avgs.get("__global__", DivAvg(1.45, 1.2, 0, float("nan"), float("nan")))
     da = div_avgs.get(fx["div"], g)
     hid, aid = fx.get("home_id"), fx.get("away_id")
-    H = build_profile(long, fx["country"], fx["home"], "H", now, hid)
-    A = build_profile(long, fx["country"], fx["away"], "A", now, aid)
+    H = profile_cached(long, fx["country"], fx["home"], "H", now, hid)
+    A = profile_cached(long, fx["country"], fx["away"], "A", now, aid)
 
     rho = CONFIG["DC_RHO"]
     # ---- the football-data model: league baseline x attack x opponent defence -> Dixon-Coles score matrix.
@@ -2372,6 +2481,8 @@ def main() -> None:
 
     div_avgs = compute_div_avgs(results, now)
     long = make_long(results, div_avgs)
+    build_long_index(long)
+    build_h2h_index(pool)
     TEAM_HIST_CACHE.clear()
     H2H_CACHE.clear()
     PROFILE_CACHE.clear()
@@ -2379,6 +2490,8 @@ def main() -> None:
     SEASON_STARTS.update(quality.season_starts(results, now))
     RAW_RATINGS.clear()
     RAW_RATINGS.update(compute_raw_ratings(long, now))
+    global ACACHE
+    ACACHE = acache.AnalysisCache(DATA_DIR / "analysis_cache.bin")
     MODELS["corners"] = markets.CountModel(results, "hc", "ac", now, markets.CORNERS)
     cards_df = results.assign(hcards=results["hy"].fillna(0) + results["hr"].fillna(0),
                               acards=results["ay"].fillna(0) + results["ar"].fillna(0))
@@ -2532,9 +2645,14 @@ def main() -> None:
         except Exception as exc:  # noqa: BLE001
             log.warning("Day history write failed: %s", exc)
     try:
-        log.info("Team pages: %d division file(s)", len(teamstats.export(results, now, TEAMS_DIR, squad_lookup=sq.lookup if sq else None)))
+        log.info("Team pages: %d division file(s)", len(teamstats.export(results, now, TEAMS_DIR, squad_lookup=sq.lookup if sq else None,
+                                                                        page_cache=ACACHE)))
     except Exception as exc:  # noqa: BLE001
         log.warning("Team pages failed: %s", exc)
+    try:
+        ACACHE.save()   # persist this run's evidence for the next run (best effort; never fatal)
+    except Exception as exc:  # noqa: BLE001
+        log.warning("Analysis cache save failed: %s", exc)
 
     digest_lines = []
     if now.weekday() == 0 and run_label == f"{CONFIG['RUN_HOURS'][0]:02d}:00":
