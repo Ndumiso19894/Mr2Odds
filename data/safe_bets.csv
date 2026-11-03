@@ -1,0 +1,393 @@
+match_date,kickoff,country,div,league,home,away,sel,label,p,p_model,p_sb,odds,status,score,settled_on,run,report_date,botd,kind
+2026-11-07,2026-11-07 16:00,Italy,LS:italy/serie-a,Serie A,Torino,Lecce,O15,Over 1.5 goals,0.833,0.833,0.729,1.30,pending,,,07:00,2026-11-03,,safe
+2026-11-05,2026-11-05 19:45,Europa League,LS:europa-league/league-stage,League Stage,Crystal Palace,Hoffenheim,AO05,Hoffenheim over 0.5 goals,0.831,0.831,0.729,1.30,hit,1-1,2026-11-05,07:00,2026-11-03,,safe
+2026-11-08,2026-11-08 19:00,Italy,LS:italy/serie-a,Serie A,Inter,Como 1907,AO05,Como 1907 over 0.5 goals,0.817,0.817,0.708,1.32,pending,,,07:00,2026-11-03,,safe
+2026-11-07,2026-11-07 16:00,Czech Republic,LS:czech-republic/1st-league,1st League,Hradec Kralove,SK Sigma Olomouc,AO05,SK Sigma Olomouc over 0.5 goals,0.817,0.817,0.710,1.31,pending,,,07:00,2026-11-03,,safe
+2026-11-03,2026-11-03 15:45,Asia,LS:asia/afc-champions-league-two-group-d,AFC Champions League Two: Group D,East Bengal Club,Al-Seeb,HO05,East Bengal Club over 0.5 goals,0.817,0.817,0.714,1.30,miss,0-2,2026-11-03,07:00,2026-11-03,o15,safe
+2026-11-08,2026-11-08 20:00,Portugal,LS:portugal/segunda-liga,Liga Portugal 2,Sporting CP B,Tondela,HO05,Sporting CP B over 0.5 goals,0.816,0.816,0.698,1.34,pending,,,07:00,2026-11-03,,safe
+2026-11-05,2026-11-05 19:45,Europa League,LS:europa-league/league-stage,League Stage,Anderlecht,FC Salzburg,AO05,FC Salzburg over 0.5 goals,0.814,0.814,0.714,1.32,miss,2-0,2026-11-05,07:00,2026-11-03,,safe
+2026-11-08,2026-11-08 16:00,Italy,LS:italy/serie-a,Serie A,Genoa,AC Milan,O15,Over 1.5 goals,0.813,0.813,0.697,1.35,pending,,,07:00,2026-11-03,,safe
+2026-11-03,2026-11-03 18:00,Asia,LS:asia/afc-champions-league-elite-west,AFC Champions League Elite: West,Esteghlal,Al-Shamal,O15,Over 1.5 goals,0.811,0.811,0.706,1.33,miss,1-0,2026-11-03,07:00,2026-11-03,o15,safe
+2026-11-05,2026-11-05 19:45,Conference League,LS:conference-league/league-stage,League Stage,Mjaellby,Borac Banja Luka,O15,Over 1.5 goals,0.810,0.810,0.707,1.35,hit,2-0,2026-11-05,07:00,2026-11-03,,safe
+2026-11-03,2026-11-03 21:45,England,LS:england/championship,Championship,Watford,Lincoln City,AO05,Lincoln City over 0.5 goals,0.809,0.809,0.716,1.31,miss,1-0,2026-11-03,07:00,2026-11-03,o15,safe
+2026-11-08,2026-11-08 10:00,Japan,LS:japan/j-league,J1 League,JEF United Chiba,Mito Hollyhock,O15,Over 1.5 goals,0.805,0.805,0.729,1.30,pending,,,07:00,2026-11-03,,safe
+2026-11-08,2026-11-08 07:00,Japan,LS:japan/j-league,J1 League,Machida Zelvia,Sanfrecce Hiroshima,HO05,Machida Zelvia over 0.5 goals,0.803,0.803,0.708,1.32,pending,,,07:00,2026-11-03,,safe
+2026-11-07,2026-11-07 19:00,Italy,LS:italy/serie-a,Serie A,Parma,Bologna,O15,Over 1.5 goals,0.802,0.802,0.694,1.37,pending,,,07:00,2026-11-03,,safe
+2026-11-06,2026-11-06 16:30,Saudi Arabia,LS:saudi-arabia/saudi-professional-league,Saudi Professional League,Al Fateh,Al Riyadh,AO05,Al Riyadh over 0.5 goals,0.801,0.801,0.710,1.31,pending,,,07:00,2026-11-03,,safe
+2026-11-15,2026-11-15 00:00,Argentina,LS:argentina/copa-argentina,Copa Argentina,Banfield,Boca Juniors,O15,Over 1.5 goals,0.798,0.798,0.694,1.32,pending,,,07:00,2026-11-03,,safe
+2026-11-20,2026-11-20 17:30,Romania,LS:romania/liga-1,Liga 1,Botosani,FC Voluntari,O15,Over 1.5 goals,0.798,0.798,0.691,1.34,pending,,,07:00,2026-11-03,,safe
+2026-11-05,2026-11-05 02:30,Brazil,LS:brazil/serie-a,Serie A,Sao Paulo,Corinthians,HO05,Sao Paulo over 0.5 goals,0.795,0.795,0.711,1.34,miss,0-0,2026-11-05,07:00,2026-11-03,,safe
+2026-11-07,2026-11-07 16:00,Sweden,LS:sweden/superettan,Superettan,Orebro SK,Oesters IF,AO05,Oesters IF over 0.5 goals,0.794,0.794,0.681,1.36,pending,,,07:00,2026-11-03,,safe
+2026-11-08,2026-11-08 02:00,USA,LS:usa/major-league-soccer-2026,MLS,Austin FC,Portland Timbers,HO05,Austin FC over 0.5 goals,0.794,0.794,0.713,1.31,pending,,,07:00,2026-11-03,,safe
+2026-11-06,2026-11-06 20:30,Austria,LS:austria/bundesliga,Bundesliga,Rapid Wien,Wolfsberger AC,O25,Over 2.5 goals,0.793,0.793,0.698,1.34,hit,6-0,2026-11-06,07:00,2026-11-03,,safe
+2026-11-07,2026-11-07 22:00,Spain,LS:spain/laliga-2,LaLiga 2,Granada,Tenerife,O15,Over 1.5 goals,0.792,0.792,0.688,1.36,pending,,,07:00,2026-11-03,,safe
+2026-11-07,2026-11-07 15:00,Turkiye,LS:turkey/1st-lig,1st Lig,Muglaspor,Esenler Erokspor,HO05,Muglaspor over 0.5 goals,0.791,0.791,0.679,1.35,pending,,,07:00,2026-11-03,,safe
+2026-11-21,2026-11-21 17:00,Scotland,LS:scotland/scotland-premiership,Premiership,Hibernian,Dundee United,AO05,Dundee United over 0.5 goals,0.791,0.791,0.705,1.30,pending,,,07:00,2026-11-03,,safe
+2026-11-07,2026-11-07 23:00,USA,LS:usa/major-league-soccer-2026,MLS,Inter Miami CF,Charlotte,AO05,Charlotte over 0.5 goals,0.790,0.790,0.708,1.32,pending,,,07:00,2026-11-03,,safe
+2026-11-07,2026-11-07 19:30,Spain,LS:spain/laliga,LaLiga,Osasuna,Athletic Club,O15,Over 1.5 goals,0.790,0.790,0.697,1.35,pending,,,07:00,2026-11-03,,safe
+2026-11-07,2026-11-07 17:00,Scotland,LS:scotland/championship,Championship,Arbroath,Ayr United,AO05,Ayr United over 0.5 goals,0.789,0.789,0.711,1.30,pending,,,07:00,2026-11-03,,safe
+2026-11-04,2026-11-04 21:30,Spain,LS:spain/copa-del-rey-round-1-2024-2025,Copa del Rey: Round 1,Deportiva Minera,Cartagena,O15,Over 1.5 goals,0.788,0.788,0.697,1.35,pending,,,07:00,2026-11-03,,safe
+2026-11-06,2026-11-06 19:30,Saudi Arabia,LS:saudi-arabia/saudi-professional-league,Saudi Professional League,Al Ittihad,NEOM SC,AO05,NEOM SC over 0.5 goals,0.787,0.787,0.710,1.31,pending,,,07:00,2026-11-03,,safe
+2026-11-07,2026-11-07 16:00,Portugal,LS:portugal/segunda-liga,Liga Portugal 2,Chaves,Penafiel,O15,Over 1.5 goals,0.786,0.786,0.703,1.33,pending,,,07:00,2026-11-03,,safe
+2026-11-07,2026-11-07 17:30,Portugal,LS:portugal/primeira-liga,Primeira Liga,Nacional,Academico Viseu,O15,Over 1.5 goals,0.785,0.785,0.723,1.30,pending,,,07:00,2026-11-03,,safe
+2026-11-04,2026-11-04 23:30,Venezuela,LS:venezuela/primera-division-clausura-group-a,Primera Division: Clausura: Group A,Portuguesa FC,Deportivo La Guaira,O15,Over 1.5 goals,0.784,0.784,0.703,1.31,hit,0-3,2026-11-05,07:00,2026-11-03,o15,safe
+2026-11-04,2026-11-04 21:30,Spain,LS:spain/copa-del-rey-round-1-2024-2025,Copa del Rey: Round 1,Reus FC Reddis,Barakaldo,O15,Over 1.5 goals,0.782,0.782,0.680,1.39,pending,,,07:00,2026-11-03,,safe
+2026-11-07,2026-11-07 17:15,Spain,LS:spain/laliga-2,LaLiga 2,Cadiz,Real Oviedo,HO05,Cadiz over 0.5 goals,0.780,0.780,0.674,1.38,pending,,,07:00,2026-11-03,,safe
+2026-11-22,2026-11-22 00:30,Copa Sudamericana,LS:copa-sudamericana/final,Final,Atletico MG,Boca Juniors,AO05,Boca Juniors over 0.5 goals,0.780,0.780,0.666,1.38,pending,,,07:00,2026-11-03,,safe
+2026-11-05,2026-11-05 15:25,Saudi Arabia,LS:saudi-arabia/saudi-professional-league,Saudi Professional League,Al Kholood,Al Khaleej,AO05,Al Khaleej over 0.5 goals,0.779,0.779,0.681,1.36,pending,,,07:00,2026-11-03,,safe
+2026-11-04,2026-11-04 01:30,Venezuela,LS:venezuela/primera-division-clausura-group-b,Primera Division: Clausura: Group B,Deportivo Tachira,Academia Puerto Cabello,O15,Over 1.5 goals,0.778,0.778,0.694,1.32,hit,3-2,2026-11-04,07:00,2026-11-03,o15,safe
+2026-11-07,2026-11-07 13:00,Portugal,LS:portugal/segunda-liga,Liga Portugal 2,Felgueiras 1932,Leixoes,HO05,Felgueiras 1932 over 0.5 goals,0.778,0.778,0.693,1.35,pending,,,07:00,2026-11-03,,safe
+2026-11-07,2026-11-07 21:15,Poland,LS:poland/ekstraklasa,Ekstraklasa,Widzew Lodz,Pogon Szczecin,AO05,Pogon Szczecin over 0.5 goals,0.778,0.778,0.714,1.30,pending,,,07:00,2026-11-03,,safe
+2026-11-07,2026-11-07 21:45,Belgium,LS:belgium/belgian-pro-league-2025,Belgian Pro League,Royal Antwerp,Lommel,AO05,Lommel over 0.5 goals,0.776,0.776,0.714,1.30,pending,,,07:00,2026-11-03,,safe
+2026-11-03,2026-11-03 21:45,England,LS:england/championship,Championship,Blackburn Rovers,Stoke City,HO05,Blackburn Rovers over 0.5 goals,0.774,0.774,0.700,1.33,hit,1-2,2026-11-03,07:00,2026-11-03,o15,botd
+2026-11-03,2026-11-03 21:00,England,LS:england/efl-trophy-south-group-g,EFL Trophy South: Group G,Cambridge United,Brighton U21,AO05,Brighton U21 over 0.5 goals,0.771,0.771,0.686,1.35,miss,6-0,2026-11-03,07:00,2026-11-03,o15,botd
+2026-11-03,2026-11-03 09:00,Japan,LS:japan/j-league-3,J3 League,FC Ryukyu,FC Gifu,HO05,FC Ryukyu over 0.5 goals,0.770,0.770,0.701,1.32,hit,2-3,2026-11-03,07:00,2026-11-03,o15,botd
+2026-11-03,2026-11-03 21:00,England,LS:england/national-league-cup-group-a,National League Cup: Group A,Wealdstone,Derby County U21,AO05,Derby County U21 over 0.5 goals,0.766,0.766,0.663,1.37,hit,2-2,2026-11-03,07:00,2026-11-03,o15,botd
+2026-11-03,2026-11-03 22:00,Champions League,LS:champions-league/league-stage,League Stage,LASK,Slovan Bratislava,O25,Over 2.5 goals,0.742,0.742,0.716,1.35,hit,4-0,2026-11-03,07:00,2026-11-03,o25,botd
+2026-11-03,2026-11-03 19:45,Champions League,LS:champions-league/league-stage,League Stage,Galatasaray,VfB Stuttgart,O25,Over 2.5 goals,0.738,0.738,0.712,1.35,miss,2-0,2026-11-03,07:00,2026-11-03,o25,botd
+2026-11-06,2026-11-06 21:00,Netherlands,LS:holland/eerste-divisie,Eerste Divisie,TOP Oss,RKC Waalwijk,HO05,TOP Oss over 0.5 goals,0.822,0.822,0.710,1.31,hit,1-1,2026-11-06,manual 10:09,2026-11-03,,safe
+2026-11-08,2026-11-08 18:15,France,LS:france/ligue-1,Ligue 1,Brest,Lyon,HO05,Brest over 0.5 goals,0.811,0.811,0.708,1.32,pending,,,manual 10:09,2026-11-03,,safe
+2026-11-05,2026-11-05 19:45,Europa League,LS:europa-league/league-stage,League Stage,Real Sociedad,Lyon,AO05,Lyon over 0.5 goals,0.778,0.778,0.697,1.35,hit,1-1,2026-11-05,manual 10:09,2026-11-03,,safe
+2026-11-07,2026-11-07 16:30,Germany,LS:germany/bundesliga,Bundesliga,Mainz 05,Bayern Munich,HO05,Mainz 05 over 0.5 goals,0.776,0.776,0.713,1.31,pending,,,manual 10:09,2026-11-03,,safe
+2026-11-03,2026-11-03 14:15,Asia,LS:asia/afc-champions-league-elite-east,AFC Champions League Elite: East,Port FC,Beijing Guoan,HO05,Port FC over 0.5 goals,0.804,0.804,0.686,1.35,hit,7-4,2026-11-03,12:00,2026-11-03,,safe
+2026-11-07,2026-11-07 21:00,Ecuador,LS:ecuador/serie-a-placement-group,Serie A: Placement Group,Libertad,Emelec,O15,Over 1.5 goals,0.791,0.791,0.692,1.31,pending,,,12:00,2026-11-03,,safe
+2026-11-08,2026-11-08 15:30,Italy,LS:italy/serie-c-group-c-2025,Serie C: Group C,Monopoli,Cosenza,O15,Over 1.5 goals,0.789,0.789,0.686,1.35,pending,,,12:00,2026-11-03,,safe
+2026-11-04,2026-11-04 21:30,Spain,LS:spain/copa-del-rey-round-1-2024-2025,Copa del Rey: Round 1,Utebo,Sabadell,O15,Over 1.5 goals,0.786,0.786,0.723,1.30,pending,,,12:00,2026-11-03,,safe
+2026-11-07,2026-11-07 18:00,Israel,LS:israel/premier-league,Premier League,Hapoel Jerusalem,Bnei Sakhnin,O15,Over 1.5 goals,0.785,0.785,0.688,1.36,pending,,,12:00,2026-11-03,,safe
+2026-11-07,2026-11-07 15:20,Saudi Arabia,LS:saudi-arabia/saudi-professional-league,Saudi Professional League,Al Faisaly,Al Diriyah,O15,Over 1.5 goals,0.781,0.781,0.713,1.31,pending,,,12:00,2026-11-03,,safe
+2026-11-03,2026-11-03 21:45,England,E1,Championship,Blackburn,Stoke,CO85,Over 8.5 corners,0.726,0.726,0.701,1.32,hit,1-2,2026-11-05,12:00,2026-11-03,corners,botd
+2026-11-03,2026-11-03 22:00,England,E1,Championship,Birmingham,Millwall,CO85,Over 8.5 corners,0.710,0.710,0.681,1.36,miss,3-0,2026-11-05,12:00,2026-11-03,corners,botd
+2026-11-03,2026-11-03 21:45,England,E1,Championship,Charlton,Bolton,CO85,Over 8.5 corners,0.697,0.697,0.686,1.35,miss,0-1,2026-11-05,12:00,2026-11-03,corners,botd
+2026-11-03,2026-11-03 21:45,England,E1,Championship,Watford,Lincoln,CO85,Over 8.5 corners,0.685,0.685,0.622,1.49,hit,1-0,2026-11-05,12:00,2026-11-03,corners,botd
+2026-11-03,2026-11-03 21:45,England,E1,Championship,Portsmouth,Swansea,CO85,Over 8.5 corners,0.681,0.681,0.636,1.46,hit,3-1,2026-11-05,12:00,2026-11-03,corners,botd
+2026-11-08,2026-11-08 13:30,Italy,LS:italy/serie-a,Serie A,Napoli,Lazio,AO05,Lazio over 0.5 goals,0.813,0.813,0.708,1.32,pending,,,manual 13:23,2026-11-03,,safe
+2026-11-08,2026-11-08 20:30,Italy,LS:italy/serie-b,Serie B,L.R. Vicenza,Cremonese,HO05,L.R. Vicenza over 0.5 goals,0.801,0.801,0.701,1.32,pending,,,manual 13:23,2026-11-03,,safe
+2026-11-06,2026-11-06 22:00,Spain,LS:spain/laliga,LaLiga,Sevilla,Deportivo Alaves,O15,Over 1.5 goals,0.796,0.796,0.682,1.40,miss,0-0,2026-11-07,manual 13:23,2026-11-03,,safe
+2026-11-07,2026-11-07 17:30,Germany,LS:germany/3-liga,3. Liga,Preussen Muenster,MSV Duisburg,HO05,Preussen Muenster over 0.5 goals,0.780,0.780,0.714,1.30,pending,,,manual 13:23,2026-11-03,,safe
+2026-11-08,2026-11-08 14:00,Serbia,LS:serbia/super-liga,Super Liga,FK Radnik Surdulica,OFK Beograd,O15,Over 1.5 goals,0.775,0.775,0.708,1.32,pending,,,manual 13:23,2026-11-03,,safe
+2026-11-08,2026-11-08 17:30,Portugal,LS:portugal/primeira-liga,Primeira Liga,Santa Clara,Gil Vicente,HO05,Santa Clara over 0.5 goals,0.775,0.775,0.698,1.34,pending,,,manual 13:23,2026-11-03,,safe
+2026-11-08,2026-11-08 18:15,France,LS:france/ligue-1,Ligue 1,Le Havre,Lorient,AO05,Lorient over 0.5 goals,0.805,0.805,0.719,1.30,pending,,,manual 14:02,2026-11-03,,safe
+2026-11-09,2026-11-09 21:45,Italy,LS:italy/serie-c-group-c-2025,Serie C: Group C,AZ Picerno ASD,Bari,O15,Over 1.5 goals,0.774,0.774,0.686,1.35,pending,,,manual 14:02,2026-11-03,,safe
+2026-11-08,2026-11-08 16:00,Czech Republic,LS:czech-republic/1st-league,1st League,Jablonec,Mlada Boleslav,AO05,Mlada Boleslav over 0.5 goals,0.806,0.806,0.688,1.34,pending,,,manual 14:46,2026-11-03,,safe
+2026-11-12,2026-11-12 21:45,UEFA Nations League,LS:uefa-nations-league/league-c-group-1,League C: Group 1,Albania,Finland,O15,Over 1.5 goals,0.781,0.781,0.669,1.41,pending,,,manual 14:46,2026-11-03,,safe
+2026-11-07,2026-11-07 14:30,England,LS:england/premier-league,Premier League,Leeds United,Tottenham Hotspur,HO05,Leeds United over 0.5 goals,0.775,0.775,0.723,1.30,pending,,,manual 14:46,2026-11-03,,safe
+2026-11-03,2026-11-03 22:00,Peru,LS:peru/primera-division-clausura,Liga 1: Clausura,Comerciantes Unidos,Asociacion Deportiva Tarma,O15,Over 1.5 goals,0.823,0.823,0.723,1.30,hit,2-2,2026-11-03,manual 15:15,2026-11-03,,safe
+2026-11-07,2026-11-07 21:00,France,LS:france/ligue-2,Ligue 2,Pau,Nantes,HO05,Pau over 0.5 goals,0.803,0.803,0.700,1.33,pending,,,manual 15:15,2026-11-03,,safe
+2026-11-03,2026-11-03 22:30,Ecuador,LS:ecuador/serie-a-relegation-group,Serie A: Relegation Group,Mushuc Runa,Manta,O15,Over 1.5 goals,0.790,0.790,0.703,1.31,hit,2-3,2026-11-04,manual 16:01,2026-11-03,,safe
+2026-11-07,2026-11-07 00:00,Argentina,LS:argentina/primera-division-clausura,Primera Division: Clausura,Union,Velez Sarsfield,AO05,Velez Sarsfield over 0.5 goals,0.785,0.785,0.679,1.35,miss,2-0,2026-11-07,manual 16:51,2026-11-03,,safe
+2026-11-07,2026-11-07 18:00,Hungary,LS:hungary/nb-ii-2024-2025,NB II,Fehervar FC,Bvsc-Zuglo,O15,Over 1.5 goals,0.774,0.774,0.700,1.33,pending,,,manual 18:06,2026-11-03,,safe
+2026-11-03,2026-11-03 22:00,England,LS:england/championship,Championship,West Bromwich Albion,Southampton,CO85,Over 8.5 corners,0.729,0.729,0.710,1.31,miss,1-1,2026-11-03,manual 18:06,2026-11-03,corners,botd
+2026-11-05,2026-11-05 17:20,Oman,LS:oman/professional-league,Professional League,Dhofar,Saham,HO05,Dhofar over 0.5 goals,0.774,0.774,0.680,1.32,miss,0-0,2026-11-05,manual 18:56,2026-11-03,,safe
+2026-11-08,2026-11-08 16:00,England,LS:england/premier-league,Premier League,Ipswich Town,AFC Bournemouth,HO05,Ipswich Town over 0.5 goals,0.773,0.773,0.688,1.36,pending,,,manual 19:46,2026-11-03,,safe
+2026-11-05,2026-11-05 19:45,Conference League,LS:conference-league/league-stage,League Stage,AGF,SC Braga,HO05,AGF over 0.5 goals,0.772,0.772,0.655,1.45,miss,0-0,2026-11-05,manual 21:02,2026-11-03,,safe
+2026-11-07,2026-11-07 14:30,England,LS:england/championship,Championship,Wrexham,Wolves,HO05,Wrexham over 0.5 goals,0.782,0.782,0.686,1.35,pending,,,manual 21:52,2026-11-03,,safe
+2026-11-07,2026-11-07 14:30,England,LS:england/championship,Championship,Portsmouth,Stoke City,HO05,Portsmouth over 0.5 goals,0.778,0.778,0.701,1.32,pending,,,manual 21:52,2026-11-03,,safe
+2026-11-07,2026-11-07 15:00,Turkiye,LS:turkey/super-lig,Süper Lig,Samsunspor,Konyaspor,O15,Over 1.5 goals,0.772,0.772,0.719,1.30,pending,,,manual 22:18,2026-11-03,,safe
+2026-11-09,2026-11-09 22:30,Ecuador,LS:ecuador/serie-a-relegation-group,Serie A: Relegation Group,Tecnico Universitario,Manta,O15,Over 1.5 goals,0.788,0.788,0.687,1.32,pending,,,manual 23:08,2026-11-03,,safe
+2026-11-06,2026-11-06 22:00,England,LS:england/championship,Championship,Derby County,Bolton Wanderers,AO05,Bolton Wanderers over 0.5 goals,0.796,0.796,0.717,1.30,hit,3-1,2026-11-07,manual 23:58,2026-11-03,,safe
+2026-11-05,2026-11-05 00:00,Paraguay,LS:paraguay/division-profesional-clausura,Division Profesional: Clausura,Sportivo Ameliano,Guarani,AO05,Guarani over 0.5 goals,0.785,0.785,0.710,1.31,hit,0-1,2026-11-05,manual 23:58,2026-11-03,,safe
+2026-11-21,2026-11-21 17:30,Romania,LS:romania/liga-1,Liga 1,CFR Cluj,Otelul Galati,O15,Over 1.5 goals,0.789,0.789,0.710,1.31,pending,,,manual 00:23,2026-11-04,,safe
+2026-11-04,2026-11-04 17:00,Nigeria,LS:nigeria/npfl,NPFL,Enugu Rangers,Bendel Insurance,O15,Over 1.5 goals,0.748,0.748,0.671,1.37,miss,1-0,2026-11-04,manual 00:23,2026-11-04,o15,botd
+2026-11-04,2026-11-04 22:00,England,E1,Championship,Bristol City,Wolves,HO05,Bristol City over 0.5 goals,0.733,0.733,0.678,1.38,hit,1-2,2026-11-05,manual 00:23,2026-11-04,o15,botd
+2026-11-04,2026-11-04 21:45,England,E1,Championship,Wrexham,Middlesbrough,HO05,Wrexham over 0.5 goals,0.709,0.709,0.672,1.39,hit,2-0,2026-11-04,manual 00:23,2026-11-04,o15,botd
+2026-11-04,2026-11-04 22:00,Champions League,LS:champions-league/league-stage,League Stage,Borussia Dortmund,Real Betis,AO05,Real Betis over 0.5 goals,0.709,0.709,0.702,1.36,hit,2-1,2026-11-05,manual 00:23,2026-11-04,o15,botd
+2026-11-04,2026-11-04 19:45,Champions League,LS:champions-league/league-stage,League Stage,AEK Athens,Real Madrid,O25,Over 2.5 goals,0.716,0.716,0.726,1.32,hit,2-3,2026-11-04,manual 00:23,2026-11-04,o25,botd
+2026-11-04,2026-11-04 02:30,Brazil,LS:brazil/serie-a,Serie A,Internacional,Coritiba,CO95,Over 9.5 corners,0.679,0.679,0.650,1.43,hit,1-0,2026-11-04,manual 00:23,2026-11-04,corners,botd
+2026-11-04,2026-11-04 21:30,Belgium,B1,Pro League,Kortrijk,KV Mechelen,CO85,Over 8.5 corners,0.663,0.663,0.636,1.46,miss,1-3,2026-11-04,manual 00:23,2026-11-04,corners,botd
+2026-11-09,2026-11-09 20:00,Ecuador,LS:ecuador/serie-a-relegation-group,Serie A: Relegation Group,Mushuc Runa,Delfin,O15,Over 1.5 goals,0.775,0.775,0.687,1.32,pending,,,manual 00:48,2026-11-04,,safe
+2026-11-05,2026-11-05 01:30,Venezuela,LS:venezuela/primera-division-clausura-group-a,Primera Division: Clausura: Group A,Metropolitanos FC,Carabobo FC,HO05,Metropolitanos FC over 0.5 goals,0.808,0.808,0.698,1.30,miss,0-2,2026-11-05,manual 01:38,2026-11-04,,safe
+2026-11-04,2026-11-04 09:45,Asia,LS:asia/afc-champions-league-two-group-e,AFC Champions League Two: Group E,Melbourne Victory,Persib Bandung,O15,Over 1.5 goals,0.749,0.749,0.708,1.32,hit,1-2,2026-11-04,manual 02:03,2026-11-04,o15,botd
+2026-11-07,2026-11-07 16:00,Sweden,LS:sweden/superettan,Superettan,Helsingborgs IF,Falkenbergs FF,AO05,Falkenbergs FF over 0.5 goals,0.828,0.828,0.714,1.30,pending,,,manual 02:28,2026-11-04,,safe
+2026-11-07,2026-11-07 16:00,Hungary,LS:hungary/nb-ii-2024-2025,NB II,Kozarmisleny,FC Ajka,O15,Over 1.5 goals,0.776,0.776,0.711,1.30,pending,,,manual 04:33,2026-11-04,,safe
+2026-11-04,2026-11-04 11:45,Philippines,LS:philippines/pfl,PFL,Mendiola FC 1991,Cebu FC,O25,Over 2.5 goals,0.810,0.810,0.705,1.30,hit,0-3,2026-11-04,manual 06:38,2026-11-04,,safe
+2026-11-04,2026-11-04 22:00,Champions League,LS:champions-league/league-stage,League Stage,Lens,Como 1907,HO05,Lens over 0.5 goals,0.819,0.819,0.728,1.31,hit,1-9,2026-11-05,manual 07:28,2026-11-04,,safe
+2026-11-05,2026-11-05 03:30,Peru,LS:peru/primera-division-clausura,Liga 1: Clausura,Universitario de Deportes,Sport Boys,O15,Over 1.5 goals,0.809,0.809,0.722,1.31,hit,2-2,2026-11-05,manual 07:28,2026-11-04,,safe
+2026-11-04,2026-11-04 19:45,Champions League,LS:champions-league/league-stage,League Stage,Fenerbahçe,Liverpool,O25,Over 2.5 goals,0.735,0.735,0.690,1.39,hit,3-2,2026-11-04,manual 08:18,2026-11-04,,safe
+2026-11-04,2026-11-04 22:00,Champions League,LS:champions-league/league-stage,League Stage,PSV Eindhoven,Club Brugge,O25,Over 2.5 goals,0.710,0.710,0.705,1.36,hit,1-2,2026-11-05,manual 08:18,2026-11-04,,safe
+2026-11-06,2026-11-06 04:00,Costa Rica,LS:costa-rica/primera-division-apertura,Primera División: Apertura,Club Sport Herediano,Deportivo Saprissa,O15,Over 1.5 goals,0.767,0.767,0.710,1.31,hit,0-2,2026-11-06,manual 08:18,2026-11-04,,safe
+2026-11-08,2026-11-08 19:30,Spain,LS:spain/laliga-2,LaLiga 2,Sporting Gijon,Real Valladolid,O15,Over 1.5 goals,0.765,0.765,0.697,1.35,pending,,,manual 08:18,2026-11-04,,safe
+2026-11-07,2026-11-07 16:00,Czech Republic,LS:czech-republic/1st-league,1st League,FC Zlin,Slovacko,O15,Over 1.5 goals,0.762,0.762,0.719,1.30,pending,,,manual 08:18,2026-11-04,,safe
+2026-11-07,2026-11-07 06:00,Japan,LS:japan/j-league,J1 League,Shimizu S-Pulse,Tokyo Verdy,O15,Over 1.5 goals,0.760,0.760,0.659,1.45,miss,0-1,2026-11-07,manual 08:18,2026-11-04,,safe
+2026-11-07,2026-11-07 03:00,Colombia,LS:colombia/primera-a-clausura,Primera A: Clausura,Fortaleza FC,Independiente Medellin,O15,Over 1.5 goals,0.760,0.760,0.719,1.30,hit,0-3,2026-11-07,manual 08:18,2026-11-04,,safe
+2026-11-07,2026-11-07 08:00,Japan,LS:japan/j-league,J1 League,Avispa Fukuoka,V-Varen Nagasaki,O15,Over 1.5 goals,0.753,0.753,0.707,1.35,hit,1-1,2026-11-07,manual 08:43,2026-11-04,,safe
+2026-11-08,2026-11-08 17:30,Chile,LS:chile/primera-division,Primera División,Audax Italiano,Coquimbo Unido,O15,Over 1.5 goals,0.753,0.753,0.713,1.31,pending,,,manual 08:43,2026-11-04,,safe
+2026-11-08,2026-11-08 17:00,Greece,LS:greece/super-league,Super League,Asteras Tripolis,Kalamata,O15,Over 1.5 goals,0.752,0.752,0.708,1.32,pending,,,manual 08:43,2026-11-04,,safe
+2026-11-07,2026-11-07 18:30,Italy,LS:italy/serie-c-group-b-2025,Serie C: Group B,Forli,Gubbio,O15,Over 1.5 goals,0.752,0.752,0.710,1.31,pending,,,manual 08:43,2026-11-04,,safe
+2026-11-07,2026-11-07 22:00,Spain,LS:spain/primera-division-rfef-group-2,Primera Division RFEF: Group 2,Real Zaragoza,SD Huesca,O15,Over 1.5 goals,0.752,0.752,0.696,1.31,pending,,,manual 08:43,2026-11-04,,safe
+2026-11-08,2026-11-08 16:00,Slovenia,LS:slovenia/prva-liga,Prva Liga,Nk Brinje Grosuplje,Aluminij,O15,Over 1.5 goals,0.752,0.752,0.717,1.30,pending,,,manual 08:43,2026-11-04,,safe
+2026-11-05,2026-11-05 02:00,Costa Rica,LS:costa-rica/primera-division-apertura,Primera División: Apertura,Puntarenas FC,Deportiva San Carlos,O15,Over 1.5 goals,0.757,0.757,0.719,1.30,miss,0-1,2026-11-05,manual 09:08,2026-11-04,,safe
+2026-11-07,2026-11-07 18:30,Ecuador,LS:ecuador/serie-a-relegation-group,Serie A: Relegation Group,Deportivo Cuenca,Orense,O15,Over 1.5 goals,0.764,0.764,0.682,1.33,pending,,,manual 09:33,2026-11-04,,safe
+2026-11-04,2026-11-04 21:45,England,E1,Championship,Wrexham,Middlesbrough,O15,Over 1.5 goals,0.829,0.829,0.799,1.18,hit,2-0,2026-11-04,manual 09:43,2026-11-04,o15,safe
+2026-11-04,2026-11-04 19:00,Botswana,LS:botswana/premier-league,Premier League,Gaborone United,Enesia,O15,Over 1.5 goals,0.789,0.789,0.747,1.22,miss,1-0,2026-11-04,manual 09:43,2026-11-04,o15,safe
+2026-11-04,2026-11-04 23:00,Honduras,LS:honduras/liga-nacional-apertura,Liga Nacional: Apertura,Olancho FC,Lobos UPNFM,O15,Over 1.5 goals,0.773,0.773,0.783,1.19,miss,0-0,2026-11-05,manual 09:43,2026-11-04,o15,safe
+2026-11-04,2026-11-04 21:00,Belgium,LS:belgium/challenger-pro-league,Challenger Pro League,Francs Borains,FCV Dender EH,O15,Over 1.5 goals,0.765,0.765,0.772,1.21,miss,1-0,2026-11-04,manual 09:43,2026-11-04,o15,safe
+2026-11-04,2026-11-04 21:45,England,E1,Championship,Cardiff,West Ham,CO85,Over 8.5 corners,0.737,0.737,0.719,1.29,hit,3-3,2026-11-05,manual 09:43,2026-11-04,corners,safe
+2026-11-04,2026-11-04 22:00,England,E1,Championship,Bristol City,Wolves,CO85,Over 8.5 corners,0.737,0.737,0.670,1.38,miss,1-2,2026-11-05,manual 09:43,2026-11-04,corners,safe
+2026-11-07,2026-11-07 19:45,Netherlands,LS:holland/eredivisie,Eredivisie,ADO Den Haag,Sparta Rotterdam,O15,Over 1.5 goals,0.874,0.874,0.804,1.16,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-06,2026-11-06 22:00,Wales,LS:wales/cymru-premier,JD Cymru Premier,Connah's Quay,Flint Town United,O15,Over 1.5 goals,0.871,0.871,0.801,1.17,hit,2-0,2026-11-07,manual 09:43,2026-11-04,o15,safe
+2026-11-08,2026-11-08 18:30,Germany,LS:germany/bundesliga,Bundesliga,Freiburg,Union Berlin,O15,Over 1.5 goals,0.869,0.869,0.791,1.19,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-08,2026-11-08 17:30,Switzerland,LS:switzerland/super-league,Super League,Servette,FC Zurich,O15,Over 1.5 goals,0.867,0.867,0.809,1.16,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-06,2026-11-06 18:30,Qatar,LS:qatar/qatar-stars-league,Qatar Stars League,Al-Wakra,Al-Shahaniya,O15,Over 1.5 goals,0.864,0.864,0.804,1.16,hit,0-3,2026-11-06,manual 09:43,2026-11-04,o15,safe
+2026-11-07,2026-11-07 16:30,Slovakia,LS:slovakia/fortuna-liga,Super Liga,Skalica,Zilina,O15,Over 1.5 goals,0.862,0.862,0.792,1.18,pending,,,manual 09:43,2026-11-04,o15,safe
+2026-11-07,2026-11-07 17:30,Germany,LS:germany/3-liga,3. Liga,Preussen Muenster,MSV Duisburg,O15,Over 1.5 goals,0.859,0.859,0.797,1.17,pending,,,manual 09:43,2026-11-04,o15,safe
+2026-11-06,2026-11-06 21:00,Netherlands,LS:holland/eredivisie,Eredivisie,Willem II,PEC Zwolle,O15,Over 1.5 goals,0.857,0.857,0.807,1.17,hit,1-1,2026-11-06,manual 09:43,2026-11-04,o15,safe
+2026-11-07,2026-11-07 21:45,Belgium,LS:belgium/belgian-pro-league-2025,Belgian Pro League,Raal La Louviere,Cercle Brugge,O15,Over 1.5 goals,0.853,0.853,0.747,1.25,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-08,2026-11-08 17:00,Greece,LS:greece/super-league,Super League,AEK Athens,Levadiakos,O15,Over 1.5 goals,0.853,0.853,0.797,1.17,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-07,2026-11-07 17:30,Netherlands,LS:holland/eredivisie,Eredivisie,Fortuna Sittard,Telstar,O15,Over 1.5 goals,0.849,0.849,0.792,1.18,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-08,2026-11-08 05:00,Mexico,LS:mexico/liga-mx-apertura,Liga MX: Apertura,Pumas,CF America,O15,Over 1.5 goals,0.848,0.848,0.804,1.16,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-08,2026-11-08 19:30,Belgium,LS:belgium/belgian-pro-league-2025,Belgian Pro League,Union St.Gilloise,Genk,O15,Over 1.5 goals,0.848,0.848,0.797,1.17,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-08,2026-11-08 18:00,Norway,LS:norway/eliteserien,Eliteserien,HamKam,Sarpsborg 08,O15,Over 1.5 goals,0.847,0.847,0.815,1.16,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-06,2026-11-06 21:00,Netherlands,LS:holland/eerste-divisie,Eerste Divisie,TOP Oss,RKC Waalwijk,O15,Over 1.5 goals,0.845,0.845,0.801,1.17,hit,1-1,2026-11-06,manual 09:43,2026-11-04,o15,safe
+2026-11-05,2026-11-05 03:30,Honduras,LS:honduras/liga-nacional-apertura,Liga Nacional: Apertura,CD Olimpia,Juticalpa,H,CD Olimpia to win,0.844,0.844,0.820,1.19,hit,8-0,2026-11-05,manual 09:43,2026-11-04,,safe
+2026-11-07,2026-11-07 14:00,Hungary,LS:hungary/nb-ii-2024-2025,NB II,Mezokovesd SE,Diosgyori VTK,O15,Over 1.5 goals,0.844,0.844,0.742,1.25,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-08,2026-11-08 20:15,Belgium,LS:belgium/belgian-pro-league-2025,Belgian Pro League,St.Truiden,Zulte Waregem,O15,Over 1.5 goals,0.843,0.843,0.796,1.18,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-06,2026-11-06 21:45,Wales,LS:wales/cymru-premier,JD Cymru Premier,Trefelin BGC,Colwyn Bay,O15,Over 1.5 goals,0.843,0.843,0.792,1.18,hit,1-2,2026-11-07,manual 09:43,2026-11-04,,safe
+2026-11-07,2026-11-07 22:30,Peru,LS:peru/primera-division-clausura,Liga 1: Clausura,FC Cajamarca,Alianza Atletico,O15,Over 1.5 goals,0.842,0.842,0.766,1.22,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-07,2026-11-07 21:30,Switzerland,LS:switzerland/super-league,Super League,Grasshopper,Lausanne,O15,Over 1.5 goals,0.841,0.841,0.789,1.18,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-09,2026-11-09 01:00,Peru,LS:peru/primera-division-clausura,Liga 1: Clausura,Deportivo Garcilaso,Comerciantes Unidos,O15,Over 1.5 goals,0.841,0.841,0.792,1.18,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-06,2026-11-06 21:45,Wales,LS:wales/cymru-premier,JD Cymru Premier,Penybont,Caernarfon,O15,Over 1.5 goals,0.840,0.840,0.772,1.21,hit,2-0,2026-11-06,manual 09:43,2026-11-04,,safe
+2026-11-08,2026-11-08 20:15,Norway,LS:norway/eliteserien,Eliteserien,Fredrikstad,Brann,O15,Over 1.5 goals,0.837,0.837,0.812,1.16,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-08,2026-11-08 14:55,United Arab Emirates,LS:united-arab-emirates/uae-league,Pro League,Al-Jazira,Al-Wasl,O15,Over 1.5 goals,0.837,0.837,0.790,1.17,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-07,2026-11-07 16:00,Slovenia,LS:slovenia/prva-liga,Prva Liga,Koper,Mura,O15,Over 1.5 goals,0.837,0.837,0.766,1.22,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-06,2026-11-06 21:00,Belgium,LS:belgium/challenger-pro-league,Challenger Pro League,Sporting Hasselt,Patro Eisden,O15,Over 1.5 goals,0.835,0.835,0.768,1.21,hit,1-2,2026-11-06,manual 09:43,2026-11-04,,safe
+2026-11-06,2026-11-06 21:45,Belgium,LS:belgium/belgian-pro-league-2025,Belgian Pro League,Standard Liege,SK Beveren,O15,Over 1.5 goals,0.835,0.835,0.780,1.21,hit,3-0,2026-11-06,manual 09:43,2026-11-04,,safe
+2026-11-07,2026-11-07 12:30,Turkiye,LS:turkey/1st-lig,1st Lig,Keciorengucu,Manisa FK,O15,Over 1.5 goals,0.833,0.833,0.809,1.16,pending,,,manual 09:43,2026-11-04,,safe
+2026-11-04,2026-11-04 21:00,Switzerland,LS:switzerland/promotion-league,Promotion League,Schaffhausen,Biel/Bienne,O25,Over 2.5 goals,0.624,0.624,0.659,1.42,hit,3-2,2026-11-04,manual 09:43,2026-11-04,o25,botd
+2026-11-04,2026-11-04 14:00,Kosovo,LS:kosovo/superleague,Superleague,Drita,FC Prishtina,O15,Over 1.5 goals,0.716,0.716,0.696,1.31,hit,1-2,2026-11-04,manual 10:33,2026-11-04,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/isthmian-league,Isthmian League Premier Division,Stanway Rovers,Whitehawk,O15,Over 1.5 goals,0.839,0.839,0.755,1.20,pending,,,manual 10:33,2026-11-04,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/isthmian-league,Isthmian League Premier Division,Dartford,Eastbourne Borough,O15,Over 1.5 goals,0.838,0.838,0.754,1.21,pending,,,manual 10:33,2026-11-04,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/northern-premier-division,Northern Premier League,Leek Town,Ilkeston Town,O15,Over 1.5 goals,0.842,0.842,0.786,1.16,pending,,,manual 11:23,2026-11-04,,safe
+2026-11-04,2026-11-04 16:30,Cameroon,LS:cameroon/elite-1,Elite 1,Dynamo de Douala,Gazelle,O15,Over 1.5 goals,0.795,0.795,0.713,1.29,hit,3-1,2026-11-04,12:00,2026-11-04,,safe
+2026-11-04,2026-11-04 16:30,Cameroon,LS:cameroon/elite-1,Elite 1,Victoria United,Coton Sport,O15,Over 1.5 goals,0.767,0.767,0.688,1.34,hit,0-2,2026-11-04,12:00,2026-11-04,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/southern-premier-division-south,Southern League Premier: South,Hanwell Town,Evesham United,O15,Over 1.5 goals,0.837,0.837,0.768,1.18,pending,,,manual 16:11,2026-11-04,,safe
+2026-11-04,2026-11-04 22:00,Champions League,LS:champions-league/league-stage,League Stage,Lens,Como 1907,O15,Over 1.5 goals,0.866,0.866,0.808,1.19,hit,1-9,2026-11-05,17:00,2026-11-04,,safe
+2026-11-04,2026-11-04 22:00,Champions League,LS:champions-league/league-stage,League Stage,Borussia Dortmund,Real Betis,O15,Over 1.5 goals,0.866,0.866,0.831,1.16,hit,2-1,2026-11-05,17:00,2026-11-04,,safe
+2026-11-04,2026-11-04 22:00,Champions League,LS:champions-league/league-stage,League Stage,Slavia Prague,Arsenal,O15,Over 1.5 goals,0.835,0.835,0.776,1.24,hit,1-2,2026-11-05,17:00,2026-11-04,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/southern-premier-division-south,Southern League Premier: South,Basingstoke,Hanworth Villa,O15,Over 1.5 goals,0.843,0.843,0.791,1.16,pending,,,17:00,2026-11-04,,safe
+2026-11-04,2026-11-04 22:00,Champions League,LS:champions-league/league-stage,League Stage,RB Leipzig,Manchester City,O25,Over 2.5 goals,0.697,0.697,0.740,1.30,hit,2-3,2026-11-05,17:00,2026-11-04,o25,botd
+2026-11-04,2026-11-04 22:00,Champions League,LS:champions-league/league-stage,League Stage,Viking,Sabah FK,O25,Over 2.5 goals,0.694,0.694,0.725,1.33,hit,4-1,2026-11-05,17:00,2026-11-04,o25,botd
+2026-11-04,2026-11-04 22:00,Champions League,LS:champions-league/league-stage,League Stage,FC Porto,Napoli,BTTS,Both teams to score,0.598,0.598,0.537,1.77,hit,4-1,2026-11-05,17:00,2026-11-04,btts,botd
+2026-11-05,2026-11-05 19:45,Europa League,LS:europa-league/league-stage,League Stage,Lillestroem,Viktoria Plzen,O15,Over 1.5 goals,0.839,0.839,0.811,1.19,miss,0-1,2026-11-05,manual 18:41,2026-11-04,o15,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/southern-premier-division-central,Southern League Premier: Central,Kettering Town,Redditch United,O15,Over 1.5 goals,0.841,0.841,0.791,1.16,pending,,,manual 20:21,2026-11-04,,safe
+2026-11-06,2026-11-06 20:00,Denmark,LS:denmark/2nd-division,2nd Division,FC Roskilde,HIK,O15,Over 1.5 goals,0.835,0.835,0.752,1.22,hit,2-1,2026-11-06,manual 22:01,2026-11-04,,safe
+2026-11-06,2026-11-06 03:30,Honduras,LS:honduras/liga-nacional-apertura,Liga Nacional: Apertura,CD Marathon,Platense FC,O15,Over 1.5 goals,0.835,0.835,0.757,1.22,hit,3-1,2026-11-06,manual 22:01,2026-11-04,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/championship,Championship,Cardiff City,Burnley,O15,Over 1.5 goals,0.835,0.835,0.804,1.17,pending,,,manual 22:51,2026-11-04,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/southern-premier-division-central,Southern League Premier: Central,Bromsgrove Sporting,Leiston,O15,Over 1.5 goals,0.834,0.834,0.795,1.16,pending,,,manual 23:16,2026-11-04,,safe
+2026-11-05,2026-11-05 19:45,Conference League,LS:conference-league/league-stage,League Stage,Trabzonspor,Freiburg,O15,Over 1.5 goals,0.827,0.827,0.819,1.17,miss,0-1,2026-11-05,manual 00:06,2026-11-05,o15,safe
+2026-11-05,2026-11-05 17:00,Romania,LS:romania/liga-ii,Liga II,Chindia Targoviste,Popesti Leordeni,O15,Over 1.5 goals,0.825,0.825,0.788,1.16,hit,4-1,2026-11-05,manual 00:06,2026-11-05,o15,safe
+2026-11-05,2026-11-05 03:05,Mexico,LS:mexico/liga-de-expansion-mx-apertura-play-off,Liga de Expansion MX: Apertura: Play-off,Tlaxcala FC,Atletico La Paz,O15,Over 1.5 goals,0.824,0.824,0.809,1.16,miss,0-1,2026-11-05,manual 00:06,2026-11-05,o15,safe
+2026-11-05,2026-11-05 19:45,Europa League,LS:europa-league/league-stage,League Stage,Crystal Palace,Hoffenheim,O15,Over 1.5 goals,0.824,0.824,0.819,1.17,hit,1-1,2026-11-05,manual 00:06,2026-11-05,o15,safe
+2026-11-05,2026-11-05 19:45,Europa League,LS:europa-league/league-stage,League Stage,Real Sociedad,Lyon,O15,Over 1.5 goals,0.819,0.819,0.811,1.19,hit,1-1,2026-11-05,manual 00:06,2026-11-05,o15,safe
+2026-11-05,2026-11-05 19:45,Europa League,LS:europa-league/league-stage,League Stage,NEC Nijmegen,Omonia Nicosia,O15,Over 1.5 goals,0.814,0.814,0.805,1.19,hit,3-1,2026-11-05,manual 00:06,2026-11-05,o15,safe
+2026-11-05,2026-11-05 19:45,Europa League,LS:europa-league/league-stage,League Stage,Levski Sofia,Jagiellonia Bialystok,O15,Over 1.5 goals,0.811,0.811,0.754,1.27,miss,1-0,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 02:30,Brazil,LS:brazil/serie-a,Serie A,Sao Paulo,Corinthians,CHO35,Sao Paulo over 3.5 corners,0.810,0.810,0.719,1.31,hit,0-0,2026-11-05,manual 00:06,2026-11-05,corners,safe
+2026-11-05,2026-11-05 19:45,Conference League,LS:conference-league/league-stage,League Stage,Thun,Hearts,O15,Over 1.5 goals,0.810,0.810,0.816,1.18,hit,3-1,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 19:45,Europa League,LS:europa-league/league-stage,League Stage,Sparta Prague,AFC Bournemouth,O15,Over 1.5 goals,0.808,0.808,0.808,1.19,hit,1-3,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 19:45,Europa League,LS:europa-league/league-stage,League Stage,AC Milan,Ferencvaros,O15,Over 1.5 goals,0.807,0.807,0.816,1.18,hit,0-2,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 03:00,El Salvador,LS:el-salvador/primera-division-apertura,Primera Division: Apertura,Municipal Limeno,CD Fuerte San Francisco,O15,Over 1.5 goals,0.797,0.797,0.738,1.24,hit,1-1,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 01:00,Mexico,LS:mexico/liga-de-expansion-mx-apertura-play-off,Liga de Expansion MX: Apertura: Play-off,Venados FC,Atlético Morelia,O15,Over 1.5 goals,0.789,0.789,0.766,1.22,hit,1-2,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 19:45,Conference League,LS:conference-league/league-stage,League Stage,Lincoln Red Imps FC,Hajduk Split,O15,Over 1.5 goals,0.783,0.783,0.771,1.25,miss,1-0,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 02:15,Paraguay,LS:paraguay/division-profesional-clausura,Division Profesional: Clausura,Olimpia,CD Recoleta,O15,Over 1.5 goals,0.780,0.780,0.796,1.18,hit,4-1,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 19:45,Conference League,LS:conference-league/league-stage,League Stage,FC Midtjylland,Ajax,O15,Over 1.5 goals,0.780,0.780,0.828,1.16,hit,1-6,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 01:30,Venezuela,LS:venezuela/primera-division-clausura-group-a,Primera Division: Clausura: Group A,Metropolitanos FC,Carabobo FC,O15,Over 1.5 goals,0.773,0.773,0.738,1.24,hit,0-2,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 23:00,Honduras,LS:honduras/liga-nacional-apertura,Liga Nacional: Apertura,Genesis FC,Real Espana,O15,Over 1.5 goals,0.768,0.768,0.725,1.29,hit,1-1,2026-11-06,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 19:45,Europa League,LS:europa-league/league-stage,League Stage,Anderlecht,FC Salzburg,O15,Over 1.5 goals,0.767,0.767,0.808,1.19,hit,2-0,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 01:15,Honduras,LS:honduras/liga-nacional-apertura,Liga Nacional: Apertura,Estrella Roja,CD Motagua,O15,Over 1.5 goals,0.765,0.765,0.754,1.24,hit,1-2,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 16:00,India,LS:india/indian-super-league,Super League,Mohun Bagan Super Giant,Odisha FC,O15,Over 1.5 goals,0.760,0.760,0.786,1.20,hit,3-2,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 03:00,El Salvador,LS:el-salvador/primera-division-apertura,Primera Division: Apertura,CD Luis Angel Firpo,Alianza FC,O15,Over 1.5 goals,0.760,0.760,0.731,1.25,hit,2-0,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 19:45,Conference League,LS:conference-league/league-stage,League Stage,AGF,SC Braga,O15,Over 1.5 goals,0.753,0.753,0.726,1.32,miss,0-0,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 22:00,Europa League,LS:europa-league/league-stage,League Stage,AZ Alkmaar,Juventus,O15,Over 1.5 goals,0.751,0.751,0.759,1.27,hit,1-2,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 02:30,Brazil,LS:brazil/serie-a,Serie A,Botafogo FR,Atletico MG,O15,Over 1.5 goals,0.739,0.739,0.776,1.24,miss,1-0,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 15:30,Uzbekistan,LS:uzbekistan/superliga,Super League,Bunyodkor Tashkent,Xorazm,O15,Over 1.5 goals,0.734,0.734,0.745,1.23,hit,1-2,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 17:30,Iraq,LS:iraq/iraq-stars-league,Iraq Stars League,Al-Mosul,Duhok,O15,Over 1.5 goals,0.734,0.734,0.684,1.34,miss,0-1,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 03:30,Colombia,LS:colombia/primera-a-clausura,Primera A: Clausura,Millonarios,America de Cali,CHO35,Millonarios over 3.5 corners,0.725,0.725,0.732,1.28,hit,0-0,2026-11-05,manual 00:06,2026-11-05,corners,safe
+2026-11-05,2026-11-05 21:45,France,LS:france/ligue-3,Ligue 3,Valenciennes,Orleans,O15,Over 1.5 goals,0.722,0.722,0.723,1.30,hit,2-2,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 17:20,Oman,LS:oman/professional-league,Professional League,Dhofar,Saham,O15,Over 1.5 goals,0.716,0.716,0.679,1.35,miss,0-0,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 01:30,Colombia,LS:colombia/primera-a-clausura,Primera A: Clausura,Cucuta,Santa Fe,O15,Over 1.5 goals,0.716,0.716,0.722,1.31,miss,1-0,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 20:00,Argentina,LS:argentina/primera-division-clausura,Primera Division: Clausura,Aldosivi,River Plate,O15,Over 1.5 goals,0.704,0.704,0.738,1.28,hit,0-2,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 14:45,Oman,LS:oman/professional-league,Professional League,Fanja,Al-Msnaa,O15,Over 1.5 goals,0.702,0.702,0.617,1.49,hit,2-1,2026-11-05,manual 00:06,2026-11-05,,safe
+2026-11-24,2026-11-24 22:00,Champions League,LS:champions-league/league-stage,League Stage,RB Leipzig,Lens,O15,Over 1.5 goals,0.913,0.913,0.815,1.16,pending,,,manual 00:06,2026-11-05,,safe
+2026-11-24,2026-11-24 22:00,Champions League,LS:champions-league/league-stage,League Stage,Manchester City,Napoli,O15,Over 1.5 goals,0.906,0.906,0.812,1.16,pending,,,manual 00:06,2026-11-05,,safe
+2026-11-05,2026-11-05 22:00,Europa League,LS:europa-league/league-stage,League Stage,Bayer Leverkusen,Marseille,BTTS,Both teams to score,0.616,0.616,0.568,1.67,miss,0-1,2026-11-05,manual 00:06,2026-11-05,btts,botd
+2026-11-05,2026-11-05 22:00,Conference League,LS:conference-league/league-stage,League Stage,AS Monaco,FC Nordsjaelland,BTTS,Both teams to score,0.559,0.559,0.585,1.63,miss,2-0,2026-11-05,manual 00:06,2026-11-05,btts,botd
+2026-11-24,2026-11-24 19:45,Champions League,LS:champions-league/league-stage,League Stage,Galatasaray,Aston Villa,O15,Over 1.5 goals,0.904,0.904,0.801,1.18,pending,,,manual 00:31,2026-11-05,,safe
+2026-11-25,2026-11-25 19:45,Champions League,LS:champions-league/league-stage,League Stage,Slavia Prague,Villarreal,O15,Over 1.5 goals,0.913,0.913,0.815,1.16,pending,,,manual 00:56,2026-11-05,,safe
+2026-11-24,2026-11-24 22:00,Champions League,LS:champions-league/league-stage,League Stage,Feyenoord,FC Porto,O15,Over 1.5 goals,0.875,0.875,0.794,1.19,pending,,,manual 00:56,2026-11-05,,safe
+2026-11-06,2026-11-06 21:45,Northern Ireland,LS:northern-ireland/championship,Championship,Strabane Athletic,Annagh United,O15,Over 1.5 goals,0.845,0.845,0.775,1.19,miss,0-1,2026-11-06,manual 10:31,2026-11-05,o15,safe
+2026-11-07,2026-11-07 15:30,Denmark,LS:denmark/3rd-division,3rd Division,Holstebro,Ringsted,O15,Over 1.5 goals,0.856,0.856,0.771,1.19,pending,,,manual 10:56,2026-11-05,,safe
+2026-11-08,2026-11-08 17:30,Switzerland,LS:switzerland/challenge-league,Challenge League,Yverdon,Xamax,O15,Over 1.5 goals,0.847,0.847,0.809,1.16,pending,,,manual 11:46,2026-11-05,,safe
+2026-11-07,2026-11-07 17:00,Scotland,LS:scotland/league-2,League 2,Stranraer,Stirling Albion,O15,Over 1.5 goals,0.866,0.866,0.802,1.16,pending,,,manual 13:01,2026-11-05,,safe
+2026-11-07,2026-11-07 17:00,Scotland,LS:scotland/league-2,League 2,Clyde,Spartans,O15,Over 1.5 goals,0.845,0.845,0.790,1.17,pending,,,manual 15:56,2026-11-05,o15,safe
+2026-11-07,2026-11-07 17:00,Scotland,LS:scotland/league-2,League 2,Elgin City,Dumbarton,O15,Over 1.5 goals,0.843,0.843,0.785,1.18,pending,,,17:00,2026-11-05,,safe
+2026-11-05,2026-11-05 22:00,Conference League,LS:conference-league/league-stage,League Stage,Riga FC,Jablonec,O15,Over 1.5 goals,0.834,0.834,0.759,1.27,hit,1-1,2026-11-05,manual 19:41,2026-11-05,,safe
+2026-11-05,2026-11-05 22:00,Europa League,LS:europa-league/league-stage,League Stage,Sunderland,Dinamo Zagreb,O15,Over 1.5 goals,0.833,0.833,0.792,1.21,hit,0-2,2026-11-05,manual 19:41,2026-11-05,,safe
+2026-11-05,2026-11-05 22:00,Europa League,LS:europa-league/league-stage,League Stage,Celta Vigo,Union St.Gilloise,O15,Over 1.5 goals,0.813,0.813,0.726,1.32,hit,1-2,2026-11-05,manual 19:41,2026-11-05,,safe
+2026-11-05,2026-11-05 22:00,Europa League,LS:europa-league/league-stage,League Stage,Hapoel Beer Sheva,OFI Crete,O15,Over 1.5 goals,0.803,0.803,0.766,1.25,hit,0-2,2026-11-05,manual 19:41,2026-11-05,,safe
+2026-11-05,2026-11-05 22:00,Conference League,LS:conference-league/league-stage,League Stage,CS Universitatea Craiova,KF Egnatia,O15,Over 1.5 goals,0.795,0.795,0.790,1.22,hit,2-0,2026-11-05,manual 19:41,2026-11-05,,safe
+2026-11-05,2026-11-05 22:00,Europa League,LS:europa-league/league-stage,League Stage,Torreense,Ararat Armenia,O15,Over 1.5 goals,0.791,0.791,0.726,1.32,hit,3-2,2026-11-05,manual 19:41,2026-11-05,,safe
+2026-11-05,2026-11-05 22:00,Conference League,LS:conference-league/league-stage,League Stage,Getafe,Brighton,O15,Over 1.5 goals,0.768,0.768,0.748,1.28,miss,0-1,2026-11-05,manual 19:41,2026-11-05,,safe
+2026-11-05,2026-11-05 22:00,Europa League,LS:europa-league/league-stage,League Stage,Sturm Graz,NK Celje,O15,Over 1.5 goals,0.762,0.762,0.816,1.18,hit,2-3,2026-11-05,manual 19:41,2026-11-05,,safe
+2026-11-05,2026-11-05 22:00,Conference League,LS:conference-league/league-stage,League Stage,Panathinaikos,PFC CSKA Sofia,O15,Over 1.5 goals,0.756,0.756,0.815,1.18,hit,2-1,2026-11-05,manual 19:41,2026-11-05,,safe
+2026-11-05,2026-11-05 22:00,Europa League,LS:europa-league/league-stage,League Stage,Celtic,Beşiktaş,O25,Over 2.5 goals,0.612,0.612,0.644,1.49,hit,3-2,2026-11-05,manual 19:41,2026-11-05,o25,botd
+2026-11-05,2026-11-05 22:00,Conference League,LS:conference-league/league-stage,League Stage,St.Truiden,Brann,BTTS,Both teams to score,0.603,0.603,0.677,1.41,hit,1-1,2026-11-05,manual 19:41,2026-11-05,btts,botd
+2026-11-05,2026-11-05 22:00,Europa League,LS:europa-league/league-stage,League Stage,Benfica,Lech Poznan,BTTS,Both teams to score,0.592,0.592,0.507,1.88,hit,3-1,2026-11-05,manual 19:41,2026-11-05,btts,botd
+2026-11-06,2026-11-06 20:30,Switzerland,LS:switzerland/challenge-league,Challenge League,Stade Nyonnais,FC Stade Lausanne-Ouchy,O15,Over 1.5 goals,0.844,0.844,0.815,1.16,hit,1-5,2026-11-06,manual 20:31,2026-11-05,o15,safe
+2026-11-06,2026-11-06 21:45,Wales,LS:wales/cymru-premier,JD Cymru Premier,Holywell Town,Airbus UK Broughton,O15,Over 1.5 goals,0.890,0.890,0.815,1.16,hit,2-3,2026-11-06,manual 22:11,2026-11-05,o15,safe
+2026-11-08,2026-11-08 12:00,Turkiye,LS:turkey/2nd-lig-red-group,2nd Lig: Red Group,Ankara Demirspor,24 Erzincanspor,O15,Over 1.5 goals,0.841,0.841,0.775,1.19,pending,,,manual 22:11,2026-11-05,,safe
+2026-11-12,2026-11-12 21:45,UEFA Nations League,LS:uefa-nations-league/league-c-group-1,League C: Group 1,San Marino,Belarus,O15,Over 1.5 goals,0.844,0.844,0.807,1.17,pending,,,manual 23:51,2026-11-05,,safe
+2026-11-06,2026-11-06 21:30,Germany,LS:germany/bundesliga,Bundesliga,Hamburger SV,Borussia M'gladbach,O15,Over 1.5 goals,0.833,0.833,0.798,1.20,hit,3-1,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 20:00,Denmark,LS:denmark/superliga,Superliga,Silkeborg,Lyngby,O15,Over 1.5 goals,0.831,0.831,0.796,1.18,miss,1-0,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 21:45,England,LS:england/northern-premier-division,Northern Premier League,Quorn,Alfreton Town,O15,Over 1.5 goals,0.827,0.827,0.786,1.17,hit,4-0,2026-11-07,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 15:00,Israel,LS:israel/liga-leumit,Liga Leumit,Maccabi Herzliya,Hapoel Kfar Shalem,O15,Over 1.5 goals,0.827,0.827,0.787,1.19,miss,0-1,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 16:25,Kuwait,LS:kuwait/premier-league,Premier League,Al Fahaheel,Al-Salibikhaet,O15,Over 1.5 goals,0.825,0.825,0.772,1.21,hit,2-2,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 21:45,Wales,LS:wales/cymru-premier,JD Cymru Premier,Ammanford,Briton Ferry,O15,Over 1.5 goals,0.822,0.822,0.746,1.26,hit,3-1,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 20:00,Denmark,LS:denmark/3rd-division,3rd Division,Sundby BK,FC Helsingoer,O15,Over 1.5 goals,0.822,0.822,0.765,1.20,hit,1-1,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 14:00,Indonesia,LS:indonesia/super-league,Super League,Madura United,Arema FC,O15,Over 1.5 goals,0.820,0.820,0.766,1.22,hit,3-0,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 15:00,Israel,LS:israel/liga-leumit,Liga Leumit,Kiryat Yam,FC Ashdod,O15,Over 1.5 goals,0.820,0.820,0.804,1.16,hit,4-0,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 21:30,Poland,LS:poland/ekstraklasa,Ekstraklasa,Wisla Krakow,Cracovia,O15,Over 1.5 goals,0.820,0.820,0.780,1.21,hit,2-1,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 13:00,Ukraine,LS:ukraine/premier-league,Premier League,Polissya Zhytomyr,Veres Rivne,O15,Over 1.5 goals,0.819,0.819,0.794,1.19,hit,2-0,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 18:40,Kuwait,LS:kuwait/premier-league,Premier League,Al-Shabab SC,Al-Tadhamon,O15,Over 1.5 goals,0.815,0.815,0.747,1.25,hit,1-3,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 19:00,Turkiye,LS:turkey/1st-lig,1st Lig,Antalyaspor,Bursaspor,O15,Over 1.5 goals,0.814,0.814,0.757,1.25,hit,1-1,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 19:00,Czech Republic,LS:czech-republic/2nd-league,2nd league,Usti nad Labem,Zizkov,O15,Over 1.5 goals,0.810,0.810,0.797,1.17,miss,0-0,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 14:00,Thailand,LS:thailand/thai-league,Thai League,Lamphun Warrior,Sukhothai FC,O15,Over 1.5 goals,0.809,0.809,0.791,1.19,miss,0-0,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 19:00,Poland,LS:poland/ekstraklasa,Ekstraklasa,Motor Lublin,Wisla Plock,O15,Over 1.5 goals,0.808,0.808,0.780,1.21,hit,3-2,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 21:45,France,LS:france/ligue-1,Ligue 1,Toulouse,Strasbourg,O15,Over 1.5 goals,0.808,0.808,0.808,1.19,hit,3-1,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 13:00,Armenia,LS:armenia/premier-league,Premier League,Van,Pyunik,O15,Over 1.5 goals,0.806,0.806,0.783,1.19,hit,0-3,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 13:00,Vietnam,LS:vietnam/v-league,V-League,Binh Phuoc,Da Nang,O15,Over 1.5 goals,0.805,0.805,0.706,1.33,miss,1-0,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 19:00,Czech Republic,LS:czech-republic/2nd-league,2nd league,Vysocina Jihlava,Karvina,O15,Over 1.5 goals,0.805,0.805,0.797,1.17,hit,1-3,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 00:30,Brazil,LS:brazil/serie-a,Serie A,Palmeiras,Remo,O15,Over 1.5 goals,0.804,0.804,0.811,1.19,hit,6-1,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 19:30,Germany,LS:germany/2-bundesliga,2. Bundesliga,Dynamo Dresden,Greuther Furth,O15,Over 1.5 goals,0.804,0.804,0.801,1.18,hit,3-0,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 19:00,Poland,LS:poland/ii-liga,II Liga,Resovia,Gornik Leczna,O15,Over 1.5 goals,0.803,0.803,0.741,1.26,hit,0-2,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 21:45,Wales,LS:wales/cymru-premier,JD Cymru Premier,Haverfordwest,Cardiff Met University,O15,Over 1.5 goals,0.798,0.798,0.757,1.25,hit,0-3,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 21:00,France,LS:france/ligue-2,Ligue 2,Dijon,Red Star,O15,Over 1.5 goals,0.798,0.798,0.786,1.20,miss,1-0,2026-11-06,manual 00:16,2026-11-06,,safe
+2026-11-06,2026-11-06 14:00,Iran,LS:iran/persian-gulf-pro-league,Persian Gulf Pro League,Sepahan,Malavan,H,Sepahan to win,0.701,0.701,0.723,1.33,hit,4-0,2026-11-06,manual 00:16,2026-11-06,result,botd
+2026-11-06,2026-11-06 20:00,Germany,LS:germany/regionalliga-nord,Regionalliga Nord,Kickers Emden,VfB Lubeck,O25,Over 2.5 goals,0.723,0.723,0.639,1.44,miss,1-1,2026-11-06,manual 00:16,2026-11-06,o25,botd
+2026-11-06,2026-11-06 21:00,Netherlands,LS:holland/eerste-divisie,Eerste Divisie,Jong AZ Alkmaar,Almere City FC,O25,Over 2.5 goals,0.695,0.695,0.722,1.31,hit,1-3,2026-11-06,manual 00:16,2026-11-06,o25,botd
+2026-11-06,2026-11-06 15:00,Germany,LS:germany/regionalliga-west,Regionalliga West,Schalke 04 II,Borussia M'gladbach II,O25,Over 2.5 goals,0.664,0.664,0.635,1.44,hit,0-7,2026-11-06,manual 00:16,2026-11-06,o25,botd
+2026-11-06,2026-11-06 14:00,Israel,LS:israel/premier-league,Premier League,Maccabi Tel Aviv,Maccabi Petach Tikva,O25,Over 2.5 goals,0.664,0.664,0.710,1.33,hit,2-2,2026-11-06,manual 00:16,2026-11-06,o25,botd
+2026-11-06,2026-11-06 20:00,Germany,LS:germany/3-liga,3. Liga,Viktoria Cologne,1. FC Saarbrucken,O25,Over 2.5 goals,0.661,0.661,0.651,1.45,hit,5-3,2026-11-06,manual 00:16,2026-11-06,o25,botd
+2026-11-06,2026-11-06 21:00,France,LS:france/national-1-group-a,National 1: Group A,Chambly,Chantilly US,O25,Over 2.5 goals,0.656,0.656,0.667,1.37,hit,2-1,2026-11-06,manual 00:16,2026-11-06,o25,botd
+2026-11-06,2026-11-06 21:00,Netherlands,LS:holland/eerste-divisie,Eerste Divisie,FC Dordrecht,NAC Breda,O25,Over 2.5 goals,0.656,0.656,0.639,1.47,miss,0-0,2026-11-06,manual 00:16,2026-11-06,o25,botd
+2026-11-06,2026-11-06 21:30,Italy,LS:italy/serie-b,Serie B,Ascoli,Palermo,CHO35,Ascoli over 3.5 corners,0.750,0.750,0.698,1.34,hit,1-1,2026-11-06,manual 00:16,2026-11-06,corners,botd
+2026-11-06,2026-11-06 22:45,Portugal,LS:portugal/primeira-liga,Primeira Liga,Famalicao,Arouca,CHO35,Famalicao over 3.5 corners,0.747,0.747,0.732,1.28,hit,1-0,2026-11-07,manual 00:16,2026-11-06,corners,botd
+2026-11-06,2026-11-06 22:00,England,LS:england/championship,Championship,Derby County,Bolton Wanderers,CHO35,Derby County over 3.5 corners,0.745,0.745,0.750,1.25,hit,3-1,2026-11-07,manual 00:16,2026-11-06,corners,botd
+2026-11-06,2026-11-06 20:00,Argentina,LS:argentina/primera-division-clausura,Primera Division: Clausura,Barracas Central,Racing Club,CHO35,Barracas Central over 3.5 corners,0.726,0.726,0.678,1.38,miss,2-0,2026-11-06,manual 00:16,2026-11-06,corners,botd
+2026-11-06,2026-11-06 19:30,Germany,LS:germany/2-bundesliga,2. Bundesliga,Eintracht Braunschweig,Energie Cottbus,CO85,Over 8.5 corners,0.723,0.723,0.728,1.27,hit,0-0,2026-11-06,manual 00:16,2026-11-06,corners,botd
+2026-11-06,2026-11-06 22:00,Peru,LS:peru/primera-division-clausura,Liga 1: Clausura,Atletico Grau,Cusco FC,CHO35,Atletico Grau over 3.5 corners,0.712,0.712,0.659,1.42,miss,3-0,2026-11-07,manual 00:16,2026-11-06,corners,botd
+2026-11-06,2026-11-06 02:30,Brazil,LS:brazil/serie-a,Serie A,Cruzeiro,Bahia,CHO45,Cruzeiro over 4.5 corners,0.708,0.708,0.705,1.34,hit,3-2,2026-11-06,manual 00:16,2026-11-06,corners,botd
+2026-11-06,2026-11-06 21:00,Netherlands,LS:holland/eerste-divisie,Eerste Divisie,Helmond Sport,FC Volendam,BTTS,Both teams to score,0.663,0.663,0.670,1.38,hit,2-3,2026-11-06,manual 00:16,2026-11-06,btts,botd
+2026-11-06,2026-11-06 21:00,Netherlands,LS:holland/eerste-divisie,Eerste Divisie,FC Eindhoven,Jong Ajax,BTTS,Both teams to score,0.660,0.660,0.681,1.36,miss,0-3,2026-11-06,manual 00:16,2026-11-06,btts,botd
+2026-11-06,2026-11-06 21:00,Netherlands,LS:holland/eerste-divisie,Eerste Divisie,VVV-Venlo,Jong PSV,BTTS,Both teams to score,0.647,0.647,0.679,1.37,hit,1-1,2026-11-06,manual 00:16,2026-11-06,btts,botd
+2026-11-06,2026-11-06 20:30,Switzerland,LS:switzerland/challenge-league,Challenge League,Kriens,FC Rapperswil-Jona,BTTS,Both teams to score,0.645,0.645,0.673,1.36,miss,1-0,2026-11-06,manual 00:16,2026-11-06,btts,botd
+2026-11-06,2026-11-06 16:15,Qatar,LS:qatar/qatar-stars-league,Qatar Stars League,Al-Arabi,Al-Ahli,BTTS,Both teams to score,0.643,0.643,0.654,1.40,hit,2-2,2026-11-06,manual 00:16,2026-11-06,btts,botd
+2026-11-06,2026-11-06 21:00,Belgium,LS:belgium/national-division-1-vv,National Division 1 VV,KFC Merelbeke,KSK Heist,BTTS,Both teams to score,0.640,0.640,0.604,1.51,hit,2-1,2026-11-06,manual 00:16,2026-11-06,btts,botd
+2026-11-06,2026-11-06 20:00,Germany,LS:germany/regionalliga-nordost,Regionalliga Nordost,BSG Chemie Leipzig,RW Erfurt,BTTS,Both teams to score,0.636,0.636,0.610,1.47,miss,0-2,2026-11-06,manual 00:16,2026-11-06,btts,botd
+2026-11-06,2026-11-06 01:00,Costa Rica,LS:costa-rica/primera-division-apertura,Primera División: Apertura,Inter San Carlos,C.S. Cartagines,O15,Over 1.5 goals,0.797,0.797,0.746,1.26,hit,1-1,2026-11-06,manual 00:41,2026-11-06,,safe
+2026-11-06,2026-11-06 21:45,Italy,LS:italy/serie-a,Serie A,Venezia,Udinese,O15,Over 1.5 goals,0.796,0.796,0.760,1.26,hit,2-1,2026-11-06,manual 01:06,2026-11-06,,safe
+2026-11-06,2026-11-06 21:45,Northern Ireland,LS:northern-ireland/championship,Championship,Ballinamallard United,Rathfriland Rangers,O15,Over 1.5 goals,0.794,0.794,0.765,1.20,miss,0-1,2026-11-06,manual 03:36,2026-11-06,,safe
+2026-11-06,2026-11-06 21:45,Northern Ireland,LS:northern-ireland/premiership,Premiership,Cliftonville,Larne,O15,Over 1.5 goals,0.791,0.791,0.747,1.25,hit,4-2,2026-11-06,manual 05:16,2026-11-06,,safe
+2026-11-06,2026-11-06 20:30,France,LS:france/national-1-group-c,National 1: Group C,Chateauroux,Nimes,O15,Over 1.5 goals,0.790,0.790,0.717,1.28,hit,1-1,2026-11-06,07:00,2026-11-06,,safe
+2026-11-06,2026-11-06 21:45,Northern Ireland,LS:northern-ireland/championship,Championship,Moyola Park,Newry City AFC,O15,Over 1.5 goals,0.812,0.812,0.791,1.16,hit,1-2,2026-11-06,manual 10:16,2026-11-06,,safe
+2026-11-06,2026-11-06 15:00,Israel,LS:israel/liga-leumit,Liga Leumit,Hapoel Rishon LeZion,Hapoel Raanana,O15,Over 1.5 goals,0.790,0.790,0.792,1.18,hit,1-2,2026-11-06,manual 13:11,2026-11-06,,safe
+2026-11-06,2026-11-06 19:30,Austria,LS:austria/2-liga,2. Liga,Amstetten,FC Wacker Innsbruck,O15,Over 1.5 goals,0.790,0.790,0.799,1.18,hit,2-3,2026-11-06,manual 13:11,2026-11-06,,safe
+2026-11-06,2026-11-06 21:00,Netherlands,N1,Eredivisie,Willem II,Zwolle,O15,Over 1.5 goals,0.860,0.860,0.786,1.20,hit,1-1,2026-11-06,manual 13:36,2026-11-06,,safe
+2026-11-06,2026-11-06 21:30,Germany,D1,Bundesliga,Hamburg,M'gladbach,O15,Over 1.5 goals,0.834,0.834,0.771,1.25,hit,3-1,2026-11-06,manual 13:36,2026-11-06,,safe
+2026-11-06,2026-11-06 21:45,Belgium,B1,Pro League,Standard,Beveren,O15,Over 1.5 goals,0.810,0.810,0.786,1.20,hit,3-0,2026-11-06,manual 13:36,2026-11-06,,safe
+2026-11-06,2026-11-06 22:00,England,E1,Championship,Derby,Bolton,O15,Over 1.5 goals,0.796,0.796,0.771,1.22,hit,3-1,2026-11-07,manual 13:36,2026-11-06,,safe
+2026-11-06,2026-11-06 19:30,Germany,D2,2. Bundesliga,Dresden,Greuther Furth,O15,Over 1.5 goals,0.793,0.793,0.786,1.20,hit,3-0,2026-11-06,manual 13:36,2026-11-06,,safe
+2026-11-06,2026-11-06 18:00,Slovakia,LS:slovakia/2-league,2. Liga,FK Pohronie,OFK Banik Lehota Pod Vtacnikom,O15,Over 1.5 goals,0.789,0.789,0.771,1.19,hit,5-1,2026-11-06,manual 14:01,2026-11-06,,safe
+2026-11-06,2026-11-06 21:00,Malta,LS:malta/malta-premier-closing-relegation-group,Malta Premier: Closing Relegation Group,Birzebbuga St. Peters FC,Mosta,O15,Over 1.5 goals,0.789,0.789,0.755,1.22,miss,0-0,2026-11-06,manual 14:01,2026-11-06,,safe
+2026-11-06,2026-11-06 18:00,Azerbaijan,LS:azerbaijan/premier-league,Premier League,FK Neftchi,FC Kapaz,O15,Over 1.5 goals,0.788,0.788,0.796,1.18,miss,1-0,2026-11-06,manual 14:51,2026-11-06,,safe
+2026-11-06,2026-11-06 17:00,Armenia,LS:armenia/premier-league,Premier League,BKMA,FC Alashkert,O15,Over 1.5 goals,0.783,0.783,0.792,1.18,hit,4-1,2026-11-06,manual 14:51,2026-11-06,,safe
+2026-11-06,2026-11-06 19:00,Czech Republic,LS:czech-republic/2nd-league,2nd league,Dukla Praha,Pribram,O15,Over 1.5 goals,0.782,0.782,0.760,1.23,miss,1-0,2026-11-06,manual 14:51,2026-11-06,,safe
+2026-11-06,2026-11-06 19:30,Austria,LS:austria/2-liga,2. Liga,Young Violets,First Vienna FC,O15,Over 1.5 goals,0.782,0.782,0.739,1.27,hit,1-1,2026-11-06,manual 14:51,2026-11-06,,safe
+2026-11-06,2026-11-06 19:00,Croatia,LS:croatia/1st-league,HNL,NK Lokomotiva,Rudes,O15,Over 1.5 goals,0.782,0.782,0.751,1.26,miss,0-1,2026-11-06,17:00,2026-11-06,,safe
+2026-11-06,2026-11-06 22:15,Spain,LS:spain/primera-division-rfef-group-1,Primera Division RFEF: Group 1,Real Aviles Industrial,CD Extremadura 1924,O15,Over 1.5 goals,0.780,0.780,0.738,1.24,hit,5-2,2026-11-07,manual 18:11,2026-11-06,,safe
+2026-11-06,2026-11-06 20:00,Denmark,LS:denmark/1-division,1st Division,AB,Vendsyssel FF,O15,Over 1.5 goals,0.779,0.779,0.791,1.19,hit,3-0,2026-11-06,manual 18:11,2026-11-06,,safe
+2026-11-06,2026-11-06 21:00,Netherlands,LS:holland/eerste-divisie,Eerste Divisie,Heracles,Roda JC Kerkrade,O15,Over 1.5 goals,0.823,0.823,0.807,1.17,hit,5-1,2026-11-06,manual 18:36,2026-11-06,,safe
+2026-11-06,2026-11-06 21:00,France,F2,Ligue 2,Grenoble,Reims,O15,Over 1.5 goals,0.776,0.776,0.718,1.31,hit,3-2,2026-11-06,manual 19:01,2026-11-06,,safe
+2026-11-06,2026-11-06 21:00,France,F2,Ligue 2,Montpellier,Metz,O15,Over 1.5 goals,0.775,0.775,0.791,1.19,hit,2-3,2026-11-06,manual 19:01,2026-11-06,,safe
+2026-11-06,2026-11-06 19:15,Bulgaria,LS:bulgaria/parva-liga,Parva Liga,Botev Plovdiv,Dunav Ruse,O15,Over 1.5 goals,0.775,0.775,0.766,1.22,hit,1-1,2026-11-06,manual 19:01,2026-11-06,,safe
+2026-11-06,2026-11-06 20:00,Sweden,LS:sweden/allsvenskan,Allsvenskan,Hammarby IF,Elfsborg,O15,Over 1.5 goals,0.774,0.774,0.812,1.16,hit,4-1,2026-11-06,manual 19:01,2026-11-06,,safe
+2026-11-06,2026-11-06 21:00,Portugal,LS:portugal/liga-3-group-b,Liga 3: Group B,Santarem,Mafra,O15,Over 1.5 goals,0.770,0.770,0.730,1.26,hit,2-1,2026-11-06,manual 19:01,2026-11-06,,safe
+2026-11-06,2026-11-06 20:00,Denmark,LS:denmark/2nd-division,2nd Division,Thisted,Fremad Amager,O15,Over 1.5 goals,0.766,0.766,0.744,1.24,miss,0-0,2026-11-06,manual 19:26,2026-11-06,,safe
+2026-11-06,2026-11-06 20:30,France,LS:france/national-1-group-c,National 1: Group C,FC Limonest,Andrezieux,O15,Over 1.5 goals,0.763,0.763,0.684,1.34,hit,2-2,2026-11-06,manual 19:26,2026-11-06,,safe
+2026-11-06,2026-11-06 22:00,England,E0,Premier League,Everton,Coventry,O15,Over 1.5 goals,0.750,0.750,0.765,1.26,hit,3-1,2026-11-07,manual 19:26,2026-11-06,,safe
+2026-11-06,2026-11-06 21:00,France,F2,Ligue 2,Dunkerque,Guingamp,O15,Over 1.5 goals,0.746,0.746,0.778,1.21,hit,3-0,2026-11-06,manual 19:51,2026-11-06,,safe
+2026-11-06,2026-11-06 21:00,France,F2,Ligue 2,Nancy,Sochaux,O15,Over 1.5 goals,0.745,0.745,0.731,1.29,miss,1-0,2026-11-06,manual 19:51,2026-11-06,,safe
+2026-11-06,2026-11-06 21:30,Austria,LS:austria/2-liga,2. Liga,FC Admira Wacker Modling,SKN St. Poelten,O15,Over 1.5 goals,0.734,0.734,0.786,1.20,hit,2-2,2026-11-06,manual 19:51,2026-11-06,,safe
+2026-11-06,2026-11-06 21:30,Italy,LS:italy/serie-c-group-a,Serie C: Group A,Alcione,Lumezzane,O15,Over 1.5 goals,0.733,0.733,0.741,1.26,miss,0-1,2026-11-06,manual 19:51,2026-11-06,,safe
+2026-11-06,2026-11-06 20:30,Romania,LS:romania/liga-1,Liga 1,ACS Champions FC Arges,Dinamo Bucuresti,O15,Over 1.5 goals,0.729,0.729,0.710,1.33,hit,2-1,2026-11-06,manual 19:51,2026-11-06,,safe
+2026-11-06,2026-11-06 21:15,Switzerland,LS:switzerland/challenge-league,Challenge League,Aarau,FC Wil 1900,O15,Over 1.5 goals,0.850,0.850,0.812,1.16,hit,0-3,2026-11-06,manual 20:41,2026-11-06,,safe
+2026-11-06,2026-11-06 21:30,Poland,LS:poland/i-liga,I Liga,Odra Opole,Skierniewice,O15,Over 1.5 goals,0.727,0.727,0.776,1.21,hit,3-5,2026-11-06,manual 20:41,2026-11-06,,safe
+2026-11-06,2026-11-06 21:30,Italy,LS:italy/serie-c-group-a,Serie C: Group A,Union Brescia,FC Arzignano Valchiampo,O15,Over 1.5 goals,0.709,0.709,0.713,1.31,hit,3-2,2026-11-06,manual 20:41,2026-11-06,,safe
+2026-11-07,2026-11-07 17:00,Scotland,SC2,League One,Ross County,Peterhead,H,Ross County to win,0.901,0.901,0.830,1.18,pending,,,manual 21:06,2026-11-06,,safe
+2026-11-07,2026-11-07 19:45,Netherlands,N1,Eredivisie,Den Haag,Sparta Rotterdam,O15,Over 1.5 goals,0.878,0.878,0.807,1.17,pending,,,manual 21:06,2026-11-06,o15,safe
+2026-11-08,2026-11-08 17:45,Netherlands,LS:holland/eerste-divisie,Eerste Divisie,FC Emmen,MVV Maastricht,O15,Over 1.5 goals,0.866,0.866,0.805,1.16,pending,,,manual 21:06,2026-11-06,,safe
+2026-11-08,2026-11-08 16:00,Italy,I1,Serie A,Monza,Atalanta,O15,Over 1.5 goals,0.864,0.864,0.815,1.18,pending,,,manual 21:06,2026-11-06,,safe
+2026-11-07,2026-11-07 02:00,Mexico,LS:mexico/liga-premier-serie-a-clausura,Liga Premier: Serie A Clausura,Santiago FC,Halcones Negros,O15,Over 1.5 goals,0.860,0.860,0.756,1.21,hit,4-0,2026-11-07,manual 21:06,2026-11-06,o15,safe
+2026-11-07,2026-11-07 17:00,Belgium,B1,Pro League,Westerlo,Charleroi,O15,Over 1.5 goals,0.855,0.855,0.807,1.17,pending,,,manual 21:06,2026-11-06,o15,safe
+2026-11-26,2026-11-26 22:00,Europa League,LS:europa-league/league-stage,League Stage,Crystal Palace,Real Sociedad,O15,Over 1.5 goals,0.851,0.851,0.794,1.19,pending,,,manual 21:06,2026-11-06,,safe
+2026-11-08,2026-11-08 16:00,Belgium,LS:belgium/national-division-1-vv,National Division 1 VV,Tienen,Hoogstraten,O15,Over 1.5 goals,0.849,0.849,0.772,1.18,pending,,,manual 21:31,2026-11-06,,safe
+2026-11-07,2026-11-07 17:00,England,E1,Championship,Cardiff,Burnley,O15,Over 1.5 goals,0.848,0.848,0.815,1.16,pending,,,manual 21:31,2026-11-06,,safe
+2026-11-07,2026-11-07 17:30,Netherlands,N1,Eredivisie,For Sittard,Telstar,O15,Over 1.5 goals,0.847,0.847,0.794,1.19,pending,,,manual 21:31,2026-11-06,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/northern-premier-division,Northern Premier League,Avro,Warrington Town,O15,Over 1.5 goals,0.846,0.846,0.788,1.16,pending,,,manual 21:31,2026-11-06,,safe
+2026-11-07,2026-11-07 17:00,Scotland,SC3,League Two,Elgin,Dumbarton,O15,Over 1.5 goals,0.845,0.845,0.789,1.18,pending,,,manual 21:56,2026-11-06,,safe
+2026-11-07,2026-11-07 21:45,Belgium,B1,Pro League,RAAL La Louviere,Cercle Brugge,O15,Over 1.5 goals,0.844,0.844,0.738,1.28,pending,,,manual 21:56,2026-11-06,,safe
+2026-11-07,2026-11-07 03:00,New Zealand,LS:new-zealand/national-league-championship,National League Championship,Auckland City FC,Birkenhead United,O15,Over 1.5 goals,0.843,0.843,0.781,1.18,hit,2-2,2026-11-07,manual 21:56,2026-11-06,,safe
+2026-11-07,2026-11-07 16:30,Germany,D1,Bundesliga,Paderborn,Ein Frankfurt,O15,Over 1.5 goals,0.841,0.841,0.819,1.17,pending,,,manual 21:56,2026-11-06,,safe
+2026-11-07,2026-11-07 17:00,Scotland,SC3,League Two,Stranraer,Stirling,O15,Over 1.5 goals,0.840,0.840,0.801,1.17,pending,,,manual 21:56,2026-11-06,,safe
+2026-11-21,2026-11-21 16:00,Italy,LS:italy/serie-a,Serie A,Como 1907,Cagliari,O15,Over 1.5 goals,0.839,0.839,0.794,1.19,pending,,,manual 21:56,2026-11-06,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/southern-premier-division-central,Southern League Premier: Central,Halesowen Town FC,Anstey Nomads,O15,Over 1.5 goals,0.839,0.839,0.791,1.16,pending,,,manual 21:56,2026-11-06,,safe
+2026-11-07,2026-11-07 15:00,Germany,LS:germany/regionalliga-west,Regionalliga West,Bonner SC,FC Guetersloh,O15,Over 1.5 goals,0.838,0.838,0.795,1.16,pending,,,manual 21:56,2026-11-06,,safe
+2026-11-07,2026-11-07 16:00,Sweden,LS:sweden/1st-division-south,Division 1: South,Eskilsminne IF,Aatvidaberg,O15,Over 1.5 goals,0.858,0.858,0.805,1.16,pending,,,manual 22:21,2026-11-06,o15,safe
+2026-11-07,2026-11-07 15:00,Denmark,LS:denmark/3rd-division,3rd Division,Naesby,ASA Aarhus,O15,Over 1.5 goals,0.837,0.837,0.786,1.17,pending,,,manual 00:01,2026-11-07,,safe
+2026-11-07,2026-11-07 15:00,Germany,LS:germany/regionalliga-nordost,Regionalliga Nordost,Chemnitzer FC,Greifswalder FC,O15,Over 1.5 goals,0.836,0.836,0.784,1.17,pending,,,manual 00:01,2026-11-07,,safe
+2026-11-07,2026-11-07 07:00,Japan,LS:japan/j-league-3,J3 League,Nara Club,Kochi United SC,O15,Over 1.5 goals,0.835,0.835,0.778,1.20,hit,5-0,2026-11-07,manual 00:01,2026-11-07,,safe
+2026-11-07,2026-11-07 18:00,Austria,LS:austria/bundesliga,Bundesliga,Austria Lustenau,Grazer AK,O15,Over 1.5 goals,0.835,0.835,0.769,1.23,pending,,,manual 00:01,2026-11-07,,safe
+2026-11-07,2026-11-07 17:30,United Arab Emirates,LS:united-arab-emirates/uae-league,Pro League,Sharjah Cultural Club,Shabab Al-Ahli Dubai FC,O15,Over 1.5 goals,0.833,0.833,0.772,1.21,pending,,,manual 00:01,2026-11-07,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/isthmian-league,Isthmian League Premier Division,Ramsgate,Aveley,O15,Over 1.5 goals,0.833,0.833,0.786,1.17,pending,,,manual 00:01,2026-11-07,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/national-league-south,National League: South,Weston Super Mare,Braintree Town,O15,Over 1.5 goals,0.833,0.833,0.776,1.21,pending,,,manual 00:01,2026-11-07,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/isthmian-league,Isthmian League Premier Division,Carshalton Athletic,Cheshunt,O15,Over 1.5 goals,0.832,0.832,0.791,1.16,pending,,,manual 00:01,2026-11-07,,safe
+2026-11-07,2026-11-07 11:00,Romania,LS:romania/liga-ii,Liga II,Concordia Chiajna,ASA Targu Mures,O15,Over 1.5 goals,0.832,0.832,0.777,1.18,hit,5-0,2026-11-07,manual 00:01,2026-11-07,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/isthmian-league,Isthmian League Premier Division,St.Albans,Welling United,O15,Over 1.5 goals,0.831,0.831,0.765,1.20,pending,,,manual 00:01,2026-11-07,,safe
+2026-11-07,2026-11-07 16:00,Sweden,LS:sweden/1st-division-south,Division 1: South,Laholms FK,Skoevde AIK,O15,Over 1.5 goals,0.831,0.831,0.805,1.16,pending,,,manual 00:01,2026-11-07,,safe
+2026-11-07,2026-11-07 19:00,Norway,LS:norway/eliteserien,Eliteserien,Rosenborg,IK Start,H,Rosenborg to win,0.814,0.814,0.791,1.25,pending,,,manual 00:01,2026-11-07,result,botd
+2026-11-07,2026-11-07 17:00,Armenia,LS:armenia/premier-league,Premier League,FC Noah,Shirak,H,FC Noah to win,0.807,0.807,0.821,1.19,pending,,,manual 00:01,2026-11-07,result,botd
+2026-11-07,2026-11-07 21:45,Italy,I1,Serie A,Roma,Sassuolo,H,Roma to win,0.772,0.772,0.746,1.33,pending,,,manual 00:01,2026-11-07,result,botd
+2026-11-07,2026-11-07 17:00,England,LS:england/national-league-south,National League: South,Ebbsfleet United,Chesham United,H,Ebbsfleet United to win,0.738,0.738,0.741,1.31,pending,,,manual 00:01,2026-11-07,result,botd
+2026-11-07,2026-11-07 03:00,Mexico,LS:mexico/liga-premier-serie-a-clausura,Liga Premier: Serie A Clausura,ACF Zapotlanejo,Real Refineros,H,ACF Zapotlanejo to win,0.732,0.732,0.711,1.35,miss,1-3,2026-11-07,manual 00:01,2026-11-07,result,botd
+2026-11-07,2026-11-07 16:30,Germany,D1,Bundesliga,RB Leipzig,Augsburg,O25,Over 2.5 goals,0.767,0.767,0.748,1.28,pending,,,manual 00:01,2026-11-07,o25,botd
+2026-11-07,2026-11-07 19:00,Germany,LS:germany/regionalliga-nord,Regionalliga Nord,Oldenburg,St.Pauli II,O25,Over 2.5 goals,0.760,0.760,0.689,1.33,pending,,,manual 00:01,2026-11-07,o25,botd
+2026-11-07,2026-11-07 22:00,Netherlands,N1,Eredivisie,Excelsior,Go Ahead Eagles,O25,Over 2.5 goals,0.739,0.739,0.622,1.52,pending,,,manual 00:01,2026-11-07,o25,botd
+2026-11-07,2026-11-07 16:30,Germany,D1,Bundesliga,Mainz,Bayern Munich,O25,Over 2.5 goals,0.730,0.730,0.753,1.28,pending,,,manual 00:01,2026-11-07,o25,botd
+2026-11-07,2026-11-07 19:00,Switzerland,LS:switzerland/super-league,Super League,Luzern,Young Boys,O25,Over 2.5 goals,0.714,0.714,0.752,1.25,pending,,,manual 00:01,2026-11-07,o25,botd
+2026-11-07,2026-11-07 17:00,England,LS:england/isthmian-league,Isthmian League Premier Division,Enfield Town,Whyteleafe,O25,Over 2.5 goals,0.713,0.713,0.684,1.34,pending,,,manual 00:01,2026-11-07,o25,botd
+2026-11-07,2026-11-07 16:00,Sweden,LS:sweden/1st-division-south,Division 1: South,FC Trollhaettan,BK Olympic,O25,Over 2.5 goals,0.710,0.710,0.672,1.39,pending,,,manual 00:01,2026-11-07,o25,botd
+2026-11-07,2026-11-07 05:00,Mexico,LS:mexico/liga-mx-apertura,Liga MX: Apertura,Atlante,Club Santos Laguna,CHO35,Atlante over 3.5 corners,0.779,0.779,0.766,1.22,miss,0-2,2026-11-07,manual 00:01,2026-11-07,corners,botd
+2026-11-07,2026-11-07 03:00,Mexico,LS:mexico/liga-mx-apertura,Liga MX: Apertura,Atletico de San Luis,FC Juarez,CHO35,Atletico de San Luis over 3.5 corners,0.771,0.771,0.785,1.19,hit,0-1,2026-11-07,manual 00:01,2026-11-07,corners,botd
+2026-11-07,2026-11-07 15:45,Poland,LS:poland/ekstraklasa,Ekstraklasa,Slask Wroclaw,Piast Gliwice,CHO35,Slask Wroclaw over 3.5 corners,0.769,0.769,0.717,1.30,pending,,,manual 00:01,2026-11-07,corners,botd
+2026-11-07,2026-11-07 17:00,England,E1,Championship,Birmingham,Swansea,CHO35,Birmingham over 3.5 corners,0.766,0.766,0.754,1.24,pending,,,manual 00:01,2026-11-07,corners,botd
+2026-11-07,2026-11-07 16:00,Sweden,LS:sweden/superettan,Superettan,Helsingborgs IF,Falkenbergs FF,CHO35,Helsingborgs IF over 3.5 corners,0.764,0.764,0.725,1.29,pending,,,manual 00:01,2026-11-07,corners,botd
+2026-11-07,2026-11-07 14:30,England,E1,Championship,Portsmouth,Stoke,CHO35,Portsmouth over 3.5 corners,0.763,0.763,0.741,1.26,pending,,,manual 00:01,2026-11-07,corners,botd
+2026-11-07,2026-11-07 15:00,Spain,SP1,La Liga,Malaga,Santander,CHO35,Malaga over 3.5 corners,0.763,0.763,0.749,1.26,pending,,,manual 00:01,2026-11-07,corners,botd
+2026-11-07,2026-11-07 16:00,Germany,LS:germany/regionalliga-nord,Regionalliga Nord,Hannover 96 II,SC Weiche Flensburg,BTTS,Both teams to score,0.707,0.707,0.672,1.34,pending,,,manual 00:01,2026-11-07,btts,botd
+2026-11-07,2026-11-07 16:00,Netherlands,LS:holland/tweede-divisie,Tweede Divisie,Katwijk,GVVV Veenendaal,BTTS,Both teams to score,0.698,0.698,0.656,1.39,pending,,,manual 00:01,2026-11-07,btts,botd
+2026-11-07,2026-11-07 17:00,England,LS:england/isthmian-league,Isthmian League Premier Division,Three Bridges,Brentwood Town,BTTS,Both teams to score,0.696,0.696,0.665,1.36,pending,,,manual 00:01,2026-11-07,btts,botd
+2026-11-07,2026-11-07 23:00,USA,LS:usa/major-league-soccer-2026,MLS,Inter Miami CF,Charlotte,BTTS,Both teams to score,0.686,0.686,0.671,1.42,pending,,,manual 00:01,2026-11-07,btts,botd
+2026-11-07,2026-11-07 16:00,Netherlands,LS:holland/tweede-divisie,Tweede Divisie,Jong Almere City FC,Kozakken Boys,BTTS,Both teams to score,0.686,0.686,0.658,1.38,pending,,,manual 00:01,2026-11-07,btts,botd
+2026-11-07,2026-11-07 19:30,Germany,D1,Bundesliga,Stuttgart,Werder Bremen,BTTS,Both teams to score,0.681,0.681,0.682,1.40,pending,,,manual 00:01,2026-11-07,btts,botd
+2026-11-07,2026-11-07 23:00,USA,LS:usa/major-league-soccer-2026,MLS,Orlando City,New England Revolution,BTTS,Both teams to score,0.678,0.678,0.694,1.37,pending,,,manual 00:01,2026-11-07,btts,botd
+2026-11-07,2026-11-07 16:00,Italy,I1,Serie A,Cagliari,Frosinone,O15,Over 1.5 goals,0.831,0.831,0.828,1.16,pending,,,manual 00:51,2026-11-07,,safe
+2026-11-07,2026-11-07 16:00,Sweden,LS:sweden/1st-division-south,Division 1: South,Haessleholms IF,Aengelholms FF,O15,Over 1.5 goals,0.830,0.830,0.776,1.21,pending,,,manual 01:41,2026-11-07,,safe
+2026-11-07,2026-11-07 09:00,Japan,LS:japan/j-league,J1 League,Kashiwa Reysol,Kawasaki Frontale,O15,Over 1.5 goals,0.829,0.829,0.831,1.16,hit,2-1,2026-11-07,manual 03:21,2026-11-07,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/isthmian-league,Isthmian League Premier Division,Dulwich Hamlet,Lewes,O15,Over 1.5 goals,0.828,0.828,0.777,1.18,pending,,,manual 04:11,2026-11-07,,safe
+2026-11-07,2026-11-07 23:00,USA,LS:usa/major-league-soccer-2026,MLS,FC Cincinnati,Nashville SC,O15,Over 1.5 goals,0.840,0.840,0.831,1.16,pending,,,manual 05:26,2026-11-07,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/isthmian-league-north-division,Isthmian League: North Division,Cambridge City,Wroxham,O15,Over 1.5 goals,0.875,0.875,0.779,1.18,pending,,,manual 06:41,2026-11-07,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/isthmian-league-north-division,Isthmian League: North Division,Tilbury,Concord Rangers,O15,Over 1.5 goals,0.853,0.853,0.771,1.19,pending,,,manual 06:41,2026-11-07,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/isthmian-league-north-division,Isthmian League: North Division,Gorleston,Hashtag United,O15,Over 1.5 goals,0.851,0.851,0.771,1.19,pending,,,manual 06:41,2026-11-07,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/isthmian-league-north-division,Isthmian League: North Division,Brightlingsea Regent,Fakenham Town,O15,Over 1.5 goals,0.832,0.832,0.765,1.20,pending,,,manual 06:41,2026-11-07,,safe
+2026-11-07,2026-11-07 23:00,USA,LS:usa/major-league-soccer-2026,MLS,CF Montreal,Vancouver Whitecaps,O15,Over 1.5 goals,0.830,0.830,0.828,1.16,pending,,,manual 07:56,2026-11-07,,safe
+2026-11-07,2026-11-07 14:00,Bosnia and Herzegovina,LS:bosnia/1st-league-rs,1st League: RS,Majevica,Omarska,O15,Over 1.5 goals,0.828,0.828,0.782,1.17,pending,,,manual 10:51,2026-11-07,,safe
+2026-11-07,2026-11-07 12:30,Estonia,LS:estonia/meistriliiga,Meistriliiga,Tammeka,Parnu JK Vaprus,O15,Over 1.5 goals,0.844,0.844,0.801,1.17,pending,,,manual 11:41,2026-11-07,,safe
+2026-11-07,2026-11-07 17:00,England,LS:england/southern-premier-division-south,Southern League Premier: South,Chippenham Town,Gosport Borough,O15,Over 1.5 goals,0.828,0.828,0.786,1.17,pending,,,manual 12:31,2026-11-07,,safe
