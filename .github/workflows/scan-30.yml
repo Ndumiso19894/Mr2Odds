@@ -29,7 +29,7 @@ jobs:
     #   indefinitely, without relying on the broken scheduler.
     # Stopping the chain: rename this file or disable the workflow in the Actions tab.
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     concurrency:
       group: scan-chain-gate
       cancel-in-progress: true
@@ -42,7 +42,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           python3 - "${GITHUB_OUTPUT}" <<'EOF'
-          import datetime, json, os, sys, urllib.request
+          import datetime, json, os, sys, time, urllib.request
           out = sys.argv[1]
           token, repo = os.environ["GH_TOKEN"], os.environ["GITHUB_REPOSITORY"]
           me = int(os.environ["GITHUB_RUN_ID"])
@@ -61,6 +61,12 @@ jobs:
               last = max(last, ts)
           age = datetime.datetime.now(datetime.timezone.utc).timestamp() - last
           print("last run of this workflow started %.0fs ago" % age)
+          # Heartbeat pacing: instead of spinning a fresh ~10 s run every ~10 s until the next
+          # real scan is due, this job sleeps in 5-min steps. Fewer runs, same 25-min cadence.
+          if age < 1500:
+              z = min(300.0, 1500.0 - age)
+              print("heartbeat: sleeping %.0fs before dispatching the next run" % z)
+              time.sleep(z)
           with open(out, "a") as f:
               f.write("skip=%s\n" % ("true" if age < 1500 else "false"))
           EOF
