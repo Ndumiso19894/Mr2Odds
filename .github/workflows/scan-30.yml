@@ -33,6 +33,8 @@ jobs:
     concurrency:
       group: scan-chain-gate
       cancel-in-progress: true
+    outputs:
+      skip: ${{ steps.check.outputs.skip }}
     steps:
       - name: Cadence check
         id: check
