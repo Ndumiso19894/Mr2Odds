@@ -45,30 +45,40 @@ jobs:
           import datetime, json, os, sys, time, urllib.request
           out = sys.argv[1]
           token, repo = os.environ["GH_TOKEN"], os.environ["GITHUB_REPOSITORY"]
-          me = int(os.environ["GITHUB_RUN_ID"])
-          req = urllib.request.Request(
-              "https://api.github.com/repos/%s/actions/runs?per_page=15" % repo,
-              headers={"Authorization": "token " + token, "Accept": "application/vnd.github+json"})
-          runs = json.load(urllib.request.urlopen(req))["workflow_runs"]
-          last = 0.0
-          for r in runs:
-              if r["id"] == me or r["name"] != "PlayReport scan (every 30 min)":
-                  continue
-              started = r.get("run_started_at") or r.get("created_at")
-              if not started:
-                  continue
-              ts = datetime.datetime.fromisoformat(started.replace("Z", "+00:00")).timestamp()
-              last = max(last, ts)
-          age = datetime.datetime.now(datetime.timezone.utc).timestamp() - last
-          print("last run of this workflow started %.0fs ago" % age)
-          # Heartbeat pacing: instead of spinning a fresh ~10 s run every ~10 s until the next
-          # real scan is due, this job sleeps in 5-min steps. Fewer runs, same 25-min cadence.
-          if age < 1500:
+          # The last REAL scan is when data/app/meta.json was generated (SAST = UTC+2).
+          # (The heartbeat runs of this workflow are not scans and must not reset the clock.)
+          age = None
+          try:
+              req = urllib.request.Request(
+                  "https://api.github.com/repos/%s/contents/data/app/meta.json?ref=data" % repo,
+                  headers={"Authorization": "token " + token, "Accept": "application/vnd.github+json"})
+              meta = json.load(urllib.request.urlopen(req))
+              import base64
+              doc = json.loads(base64.b64decode(meta["content"]))
+              gen = doc.get("generated") or ""
+              if gen:
+                  ts = datetime.datetime.strptime(gen, "%Y-%m-%d %H:%M")
+                  ts = ts.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=2)))
+                  age = datetime.datetime.now(datetime.timezone.utc).timestamp() - ts.timestamp()
+                  print("last real scan (meta.json generated): %s SAST -> %.0fs ago" % (gen, age))
+              else:
+                  print("meta.json has no generated field")
+          except Exception as e:  # noqa: BLE001 — fail safe: run a real scan
+              print("could not read last-scan time (%s) — running a real scan" % e)
+          if age is None:
+              with open(out, "a") as f:
+                  f.write("skip=false\n")
+          elif age < 1500:
+              # Heartbeat pacing: sleep in 5-min steps instead of spinning a fresh ~10 s run
+              # every ~10 s until the next real scan is due. Fewer runs, same 25-min cadence.
               z = min(300.0, 1500.0 - age)
               print("heartbeat: sleeping %.0fs before dispatching the next run" % z)
               time.sleep(z)
-          with open(out, "a") as f:
-              f.write("skip=%s\n" % ("true" if age < 1500 else "false"))
+              with open(out, "a") as f:
+                  f.write("skip=true\n")
+          else:
+              with open(out, "a") as f:
+                  f.write("skip=false\n")
           EOF
 
       - name: Dispatch next scan (chain)
