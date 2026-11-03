@@ -35,10 +35,10 @@ object Net {
         }
         try {
             val r = request(url, userAgent, accept, etag, modified)
-            slot.complete(r)
+            own.complete(r)
             return r
         } catch (e: Exception) {
-            slot.complete(Response(0, e.message ?: "network error"))
+            own.complete(Response(0, e.message ?: "network error"))
             return Response(0, e.message ?: "network error")
         } finally {
             pending.remove(key)
