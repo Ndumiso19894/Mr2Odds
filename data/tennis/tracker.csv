@@ -1,0 +1,143 @@
+date,tournament,round,surface,player_a,player_b,market,selection,line,model_probability,fair_odds,bookmaker_odds,implied,edge_pp,result,won,match_id,data_quality,recorded_at,settled_at,kind
+2026-11-03,Paris Masters,,Hard,Ben Shelton,Cameron Norrie,p1_games,under,14.5,0.6956,1.44,1.41,0.6651,3.1,6-3/6-4,1,1914741,100,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,day
+2026-11-03,Paris Masters,,Hard,Ben Shelton,Cameron Norrie,winner,player_a,,0.652,1.53,1.39,0.6938,-4.2,6-3/6-4,1,1914741,100,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-03,Paris Masters,,Hard,Jan-Lennard Struff,Arthur Gea,p2_games,over,11.5,0.7637,1.31,1.32,0.708,5.6,7-6/6-3,0,1914535,100,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,strong+day
+2026-11-03,Paris Masters,,Hard,Jan-Lennard Struff,Arthur Gea,p1_games,under,13.5,0.7028,1.42,1.48,0.6281,7.5,7-6/6-3,1,1914535,100,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,strong
+2026-11-03,Paris Masters,,Hard,Jan-Lennard Struff,Arthur Gea,winner,player_b,,0.6083,1.64,1.83,0.5259,8.2,7-6/6-3,0,1914535,100,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,highlight+favourite
+2026-11-03,Paris Masters,,Hard,Casper Ruud,Rafael Jodar,total_games,over,19.5,0.684,1.46,1.34,0.7112,-2.7,6-3/6-4,0,1914740,100,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,day
+2026-11-03,Paris Masters,,Hard,Casper Ruud,Rafael Jodar,winner,player_b,,0.5938,1.68,1.52,0.6311,-3.7,6-3/6-4,0,1914740,100,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-03,"Bratislava 2, Slovakia",,Hard,Dalibor Svrcina,Norbert Gombos,winner,player_a,,0.7767,1.29,1.4,0.6667,11.0,4-6/6-1/6-1,1,1914315,100,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,strong+day+favourite
+2026-11-03,"Bratislava 2, Slovakia",,Hard,Dalibor Svrcina,Norbert Gombos,p2_games,under,11.5,0.6264,1.6,1.83,0.5054,12.1,4-6/6-1/6-1,1,1914315,100,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,highlight
+2026-11-03,"Bratislava 2, Slovakia",,Hard,Kimmer Coppejans,Jonas Forejtek,p1_games,over,11.5,0.7424,1.35,1.62,0.5703,17.2,6-4/7-5,1,1914748,100,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,strong+day
+2026-11-03,"Bratislava 2, Slovakia",,Hard,Kimmer Coppejans,Jonas Forejtek,winner,player_a,,0.59,1.69,2.3,0.4057,18.4,6-4/7-5,1,1914748,100,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,highlight+favourite
+2026-11-03,"Bratislava 2, Slovakia",,Hard,Shintaro Mochizuki,Nicolai Budkov Kjaer,winner,player_b,,0.5896,1.7,1.53,0.6107,-2.1,3-6/2-6,1,1914313,100,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-03,"Charlottesville, USA",,Hard,Andrew Fenty,Darwin Blanch,winner,player_b,,0.776,1.29,1.23,0.7602,1.6,4-6/3-6,1,1914833,100,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-03,"Charlottesville, USA",,Hard,Andres Santamarta Roig,Clement Chidekh,winner,player_b,,0.8181,1.22,1.05,0.8889,-7.1,1-6/2-6,1,1914464,88,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-03,"Charlottesville, USA",,Hard,Marcos Giron,Dylan Dietrich,winner,player_b,,0.5731,1.74,1.47,0.6343,-6.1,6-2/6-4,0,1914465,94,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-03,"Charlottesville, USA",,Hard,Max Hans Rehberg,Trevor Svajda,winner,player_a,,0.6002,1.67,1.56,0.599,0.1,6-4/3-6/7-5,1,1914472,100,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,day+favourite
+2026-11-03,"Charlottesville, USA",,Hard,Alexis Galarneau,Daniel Milavsky,winner,player_a,,0.6278,1.59,1.88,0.4973,13.0,6-7/3-6,0,1914834,100,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,day+highlight+favourite
+2026-11-04,"Charlottesville, USA",,Hard,James Kent Trotter,Michael Zheng,winner,player_b,,0.7853,1.27,1.29,0.7249,6.0,,,1914835,94,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Charlottesville, USA",,Hard,Harry Wendelken,Andres Andrade,winner,player_a,,0.5327,1.88,1.75,0.5346,-0.2,,,1914473,100,2026-11-03 17:28 UTC,,favourite
+2026-11-03,"Costa do Sauipe, Brazil",,Clay,Filip Misolic,Juan Pablo Varillas,winner,player_a,,0.6808,1.47,1.56,0.599,8.2,6-7/6-2/6-3,1,1914837,94,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,day+highlight+favourite
+2026-11-03,"Costa do Sauipe, Brazil",,Clay,Lucas Da Silva,Lautaro Midon,winner,player_b,,0.7836,1.28,1.41,0.6651,11.8,6-7/3-6,1,1914486,69,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-03,"Costa do Sauipe, Brazil",,Clay,Rafael Tosetto,Franco Roncadelli,winner,player_b,,0.8269,1.21,1.11,0.8394,-1.2,5-7/7-5/1-6,1,1914839,97,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-03,"Costa do Sauipe, Brazil",,Clay,Daniel Galan,Gonzalo Bueno,p2_games,over,11.5,0.6799,1.47,1.57,0.5901,9.0,6-4/5-5,void,1914841,94,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,day
+2026-11-03,"Costa do Sauipe, Brazil",,Clay,Daniel Galan,Gonzalo Bueno,winner,player_b,,0.5338,1.87,2.06,0.4536,8.0,6-4/5-5,0,1914841,94,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-03,"Costa do Sauipe, Brazil",,Clay,Joao Lucas Da Silva,Santiago Rodriguez Taverna,winner,player_a,,0.7576,1.32,1.37,0.6829,7.5,7-6/6-2,1,1914840,81,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-03,"Costa do Sauipe, Brazil",,Clay,Eduardo Ribeiro,Luis Miguel,winner,player_b,,0.5313,1.88,1.36,0.6881,-15.7,6-3/6-1,0,1914842,78,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-04,"Costa do Sauipe, Brazil",,Clay,Facundo Acosta,Matheus Pucinelli de Almeida,winner,player_a,,0.6993,1.43,1.56,0.5979,10.1,6-3/6-4,1,1914482,94,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,day+highlight+favourite
+2026-11-04,"Costa do Sauipe, Brazil",,Clay,Luis Felipe Miguel,Igor Ribeiro Marcondes,winner,player_b,,0.778,1.29,1.37,0.6829,9.5,5-7/3-6,1,1914843,78,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-04,"Costa do Sauipe, Brazil",,Clay,Marco Cecchinato,Francisco Comesana,p1_games,over,11.5,0.6064,1.65,1.91,0.4838,12.3,,,1914484,100,2026-11-03 17:28 UTC,,day+highlight
+2026-11-04,"Costa do Sauipe, Brazil",,Clay,Marco Cecchinato,Francisco Comesana,winner,player_b,,0.5681,1.76,1.38,0.6776,-10.9,,,1914484,100,2026-11-03 17:28 UTC,,favourite
+2026-11-03,"Villa Maria, Argentina",,Clay,Juan Bautista Torres,Nicolas Bruna,winner,player_a,,0.8979,1.11,1.06,0.8855,1.2,,,1914805,91,2026-11-03 17:28 UTC,,favourite
+2026-11-03,"Villa Maria, Argentina",,Clay,Valentino Grippo,Genaro Alberto Olivieri,winner,player_b,,0.7236,1.38,1.03,0.9144,-19.1,2-6/2-6,1,1914451,53,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-03,"Villa Maria, Argentina",,Clay,Dante Pagani,Murkel Dellien,winner,player_b,,0.6358,1.57,1.5,0.6231,1.3,2-6/6-2/3-6,1,1914449,66,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-03,"Villa Maria, Argentina",,Clay,Franco Agamenone,Ignacio Monzon,winner,player_a,,0.7278,1.37,1.24,0.754,-2.6,,,1914453,100,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Villa Maria, Argentina",,Clay,Federico Coria,Ivan Dreycopp,winner,player_a,,0.7794,1.28,1.21,0.7721,0.7,,,1914807,53,2026-11-03 17:28 UTC,,favourite
+2026-11-03,"Cali, Colombia",,Clay,Rebeka Masarova,Alice Tubello,winner,player_b,,0.5406,1.85,1.99,0.4693,7.1,3-6/0-6,1,1914555,94,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-03,"Cali, Colombia",,Clay,Maria Carle,Despina Papamichail,winner,player_a,,0.6041,1.66,1.35,0.6897,-8.6,2-6/7-5/4-6,0,1914561,88,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,day+favourite
+2026-11-03,"Cali, Colombia",,Clay,Tamara Zidansek,Bianca Andreescu,winner,player_b,,0.6733,1.49,1.42,0.6595,1.4,2-6/3-6,1,1914558,94,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,day+favourite
+2026-11-03,"Cali, Colombia",,Clay,Julia Grabher,Laura Pigossi,winner,player_a,,0.7538,1.33,1.18,0.7958,-4.2,3-6/6-3/6-2,1,1914562,94,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-03,"Cali, Colombia",,Clay,Sofia Costoulas,Marina Bassols Ribera,winner,player_b,,0.5247,1.91,1.42,0.6595,-13.5,2-6/0-6,1,1914556,91,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-03,"Italy, Taranto",,N/A,Maxim Mrva,Michele Ribecai,winner,player_a,,0.5842,1.71,1.62,0.577,0.7,6-4/7-5,1,1914018,88,2026-11-03 17:28 UTC,2026-11-04 00:17 UTC,favourite
+2026-11-04,Paris Masters,,Hard,Arthur Fils,Tomas Machac,winner,player_a,,0.7419,1.35,1.48,0.6501,9.2,,,1914750,100,2026-11-03 17:28 UTC,,strong+day+favourite
+2026-11-04,Paris Masters,,Hard,Arthur Fils,Tomas Machac,p2_games,under,11.5,0.5554,1.8,2.07,0.4509,10.4,,,1914750,100,2026-11-03 17:28 UTC,,highlight
+2026-11-04,Paris Masters,,Hard,Ignacio Buse,Daniil Medvedev,p2_games,under,13.5,0.7332,1.36,1.33,0.6998,3.3,,,1914719,100,2026-11-03 17:28 UTC,,strong+day
+2026-11-04,Paris Masters,,Hard,Ignacio Buse,Daniil Medvedev,winner,player_b,,0.82,1.22,1.14,0.8403,-2.0,,,1914719,100,2026-11-03 17:28 UTC,,favourite
+2026-11-04,Paris Masters,,Hard,Matteo Berrettini,Ugo Humbert,winner,player_a,,0.523,1.91,1.99,0.4831,4.0,,,1915000,100,2026-11-03 17:28 UTC,,favourite
+2026-11-04,Paris Masters,,Hard,Mattia Bellucci,Arthur Rinderknech,p2_games,over,11.5,0.7044,1.42,1.43,0.6538,5.1,,,1914972,100,2026-11-03 17:28 UTC,,strong+day
+2026-11-04,Paris Masters,,Hard,Mattia Bellucci,Arthur Rinderknech,winner,player_b,,0.502,1.99,2.14,0.4485,5.4,,,1914972,100,2026-11-03 17:28 UTC,,favourite
+2026-11-04,Paris Masters,,Hard,Novak Djokovic,Rinky Hijikata,winner,player_a,,0.9003,1.11,1.15,0.8392,6.1,,,1915016,100,2026-11-03 17:28 UTC,,favourite
+2026-11-04,Paris Masters,,Hard,Nuno Borges,Karen Khachanov,p1_games,over,10.5,0.6994,1.43,1.59,0.587,11.2,,,1914988,100,2026-11-03 17:28 UTC,,day
+2026-11-04,Paris Masters,,Hard,Nuno Borges,Karen Khachanov,p1_games,over,11.5,0.6723,1.49,1.69,0.5517,12.1,,,1914988,100,2026-11-03 17:28 UTC,,highlight
+2026-11-04,Paris Masters,,Hard,Nuno Borges,Karen Khachanov,winner,player_b,,0.5224,1.91,1.49,0.6486,-12.6,,,1914988,100,2026-11-03 17:28 UTC,,favourite
+2026-11-04,Paris Masters,,Hard,Tomas Etcheverry,Alex de Minaur,p2_games,under,13.5,0.7216,1.39,1.44,0.6479,7.4,,,1914980,94,2026-11-03 17:28 UTC,,strong+day
+2026-11-04,Paris Masters,,Hard,Tomas Etcheverry,Alex de Minaur,p1_games,under,9.5,0.5724,1.75,2.05,0.4562,11.6,,,1914980,94,2026-11-03 17:28 UTC,,highlight
+2026-11-04,Paris Masters,,Hard,Tomas Etcheverry,Alex de Minaur,winner,player_b,,0.8161,1.23,1.29,0.744,7.2,,,1914980,94,2026-11-03 17:28 UTC,,favourite
+2026-11-04,Chennai Open,,Hard,Robin Montgomery,Jeline Vandromme,winner,player_b,,0.5463,1.83,2.24,0.4286,11.8,,,1914953,78,2026-11-03 17:28 UTC,,favourite
+2026-11-04,Chennai Open,,Hard,Janice Tjen,Joanna Garland,winner,player_a,,0.5247,1.91,1.43,0.6735,-14.9,,,1914975,94,2026-11-03 17:28 UTC,,favourite
+2026-11-04,Prudential Hong Kong Tennis Open,,Hard,Antonia Ruzic,Alina Charaeva,winner,player_b,,0.5824,1.72,2.01,0.4779,10.4,,,1913800,94,2026-11-03 17:28 UTC,,highlight+favourite
+2026-11-04,Prudential Hong Kong Tennis Open,,Hard,Leylah Fernandez,Sofia Kenin,winner,player_a,,0.8107,1.23,1.33,0.7218,8.9,,,1913805,100,2026-11-03 17:28 UTC,,strong+day+favourite
+2026-11-04,Prudential Hong Kong Tennis Open,,Hard,Leylah Fernandez,Sofia Kenin,p1_games,under,13.5,0.7716,1.3,1.31,0.7127,5.9,,,1913805,100,2026-11-03 17:28 UTC,,strong
+2026-11-04,Prudential Hong Kong Tennis Open,,Hard,Leylah Fernandez,Sofia Kenin,p2_games,under,9.5,0.6203,1.61,1.86,0.5027,11.8,,,1913805,100,2026-11-03 17:28 UTC,,highlight
+2026-11-04,Prudential Hong Kong Tennis Open,,Hard,Claire Liu,Katie Boulter,winner,player_b,,0.6871,1.46,1.61,0.5975,9.0,,,1914627,94,2026-11-03 17:28 UTC,,day+highlight+favourite
+2026-11-04,Prudential Hong Kong Tennis Open,,Hard,Talia Gibson,Aliaksandra Sasnovich,p2_games,under,13.5,0.7428,1.35,1.32,0.7112,3.2,,,1914894,100,2026-11-03 17:28 UTC,,strong+day
+2026-11-04,Prudential Hong Kong Tennis Open,,Hard,Talia Gibson,Aliaksandra Sasnovich,p1_games,over,11.5,0.6282,1.59,1.81,0.5173,11.1,,,1914894,100,2026-11-03 17:28 UTC,,highlight
+2026-11-04,Prudential Hong Kong Tennis Open,,Hard,Talia Gibson,Aliaksandra Sasnovich,winner,player_b,,0.5064,1.97,1.54,0.6235,-11.7,,,1914894,100,2026-11-03 17:28 UTC,,favourite
+2026-11-04,Prudential Hong Kong Tennis Open,,Hard,Maya Joint,Maria Sakkari,p2_games,under,13.5,0.7389,1.35,1.32,0.7112,2.8,,,1914895,100,2026-11-03 17:28 UTC,,strong+day
+2026-11-04,Prudential Hong Kong Tennis Open,,Hard,Maya Joint,Maria Sakkari,winner,player_b,,0.6281,1.59,1.5,0.6429,-1.5,,,1914895,100,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Bratislava 2, Slovakia",,Hard,Vitaliy Sachko,Otto Virtanen,winner,player_b,,0.6431,1.55,1.4,0.6667,-2.4,,,1914316,100,2026-11-03 17:28 UTC,,day+favourite
+2026-11-04,"Bratislava 2, Slovakia",,Hard,Matej Dodig,Michal Krajci,winner,player_a,,0.8752,1.14,1.1,0.8493,2.6,,,1914742,97,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Bratislava 2, Slovakia",,Hard,Lukas Pokorny,Toby Samuel,winner,player_b,,0.7841,1.28,1.18,0.7923,-0.8,,,1914317,100,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Bratislava 2, Slovakia",,Hard,Sascha Gueymard-Wayenburg,Zsombor Piros,winner,player_b,,0.6174,1.62,2.1,0.4444,17.3,,,1914997,100,2026-11-03 17:28 UTC,,highlight+favourite+day
+2026-11-04,"Bratislava 2, Slovakia",,Hard,Jerome Kym,Luka Pavlovic,winner,player_a,,0.725,1.38,1.33,0.7031,2.2,,,1914991,100,2026-11-03 17:28 UTC,,strong+day+favourite
+2026-11-04,"Bratislava 2, Slovakia",,Hard,Nishesh Basavareddy,Mika Brunold,winner,player_a,,0.6021,1.66,1.51,0.6196,-1.8,,,1914977,100,2026-11-03 17:28 UTC,,day+favourite
+2026-11-04,"Charlottesville, USA",,Hard,Liam Draxl,Maks Kasnikowski,winner,player_a,,0.6442,1.55,1.79,0.5214,12.3,,,1914471,100,2026-11-03 17:28 UTC,,day+highlight+favourite
+2026-11-04,"Charlottesville, USA",,Hard,Murphy Cassone,Stefan Kozlov,winner,player_a,,0.5758,1.74,1.76,0.5307,4.5,,,1915013,100,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Taipei, Taiwan",,Hard,Charles Broom,Liam Broady,winner,player_b,,0.5511,1.81,2.03,0.4601,9.1,,,1913879,100,2026-11-03 17:28 UTC,,highlight+favourite
+2026-11-04,"Taipei, Taiwan",,Hard,Carl Overbeck,Chun-Hsin Tseng,winner,player_b,,0.6882,1.45,1.44,0.6479,4.0,,,1913888,94,2026-11-03 17:28 UTC,,day+favourite
+2026-11-04,"Taipei, Taiwan",,Hard,Yaroslav Demin,Alexandre Muller,winner,player_b,,0.7787,1.28,1.51,0.6187,16.0,,,1913873,94,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Taipei, Taiwan",,Hard,Jan Kumstat,Billy Harris,winner,player_a,,0.535,1.87,1.78,0.5253,1.0,,,1914889,100,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Taipei, Taiwan",,Hard,Yuta Shimizu,August Holmgren,winner,player_b,,0.5202,1.92,1.64,0.5707,-5.0,,,1914891,100,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Villa Maria, Argentina",,Clay,Federico Aguilar Cardozo,Nicolas Kicker,winner,player_b,,0.7484,1.34,1.15,0.813,-6.5,,,1915011,94,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Villa Maria, Argentina",,Clay,Joaquin Aguilar Cardozo,Juan Pablo Ficovich,winner,player_a,,0.6333,1.58,1.45,0.6463,-1.3,,,1914455,100,2026-11-03 17:28 UTC,,day+favourite
+2026-11-04,"Villa Maria, Argentina",,Clay,Lucio Ratti,Carlos Maria Zarate,winner,player_b,,0.6142,1.63,1.81,0.5173,9.7,,,1914844,100,2026-11-03 17:28 UTC,,day+highlight+favourite
+2026-11-04,"Cali, Colombia",,Clay,Leolia Jeanjean,Carolina M. Alves,winner,player_a,,0.7973,1.25,1.22,0.764,3.3,,,1914819,88,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Cali, Colombia",,Clay,Leyre Romero Gormaz,Solana Sierra,winner,player_b,,0.52,1.92,1.87,0.5,2.0,,,1914830,94,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Italy, Taranto",,N/A,Adrian Andreev,Jacopo Vasami,winner,player_b,,0.5935,1.69,2.05,0.4562,13.7,,,1915019,81,2026-11-03 17:28 UTC,,highlight+favourite
+2026-11-04,"Italy, Taranto",,N/A,Felix Gill,Marcus Walters,winner,player_a,,0.793,1.26,1.22,0.7663,2.7,,,1915017,72,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Italy, Taranto",,N/A,Leonardo Rossi,Remy Bertola,winner,player_b,,0.8105,1.23,1.25,0.7475,6.3,,,1915015,81,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Italy, Taranto",,N/A,Loann Massard,Thomas Faurel,winner,player_b,,0.6653,1.5,1.25,0.7449,-8.0,,,1915018,78,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Italy, Taranto",,N/A,Filippo Romano,Peter Makk,winner,player_a,,0.6877,1.45,1.47,0.6388,4.9,,,1915014,88,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Luanda, Angola",,N/A,Diana Martynov,Yasmine Kabbaj,winner,player_b,,0.6059,1.65,1.41,0.6651,-5.9,,,1914801,56,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Luanda, Angola",,N/A,Suzan Lamens,Kristina Kroitor,winner,player_a,,0.6089,1.64,1.1,0.8533,-24.4,,,1914779,47,2026-11-03 17:28 UTC,,favourite
+2026-11-04,"Luanda, Angola",,N/A,Wozuko Mdlulwa,Noma Noha Akugue,winner,player_b,,0.7223,1.38,1.06,0.883,-16.1,,,1914776,69,2026-11-03 17:28 UTC,,favourite
+2026-11-04,Paris Masters,,Hard,Quentin Halys,Frances Tiafoe,p2_games,under,14.5,0.7043,1.42,1.44,0.6479,5.6,,,1914971,100,2026-11-04 00:17 UTC,,strong+day
+2026-11-04,Paris Masters,,Hard,Quentin Halys,Frances Tiafoe,p1_games,under,12.5,0.5822,1.72,2.05,0.4562,12.6,,,1914971,100,2026-11-04 00:17 UTC,,highlight
+2026-11-04,Paris Masters,,Hard,Quentin Halys,Frances Tiafoe,winner,player_b,,0.6906,1.45,1.69,0.57,12.1,,,1914971,100,2026-11-04 00:17 UTC,,favourite
+2026-11-04,Paris Masters,,Hard,Luca Van Assche,Learner Tien,winner,player_b,,0.7032,1.42,1.48,0.6501,5.3,,,1914996,100,2026-11-04 00:17 UTC,,strong+day+highlight+favourite
+2026-11-04,Paris Masters,,Hard,Alexander Zverev,Lorenzo Musetti,p2_games,under,13.5,0.7173,1.39,1.41,0.6651,5.2,,,1914699,100,2026-11-04 00:17 UTC,,strong+day
+2026-11-04,Paris Masters,,Hard,Alexander Zverev,Lorenzo Musetti,winner,player_a,,0.6699,1.49,1.41,0.6839,-1.4,,,1914699,100,2026-11-04 00:17 UTC,,favourite
+2026-11-04,Paris Masters,,Hard,Novak Djokovic,Rinky Hijikata,p1_games,under,13.5,0.7819,1.28,1.51,0.6196,16.2,,,1915016,100,2026-11-04 00:17 UTC,,strong+day
+2026-11-04,Paris Masters,,Hard,Novak Djokovic,Rinky Hijikata,total_games,under,23.5,0.7578,1.32,1.61,0.5807,17.7,,,1915016,100,2026-11-04 00:17 UTC,,strong
+2026-11-04,Paris Masters,,Hard,Novak Djokovic,Rinky Hijikata,p1_games,under,12.5,0.5929,1.69,2.32,0.4036,18.9,,,1915016,100,2026-11-04 00:17 UTC,,highlight
+2026-11-04,Paris Masters,,Hard,Alex Molcan,Taylor Fritz,p2_games,under,13.5,0.6845,1.46,1.44,0.6479,3.7,,,1915059,100,2026-11-04 00:17 UTC,,day
+2026-11-04,Paris Masters,,Hard,Alex Molcan,Taylor Fritz,winner,player_b,,0.7666,1.3,1.24,0.7762,-1.0,,,1915059,100,2026-11-04 00:17 UTC,,favourite
+2026-11-04,Paris Masters,,Hard,Nuno Borges,Karen Khachanov,p2_games,under,14.5,0.7194,1.39,1.41,0.6611,5.8,,,1914988,100,2026-11-04 00:17 UTC,,strong+day
+2026-11-04,Chennai Open,,Hard,Oksana Selekhmeteva,Polina Kudermetova,p2_games,under,13.5,0.7444,1.34,1.35,0.6932,5.1,,,1914979,100,2026-11-04 00:17 UTC,,strong+day
+2026-11-04,Chennai Open,,Hard,Oksana Selekhmeteva,Polina Kudermetova,p2_games,over,11.5,0.7249,1.38,1.34,0.6982,2.7,,,1914979,100,2026-11-04 00:17 UTC,,strong
+2026-11-04,Chennai Open,,Hard,Oksana Selekhmeteva,Polina Kudermetova,winner,player_b,,0.6127,1.63,1.68,0.5725,4.0,,,1914979,100,2026-11-04 00:17 UTC,,favourite
+2026-11-04,Chennai Open,,Hard,Weronika Falkowska,Maaya Rajeshwaran Revathi,winner,player_a,,0.6121,1.63,1.6,0.6,1.2,,,1915030,78,2026-11-04 00:17 UTC,,favourite
+2026-11-04,Prudential Hong Kong Tennis Open,,Hard,Leylah Fernandez,Sofia Kenin,total_games,under,23.5,0.723,1.38,1.44,0.6643,5.9,,,1913805,100,2026-11-04 00:17 UTC,,strong
+2026-11-04,"Charlottesville, USA",,Hard,Marcos Giron,Justin Boulais,winner,player_a,,0.7699,1.3,1.26,0.7407,2.9,,,1915084,100,2026-11-04 00:17 UTC,,favourite
+2026-11-04,"Charlottesville, USA",,Hard,Jack Kennedy,Clement Chidekh,winner,player_b,,0.8489,1.18,1.16,0.8054,4.4,,,1915067,69,2026-11-04 00:17 UTC,,favourite
+2026-11-05,"Costa do Sauipe, Brazil",,Clay,Gustavo Heide,Juan Carlos Prado Angelo,winner,player_a,,0.6687,1.5,1.52,0.6152,5.4,,,1914888,100,2026-11-04 00:17 UTC,,day+highlight+favourite
+2026-11-04,"Villa Maria, Argentina",,Clay,Juan Manuel La Serna,Hernan Casanova,winner,player_a,,0.6124,1.63,1.36,0.6881,-7.6,,,1915064,100,2026-11-04 00:17 UTC,,day+favourite
+2026-11-04,"Villa Maria, Argentina",,Clay,Oriol Roca Batalla,Ryo Tabata,winner,player_a,,0.7526,1.33,1.16,0.8054,-5.3,,,1915061,97,2026-11-04 00:17 UTC,,favourite
+2026-11-04,"Luanda, Angola",,N/A,Sofya Lansere,Kristina Novak,winner,player_b,,0.5014,1.99,6.0,0.1549,34.6,,,1914927,56,2026-11-04 00:17 UTC,,favourite
+2026-11-04,"Luanda, Angola",,N/A,Franziska Sziedat,Martyna Kubka,winner,player_b,,0.6567,1.52,1.05,0.8934,-23.7,,,1914981,56,2026-11-04 00:17 UTC,,favourite
+2026-11-04,"Luanda, Angola",,N/A,Isabella Shinikova,Gina Feistel,winner,player_b,,0.6498,1.54,1.44,0.6479,0.2,,,1914994,59,2026-11-04 00:17 UTC,,favourite
+2026-11-05,Chennai Open,,Hard,Anastasia Zakharova,Vaishnavi Adkar,winner,player_a,,0.5399,1.85,1.13,0.8499,-31.0,,,1914995,78,2026-11-04 00:17 UTC,,favourite
+2026-11-05,Chennai Open,,Hard,Mai Hontama,Zhibek Kulambayeva,winner,player_a,,0.5245,1.91,1.23,0.7815,-25.7,,,1915065,91,2026-11-04 00:17 UTC,,favourite
+2026-11-05,Chennai Open,,Hard,Moyuka Uchijima,Magda Linette,p2_games,over,11.5,0.8143,1.23,1.37,0.6792,13.5,,,1915032,100,2026-11-04 00:17 UTC,,strong+day
+2026-11-05,Chennai Open,,Hard,Moyuka Uchijima,Magda Linette,p2_games,under,13.5,0.7449,1.34,1.31,0.7127,3.2,,,1915032,100,2026-11-04 00:17 UTC,,strong
+2026-11-05,Chennai Open,,Hard,Moyuka Uchijima,Magda Linette,winner,player_b,,0.7175,1.39,1.7,0.5652,15.2,,,1915032,100,2026-11-04 00:17 UTC,,strong+highlight+favourite
+2026-11-05,Chennai Open,,Hard,Moyuka Uchijima,Magda Linette,p1_games,under,12.5,0.7129,1.4,1.52,0.6142,9.9,,,1915032,100,2026-11-04 00:17 UTC,,strong
+2026-11-05,Chennai Open,,Hard,Simona Waltert,Lucrezia Stefanini,p2_games,under,13.5,0.7462,1.34,1.32,0.7047,4.2,,,1915082,100,2026-11-04 00:17 UTC,,strong+day
+2026-11-05,Chennai Open,,Hard,Simona Waltert,Lucrezia Stefanini,p2_games,over,11.5,0.7049,1.42,1.31,0.7127,-0.8,,,1915082,100,2026-11-04 00:17 UTC,,strong
+2026-11-05,Chennai Open,,Hard,Simona Waltert,Lucrezia Stefanini,winner,player_b,,0.5905,1.69,1.6,0.601,-1.1,,,1915082,100,2026-11-04 00:17 UTC,,favourite
+2026-11-05,Prudential Hong Kong Tennis Open,,Hard,Elena Pridankina,Alexandra Shubladze,winner,player_b,,0.7001,1.43,1.54,0.6235,7.7,,,1914998,81,2026-11-04 00:17 UTC,,favourite
+2026-11-05,Prudential Hong Kong Tennis Open,,Hard,Sorana Cirstea,Mary Stoiana,winner,player_a,,0.7515,1.33,1.29,0.744,0.7,,,1914970,94,2026-11-04 00:17 UTC,,favourite
+2026-11-05,Prudential Hong Kong Tennis Open,,Hard,Tereza Valentova,Alexandra Eala,p2_games,under,13.5,0.7445,1.34,1.31,0.7127,3.2,,,1914983,100,2026-11-04 00:17 UTC,,strong+day
+2026-11-05,Prudential Hong Kong Tennis Open,,Hard,Tereza Valentova,Alexandra Eala,p2_games,over,11.5,0.702,1.42,1.31,0.7158,-1.4,,,1914983,100,2026-11-04 00:17 UTC,,strong
+2026-11-05,Prudential Hong Kong Tennis Open,,Hard,Tereza Valentova,Alexandra Eala,winner,player_b,,0.5847,1.71,1.58,0.6089,-2.4,,,1914983,100,2026-11-04 00:17 UTC,,favourite
+2026-11-05,"Taipei, Taiwan",,Hard,Chak Wong,Chun-Chien Hou,winner,player_a,,0.9,1.11,1.03,0.9066,-0.7,,,1914987,66,2026-11-04 00:17 UTC,,favourite
+2026-11-05,"Taipei, Taiwan",,Hard,Jake Delaney,Omar Jasika,p1_games,over,11.5,0.6345,1.58,1.71,0.5416,9.3,,,1914892,100,2026-11-04 00:17 UTC,,day
+2026-11-05,"Taipei, Taiwan",,Hard,Jake Delaney,Omar Jasika,winner,player_b,,0.5542,1.8,1.49,0.6266,-7.2,,,1914892,100,2026-11-04 00:17 UTC,,favourite
+2026-11-05,"Taipei, Taiwan",,Hard,Yosuke Watanuki,Masamichi Imamura,p2_games,over,7.5,0.6024,1.66,1.75,0.5296,7.3,,,1914921,100,2026-11-04 00:17 UTC,,day
+2026-11-05,"Taipei, Taiwan",,Hard,Yosuke Watanuki,Masamichi Imamura,winner,player_a,,0.7759,1.29,1.15,0.813,-3.7,,,1914921,100,2026-11-04 00:17 UTC,,favourite
+2026-11-05,"Italy, Taranto",,N/A,Jay Clarke,Gianluca Cadenasso,winner,player_b,,0.6475,1.54,1.87,0.5,14.7,,,1915007,88,2026-11-04 00:17 UTC,,day+highlight+favourite
+2026-11-05,"Italy, Taranto",,N/A,Philip Henning,Carlo Alberto Caniato,winner,player_b,,0.5632,1.78,1.87,0.5,6.3,,,1914993,88,2026-11-04 00:17 UTC,,highlight+favourite
+2026-11-05,"Italy, Taranto",,N/A,Sumit Nagal,Hugo Grenier,winner,player_a,,0.5615,1.78,2.14,0.4368,12.5,,,1915033,88,2026-11-04 00:17 UTC,,highlight+favourite
+2026-11-05,"Luanda, Angola",,N/A,Anna Blinkova,Zongyu Li,winner,player_a,,0.7646,1.31,1.06,0.8855,-12.1,,,1915057,56,2026-11-04 00:17 UTC,,favourite
+2026-11-05,"Luanda, Angola",,N/A,Justina Mikulskyte,Tiphanie Lemaitre,winner,player_a,,0.5268,1.9,1.86,0.5027,2.4,,,1915022,56,2026-11-04 00:17 UTC,,favourite

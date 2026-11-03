@@ -1,0 +1,1245 @@
+start_utc,tour,category,tournament,surface,best_of,player_a,player_b,market,selection,line,model_probability,fair_odds,bookmaker_odds,implied_fair,edge_pp,ev,low_confidence,data_quality,match_id
+2026-11-03 16:30,atp,ATP 1000,Paris Masters,Hard,3,Benjamin Bonzi,Taylor Fritz,winner,player_a,,0.2513,3.98,,,,,0,94,1914536
+2026-11-03 16:30,atp,ATP 1000,Paris Masters,Hard,3,Benjamin Bonzi,Taylor Fritz,winner,player_b,,0.7487,1.34,,,,,0,94,1914536
+2026-11-03 16:30,atp,ATP 1000,Paris Masters,Hard,3,Benjamin Bonzi,Taylor Fritz,total_games,over,22.5,0.4766,2.1,,,,,0,94,1914536
+2026-11-03 16:30,atp,ATP 1000,Paris Masters,Hard,3,Benjamin Bonzi,Taylor Fritz,total_games,under,22.5,0.5234,1.91,,,,,0,94,1914536
+2026-11-03 16:30,atp,ATP 1000,Paris Masters,Hard,3,Benjamin Bonzi,Taylor Fritz,p1_games,over,10.5,0.4994,2.0,,,,,0,94,1914536
+2026-11-03 16:30,atp,ATP 1000,Paris Masters,Hard,3,Benjamin Bonzi,Taylor Fritz,p1_games,under,10.5,0.5006,2.0,,,,,0,94,1914536
+2026-11-03 16:30,atp,ATP 1000,Paris Masters,Hard,3,Benjamin Bonzi,Taylor Fritz,p2_games,over,13.5,0.3494,2.86,,,,,0,94,1914536
+2026-11-03 16:30,atp,ATP 1000,Paris Masters,Hard,3,Benjamin Bonzi,Taylor Fritz,p2_games,under,13.5,0.6506,1.54,,,,,0,94,1914536
+2026-11-03 16:30,atp,ATP 1000,Paris Masters,Hard,3,Benjamin Bonzi,Taylor Fritz,game_handicap,player_a,3.5,0.4836,2.07,,,,,0,94,1914536
+2026-11-03 16:30,atp,ATP 1000,Paris Masters,Hard,3,Benjamin Bonzi,Taylor Fritz,game_handicap,player_b,-3.5,0.5164,1.94,,,,,0,94,1914536
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,winner,player_a,,0.652,1.53,1.39,0.6938,-4.2,-0.0937,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,winner,player_b,,0.348,2.87,3.15,0.3062,4.2,0.0961,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,total_games,over,20.5,0.6742,1.48,1.34,0.7081,-3.4,-0.0966,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,total_games,under,20.5,0.3258,3.07,3.25,0.2919,3.4,0.0589,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,total_games,over,21.5,0.6212,1.61,1.45,0.6548,-3.4,-0.0993,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,total_games,under,21.5,0.3788,2.64,2.75,0.3452,3.4,0.0417,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,total_games,over,22.5,0.5264,1.9,1.7,0.5607,-3.4,-0.1051,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,total_games,under,22.5,0.4736,2.11,2.17,0.4393,3.4,0.0277,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,total_games,over,23.5,0.4489,2.23,2.0,0.4764,-2.7,-0.1021,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,total_games,under,23.5,0.5511,1.81,1.82,0.5236,2.7,0.0029,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,total_games,over,24.5,0.4418,2.26,2.03,0.47,-2.8,-0.1032,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,total_games,under,24.5,0.5582,1.79,1.8,0.53,2.8,0.0048,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,total_games,over,25.5,0.4101,2.44,2.18,0.4367,-2.7,-0.106,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,total_games,under,25.5,0.5899,1.7,1.69,0.5633,2.7,-0.0031,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,total_games,over,26.5,0.3592,2.78,2.5,0.3797,-2.0,-0.1021,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,total_games,under,26.5,0.6408,1.56,1.53,0.6203,2.0,-0.0195,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,p1_games,over,12.5,0.5737,1.74,1.53,0.6117,-3.8,-0.1223,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,p1_games,under,12.5,0.4263,2.35,2.41,0.3883,3.8,0.0275,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,p1_games,over,13.5,0.3749,2.67,2.29,0.4083,-3.3,-0.1414,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,p1_games,under,13.5,0.6251,1.6,1.58,0.5917,3.3,-0.0124,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,p1_games,over,14.5,0.3044,3.29,2.8,0.3349,-3.1,-0.1477,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,p1_games,under,14.5,0.6956,1.44,1.41,0.6651,3.1,-0.0192,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,p2_games,over,10.5,0.6007,1.66,1.61,0.5796,2.1,-0.0328,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,p2_games,under,10.5,0.3993,2.5,2.22,0.4204,-2.1,-0.1136,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,p2_games,over,11.5,0.5701,1.75,1.71,0.5464,2.4,-0.0251,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,p2_games,under,11.5,0.4299,2.33,2.06,0.4536,-2.4,-0.1144,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,p2_games,over,12.5,0.4509,2.22,2.09,0.4471,0.4,-0.0577,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,p2_games,under,12.5,0.5491,1.82,1.69,0.5529,-0.4,-0.072,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,game_handicap,player_a,-2.5,0.5216,1.92,,,,,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Ben Shelton,Cameron Norrie,game_handicap,player_b,2.5,0.4784,2.09,,,,,0,100,1914741
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,winner,player_a,,0.3917,2.55,2.03,0.4741,-8.2,-0.2047,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,winner,player_b,,0.6083,1.64,1.83,0.5259,8.2,0.1131,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,total_games,over,20.5,0.6117,1.63,1.38,0.692,-8.0,-0.1559,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,total_games,under,20.5,0.3883,2.58,3.1,0.308,8.0,0.2038,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,total_games,over,21.5,0.5581,1.79,1.49,0.6401,-8.2,-0.1685,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,total_games,under,21.5,0.4419,2.26,2.65,0.3599,8.2,0.1711,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,total_games,over,22.5,0.4817,2.08,1.72,0.5532,-7.2,-0.1716,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,total_games,under,22.5,0.5183,1.93,2.13,0.4468,7.2,0.1041,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,total_games,over,23.5,0.4266,2.34,1.98,0.4803,-5.4,-0.1553,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,total_games,under,23.5,0.5734,1.74,1.83,0.5197,5.4,0.0493,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,total_games,over,24.5,0.4141,2.42,2.02,0.4712,-5.7,-0.1636,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,total_games,under,24.5,0.5859,1.71,1.8,0.5288,5.7,0.0547,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,total_games,over,25.5,0.3805,2.63,2.18,0.4367,-5.6,-0.1706,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,total_games,under,25.5,0.6195,1.61,1.69,0.5633,5.6,0.047,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,total_games,over,26.5,0.3377,2.96,2.46,0.3865,-4.9,-0.1692,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,total_games,under,26.5,0.6623,1.51,1.55,0.6135,4.9,0.0265,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,p1_games,over,11.5,0.5798,1.72,1.4,0.6706,-9.1,-0.1883,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,p1_games,under,11.5,0.4202,2.38,2.85,0.3294,9.1,0.1975,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,p1_games,over,12.5,0.4276,2.34,1.79,0.5214,-9.4,-0.2346,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,p1_games,under,12.5,0.5724,1.75,1.95,0.4786,9.4,0.1162,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,p1_games,over,13.5,0.2972,3.36,2.5,0.3719,-7.5,-0.2569,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,p1_games,under,13.5,0.7028,1.42,1.48,0.6281,7.5,0.0401,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,p2_games,over,11.5,0.7637,1.31,1.32,0.708,5.6,0.0081,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,p2_games,under,11.5,0.2363,4.23,3.2,0.292,-5.6,-0.2438,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,p2_games,over,12.5,0.5069,1.97,1.72,0.5438,-3.7,-0.1282,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,p2_games,under,12.5,0.4931,2.03,2.05,0.4562,3.7,0.0109,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,p2_games,over,13.5,0.3338,3.0,2.43,0.3848,-5.1,-0.1888,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,p2_games,under,13.5,0.6662,1.5,1.52,0.6152,5.1,0.0126,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,game_handicap,player_a,2.5,0.4971,2.01,,,,,0,100,1914535
+2026-11-03 18:00,atp,ATP 1000,Paris Masters,Hard,3,Jan-Lennard Struff,Arthur Gea,game_handicap,player_b,-2.5,0.5029,1.99,,,,,0,100,1914535
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,winner,player_a,,0.4062,2.46,2.6,0.3689,3.7,0.0562,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,winner,player_b,,0.5938,1.68,1.52,0.6311,-3.7,-0.0975,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,total_games,over,19.5,0.684,1.46,1.34,0.7112,-2.7,-0.0834,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,total_games,under,19.5,0.316,3.17,3.3,0.2888,2.7,0.0426,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,total_games,over,20.5,0.6067,1.65,1.5,0.6341,-2.7,-0.09,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,total_games,under,20.5,0.3933,2.54,2.6,0.3659,2.7,0.0226,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,total_games,over,21.5,0.5533,1.81,1.64,0.5816,-2.8,-0.0927,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,total_games,under,21.5,0.4467,2.24,2.28,0.4184,2.8,0.0186,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,total_games,over,22.5,0.4789,2.09,1.9,0.5013,-2.2,-0.0901,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,total_games,under,22.5,0.5211,1.92,1.91,0.4987,2.2,-0.0047,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,total_games,over,23.5,0.426,2.35,2.15,0.443,-1.7,-0.084,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,total_games,under,23.5,0.574,1.74,1.71,0.557,1.7,-0.0185,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,total_games,over,24.5,0.4126,2.42,2.21,0.4304,-1.8,-0.0882,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,total_games,under,24.5,0.5874,1.7,1.67,0.5696,1.8,-0.019,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,total_games,over,25.5,0.3784,2.64,2.4,0.397,-1.9,-0.0919,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,total_games,under,25.5,0.6216,1.61,1.58,0.603,1.9,-0.0178,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,p1_games,over,10.5,0.6227,1.61,1.58,0.5907,3.2,-0.0161,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,p1_games,under,10.5,0.3773,2.65,2.28,0.4093,-3.2,-0.1398,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,p1_games,over,11.5,0.5903,1.69,1.68,0.5556,3.5,-0.0083,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,p1_games,under,11.5,0.4097,2.44,2.1,0.4444,-3.5,-0.1397,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,p1_games,over,12.5,0.4295,2.33,2.21,0.423,0.7,-0.0508,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,p1_games,under,12.5,0.5705,1.75,1.62,0.577,-0.7,-0.0758,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,p2_games,over,11.5,0.7496,1.33,1.23,0.7625,-1.3,-0.078,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,p2_games,under,11.5,0.2504,3.99,3.95,0.2375,1.3,-0.011,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,p2_games,over,12.5,0.4973,2.01,1.77,0.528,-3.1,-0.1198,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,p2_games,under,12.5,0.5027,1.99,1.98,0.472,3.1,-0.0046,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,p2_games,over,13.5,0.3288,3.04,2.65,0.3537,-2.5,-0.1287,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,p2_games,under,13.5,0.6712,1.49,1.45,0.6463,2.5,-0.0267,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,game_handicap,player_a,1.5,0.4573,2.19,,,,,0,100,1914740
+2026-11-03 19:30,atp,ATP 1000,Paris Masters,Hard,3,Casper Ruud,Rafael Jodar,game_handicap,player_b,-1.5,0.5427,1.84,,,,,0,100,1914740
+2026-11-03 16:50,wta,WTA 250,Chennai Open,Hard,3,Mei Yamaguchi,Zhibek Kulambayeva,winner,player_a,,0.3775,2.65,,,,,0,84,1914513
+2026-11-03 16:50,wta,WTA 250,Chennai Open,Hard,3,Mei Yamaguchi,Zhibek Kulambayeva,winner,player_b,,0.6225,1.61,,,,,0,84,1914513
+2026-11-03 16:50,wta,WTA 250,Chennai Open,Hard,3,Mei Yamaguchi,Zhibek Kulambayeva,total_games,over,20.5,0.4869,2.05,,,,,1,84,1914513
+2026-11-03 16:50,wta,WTA 250,Chennai Open,Hard,3,Mei Yamaguchi,Zhibek Kulambayeva,total_games,under,20.5,0.5131,1.95,,,,,1,84,1914513
+2026-11-03 16:50,wta,WTA 250,Chennai Open,Hard,3,Mei Yamaguchi,Zhibek Kulambayeva,p1_games,over,12.5,0.3324,3.01,,,,,1,84,1914513
+2026-11-03 16:50,wta,WTA 250,Chennai Open,Hard,3,Mei Yamaguchi,Zhibek Kulambayeva,p1_games,under,12.5,0.6676,1.5,,,,,1,84,1914513
+2026-11-03 16:50,wta,WTA 250,Chennai Open,Hard,3,Mei Yamaguchi,Zhibek Kulambayeva,p2_games,over,12.5,0.4048,2.47,,,,,1,84,1914513
+2026-11-03 16:50,wta,WTA 250,Chennai Open,Hard,3,Mei Yamaguchi,Zhibek Kulambayeva,p2_games,under,12.5,0.5952,1.68,,,,,1,84,1914513
+2026-11-03 16:50,wta,WTA 250,Chennai Open,Hard,3,Mei Yamaguchi,Zhibek Kulambayeva,game_handicap,player_a,2.5,0.4513,2.22,,,,,1,84,1914513
+2026-11-03 16:50,wta,WTA 250,Chennai Open,Hard,3,Mei Yamaguchi,Zhibek Kulambayeva,game_handicap,player_b,-2.5,0.5487,1.82,,,,,1,84,1914513
+2026-11-03 17:25,wta,WTA 250,Chennai Open,Hard,3,Sahaja Yamalapalli,Simona Waltert,winner,player_a,,0.4575,2.19,,,,,0,72,1913966
+2026-11-03 17:25,wta,WTA 250,Chennai Open,Hard,3,Sahaja Yamalapalli,Simona Waltert,winner,player_b,,0.5425,1.84,,,,,0,72,1913966
+2026-11-03 17:25,wta,WTA 250,Chennai Open,Hard,3,Sahaja Yamalapalli,Simona Waltert,total_games,over,21.5,0.4542,2.2,,,,,1,72,1913966
+2026-11-03 17:25,wta,WTA 250,Chennai Open,Hard,3,Sahaja Yamalapalli,Simona Waltert,total_games,under,21.5,0.5458,1.83,,,,,1,72,1913966
+2026-11-03 17:25,wta,WTA 250,Chennai Open,Hard,3,Sahaja Yamalapalli,Simona Waltert,p1_games,over,12.5,0.368,2.72,,,,,1,72,1913966
+2026-11-03 17:25,wta,WTA 250,Chennai Open,Hard,3,Sahaja Yamalapalli,Simona Waltert,p1_games,under,12.5,0.632,1.58,,,,,1,72,1913966
+2026-11-03 17:25,wta,WTA 250,Chennai Open,Hard,3,Sahaja Yamalapalli,Simona Waltert,p2_games,over,12.5,0.3932,2.54,,,,,1,72,1913966
+2026-11-03 17:25,wta,WTA 250,Chennai Open,Hard,3,Sahaja Yamalapalli,Simona Waltert,p2_games,under,12.5,0.6068,1.65,,,,,1,72,1913966
+2026-11-03 17:25,wta,WTA 250,Chennai Open,Hard,3,Sahaja Yamalapalli,Simona Waltert,game_handicap,player_a,1.5,0.4984,2.01,,,,,1,72,1913966
+2026-11-03 17:25,wta,WTA 250,Chennai Open,Hard,3,Sahaja Yamalapalli,Simona Waltert,game_handicap,player_b,-1.5,0.5016,1.99,,,,,1,72,1913966
+2026-11-03 16:50,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jurij Rodionov,Stefano Travaglia,winner,player_a,,0.4976,2.01,,,,,0,94,1914312
+2026-11-03 16:50,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jurij Rodionov,Stefano Travaglia,winner,player_b,,0.5024,1.99,,,,,0,94,1914312
+2026-11-03 16:50,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jurij Rodionov,Stefano Travaglia,total_games,over,22.5,0.4835,2.07,,,,,0,94,1914312
+2026-11-03 16:50,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jurij Rodionov,Stefano Travaglia,total_games,under,22.5,0.5165,1.94,,,,,0,94,1914312
+2026-11-03 16:50,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jurij Rodionov,Stefano Travaglia,p1_games,over,12.5,0.4652,2.15,,,,,0,94,1914312
+2026-11-03 16:50,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jurij Rodionov,Stefano Travaglia,p1_games,under,12.5,0.5348,1.87,,,,,0,94,1914312
+2026-11-03 16:50,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jurij Rodionov,Stefano Travaglia,p2_games,over,12.5,0.4672,2.14,,,,,0,94,1914312
+2026-11-03 16:50,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jurij Rodionov,Stefano Travaglia,p2_games,under,12.5,0.5328,1.88,,,,,0,94,1914312
+2026-11-03 16:50,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jurij Rodionov,Stefano Travaglia,game_handicap,player_a,-0.5,0.4804,2.08,,,,,0,94,1914312
+2026-11-03 16:50,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jurij Rodionov,Stefano Travaglia,game_handicap,player_b,0.5,0.5196,1.92,,,,,0,94,1914312
+2026-11-03 16:55,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Giovanni Mpetshi Perricard,Martin Krumich,winner,player_a,,0.7576,1.32,,,,,0,94,1914745
+2026-11-03 16:55,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Giovanni Mpetshi Perricard,Martin Krumich,winner,player_b,,0.2424,4.13,,,,,0,94,1914745
+2026-11-03 16:55,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Giovanni Mpetshi Perricard,Martin Krumich,total_games,over,22.5,0.4941,2.02,,,,,0,94,1914745
+2026-11-03 16:55,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Giovanni Mpetshi Perricard,Martin Krumich,total_games,under,22.5,0.5059,1.98,,,,,0,94,1914745
+2026-11-03 16:55,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Giovanni Mpetshi Perricard,Martin Krumich,p1_games,over,13.5,0.3617,2.76,,,,,0,94,1914745
+2026-11-03 16:55,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Giovanni Mpetshi Perricard,Martin Krumich,p1_games,under,13.5,0.6383,1.57,,,,,0,94,1914745
+2026-11-03 16:55,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Giovanni Mpetshi Perricard,Martin Krumich,p2_games,over,11.5,0.469,2.13,,,,,0,94,1914745
+2026-11-03 16:55,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Giovanni Mpetshi Perricard,Martin Krumich,p2_games,under,11.5,0.531,1.88,,,,,0,94,1914745
+2026-11-03 16:55,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Giovanni Mpetshi Perricard,Martin Krumich,game_handicap,player_a,-3.5,0.5037,1.99,,,,,0,94,1914745
+2026-11-03 16:55,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Giovanni Mpetshi Perricard,Martin Krumich,game_handicap,player_b,3.5,0.4963,2.02,,,,,0,94,1914745
+2026-11-03 18:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Dalibor Svrcina,Norbert Gombos,winner,player_a,,0.7767,1.29,1.4,0.6667,11.0,0.0874,0,100,1914315
+2026-11-03 18:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Dalibor Svrcina,Norbert Gombos,winner,player_b,,0.2233,4.48,2.8,0.3333,-11.0,-0.3747,0,100,1914315
+2026-11-03 18:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Dalibor Svrcina,Norbert Gombos,total_games,over,22.5,0.3716,2.69,1.97,0.4704,-9.9,-0.2679,0,100,1914315
+2026-11-03 18:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Dalibor Svrcina,Norbert Gombos,total_games,under,22.5,0.6284,1.59,1.75,0.5296,9.9,0.0997,0,100,1914315
+2026-11-03 18:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Dalibor Svrcina,Norbert Gombos,p1_games,over,12.5,0.4495,2.22,1.83,0.5067,-5.7,-0.1774,0,100,1914315
+2026-11-03 18:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Dalibor Svrcina,Norbert Gombos,p1_games,under,12.5,0.5505,1.82,1.88,0.4933,5.7,0.0349,0,100,1914315
+2026-11-03 18:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Dalibor Svrcina,Norbert Gombos,p2_games,over,11.5,0.3736,2.68,1.87,0.4946,-12.1,-0.3013,0,100,1914315
+2026-11-03 18:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Dalibor Svrcina,Norbert Gombos,p2_games,under,11.5,0.6264,1.6,1.83,0.5054,12.1,0.1463,0,100,1914315
+2026-11-03 18:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Dalibor Svrcina,Norbert Gombos,game_handicap,player_a,-4.5,0.5332,1.88,,,,,0,100,1914315
+2026-11-03 18:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Dalibor Svrcina,Norbert Gombos,game_handicap,player_b,4.5,0.4668,2.14,,,,,0,100,1914315
+2026-11-03 18:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Kimmer Coppejans,Jonas Forejtek,winner,player_a,,0.59,1.69,2.3,0.4057,18.4,0.3571,0,100,1914748
+2026-11-03 18:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Kimmer Coppejans,Jonas Forejtek,winner,player_b,,0.41,2.44,1.57,0.5943,-18.4,-0.3564,0,100,1914748
+2026-11-03 18:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Kimmer Coppejans,Jonas Forejtek,total_games,over,22.5,0.4689,2.13,1.97,0.4704,-0.1,-0.0762,0,100,1914748
+2026-11-03 18:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Kimmer Coppejans,Jonas Forejtek,total_games,under,22.5,0.5311,1.88,1.75,0.5296,0.1,-0.0707,0,100,1914748
+2026-11-03 18:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Kimmer Coppejans,Jonas Forejtek,p1_games,over,11.5,0.7424,1.35,1.62,0.5703,17.2,0.2026,0,100,1914748
+2026-11-03 18:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Kimmer Coppejans,Jonas Forejtek,p1_games,under,11.5,0.2576,3.88,2.15,0.4297,-17.2,-0.4461,0,100,1914748
+2026-11-03 18:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Kimmer Coppejans,Jonas Forejtek,p2_games,over,12.5,0.4198,2.38,1.88,0.4933,-7.3,-0.2108,0,100,1914748
+2026-11-03 18:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Kimmer Coppejans,Jonas Forejtek,p2_games,under,12.5,0.5802,1.72,1.83,0.5067,7.3,0.0618,0,100,1914748
+2026-11-03 18:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Kimmer Coppejans,Jonas Forejtek,game_handicap,player_a,-1.5,0.5412,1.85,,,,,0,100,1914748
+2026-11-03 18:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Kimmer Coppejans,Jonas Forejtek,game_handicap,player_b,1.5,0.4588,2.18,,,,,0,100,1914748
+2026-11-03 19:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Shintaro Mochizuki,Nicolai Budkov Kjaer,winner,player_a,,0.4104,2.44,2.4,0.3893,2.1,-0.015,0,100,1914313
+2026-11-03 19:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Shintaro Mochizuki,Nicolai Budkov Kjaer,winner,player_b,,0.5896,1.7,1.53,0.6107,-2.1,-0.098,0,100,1914313
+2026-11-03 19:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Shintaro Mochizuki,Nicolai Budkov Kjaer,total_games,over,22.5,0.4525,2.21,1.93,0.4798,-2.7,-0.1267,0,100,1914313
+2026-11-03 19:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Shintaro Mochizuki,Nicolai Budkov Kjaer,total_games,under,22.5,0.5475,1.83,1.78,0.5202,2.7,-0.0255,0,100,1914313
+2026-11-03 19:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Shintaro Mochizuki,Nicolai Budkov Kjaer,p1_games,over,11.5,0.5764,1.74,1.71,0.5428,3.4,-0.0144,0,100,1914313
+2026-11-03 19:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Shintaro Mochizuki,Nicolai Budkov Kjaer,p1_games,under,11.5,0.4236,2.36,2.03,0.4572,-3.4,-0.14,0,100,1914313
+2026-11-03 19:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Shintaro Mochizuki,Nicolai Budkov Kjaer,p2_games,over,12.5,0.4638,2.16,1.9,0.4879,-2.4,-0.1188,0,100,1914313
+2026-11-03 19:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Shintaro Mochizuki,Nicolai Budkov Kjaer,p2_games,under,12.5,0.5362,1.86,1.81,0.5121,2.4,-0.0295,0,100,1914313
+2026-11-03 19:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Shintaro Mochizuki,Nicolai Budkov Kjaer,game_handicap,player_a,1.5,0.4571,2.19,,,,,0,100,1914313
+2026-11-03 19:20,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Shintaro Mochizuki,Nicolai Budkov Kjaer,game_handicap,player_b,-1.5,0.5429,1.84,,,,,0,100,1914313
+2026-11-03 16:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Justin Boulais,Jeffrey John Wolf,winner,player_a,,0.3066,3.26,,,,,0,88,1914831
+2026-11-03 16:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Justin Boulais,Jeffrey John Wolf,winner,player_b,,0.6934,1.44,,,,,0,88,1914831
+2026-11-03 16:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Justin Boulais,Jeffrey John Wolf,total_games,over,22.5,0.4406,2.27,,,,,0,88,1914831
+2026-11-03 16:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Justin Boulais,Jeffrey John Wolf,total_games,under,22.5,0.5594,1.79,,,,,0,88,1914831
+2026-11-03 16:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Justin Boulais,Jeffrey John Wolf,p1_games,over,11.5,0.4852,2.06,,,,,0,88,1914831
+2026-11-03 16:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Justin Boulais,Jeffrey John Wolf,p1_games,under,11.5,0.5148,1.94,,,,,0,88,1914831
+2026-11-03 16:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Justin Boulais,Jeffrey John Wolf,p2_games,over,12.5,0.4965,2.01,,,,,0,88,1914831
+2026-11-03 16:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Justin Boulais,Jeffrey John Wolf,p2_games,under,12.5,0.5035,1.99,,,,,0,88,1914831
+2026-11-03 16:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Justin Boulais,Jeffrey John Wolf,game_handicap,player_a,3.5,0.4812,2.08,,,,,0,88,1914831
+2026-11-03 16:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Justin Boulais,Jeffrey John Wolf,game_handicap,player_b,-3.5,0.5188,1.93,,,,,0,88,1914831
+2026-11-03 16:45,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Aidan Mayo,Petr Nesterov,winner,player_a,,0.5879,1.7,,,,,0,94,1914836
+2026-11-03 16:45,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Aidan Mayo,Petr Nesterov,winner,player_b,,0.4121,2.43,,,,,0,94,1914836
+2026-11-03 16:45,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Aidan Mayo,Petr Nesterov,total_games,over,22.5,0.4775,2.09,,,,,0,94,1914836
+2026-11-03 16:45,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Aidan Mayo,Petr Nesterov,total_games,under,22.5,0.5225,1.91,,,,,0,94,1914836
+2026-11-03 16:45,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Aidan Mayo,Petr Nesterov,p1_games,over,12.5,0.4929,2.03,,,,,0,94,1914836
+2026-11-03 16:45,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Aidan Mayo,Petr Nesterov,p1_games,under,12.5,0.5071,1.97,,,,,0,94,1914836
+2026-11-03 16:45,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Aidan Mayo,Petr Nesterov,p2_games,over,12.5,0.4301,2.33,,,,,0,94,1914836
+2026-11-03 16:45,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Aidan Mayo,Petr Nesterov,p2_games,under,12.5,0.5699,1.75,,,,,0,94,1914836
+2026-11-03 16:45,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Aidan Mayo,Petr Nesterov,game_handicap,player_a,-1.5,0.5364,1.86,,,,,0,94,1914836
+2026-11-03 16:45,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Aidan Mayo,Petr Nesterov,game_handicap,player_b,1.5,0.4636,2.16,,,,,0,94,1914836
+2026-11-03 18:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andrew Fenty,Darwin Blanch,winner,player_a,,0.224,4.47,3.9,0.2398,-1.6,-0.1265,0,100,1914833
+2026-11-03 18:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andrew Fenty,Darwin Blanch,winner,player_b,,0.776,1.29,1.23,0.7602,1.6,-0.0455,0,100,1914833
+2026-11-03 18:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andrew Fenty,Darwin Blanch,total_games,over,21.5,0.4884,2.05,1.83,0.5054,-1.7,-0.1062,0,100,1914833
+2026-11-03 18:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andrew Fenty,Darwin Blanch,total_games,under,21.5,0.5116,1.95,1.87,0.4946,1.7,-0.0433,0,100,1914833
+2026-11-03 18:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andrew Fenty,Darwin Blanch,p1_games,over,9.5,0.4915,2.03,1.84,0.5027,-1.1,-0.0956,0,100,1914833
+2026-11-03 18:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andrew Fenty,Darwin Blanch,p1_games,under,9.5,0.5085,1.97,1.86,0.4973,1.1,-0.0543,0,100,1914833
+2026-11-03 18:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andrew Fenty,Darwin Blanch,p2_games,over,12.5,0.5075,1.97,1.75,0.5296,-2.2,-0.1118,0,100,1914833
+2026-11-03 18:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andrew Fenty,Darwin Blanch,p2_games,under,12.5,0.4925,2.03,1.97,0.4704,2.2,-0.0299,0,100,1914833
+2026-11-03 18:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andrew Fenty,Darwin Blanch,game_handicap,player_a,3.5,0.4068,2.46,,,,,0,100,1914833
+2026-11-03 18:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andrew Fenty,Darwin Blanch,game_handicap,player_b,-3.5,0.5932,1.69,,,,,0,100,1914833
+2026-11-03 18:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andres Santamarta Roig,Clement Chidekh,winner,player_a,,0.1819,5.5,8.4,0.1111,7.1,0.5282,0,88,1914464
+2026-11-03 18:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andres Santamarta Roig,Clement Chidekh,winner,player_b,,0.8181,1.22,1.05,0.8889,-7.1,-0.141,0,88,1914464
+2026-11-03 18:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andres Santamarta Roig,Clement Chidekh,total_games,over,18.5,0.6188,1.62,2.01,0.4611,15.8,0.2438,1,88,1914464
+2026-11-03 18:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andres Santamarta Roig,Clement Chidekh,total_games,under,18.5,0.3812,2.62,1.72,0.5389,-15.8,-0.3443,1,88,1914464
+2026-11-03 18:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andres Santamarta Roig,Clement Chidekh,p1_games,over,5.5,0.7257,1.38,1.68,0.552,17.4,0.2193,1,88,1914464
+2026-11-03 18:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andres Santamarta Roig,Clement Chidekh,p1_games,under,5.5,0.2743,3.65,2.07,0.448,-17.4,-0.4323,1,88,1914464
+2026-11-03 18:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andres Santamarta Roig,Clement Chidekh,p2_games,over,12.5,0.4499,2.22,2.5,0.3687,8.1,0.1248,1,88,1914464
+2026-11-03 18:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andres Santamarta Roig,Clement Chidekh,p2_games,under,12.5,0.5501,1.82,1.46,0.6313,-8.1,-0.1969,1,88,1914464
+2026-11-03 18:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andres Santamarta Roig,Clement Chidekh,game_handicap,player_a,4.5,0.4352,2.3,,,,,1,88,1914464
+2026-11-03 18:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Andres Santamarta Roig,Clement Chidekh,game_handicap,player_b,-4.5,0.5648,1.77,,,,,1,88,1914464
+2026-11-03 19:40,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Marcos Giron,Dylan Dietrich,winner,player_a,,0.4269,2.34,2.55,0.3657,6.1,0.0886,0,94,1914465
+2026-11-03 19:40,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Marcos Giron,Dylan Dietrich,winner,player_b,,0.5731,1.74,1.47,0.6343,-6.1,-0.1576,0,94,1914465
+2026-11-03 19:40,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Marcos Giron,Dylan Dietrich,total_games,over,22.5,0.5006,2.0,1.93,0.4798,2.1,-0.0339,1,94,1914465
+2026-11-03 19:40,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Marcos Giron,Dylan Dietrich,total_games,under,22.5,0.4994,2.0,1.78,0.5202,-2.1,-0.111,1,94,1914465
+2026-11-03 19:40,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Marcos Giron,Dylan Dietrich,p1_games,over,11.5,0.6201,1.61,1.7,0.5442,7.6,0.0541,1,94,1914465
+2026-11-03 19:40,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Marcos Giron,Dylan Dietrich,p1_games,under,11.5,0.3799,2.63,2.03,0.4558,-7.6,-0.2287,1,94,1914465
+2026-11-03 19:40,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Marcos Giron,Dylan Dietrich,p2_games,over,12.5,0.5131,1.95,1.77,0.5229,-1.0,-0.0918,1,94,1914465
+2026-11-03 19:40,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Marcos Giron,Dylan Dietrich,p2_games,under,12.5,0.4869,2.05,1.94,0.4771,1.0,-0.0554,1,94,1914465
+2026-11-03 19:40,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Marcos Giron,Dylan Dietrich,game_handicap,player_a,1.5,0.4813,2.08,,,,,1,94,1914465
+2026-11-03 19:40,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Marcos Giron,Dylan Dietrich,game_handicap,player_b,-1.5,0.5187,1.93,,,,,1,94,1914465
+2026-11-03 21:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Max Hans Rehberg,Trevor Svajda,winner,player_a,,0.6002,1.67,1.56,0.599,0.1,-0.0636,0,100,1914472
+2026-11-03 21:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Max Hans Rehberg,Trevor Svajda,winner,player_b,,0.3998,2.5,2.33,0.401,-0.1,-0.0686,0,100,1914472
+2026-11-03 21:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Max Hans Rehberg,Trevor Svajda,total_games,over,21.5,0.5355,1.87,1.75,0.5283,0.7,-0.0629,0,100,1914472
+2026-11-03 21:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Max Hans Rehberg,Trevor Svajda,total_games,under,21.5,0.4645,2.15,1.96,0.4717,-0.7,-0.0896,0,100,1914472
+2026-11-03 21:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Max Hans Rehberg,Trevor Svajda,p1_games,over,12.5,0.4839,2.07,1.9,0.4865,-0.3,-0.0805,0,100,1914472
+2026-11-03 21:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Max Hans Rehberg,Trevor Svajda,p1_games,under,12.5,0.5161,1.94,1.8,0.5135,0.3,-0.0711,0,100,1914472
+2026-11-03 21:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Max Hans Rehberg,Trevor Svajda,p2_games,over,11.5,0.5773,1.73,1.65,0.5612,1.6,-0.0474,0,100,1914472
+2026-11-03 21:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Max Hans Rehberg,Trevor Svajda,p2_games,under,11.5,0.4227,2.37,2.11,0.4388,-1.6,-0.1082,0,100,1914472
+2026-11-03 21:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Max Hans Rehberg,Trevor Svajda,game_handicap,player_a,-2.5,0.5011,2.0,,,,,0,100,1914472
+2026-11-03 21:10,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Max Hans Rehberg,Trevor Svajda,game_handicap,player_b,2.5,0.4989,2.0,,,,,0,100,1914472
+2026-11-03 21:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Alexis Galarneau,Daniel Milavsky,winner,player_a,,0.6278,1.59,1.88,0.4973,13.0,0.1802,0,100,1914834
+2026-11-03 21:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Alexis Galarneau,Daniel Milavsky,winner,player_b,,0.3722,2.69,1.86,0.5027,-13.0,-0.3076,0,100,1914834
+2026-11-03 21:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Alexis Galarneau,Daniel Milavsky,total_games,over,22.5,0.4794,2.09,1.88,0.4919,-1.3,-0.0987,0,100,1914834
+2026-11-03 21:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Alexis Galarneau,Daniel Milavsky,total_games,under,22.5,0.5206,1.92,1.82,0.5081,1.3,-0.0525,0,100,1914834
+2026-11-03 21:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Alexis Galarneau,Daniel Milavsky,p1_games,over,12.5,0.5127,1.95,1.94,0.4771,3.6,-0.0053,0,100,1914834
+2026-11-03 21:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Alexis Galarneau,Daniel Milavsky,p1_games,under,12.5,0.4873,2.05,1.77,0.5229,-3.6,-0.1375,0,100,1914834
+2026-11-03 21:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Alexis Galarneau,Daniel Milavsky,p2_games,over,12.5,0.4191,2.39,1.93,0.4798,-6.1,-0.1912,0,100,1914834
+2026-11-03 21:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Alexis Galarneau,Daniel Milavsky,p2_games,under,12.5,0.5809,1.72,1.78,0.5202,6.1,0.034,0,100,1914834
+2026-11-03 21:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Alexis Galarneau,Daniel Milavsky,game_handicap,player_a,-2.5,0.5218,1.92,,,,,0,100,1914834
+2026-11-03 21:15,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Alexis Galarneau,Daniel Milavsky,game_handicap,player_b,2.5,0.4782,2.09,,,,,0,100,1914834
+2026-11-03 22:30,atp,ATP Challenger,"Charlottesville, USA",Hard,3,James Kent Trotter,Michael Zheng,winner,player_a,,0.2147,4.66,3.4,0.2751,-6.0,-0.2701,0,94,1914835
+2026-11-03 22:30,atp,ATP Challenger,"Charlottesville, USA",Hard,3,James Kent Trotter,Michael Zheng,winner,player_b,,0.7853,1.27,1.29,0.7249,6.0,0.0131,0,94,1914835
+2026-11-03 22:30,atp,ATP Challenger,"Charlottesville, USA",Hard,3,James Kent Trotter,Michael Zheng,total_games,over,21.5,0.5014,1.99,1.79,0.5175,-1.6,-0.1026,0,94,1914835
+2026-11-03 22:30,atp,ATP Challenger,"Charlottesville, USA",Hard,3,James Kent Trotter,Michael Zheng,total_games,under,21.5,0.4986,2.01,1.92,0.4825,1.6,-0.0426,0,94,1914835
+2026-11-03 22:30,atp,ATP Challenger,"Charlottesville, USA",Hard,3,James Kent Trotter,Michael Zheng,p1_games,over,10.5,0.4395,2.28,1.9,0.4879,-4.8,-0.165,0,94,1914835
+2026-11-03 22:30,atp,ATP Challenger,"Charlottesville, USA",Hard,3,James Kent Trotter,Michael Zheng,p1_games,under,10.5,0.5605,1.78,1.81,0.5121,4.8,0.0145,0,94,1914835
+2026-11-03 22:30,atp,ATP Challenger,"Charlottesville, USA",Hard,3,James Kent Trotter,Michael Zheng,p2_games,over,12.5,0.5226,1.91,1.76,0.5269,-0.4,-0.0802,0,94,1914835
+2026-11-03 22:30,atp,ATP Challenger,"Charlottesville, USA",Hard,3,James Kent Trotter,Michael Zheng,p2_games,under,12.5,0.4774,2.09,1.96,0.4731,0.4,-0.0643,0,94,1914835
+2026-11-03 22:30,atp,ATP Challenger,"Charlottesville, USA",Hard,3,James Kent Trotter,Michael Zheng,game_handicap,player_a,3.5,0.4106,2.44,,,,,0,94,1914835
+2026-11-03 22:30,atp,ATP Challenger,"Charlottesville, USA",Hard,3,James Kent Trotter,Michael Zheng,game_handicap,player_b,-3.5,0.5894,1.7,,,,,0,94,1914835
+2026-11-03 22:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Harry Wendelken,Andres Andrade,winner,player_a,,0.5327,1.88,1.75,0.5346,-0.2,-0.0678,0,100,1914473
+2026-11-03 22:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Harry Wendelken,Andres Andrade,winner,player_b,,0.4673,2.14,2.01,0.4654,0.2,-0.0607,0,100,1914473
+2026-11-03 22:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Harry Wendelken,Andres Andrade,total_games,over,21.5,0.524,1.91,1.75,0.5283,-0.4,-0.083,0,100,1914473
+2026-11-03 22:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Harry Wendelken,Andres Andrade,total_games,under,21.5,0.476,2.1,1.96,0.4717,0.4,-0.067,0,100,1914473
+2026-11-03 22:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Harry Wendelken,Andres Andrade,p1_games,over,12.5,0.4494,2.22,2.08,0.4453,0.4,-0.0652,0,100,1914473
+2026-11-03 22:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Harry Wendelken,Andres Andrade,p1_games,under,12.5,0.5506,1.82,1.67,0.5547,-0.4,-0.0806,0,100,1914473
+2026-11-03 22:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Harry Wendelken,Andres Andrade,p2_games,over,12.5,0.4269,2.34,2.21,0.4184,0.8,-0.0566,0,100,1914473
+2026-11-03 22:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Harry Wendelken,Andres Andrade,p2_games,under,12.5,0.5731,1.74,1.59,0.5816,-0.8,-0.0887,0,100,1914473
+2026-11-03 22:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Harry Wendelken,Andres Andrade,game_handicap,player_a,-0.5,0.5172,1.93,,,,,0,100,1914473
+2026-11-03 22:35,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Harry Wendelken,Andres Andrade,game_handicap,player_b,0.5,0.4828,2.07,,,,,0,100,1914473
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Filip Misolic,Juan Pablo Varillas,winner,player_a,,0.6808,1.47,1.56,0.599,8.2,0.062,0,94,1914837
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Filip Misolic,Juan Pablo Varillas,winner,player_b,,0.3192,3.13,2.33,0.401,-8.2,-0.2562,0,94,1914837
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Filip Misolic,Juan Pablo Varillas,total_games,over,21.5,0.4916,2.03,1.74,0.5323,-4.1,-0.1446,1,94,1914837
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Filip Misolic,Juan Pablo Varillas,total_games,under,21.5,0.5084,1.97,1.98,0.4677,4.1,0.0067,1,94,1914837
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Filip Misolic,Juan Pablo Varillas,p1_games,over,12.5,0.4736,2.11,1.89,0.4892,-1.6,-0.1048,1,94,1914837
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Filip Misolic,Juan Pablo Varillas,p1_games,under,12.5,0.5264,1.9,1.81,0.5108,1.6,-0.0473,1,94,1914837
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Filip Misolic,Juan Pablo Varillas,p2_games,over,11.5,0.4869,2.05,1.65,0.5623,-7.5,-0.1967,1,94,1914837
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Filip Misolic,Juan Pablo Varillas,p2_games,under,11.5,0.5131,1.95,2.12,0.4377,7.5,0.0878,1,94,1914837
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Filip Misolic,Juan Pablo Varillas,game_handicap,player_a,-3.5,0.5207,1.92,,,,,1,94,1914837
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Filip Misolic,Juan Pablo Varillas,game_handicap,player_b,3.5,0.4793,2.09,,,,,1,94,1914837
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Lucas Da Silva,Lautaro Midon,winner,player_a,,0.2164,4.62,2.8,0.3349,-11.8,-0.394,0,69,1914486
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Lucas Da Silva,Lautaro Midon,winner,player_b,,0.7836,1.28,1.41,0.6651,11.8,0.1048,0,69,1914486
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Lucas Da Silva,Lautaro Midon,total_games,over,21.5,0.417,2.4,1.88,0.4919,-7.5,-0.216,1,69,1914486
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Lucas Da Silva,Lautaro Midon,total_games,under,21.5,0.583,1.72,1.82,0.5081,7.5,0.061,1,69,1914486
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Lucas Da Silva,Lautaro Midon,p1_games,over,10.5,0.3982,2.51,1.8,0.5148,-11.7,-0.2832,1,69,1914486
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Lucas Da Silva,Lautaro Midon,p1_games,under,10.5,0.6018,1.66,1.91,0.4852,11.7,0.1494,1,69,1914486
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Lucas Da Silva,Lautaro Midon,p2_games,over,12.5,0.4406,2.27,1.98,0.4677,-2.7,-0.1276,1,69,1914486
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Lucas Da Silva,Lautaro Midon,p2_games,under,12.5,0.5594,1.79,1.74,0.5323,2.7,-0.0267,1,69,1914486
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Lucas Da Silva,Lautaro Midon,game_handicap,player_a,4.5,0.4504,2.22,,,,,1,69,1914486
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Lucas Da Silva,Lautaro Midon,game_handicap,player_b,-4.5,0.5496,1.82,,,,,1,69,1914486
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Rafael Tosetto,Franco Roncadelli,winner,player_a,,0.1731,5.78,5.8,0.1606,1.2,0.004,0,97,1914839
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Rafael Tosetto,Franco Roncadelli,winner,player_b,,0.8269,1.21,1.11,0.8394,-1.2,-0.0821,0,97,1914839
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Rafael Tosetto,Franco Roncadelli,total_games,over,18.5,0.5583,1.79,1.75,0.5296,2.9,-0.023,0,97,1914839
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Rafael Tosetto,Franco Roncadelli,total_games,under,18.5,0.4417,2.26,1.97,0.4704,-2.9,-0.1299,0,97,1914839
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Rafael Tosetto,Franco Roncadelli,p1_games,over,6.5,0.57,1.75,1.84,0.5027,6.7,0.0487,0,97,1914839
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Rafael Tosetto,Franco Roncadelli,p1_games,under,6.5,0.43,2.33,1.86,0.4973,-6.7,-0.2001,0,97,1914839
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Rafael Tosetto,Franco Roncadelli,p2_games,over,12.5,0.4123,2.43,2.35,0.3943,1.8,-0.0311,0,97,1914839
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Rafael Tosetto,Franco Roncadelli,p2_games,under,12.5,0.5877,1.7,1.53,0.6057,-1.8,-0.1008,0,97,1914839
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Rafael Tosetto,Franco Roncadelli,game_handicap,player_a,5.5,0.4943,2.02,,,,,0,97,1914839
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Rafael Tosetto,Franco Roncadelli,game_handicap,player_b,-5.5,0.5057,1.98,,,,,0,97,1914839
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Monteiro,Leonardo Storck,winner,player_a,,0.8165,1.22,,,,,0,47,1914838
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Monteiro,Leonardo Storck,winner,player_b,,0.1835,5.45,,,,,0,47,1914838
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Monteiro,Leonardo Storck,total_games,over,20.5,0.4945,2.02,,,,,1,47,1914838
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Monteiro,Leonardo Storck,total_games,under,20.5,0.5055,1.98,,,,,1,47,1914838
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Monteiro,Leonardo Storck,p1_games,over,12.5,0.4788,2.09,,,,,1,47,1914838
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Monteiro,Leonardo Storck,p1_games,under,12.5,0.5212,1.92,,,,,1,47,1914838
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Monteiro,Leonardo Storck,p2_games,over,8.5,0.4927,2.03,,,,,1,47,1914838
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Monteiro,Leonardo Storck,p2_games,under,8.5,0.5073,1.97,,,,,1,47,1914838
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Monteiro,Leonardo Storck,game_handicap,player_a,-4.5,0.5272,1.9,,,,,1,47,1914838
+2026-11-03 18:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Monteiro,Leonardo Storck,game_handicap,player_b,4.5,0.4728,2.12,,,,,1,47,1914838
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Daniel Galan,Gonzalo Bueno,winner,player_a,,0.4662,2.14,1.71,0.5464,-8.0,-0.2027,0,94,1914841
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Daniel Galan,Gonzalo Bueno,winner,player_b,,0.5338,1.87,2.06,0.4536,8.0,0.0996,0,94,1914841
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Daniel Galan,Gonzalo Bueno,total_games,over,21.5,0.5092,1.96,1.76,0.5256,-1.6,-0.1039,0,94,1914841
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Daniel Galan,Gonzalo Bueno,total_games,under,21.5,0.4908,2.04,1.95,0.4744,1.6,-0.0429,0,94,1914841
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Daniel Galan,Gonzalo Bueno,p1_games,over,12.5,0.4135,2.42,2.11,0.4388,-2.5,-0.1276,0,94,1914841
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Daniel Galan,Gonzalo Bueno,p1_games,under,12.5,0.5865,1.7,1.65,0.5612,2.5,-0.0322,0,94,1914841
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Daniel Galan,Gonzalo Bueno,p2_games,over,11.5,0.6799,1.47,1.57,0.5901,9.0,0.0674,0,94,1914841
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Daniel Galan,Gonzalo Bueno,p2_games,under,11.5,0.3201,3.12,2.26,0.4099,-9.0,-0.2765,0,94,1914841
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Daniel Galan,Gonzalo Bueno,game_handicap,player_a,0.5,0.4816,2.08,,,,,0,94,1914841
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Daniel Galan,Gonzalo Bueno,game_handicap,player_b,-0.5,0.5184,1.93,,,,,0,94,1914841
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Joao Lucas Da Silva,Santiago Rodriguez Taverna,winner,player_a,,0.7576,1.32,1.37,0.6829,7.5,0.0379,0,81,1914840
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Joao Lucas Da Silva,Santiago Rodriguez Taverna,winner,player_b,,0.2424,4.12,2.95,0.3171,-7.5,-0.2848,0,81,1914840
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Joao Lucas Da Silva,Santiago Rodriguez Taverna,total_games,over,21.5,0.4633,2.16,1.8,0.5135,-5.0,-0.166,1,81,1914840
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Joao Lucas Da Silva,Santiago Rodriguez Taverna,total_games,under,21.5,0.5367,1.86,1.9,0.4865,5.0,0.0197,1,81,1914840
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Joao Lucas Da Silva,Santiago Rodriguez Taverna,p1_games,over,12.5,0.4768,2.1,1.93,0.4798,-0.3,-0.0798,1,81,1914840
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Joao Lucas Da Silva,Santiago Rodriguez Taverna,p1_games,under,12.5,0.5232,1.91,1.78,0.5202,0.3,-0.0687,1,81,1914840
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Joao Lucas Da Silva,Santiago Rodriguez Taverna,p2_games,over,10.5,0.4445,2.25,1.85,0.5,-5.5,-0.1776,1,81,1914840
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Joao Lucas Da Silva,Santiago Rodriguez Taverna,p2_games,under,10.5,0.5555,1.8,1.85,0.5,5.5,0.0276,1,81,1914840
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Joao Lucas Da Silva,Santiago Rodriguez Taverna,game_handicap,player_a,-3.5,0.5984,1.67,,,,,1,81,1914840
+2026-11-03 19:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Joao Lucas Da Silva,Santiago Rodriguez Taverna,game_handicap,player_b,3.5,0.4016,2.49,,,,,1,81,1914840
+2026-11-03 20:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Eduardo Ribeiro,Luis Miguel,winner,player_a,,0.4687,2.13,3.0,0.3119,15.7,0.4062,0,78,1914842
+2026-11-03 20:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Eduardo Ribeiro,Luis Miguel,winner,player_b,,0.5313,1.88,1.36,0.6881,-15.7,-0.2775,0,78,1914842
+2026-11-03 20:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Eduardo Ribeiro,Luis Miguel,total_games,over,20.5,0.5789,1.73,1.77,0.5229,5.6,0.0246,1,78,1914842
+2026-11-03 20:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Eduardo Ribeiro,Luis Miguel,total_games,under,20.5,0.4211,2.37,1.94,0.4771,-5.6,-0.183,1,78,1914842
+2026-11-03 20:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Eduardo Ribeiro,Luis Miguel,p1_games,over,9.5,0.6988,1.43,1.82,0.5094,18.9,0.2718,1,78,1914842
+2026-11-03 20:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Eduardo Ribeiro,Luis Miguel,p1_games,under,9.5,0.3012,3.32,1.89,0.4906,-18.9,-0.4307,1,78,1914842
+2026-11-03 20:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Eduardo Ribeiro,Luis Miguel,p2_games,over,12.5,0.4514,2.22,2.07,0.4465,0.5,-0.0656,1,78,1914842
+2026-11-03 20:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Eduardo Ribeiro,Luis Miguel,p2_games,under,12.5,0.5486,1.82,1.67,0.5535,-0.5,-0.0838,1,78,1914842
+2026-11-03 20:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Eduardo Ribeiro,Luis Miguel,game_handicap,player_a,0.5,0.4847,2.06,,,,,1,78,1914842
+2026-11-03 20:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Eduardo Ribeiro,Luis Miguel,game_handicap,player_b,-0.5,0.5153,1.94,,,,,1,78,1914842
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Facundo Acosta,Matheus Pucinelli de Almeida,winner,player_a,,0.6993,1.43,1.56,0.5979,10.1,0.0909,0,94,1914482
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Facundo Acosta,Matheus Pucinelli de Almeida,winner,player_b,,0.3007,3.33,2.32,0.4021,-10.1,-0.3024,0,94,1914482
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Facundo Acosta,Matheus Pucinelli de Almeida,total_games,over,21.5,0.4685,2.13,1.76,0.5256,-5.7,-0.1755,0,94,1914482
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Facundo Acosta,Matheus Pucinelli de Almeida,total_games,under,21.5,0.5315,1.88,1.95,0.4744,5.7,0.0365,0,94,1914482
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Facundo Acosta,Matheus Pucinelli de Almeida,p1_games,over,12.5,0.4587,2.18,1.95,0.4744,-1.6,-0.1056,0,94,1914482
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Facundo Acosta,Matheus Pucinelli de Almeida,p1_games,under,12.5,0.5413,1.85,1.76,0.5256,1.6,-0.0473,0,94,1914482
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Facundo Acosta,Matheus Pucinelli de Almeida,p2_games,over,11.5,0.458,2.18,1.66,0.5573,-9.9,-0.2398,0,94,1914482
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Facundo Acosta,Matheus Pucinelli de Almeida,p2_games,under,11.5,0.542,1.84,2.09,0.4427,9.9,0.1329,0,94,1914482
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Facundo Acosta,Matheus Pucinelli de Almeida,game_handicap,player_a,-3.5,0.5514,1.81,,,,,0,94,1914482
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Facundo Acosta,Matheus Pucinelli de Almeida,game_handicap,player_b,3.5,0.4486,2.23,,,,,0,94,1914482
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Luis Felipe Miguel,Igor Ribeiro Marcondes,winner,player_a,,0.222,4.5,2.95,0.3171,-9.5,-0.345,0,78,1914843
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Luis Felipe Miguel,Igor Ribeiro Marcondes,winner,player_b,,0.778,1.29,1.37,0.6829,9.5,0.0658,0,78,1914843
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Luis Felipe Miguel,Igor Ribeiro Marcondes,total_games,over,21.5,0.4457,2.24,1.92,0.4825,-3.7,-0.1442,1,78,1914843
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Luis Felipe Miguel,Igor Ribeiro Marcondes,total_games,under,21.5,0.5543,1.8,1.79,0.5175,3.7,-0.0079,1,78,1914843
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Luis Felipe Miguel,Igor Ribeiro Marcondes,p1_games,over,10.5,0.4185,2.39,1.9,0.4865,-6.8,-0.2048,1,78,1914843
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Luis Felipe Miguel,Igor Ribeiro Marcondes,p1_games,under,10.5,0.5815,1.72,1.8,0.5135,6.8,0.0466,1,78,1914843
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Luis Felipe Miguel,Igor Ribeiro Marcondes,p2_games,over,12.5,0.4677,2.14,2.02,0.4584,0.9,-0.0552,1,78,1914843
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Luis Felipe Miguel,Igor Ribeiro Marcondes,p2_games,under,12.5,0.5323,1.88,1.71,0.5416,-0.9,-0.0898,1,78,1914843
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Luis Felipe Miguel,Igor Ribeiro Marcondes,game_handicap,player_a,4.5,0.487,2.05,,,,,1,78,1914843
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Luis Felipe Miguel,Igor Ribeiro Marcondes,game_handicap,player_b,-4.5,0.513,1.95,,,,,1,78,1914843
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Marco Cecchinato,Francisco Comesana,winner,player_a,,0.4319,2.32,2.9,0.3224,10.9,0.2525,0,100,1914484
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Marco Cecchinato,Francisco Comesana,winner,player_b,,0.5681,1.76,1.38,0.6776,-10.9,-0.216,0,100,1914484
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Marco Cecchinato,Francisco Comesana,total_games,over,21.5,0.5418,1.85,1.85,0.5013,4.0,0.0023,0,100,1914484
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Marco Cecchinato,Francisco Comesana,total_games,under,21.5,0.4582,2.18,1.86,0.4987,-4.0,-0.1478,0,100,1914484
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Marco Cecchinato,Francisco Comesana,p1_games,over,11.5,0.6064,1.65,1.91,0.4838,12.3,0.1582,0,100,1914484
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Marco Cecchinato,Francisco Comesana,p1_games,under,11.5,0.3936,2.54,1.79,0.5162,-12.3,-0.2954,0,100,1914484
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Marco Cecchinato,Francisco Comesana,p2_games,over,12.5,0.4783,2.09,1.88,0.4919,-1.4,-0.1008,0,100,1914484
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Marco Cecchinato,Francisco Comesana,p2_games,under,12.5,0.5217,1.92,1.82,0.5081,1.4,-0.0505,0,100,1914484
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Marco Cecchinato,Francisco Comesana,game_handicap,player_a,1.5,0.4811,2.08,,,,,0,100,1914484
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Marco Cecchinato,Francisco Comesana,game_handicap,player_b,-1.5,0.5189,1.93,,,,,0,100,1914484
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Nikolas Sanchez Izquierdo,Camilo Ugo Carabelli,winner,player_a,,0.2741,3.65,,,,,0,94,1914491
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Nikolas Sanchez Izquierdo,Camilo Ugo Carabelli,winner,player_b,,0.7259,1.38,,,,,0,94,1914491
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Nikolas Sanchez Izquierdo,Camilo Ugo Carabelli,total_games,over,21.5,0.4516,2.21,,,,,0,94,1914491
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Nikolas Sanchez Izquierdo,Camilo Ugo Carabelli,total_games,under,21.5,0.5484,1.82,,,,,0,94,1914491
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Nikolas Sanchez Izquierdo,Camilo Ugo Carabelli,p1_games,over,10.5,0.464,2.16,,,,,0,94,1914491
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Nikolas Sanchez Izquierdo,Camilo Ugo Carabelli,p1_games,under,10.5,0.536,1.87,,,,,0,94,1914491
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Nikolas Sanchez Izquierdo,Camilo Ugo Carabelli,p2_games,over,12.5,0.4522,2.21,,,,,0,94,1914491
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Nikolas Sanchez Izquierdo,Camilo Ugo Carabelli,p2_games,under,12.5,0.5478,1.83,,,,,0,94,1914491
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Nikolas Sanchez Izquierdo,Camilo Ugo Carabelli,game_handicap,player_a,3.5,0.4172,2.4,,,,,0,94,1914491
+2026-11-03 22:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Nikolas Sanchez Izquierdo,Camilo Ugo Carabelli,game_handicap,player_b,-3.5,0.5828,1.72,,,,,0,94,1914491
+2026-11-03 23:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Seyboth Wild,Felipe Meligeni Rodrigues Alves,winner,player_a,,0.6673,1.5,,,,,0,88,1914483
+2026-11-03 23:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Seyboth Wild,Felipe Meligeni Rodrigues Alves,winner,player_b,,0.3327,3.01,,,,,0,88,1914483
+2026-11-03 23:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Seyboth Wild,Felipe Meligeni Rodrigues Alves,total_games,over,22.5,0.4544,2.2,,,,,0,88,1914483
+2026-11-03 23:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Seyboth Wild,Felipe Meligeni Rodrigues Alves,total_games,under,22.5,0.5456,1.83,,,,,0,88,1914483
+2026-11-03 23:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Seyboth Wild,Felipe Meligeni Rodrigues Alves,p1_games,over,13.5,0.3222,3.1,,,,,0,88,1914483
+2026-11-03 23:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Seyboth Wild,Felipe Meligeni Rodrigues Alves,p1_games,under,13.5,0.6778,1.48,,,,,0,88,1914483
+2026-11-03 23:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Seyboth Wild,Felipe Meligeni Rodrigues Alves,p2_games,over,12.5,0.3822,2.62,,,,,0,88,1914483
+2026-11-03 23:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Seyboth Wild,Felipe Meligeni Rodrigues Alves,p2_games,under,12.5,0.6178,1.62,,,,,0,88,1914483
+2026-11-03 23:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Seyboth Wild,Felipe Meligeni Rodrigues Alves,game_handicap,player_a,-2.5,0.5686,1.76,,,,,0,88,1914483
+2026-11-03 23:30,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Thiago Seyboth Wild,Felipe Meligeni Rodrigues Alves,game_handicap,player_b,2.5,0.4314,2.32,,,,,0,88,1914483
+2026-11-03 16:25,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Thiago Cigarran,Hernan Casanova,winner,player_a,,0.1726,5.79,,,,,0,94,1914446
+2026-11-03 16:25,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Thiago Cigarran,Hernan Casanova,winner,player_b,,0.8274,1.21,,,,,0,94,1914446
+2026-11-03 16:25,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Thiago Cigarran,Hernan Casanova,total_games,over,19.5,0.4774,2.09,,,,,0,94,1914446
+2026-11-03 16:25,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Thiago Cigarran,Hernan Casanova,total_games,under,19.5,0.5226,1.91,,,,,0,94,1914446
+2026-11-03 16:25,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Thiago Cigarran,Hernan Casanova,p1_games,over,7.5,0.4866,2.06,,,,,0,94,1914446
+2026-11-03 16:25,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Thiago Cigarran,Hernan Casanova,p1_games,under,7.5,0.5134,1.95,,,,,0,94,1914446
+2026-11-03 16:25,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Thiago Cigarran,Hernan Casanova,p2_games,over,12.5,0.4093,2.44,,,,,0,94,1914446
+2026-11-03 16:25,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Thiago Cigarran,Hernan Casanova,p2_games,under,12.5,0.5907,1.69,,,,,0,94,1914446
+2026-11-03 16:25,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Thiago Cigarran,Hernan Casanova,game_handicap,player_a,5.5,0.4892,2.04,,,,,0,94,1914446
+2026-11-03 16:25,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Thiago Cigarran,Hernan Casanova,game_handicap,player_b,-5.5,0.5108,1.96,,,,,0,94,1914446
+2026-11-03 16:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Estevez,Ryo Tabata,winner,player_a,,0.5023,1.99,,,,,0,88,1914803
+2026-11-03 16:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Estevez,Ryo Tabata,winner,player_b,,0.4977,2.01,,,,,0,88,1914803
+2026-11-03 16:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Estevez,Ryo Tabata,total_games,over,22.5,0.4504,2.22,,,,,0,88,1914803
+2026-11-03 16:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Estevez,Ryo Tabata,total_games,under,22.5,0.5496,1.82,,,,,0,88,1914803
+2026-11-03 16:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Estevez,Ryo Tabata,p1_games,over,12.5,0.428,2.34,,,,,0,88,1914803
+2026-11-03 16:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Estevez,Ryo Tabata,p1_games,under,12.5,0.572,1.75,,,,,0,88,1914803
+2026-11-03 16:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Estevez,Ryo Tabata,p2_games,over,12.5,0.4262,2.35,,,,,0,88,1914803
+2026-11-03 16:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Estevez,Ryo Tabata,p2_games,under,12.5,0.5738,1.74,,,,,0,88,1914803
+2026-11-03 16:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Estevez,Ryo Tabata,game_handicap,player_a,-0.5,0.4875,2.05,,,,,0,88,1914803
+2026-11-03 16:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Estevez,Ryo Tabata,game_handicap,player_b,0.5,0.5125,1.95,,,,,0,88,1914803
+2026-11-03 17:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Alan Magadan,Valerio Aboian,winner,player_a,,0.2667,3.75,,,,,0,94,1914452
+2026-11-03 17:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Alan Magadan,Valerio Aboian,winner,player_b,,0.7333,1.36,,,,,0,94,1914452
+2026-11-03 17:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Alan Magadan,Valerio Aboian,total_games,over,21.5,0.4545,2.2,,,,,0,94,1914452
+2026-11-03 17:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Alan Magadan,Valerio Aboian,total_games,under,21.5,0.5455,1.83,,,,,0,94,1914452
+2026-11-03 17:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Alan Magadan,Valerio Aboian,p1_games,over,10.5,0.4595,2.18,,,,,0,94,1914452
+2026-11-03 17:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Alan Magadan,Valerio Aboian,p1_games,under,10.5,0.5405,1.85,,,,,0,94,1914452
+2026-11-03 17:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Alan Magadan,Valerio Aboian,p2_games,over,12.5,0.4584,2.18,,,,,0,94,1914452
+2026-11-03 17:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Alan Magadan,Valerio Aboian,p2_games,under,12.5,0.5416,1.85,,,,,0,94,1914452
+2026-11-03 17:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Alan Magadan,Valerio Aboian,game_handicap,player_a,3.5,0.4132,2.42,,,,,0,94,1914452
+2026-11-03 17:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Alan Magadan,Valerio Aboian,game_handicap,player_b,-3.5,0.5868,1.7,,,,,0,94,1914452
+2026-11-03 17:55,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Bautista Torres,Nicolas Bruna,winner,player_a,,0.8979,1.11,1.06,0.8855,1.2,-0.0483,0,91,1914805
+2026-11-03 17:55,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Bautista Torres,Nicolas Bruna,winner,player_b,,0.1021,9.79,8.2,0.1145,-1.2,-0.1625,0,91,1914805
+2026-11-03 17:55,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Bautista Torres,Nicolas Bruna,total_games,over,18.5,0.4677,2.14,1.93,0.4798,-1.2,-0.0974,1,91,1914805
+2026-11-03 17:55,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Bautista Torres,Nicolas Bruna,total_games,under,18.5,0.5323,1.88,1.78,0.5202,1.2,-0.0524,1,91,1914805
+2026-11-03 17:55,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Bautista Torres,Nicolas Bruna,p1_games,over,12.5,0.3572,2.8,2.43,0.3817,-2.4,-0.132,1,91,1914805
+2026-11-03 17:55,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Bautista Torres,Nicolas Bruna,p1_games,under,12.5,0.6428,1.56,1.5,0.6183,2.4,-0.0358,1,91,1914805
+2026-11-03 17:55,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Bautista Torres,Nicolas Bruna,p2_games,over,6.5,0.4617,2.17,1.98,0.4677,-0.6,-0.0859,1,91,1914805
+2026-11-03 17:55,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Bautista Torres,Nicolas Bruna,p2_games,under,6.5,0.5383,1.86,1.74,0.5323,0.6,-0.0633,1,91,1914805
+2026-11-03 17:55,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Bautista Torres,Nicolas Bruna,game_handicap,player_a,-5.5,0.6133,1.63,,,,,1,91,1914805
+2026-11-03 17:55,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Juan Bautista Torres,Nicolas Bruna,game_handicap,player_b,5.5,0.3867,2.59,,,,,1,91,1914805
+2026-11-03 18:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Valentino Grippo,Genaro Alberto Olivieri,winner,player_a,,0.2764,3.62,11.0,0.0856,19.1,2.0407,0,53,1914451
+2026-11-03 18:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Valentino Grippo,Genaro Alberto Olivieri,winner,player_b,,0.7236,1.38,1.03,0.9144,-19.1,-0.2547,0,53,1914451
+2026-11-03 18:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Valentino Grippo,Genaro Alberto Olivieri,total_games,over,21.5,0.4575,2.19,,,,,1,53,1914451
+2026-11-03 18:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Valentino Grippo,Genaro Alberto Olivieri,total_games,under,21.5,0.5425,1.84,,,,,1,53,1914451
+2026-11-03 18:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Valentino Grippo,Genaro Alberto Olivieri,p1_games,over,10.5,0.4691,2.13,,,,,1,53,1914451
+2026-11-03 18:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Valentino Grippo,Genaro Alberto Olivieri,p1_games,under,10.5,0.5309,1.88,,,,,1,53,1914451
+2026-11-03 18:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Valentino Grippo,Genaro Alberto Olivieri,p2_games,over,12.5,0.4573,2.19,,,,,1,53,1914451
+2026-11-03 18:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Valentino Grippo,Genaro Alberto Olivieri,p2_games,under,12.5,0.5427,1.84,,,,,1,53,1914451
+2026-11-03 18:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Valentino Grippo,Genaro Alberto Olivieri,game_handicap,player_a,3.5,0.4227,2.37,,,,,1,53,1914451
+2026-11-03 18:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Valentino Grippo,Genaro Alberto Olivieri,game_handicap,player_b,-3.5,0.5773,1.73,,,,,1,53,1914451
+2026-11-03 19:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Dante Pagani,Murkel Dellien,winner,player_a,,0.3642,2.75,2.48,0.3769,-1.3,-0.0969,0,66,1914449
+2026-11-03 19:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Dante Pagani,Murkel Dellien,winner,player_b,,0.6358,1.57,1.5,0.6231,1.3,-0.0463,0,66,1914449
+2026-11-03 19:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Dante Pagani,Murkel Dellien,total_games,over,21.5,0.5036,1.99,1.92,0.4825,2.1,-0.0332,1,66,1914449
+2026-11-03 19:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Dante Pagani,Murkel Dellien,total_games,under,21.5,0.4964,2.01,1.79,0.5175,-2.1,-0.1114,1,66,1914449
+2026-11-03 19:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Dante Pagani,Murkel Dellien,p1_games,over,11.5,0.5309,1.88,1.79,0.5175,1.3,-0.0498,1,66,1914449
+2026-11-03 19:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Dante Pagani,Murkel Dellien,p1_games,under,11.5,0.4691,2.13,1.92,0.4825,-1.3,-0.0992,1,66,1914449
+2026-11-03 19:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Dante Pagani,Murkel Dellien,p2_games,over,12.5,0.468,2.14,2.04,0.4545,1.3,-0.0453,1,66,1914449
+2026-11-03 19:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Dante Pagani,Murkel Dellien,p2_games,under,12.5,0.532,1.88,1.7,0.5455,-1.3,-0.0956,1,66,1914449
+2026-11-03 19:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Dante Pagani,Murkel Dellien,game_handicap,player_a,2.5,0.4548,2.2,,,,,1,66,1914449
+2026-11-03 19:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Dante Pagani,Murkel Dellien,game_handicap,player_b,-2.5,0.5452,1.83,,,,,1,66,1914449
+2026-11-03 19:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Franco Agamenone,Ignacio Monzon,winner,player_a,,0.7278,1.37,1.24,0.754,-2.6,-0.0975,0,100,1914453
+2026-11-03 19:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Franco Agamenone,Ignacio Monzon,winner,player_b,,0.2722,3.67,3.8,0.246,2.6,0.0343,0,100,1914453
+2026-11-03 19:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Franco Agamenone,Ignacio Monzon,total_games,over,19.5,0.5526,1.81,1.74,0.5323,2.0,-0.0385,0,100,1914453
+2026-11-03 19:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Franco Agamenone,Ignacio Monzon,total_games,under,19.5,0.4474,2.24,1.98,0.4677,-2.0,-0.1141,0,100,1914453
+2026-11-03 19:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Franco Agamenone,Ignacio Monzon,p1_games,over,12.5,0.4407,2.27,2.07,0.4465,-0.6,-0.0877,0,100,1914453
+2026-11-03 19:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Franco Agamenone,Ignacio Monzon,p1_games,under,12.5,0.5593,1.79,1.67,0.5535,0.6,-0.066,0,100,1914453
+2026-11-03 19:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Franco Agamenone,Ignacio Monzon,p2_games,over,8.5,0.5431,1.84,1.86,0.4987,4.4,0.0101,0,100,1914453
+2026-11-03 19:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Franco Agamenone,Ignacio Monzon,p2_games,under,8.5,0.4569,2.19,1.85,0.5013,-4.4,-0.1547,0,100,1914453
+2026-11-03 19:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Franco Agamenone,Ignacio Monzon,game_handicap,player_a,-4.5,0.5006,2.0,,,,,0,100,1914453
+2026-11-03 19:30,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Franco Agamenone,Ignacio Monzon,game_handicap,player_b,4.5,0.4994,2.0,,,,,0,100,1914453
+2026-11-03 22:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Coria,Ivan Dreycopp,winner,player_a,,0.7794,1.28,1.21,0.7721,0.7,-0.057,0,53,1914807
+2026-11-03 22:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Coria,Ivan Dreycopp,winner,player_b,,0.2206,4.53,4.1,0.2279,-0.7,-0.0953,0,53,1914807
+2026-11-03 22:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Coria,Ivan Dreycopp,total_games,over,20.5,0.4609,2.17,1.92,0.4825,-2.2,-0.1151,1,53,1914807
+2026-11-03 22:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Coria,Ivan Dreycopp,total_games,under,20.5,0.5391,1.85,1.79,0.5175,2.2,-0.035,1,53,1914807
+2026-11-03 22:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Coria,Ivan Dreycopp,p1_games,over,12.5,0.4354,2.3,1.99,0.4651,-3.0,-0.1336,1,53,1914807
+2026-11-03 22:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Coria,Ivan Dreycopp,p1_games,under,12.5,0.5646,1.77,1.73,0.5349,3.0,-0.0232,1,53,1914807
+2026-11-03 22:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Coria,Ivan Dreycopp,p2_games,over,8.5,0.4891,2.04,1.86,0.4987,-1.0,-0.0903,1,53,1914807
+2026-11-03 22:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Coria,Ivan Dreycopp,p2_games,under,8.5,0.5109,1.96,1.85,0.5013,1.0,-0.0548,1,53,1914807
+2026-11-03 22:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Coria,Ivan Dreycopp,game_handicap,player_a,-4.5,0.5531,1.81,,,,,1,53,1914807
+2026-11-03 22:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Coria,Ivan Dreycopp,game_handicap,player_b,4.5,0.4469,2.24,,,,,1,53,1914807
+2026-11-03 17:30,wta,WTA Challenger,"Cali, Colombia",Clay,3,Carole Monnet,Maria Herazo,winner,player_a,,0.4548,2.2,,,,,0,47,1914572
+2026-11-03 17:30,wta,WTA Challenger,"Cali, Colombia",Clay,3,Carole Monnet,Maria Herazo,winner,player_b,,0.5452,1.83,,,,,0,47,1914572
+2026-11-03 17:30,wta,WTA Challenger,"Cali, Colombia",Clay,3,Carole Monnet,Maria Herazo,total_games,over,21.5,0.4529,2.21,,,,,1,47,1914572
+2026-11-03 17:30,wta,WTA Challenger,"Cali, Colombia",Clay,3,Carole Monnet,Maria Herazo,total_games,under,21.5,0.5471,1.83,,,,,1,47,1914572
+2026-11-03 17:30,wta,WTA Challenger,"Cali, Colombia",Clay,3,Carole Monnet,Maria Herazo,p1_games,over,12.5,0.3659,2.73,,,,,1,47,1914572
+2026-11-03 17:30,wta,WTA Challenger,"Cali, Colombia",Clay,3,Carole Monnet,Maria Herazo,p1_games,under,12.5,0.6341,1.58,,,,,1,47,1914572
+2026-11-03 17:30,wta,WTA Challenger,"Cali, Colombia",Clay,3,Carole Monnet,Maria Herazo,p2_games,over,12.5,0.393,2.54,,,,,1,47,1914572
+2026-11-03 17:30,wta,WTA Challenger,"Cali, Colombia",Clay,3,Carole Monnet,Maria Herazo,p2_games,under,12.5,0.607,1.65,,,,,1,47,1914572
+2026-11-03 17:30,wta,WTA Challenger,"Cali, Colombia",Clay,3,Carole Monnet,Maria Herazo,game_handicap,player_a,1.5,0.495,2.02,,,,,1,47,1914572
+2026-11-03 17:30,wta,WTA Challenger,"Cali, Colombia",Clay,3,Carole Monnet,Maria Herazo,game_handicap,player_b,-1.5,0.505,1.98,,,,,1,47,1914572
+2026-11-03 17:50,wta,WTA Challenger,"Cali, Colombia",Clay,3,Rebeka Masarova,Alice Tubello,winner,player_a,,0.4594,2.18,1.76,0.5307,-7.1,-0.1914,0,94,1914555
+2026-11-03 17:50,wta,WTA Challenger,"Cali, Colombia",Clay,3,Rebeka Masarova,Alice Tubello,winner,player_b,,0.5406,1.85,1.99,0.4693,7.1,0.0758,0,94,1914555
+2026-11-03 17:50,wta,WTA Challenger,"Cali, Colombia",Clay,3,Rebeka Masarova,Alice Tubello,total_games,over,21.5,0.4646,2.15,1.86,0.4987,-3.4,-0.1358,1,94,1914555
+2026-11-03 17:50,wta,WTA Challenger,"Cali, Colombia",Clay,3,Rebeka Masarova,Alice Tubello,total_games,under,21.5,0.5354,1.87,1.85,0.5013,3.4,-0.0096,1,94,1914555
+2026-11-03 17:50,wta,WTA Challenger,"Cali, Colombia",Clay,3,Rebeka Masarova,Alice Tubello,p1_games,over,12.5,0.378,2.65,2.3,0.4026,-2.5,-0.1307,1,94,1914555
+2026-11-03 17:50,wta,WTA Challenger,"Cali, Colombia",Clay,3,Rebeka Masarova,Alice Tubello,p1_games,under,12.5,0.622,1.61,1.55,0.5974,2.5,-0.0358,1,94,1914555
+2026-11-03 17:50,wta,WTA Challenger,"Cali, Colombia",Clay,3,Rebeka Masarova,Alice Tubello,p2_games,over,11.5,0.6716,1.49,1.58,0.5864,8.5,0.0612,1,94,1914555
+2026-11-03 17:50,wta,WTA Challenger,"Cali, Colombia",Clay,3,Rebeka Masarova,Alice Tubello,p2_games,under,11.5,0.3284,3.05,2.24,0.4136,-8.5,-0.2644,1,94,1914555
+2026-11-03 17:50,wta,WTA Challenger,"Cali, Colombia",Clay,3,Rebeka Masarova,Alice Tubello,game_handicap,player_a,0.5,0.4722,2.12,,,,,1,94,1914555
+2026-11-03 17:50,wta,WTA Challenger,"Cali, Colombia",Clay,3,Rebeka Masarova,Alice Tubello,game_handicap,player_b,-0.5,0.5278,1.89,,,,,1,94,1914555
+2026-11-03 17:55,wta,WTA Challenger,"Cali, Colombia",Clay,3,Maria Carle,Despina Papamichail,winner,player_a,,0.6041,1.66,1.35,0.6897,-8.6,-0.1844,0,88,1914561
+2026-11-03 17:55,wta,WTA Challenger,"Cali, Colombia",Clay,3,Maria Carle,Despina Papamichail,winner,player_b,,0.3959,2.53,3.0,0.3103,8.6,0.1876,0,88,1914561
+2026-11-03 17:55,wta,WTA Challenger,"Cali, Colombia",Clay,3,Maria Carle,Despina Papamichail,total_games,over,20.5,0.4766,2.1,1.89,0.4906,-1.4,-0.0992,1,88,1914561
+2026-11-03 17:55,wta,WTA Challenger,"Cali, Colombia",Clay,3,Maria Carle,Despina Papamichail,total_games,under,20.5,0.5234,1.91,1.82,0.5094,1.4,-0.0474,1,88,1914561
+2026-11-03 17:55,wta,WTA Challenger,"Cali, Colombia",Clay,3,Maria Carle,Despina Papamichail,p1_games,over,12.5,0.3899,2.57,2.25,0.411,-2.1,-0.1228,1,88,1914561
+2026-11-03 17:55,wta,WTA Challenger,"Cali, Colombia",Clay,3,Maria Carle,Despina Papamichail,p1_games,under,12.5,0.6101,1.64,1.57,0.589,2.1,-0.0421,1,88,1914561
+2026-11-03 17:55,wta,WTA Challenger,"Cali, Colombia",Clay,3,Maria Carle,Despina Papamichail,p2_games,over,9.5,0.5921,1.69,1.84,0.5027,8.9,0.0896,1,88,1914561
+2026-11-03 17:55,wta,WTA Challenger,"Cali, Colombia",Clay,3,Maria Carle,Despina Papamichail,p2_games,under,9.5,0.4079,2.45,1.86,0.4973,-8.9,-0.2414,1,88,1914561
+2026-11-03 17:55,wta,WTA Challenger,"Cali, Colombia",Clay,3,Maria Carle,Despina Papamichail,game_handicap,player_a,-2.5,0.532,1.88,,,,,1,88,1914561
+2026-11-03 17:55,wta,WTA Challenger,"Cali, Colombia",Clay,3,Maria Carle,Despina Papamichail,game_handicap,player_b,2.5,0.468,2.14,,,,,1,88,1914561
+2026-11-03 19:05,wta,WTA Challenger,"Cali, Colombia",Clay,3,Tamara Zidansek,Bianca Andreescu,winner,player_a,,0.3267,3.06,2.75,0.3405,-1.4,-0.1017,0,94,1914558
+2026-11-03 19:05,wta,WTA Challenger,"Cali, Colombia",Clay,3,Tamara Zidansek,Bianca Andreescu,winner,player_b,,0.6733,1.49,1.42,0.6595,1.4,-0.0439,0,94,1914558
+2026-11-03 19:05,wta,WTA Challenger,"Cali, Colombia",Clay,3,Tamara Zidansek,Bianca Andreescu,total_games,over,20.5,0.4677,2.14,1.77,0.5229,-5.5,-0.1722,1,94,1914558
+2026-11-03 19:05,wta,WTA Challenger,"Cali, Colombia",Clay,3,Tamara Zidansek,Bianca Andreescu,total_games,under,20.5,0.5323,1.88,1.94,0.4771,5.5,0.0327,1,94,1914558
+2026-11-03 19:05,wta,WTA Challenger,"Cali, Colombia",Clay,3,Tamara Zidansek,Bianca Andreescu,p1_games,over,10.5,0.4943,2.02,1.85,0.5013,-0.7,-0.0856,1,94,1914558
+2026-11-03 19:05,wta,WTA Challenger,"Cali, Colombia",Clay,3,Tamara Zidansek,Bianca Andreescu,p1_games,under,10.5,0.5057,1.98,1.86,0.4987,0.7,-0.0593,1,94,1914558
+2026-11-03 19:05,wta,WTA Challenger,"Cali, Colombia",Clay,3,Tamara Zidansek,Bianca Andreescu,p2_games,over,12.5,0.4029,2.48,2.2,0.4211,-1.8,-0.1136,1,94,1914558
+2026-11-03 19:05,wta,WTA Challenger,"Cali, Colombia",Clay,3,Tamara Zidansek,Bianca Andreescu,p2_games,under,12.5,0.5971,1.67,1.6,0.5789,1.8,-0.0447,1,94,1914558
+2026-11-03 19:05,wta,WTA Challenger,"Cali, Colombia",Clay,3,Tamara Zidansek,Bianca Andreescu,game_handicap,player_a,3.5,0.4521,2.21,,,,,1,94,1914558
+2026-11-03 19:05,wta,WTA Challenger,"Cali, Colombia",Clay,3,Tamara Zidansek,Bianca Andreescu,game_handicap,player_b,-3.5,0.5479,1.83,,,,,1,94,1914558
+2026-11-03 19:20,wta,WTA Challenger,"Cali, Colombia",Clay,3,Julia Grabher,Laura Pigossi,winner,player_a,,0.7538,1.33,1.18,0.7958,-4.2,-0.1105,0,94,1914562
+2026-11-03 19:20,wta,WTA Challenger,"Cali, Colombia",Clay,3,Julia Grabher,Laura Pigossi,winner,player_b,,0.2462,4.06,4.6,0.2042,4.2,0.1325,0,94,1914562
+2026-11-03 19:20,wta,WTA Challenger,"Cali, Colombia",Clay,3,Julia Grabher,Laura Pigossi,total_games,over,18.5,0.5498,1.82,1.73,0.5349,1.5,-0.0489,1,94,1914562
+2026-11-03 19:20,wta,WTA Challenger,"Cali, Colombia",Clay,3,Julia Grabher,Laura Pigossi,total_games,under,18.5,0.4502,2.22,1.99,0.4651,-1.5,-0.104,1,94,1914562
+2026-11-03 19:20,wta,WTA Challenger,"Cali, Colombia",Clay,3,Julia Grabher,Laura Pigossi,p1_games,over,12.5,0.3832,2.61,2.32,0.399,-1.6,-0.1111,1,94,1914562
+2026-11-03 19:20,wta,WTA Challenger,"Cali, Colombia",Clay,3,Julia Grabher,Laura Pigossi,p1_games,under,12.5,0.6168,1.62,1.54,0.601,1.6,-0.0501,1,94,1914562
+2026-11-03 19:20,wta,WTA Challenger,"Cali, Colombia",Clay,3,Julia Grabher,Laura Pigossi,p2_games,over,7.5,0.5308,1.88,1.87,0.496,3.5,-0.0075,1,94,1914562
+2026-11-03 19:20,wta,WTA Challenger,"Cali, Colombia",Clay,3,Julia Grabher,Laura Pigossi,p2_games,under,7.5,0.4692,2.13,1.84,0.504,-3.5,-0.1366,1,94,1914562
+2026-11-03 19:20,wta,WTA Challenger,"Cali, Colombia",Clay,3,Julia Grabher,Laura Pigossi,game_handicap,player_a,-4.5,0.5653,1.77,,,,,1,94,1914562
+2026-11-03 19:20,wta,WTA Challenger,"Cali, Colombia",Clay,3,Julia Grabher,Laura Pigossi,game_handicap,player_b,4.5,0.4347,2.3,,,,,1,94,1914562
+2026-11-03 19:25,wta,WTA Challenger,"Cali, Colombia",Clay,3,Sofia Costoulas,Marina Bassols Ribera,winner,player_a,,0.4753,2.1,2.75,0.3405,13.5,0.307,0,91,1914556
+2026-11-03 19:25,wta,WTA Challenger,"Cali, Colombia",Clay,3,Sofia Costoulas,Marina Bassols Ribera,winner,player_b,,0.5247,1.91,1.42,0.6595,-13.5,-0.2549,0,91,1914556
+2026-11-03 19:25,wta,WTA Challenger,"Cali, Colombia",Clay,3,Sofia Costoulas,Marina Bassols Ribera,total_games,over,20.5,0.4997,2.0,1.86,0.4987,0.1,-0.0706,1,91,1914556
+2026-11-03 19:25,wta,WTA Challenger,"Cali, Colombia",Clay,3,Sofia Costoulas,Marina Bassols Ribera,total_games,under,20.5,0.5003,2.0,1.85,0.5013,-0.1,-0.0744,1,91,1914556
+2026-11-03 19:25,wta,WTA Challenger,"Cali, Colombia",Clay,3,Sofia Costoulas,Marina Bassols Ribera,p1_games,over,10.5,0.6366,1.57,1.91,0.4852,15.1,0.2159,1,91,1914556
+2026-11-03 19:25,wta,WTA Challenger,"Cali, Colombia",Clay,3,Sofia Costoulas,Marina Bassols Ribera,p1_games,under,10.5,0.3634,2.75,1.8,0.5148,-15.1,-0.3458,1,91,1914556
+2026-11-03 19:25,wta,WTA Challenger,"Cali, Colombia",Clay,3,Sofia Costoulas,Marina Bassols Ribera,p2_games,over,12.5,0.3864,2.59,2.23,0.4147,-2.8,-0.1384,1,91,1914556
+2026-11-03 19:25,wta,WTA Challenger,"Cali, Colombia",Clay,3,Sofia Costoulas,Marina Bassols Ribera,p2_games,under,12.5,0.6136,1.63,1.58,0.5853,2.8,-0.0305,1,91,1914556
+2026-11-03 19:25,wta,WTA Challenger,"Cali, Colombia",Clay,3,Sofia Costoulas,Marina Bassols Ribera,game_handicap,player_a,0.5,0.4877,2.05,,,,,1,91,1914556
+2026-11-03 19:25,wta,WTA Challenger,"Cali, Colombia",Clay,3,Sofia Costoulas,Marina Bassols Ribera,game_handicap,player_b,-0.5,0.5123,1.95,,,,,1,91,1914556
+2026-11-03 22:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Valentina Mediorreal Arias,Julia Riera,winner,player_a,,0.1799,5.56,,,,,0,81,1914560
+2026-11-03 22:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Valentina Mediorreal Arias,Julia Riera,winner,player_b,,0.8201,1.22,,,,,0,81,1914560
+2026-11-03 22:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Valentina Mediorreal Arias,Julia Riera,total_games,over,14.5,0.8802,1.14,1.73,0.5362,34.4,0.5227,1,81,1914560
+2026-11-03 22:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Valentina Mediorreal Arias,Julia Riera,total_games,under,14.5,0.1198,8.35,2.0,0.4638,-34.4,-0.7604,1,81,1914560
+2026-11-03 22:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Valentina Mediorreal Arias,Julia Riera,p1_games,over,2.5,0.8836,1.13,1.72,0.5376,34.6,0.5198,1,81,1914560
+2026-11-03 22:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Valentina Mediorreal Arias,Julia Riera,p1_games,under,2.5,0.1164,8.59,2.0,0.4624,-34.6,-0.7672,1,81,1914560
+2026-11-03 22:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Valentina Mediorreal Arias,Julia Riera,p2_games,over,12.5,0.361,2.77,6.2,0.1495,21.1,1.2379,1,81,1914560
+2026-11-03 22:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Valentina Mediorreal Arias,Julia Riera,p2_games,under,12.5,0.639,1.56,1.09,0.8505,-21.1,-0.3034,1,81,1914560
+2026-11-03 22:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Valentina Mediorreal Arias,Julia Riera,game_handicap,player_a,5.5,0.4513,2.22,,,,,1,81,1914560
+2026-11-03 22:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Valentina Mediorreal Arias,Julia Riera,game_handicap,player_b,-5.5,0.5487,1.82,,,,,1,81,1914560
+2026-11-03 16:25,atp,ATP Challenger,"Italy, Taranto",N/A,3,Matteo Martineau,Inaki Montes,winner,player_a,,0.3305,3.03,,,,,0,62,1914015
+2026-11-03 16:25,atp,ATP Challenger,"Italy, Taranto",N/A,3,Matteo Martineau,Inaki Montes,winner,player_b,,0.6695,1.49,,,,,0,62,1914015
+2026-11-03 16:25,atp,ATP Challenger,"Italy, Taranto",N/A,3,Matteo Martineau,Inaki Montes,total_games,over,22.5,0.4669,2.14,,,,,1,62,1914015
+2026-11-03 16:25,atp,ATP Challenger,"Italy, Taranto",N/A,3,Matteo Martineau,Inaki Montes,total_games,under,22.5,0.5331,1.88,,,,,1,62,1914015
+2026-11-03 16:25,atp,ATP Challenger,"Italy, Taranto",N/A,3,Matteo Martineau,Inaki Montes,p1_games,over,12.5,0.394,2.54,,,,,1,62,1914015
+2026-11-03 16:25,atp,ATP Challenger,"Italy, Taranto",N/A,3,Matteo Martineau,Inaki Montes,p1_games,under,12.5,0.606,1.65,,,,,1,62,1914015
+2026-11-03 16:25,atp,ATP Challenger,"Italy, Taranto",N/A,3,Matteo Martineau,Inaki Montes,p2_games,over,13.5,0.3326,3.01,,,,,1,62,1914015
+2026-11-03 16:25,atp,ATP Challenger,"Italy, Taranto",N/A,3,Matteo Martineau,Inaki Montes,p2_games,under,13.5,0.6674,1.5,,,,,1,62,1914015
+2026-11-03 16:25,atp,ATP Challenger,"Italy, Taranto",N/A,3,Matteo Martineau,Inaki Montes,game_handicap,player_a,2.5,0.4353,2.3,,,,,1,62,1914015
+2026-11-03 16:25,atp,ATP Challenger,"Italy, Taranto",N/A,3,Matteo Martineau,Inaki Montes,game_handicap,player_b,-2.5,0.5647,1.77,,,,,1,62,1914015
+2026-11-03 17:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Buvaysar Gadamauri,Pierluigi Basile,winner,player_a,,0.7497,1.33,,,,,0,81,1914014
+2026-11-03 17:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Buvaysar Gadamauri,Pierluigi Basile,winner,player_b,,0.2503,4.0,,,,,0,81,1914014
+2026-11-03 17:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Buvaysar Gadamauri,Pierluigi Basile,total_games,over,22.5,0.4336,2.31,,,,,0,81,1914014
+2026-11-03 17:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Buvaysar Gadamauri,Pierluigi Basile,total_games,under,22.5,0.5664,1.77,,,,,0,81,1914014
+2026-11-03 17:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Buvaysar Gadamauri,Pierluigi Basile,p1_games,over,13.5,0.319,3.13,,,,,0,81,1914014
+2026-11-03 17:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Buvaysar Gadamauri,Pierluigi Basile,p1_games,under,13.5,0.681,1.47,,,,,0,81,1914014
+2026-11-03 17:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Buvaysar Gadamauri,Pierluigi Basile,p2_games,over,10.5,0.474,2.11,,,,,0,81,1914014
+2026-11-03 17:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Buvaysar Gadamauri,Pierluigi Basile,p2_games,under,10.5,0.526,1.9,,,,,0,81,1914014
+2026-11-03 17:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Buvaysar Gadamauri,Pierluigi Basile,game_handicap,player_a,-3.5,0.5595,1.79,,,,,0,81,1914014
+2026-11-03 17:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Buvaysar Gadamauri,Pierluigi Basile,game_handicap,player_b,3.5,0.4405,2.27,,,,,0,81,1914014
+2026-11-03 17:55,atp,ATP Challenger,"Italy, Taranto",N/A,3,Maxim Mrva,Michele Ribecai,winner,player_a,,0.5842,1.71,1.62,0.577,0.7,-0.0536,0,88,1914018
+2026-11-03 17:55,atp,ATP Challenger,"Italy, Taranto",N/A,3,Maxim Mrva,Michele Ribecai,winner,player_b,,0.4158,2.4,2.21,0.423,-0.7,-0.0811,0,88,1914018
+2026-11-03 17:55,atp,ATP Challenger,"Italy, Taranto",N/A,3,Maxim Mrva,Michele Ribecai,total_games,over,21.5,0.4953,2.02,1.87,0.496,-0.1,-0.0738,0,88,1914018
+2026-11-03 17:55,atp,ATP Challenger,"Italy, Taranto",N/A,3,Maxim Mrva,Michele Ribecai,total_games,under,21.5,0.5047,1.98,1.84,0.504,0.1,-0.0714,0,88,1914018
+2026-11-03 17:55,atp,ATP Challenger,"Italy, Taranto",N/A,3,Maxim Mrva,Michele Ribecai,p1_games,over,12.5,0.4409,2.27,2.06,0.4492,-0.8,-0.0917,0,88,1914018
+2026-11-03 17:55,atp,ATP Challenger,"Italy, Taranto",N/A,3,Maxim Mrva,Michele Ribecai,p1_games,under,12.5,0.5591,1.79,1.68,0.5508,0.8,-0.0608,0,88,1914018
+2026-11-03 17:55,atp,ATP Challenger,"Italy, Taranto",N/A,3,Maxim Mrva,Michele Ribecai,p2_games,over,11.5,0.5705,1.75,1.65,0.5623,0.8,-0.0586,0,88,1914018
+2026-11-03 17:55,atp,ATP Challenger,"Italy, Taranto",N/A,3,Maxim Mrva,Michele Ribecai,p2_games,under,11.5,0.4295,2.33,2.12,0.4377,-0.8,-0.0895,0,88,1914018
+2026-11-03 17:55,atp,ATP Challenger,"Italy, Taranto",N/A,3,Maxim Mrva,Michele Ribecai,game_handicap,player_a,-1.5,0.5391,1.86,,,,,0,88,1914018
+2026-11-03 17:55,atp,ATP Challenger,"Italy, Taranto",N/A,3,Maxim Mrva,Michele Ribecai,game_handicap,player_b,1.5,0.4609,2.17,,,,,0,88,1914018
+2026-11-03 16:50,wta,WTA Challenger,"Luanda, Angola",N/A,3,Anna Blinkova,Farah Heddar,winner,player_a,,0.7462,1.34,,,,,0,41,1914777
+2026-11-03 16:50,wta,WTA Challenger,"Luanda, Angola",N/A,3,Anna Blinkova,Farah Heddar,winner,player_b,,0.2538,3.94,,,,,0,41,1914777
+2026-11-03 16:50,wta,WTA Challenger,"Luanda, Angola",N/A,3,Anna Blinkova,Farah Heddar,total_games,over,19.5,0.4855,2.06,,,,,1,41,1914777
+2026-11-03 16:50,wta,WTA Challenger,"Luanda, Angola",N/A,3,Anna Blinkova,Farah Heddar,total_games,under,19.5,0.5145,1.94,,,,,1,41,1914777
+2026-11-03 16:50,wta,WTA Challenger,"Luanda, Angola",N/A,3,Anna Blinkova,Farah Heddar,p1_games,over,12.5,0.3875,2.58,,,,,1,41,1914777
+2026-11-03 16:50,wta,WTA Challenger,"Luanda, Angola",N/A,3,Anna Blinkova,Farah Heddar,p1_games,under,12.5,0.6125,1.63,,,,,1,41,1914777
+2026-11-03 16:50,wta,WTA Challenger,"Luanda, Angola",N/A,3,Anna Blinkova,Farah Heddar,p2_games,over,8.5,0.4877,2.05,,,,,1,41,1914777
+2026-11-03 16:50,wta,WTA Challenger,"Luanda, Angola",N/A,3,Anna Blinkova,Farah Heddar,p2_games,under,8.5,0.5123,1.95,,,,,1,41,1914777
+2026-11-03 16:50,wta,WTA Challenger,"Luanda, Angola",N/A,3,Anna Blinkova,Farah Heddar,game_handicap,player_a,-4.5,0.5539,1.81,,,,,1,41,1914777
+2026-11-03 16:50,wta,WTA Challenger,"Luanda, Angola",N/A,3,Anna Blinkova,Farah Heddar,game_handicap,player_b,4.5,0.4461,2.24,,,,,1,41,1914777
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Alexander Zverev,Lorenzo Musetti,winner,player_a,,0.6699,1.49,,,,,0,94,1914699
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Alexander Zverev,Lorenzo Musetti,winner,player_b,,0.3301,3.03,,,,,0,94,1914699
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Alexander Zverev,Lorenzo Musetti,total_games,over,22.5,0.4736,2.11,,,,,0,94,1914699
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Alexander Zverev,Lorenzo Musetti,total_games,under,22.5,0.5264,1.9,,,,,0,94,1914699
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Alexander Zverev,Lorenzo Musetti,p1_games,over,13.5,0.3378,2.96,,,,,0,94,1914699
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Alexander Zverev,Lorenzo Musetti,p1_games,under,13.5,0.6622,1.51,,,,,0,94,1914699
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Alexander Zverev,Lorenzo Musetti,p2_games,over,12.5,0.4004,2.5,,,,,0,94,1914699
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Alexander Zverev,Lorenzo Musetti,p2_games,under,12.5,0.5996,1.67,,,,,0,94,1914699
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Alexander Zverev,Lorenzo Musetti,game_handicap,player_a,-2.5,0.5615,1.78,,,,,0,94,1914699
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Alexander Zverev,Lorenzo Musetti,game_handicap,player_b,2.5,0.4385,2.28,,,,,0,94,1914699
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,winner,player_a,,0.7419,1.35,1.48,0.6501,9.2,0.098,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,winner,player_b,,0.2581,3.87,2.75,0.3499,-9.2,-0.2903,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,total_games,over,21.5,0.5093,1.96,1.63,0.5744,-6.5,-0.1698,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,total_games,under,21.5,0.4907,2.04,2.2,0.4256,6.5,0.0794,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,total_games,over,22.5,0.4341,2.3,1.88,0.4973,-6.3,-0.1838,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,total_games,under,22.5,0.5659,1.77,1.86,0.5027,6.3,0.0525,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,total_games,over,23.5,0.3808,2.63,2.12,0.4406,-6.0,-0.1926,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,total_games,under,23.5,0.6192,1.62,1.67,0.5594,6.0,0.034,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,p1_games,over,11.5,0.8594,1.16,1.2,0.7778,8.2,0.0313,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,p1_games,under,11.5,0.1406,7.11,4.2,0.2222,-8.2,-0.4096,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,p1_games,over,12.5,0.5136,1.95,1.72,0.5426,-2.9,-0.1167,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,p1_games,under,12.5,0.4864,2.06,2.04,0.4574,2.9,-0.0077,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,p1_games,over,13.5,0.3184,3.14,2.55,0.3657,-4.7,-0.188,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,p1_games,under,13.5,0.6816,1.47,1.47,0.6343,4.7,0.0019,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,p2_games,over,10.5,0.4803,2.08,1.6,0.5833,-10.3,-0.2315,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,p2_games,under,10.5,0.5197,1.92,2.24,0.4167,10.3,0.1641,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,p2_games,over,11.5,0.4446,2.25,1.7,0.5491,-10.4,-0.2442,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,p2_games,under,11.5,0.5554,1.8,2.07,0.4509,10.4,0.1497,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,p2_games,over,12.5,0.3422,2.92,2.2,0.4241,-8.2,-0.2471,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,p2_games,under,12.5,0.6578,1.52,1.62,0.5759,8.2,0.0656,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,game_handicap,player_a,-3.5,0.5546,1.8,,,,,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Arthur Fils,Tomas Machac,game_handicap,player_b,3.5,0.4454,2.25,,,,,0,100,1914750
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,winner,player_a,,0.18,5.55,6.0,0.1597,2.0,0.0801,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,winner,player_b,,0.82,1.22,1.14,0.8403,-2.0,-0.0652,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,total_games,over,19.5,0.5358,1.87,1.61,0.5796,-4.4,-0.1374,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,total_games,under,19.5,0.4642,2.15,2.22,0.4204,4.4,0.0305,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,total_games,over,20.5,0.4625,2.16,1.87,0.5,-3.8,-0.1352,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,total_games,under,20.5,0.5375,1.86,1.87,0.5,3.8,0.0052,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,total_games,over,21.5,0.4118,2.43,2.09,0.4471,-3.5,-0.1393,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,total_games,under,21.5,0.5882,1.7,1.69,0.5529,3.5,-0.006,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,p1_games,over,7.5,0.5412,1.85,1.65,0.5669,-2.6,-0.107,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,p1_games,under,7.5,0.4588,2.18,2.16,0.4331,2.6,-0.009,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,p1_games,over,8.5,0.4653,2.15,1.95,0.48,-1.5,-0.0928,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,p1_games,under,8.5,0.5347,1.87,1.8,0.52,1.5,-0.0375,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,p1_games,over,9.5,0.4097,2.44,2.25,0.4156,-0.6,-0.0782,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,p1_games,under,9.5,0.5903,1.69,1.6,0.5844,0.6,-0.0555,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,p2_games,over,11.5,0.9026,1.11,1.05,0.8934,0.9,-0.0523,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,p2_games,under,11.5,0.0974,10.27,8.8,0.1066,-0.9,-0.1429,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,p2_games,over,12.5,0.4512,2.22,1.84,0.508,-5.7,-0.1698,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,p2_games,under,12.5,0.5488,1.82,1.9,0.492,5.7,0.0428,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,p2_games,over,13.5,0.2668,3.75,3.1,0.3002,-3.3,-0.1729,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,p2_games,under,13.5,0.7332,1.36,1.33,0.6998,3.3,-0.0248,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,game_handicap,player_a,4.5,0.4354,2.3,,,,,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Ignacio Buse,Daniil Medvedev,game_handicap,player_b,-4.5,0.5646,1.77,,,,,0,100,1914719
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Luca Van Assche,Learner Tien,winner,player_a,,0.2968,3.37,,,,,0,94,1914996
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Luca Van Assche,Learner Tien,winner,player_b,,0.7032,1.42,,,,,0,94,1914996
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Luca Van Assche,Learner Tien,total_games,over,21.5,0.4904,2.04,,,,,0,94,1914996
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Luca Van Assche,Learner Tien,total_games,under,21.5,0.5096,1.96,,,,,0,94,1914996
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Luca Van Assche,Learner Tien,p1_games,over,11.5,0.4676,2.14,,,,,0,94,1914996
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Luca Van Assche,Learner Tien,p1_games,under,11.5,0.5324,1.88,,,,,0,94,1914996
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Luca Van Assche,Learner Tien,p2_games,over,12.5,0.4811,2.08,,,,,0,94,1914996
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Luca Van Assche,Learner Tien,p2_games,under,12.5,0.5189,1.93,,,,,0,94,1914996
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Luca Van Assche,Learner Tien,game_handicap,player_a,3.5,0.4611,2.17,,,,,0,94,1914996
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Luca Van Assche,Learner Tien,game_handicap,player_b,-3.5,0.5389,1.86,,,,,0,94,1914996
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Matteo Berrettini,Ugo Humbert,winner,player_a,,0.523,1.91,1.99,0.4831,4.0,0.0407,0,100,1915000
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Matteo Berrettini,Ugo Humbert,winner,player_b,,0.477,2.1,1.86,0.5169,-4.0,-0.1127,0,100,1915000
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Matteo Berrettini,Ugo Humbert,total_games,over,23.5,0.4762,2.1,,,,,0,100,1915000
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Matteo Berrettini,Ugo Humbert,total_games,under,23.5,0.5238,1.91,,,,,0,100,1915000
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Matteo Berrettini,Ugo Humbert,p1_games,over,13.5,0.3793,2.64,,,,,0,100,1915000
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Matteo Berrettini,Ugo Humbert,p1_games,under,13.5,0.6207,1.61,,,,,0,100,1915000
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Matteo Berrettini,Ugo Humbert,p2_games,over,13.5,0.3718,2.69,,,,,0,100,1915000
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Matteo Berrettini,Ugo Humbert,p2_games,under,13.5,0.6282,1.59,,,,,0,100,1915000
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Matteo Berrettini,Ugo Humbert,game_handicap,player_a,-0.5,0.5025,1.99,,,,,0,100,1915000
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Matteo Berrettini,Ugo Humbert,game_handicap,player_b,0.5,0.4975,2.01,,,,,0,100,1915000
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,winner,player_a,,0.498,2.01,1.74,0.5515,-5.4,-0.1335,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,winner,player_b,,0.502,1.99,2.14,0.4485,5.4,0.0743,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,total_games,over,22.5,0.5475,1.83,1.7,0.5491,-0.2,-0.0692,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,total_games,under,22.5,0.4525,2.21,2.07,0.4509,0.2,-0.0634,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,total_games,over,23.5,0.47,2.13,1.95,0.4786,-0.9,-0.0834,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,total_games,under,23.5,0.53,1.89,1.79,0.5214,0.9,-0.0514,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,total_games,over,24.5,0.4625,2.16,1.99,0.4693,-0.7,-0.0796,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,total_games,under,24.5,0.5375,1.86,1.76,0.5307,0.7,-0.054,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,p1_games,over,11.5,0.7005,1.43,1.29,0.7249,-2.4,-0.0964,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,p1_games,under,11.5,0.2995,3.34,3.4,0.2751,2.4,0.0183,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,p1_games,over,12.5,0.5288,1.89,1.69,0.5529,-2.4,-0.1063,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,p1_games,under,12.5,0.4712,2.12,2.09,0.4471,2.4,-0.0152,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,p1_games,over,13.5,0.3674,2.72,2.42,0.3858,-1.8,-0.1109,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,p1_games,under,13.5,0.6326,1.58,1.52,0.6142,1.8,-0.0384,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,p2_games,over,11.5,0.7044,1.42,1.43,0.6538,5.1,0.0073,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,p2_games,under,11.5,0.2956,3.38,2.7,0.3462,-5.1,-0.2019,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,p2_games,over,12.5,0.5308,1.88,1.83,0.5107,2.0,-0.0287,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,p2_games,under,12.5,0.4692,2.13,1.91,0.4893,-2.0,-0.1038,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,p2_games,over,13.5,0.3682,2.72,2.55,0.3657,0.3,-0.0612,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,p2_games,under,13.5,0.6318,1.58,1.47,0.6343,-0.3,-0.0712,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,game_handicap,player_a,-0.5,0.4776,2.09,,,,,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Mattia Bellucci,Arthur Rinderknech,game_handicap,player_b,0.5,0.5224,1.91,,,,,0,100,1914972
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Novak Djokovic,Rinky Hijikata,winner,player_a,,0.9003,1.11,1.15,0.8392,6.1,0.0353,0,100,1915016
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Novak Djokovic,Rinky Hijikata,winner,player_b,,0.0997,10.03,6.0,0.1608,-6.1,-0.4017,0,100,1915016
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Novak Djokovic,Rinky Hijikata,total_games,over,19.5,0.4616,2.17,,,,,0,100,1915016
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Novak Djokovic,Rinky Hijikata,total_games,under,19.5,0.5384,1.86,,,,,0,100,1915016
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Novak Djokovic,Rinky Hijikata,p1_games,over,12.5,0.4071,2.46,,,,,0,100,1915016
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Novak Djokovic,Rinky Hijikata,p1_games,under,12.5,0.5929,1.69,,,,,0,100,1915016
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Novak Djokovic,Rinky Hijikata,p2_games,over,7.5,0.4423,2.26,,,,,0,100,1915016
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Novak Djokovic,Rinky Hijikata,p2_games,under,7.5,0.5577,1.79,,,,,0,100,1915016
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Novak Djokovic,Rinky Hijikata,game_handicap,player_a,-5.5,0.5243,1.91,,,,,0,100,1915016
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Novak Djokovic,Rinky Hijikata,game_handicap,player_b,5.5,0.4757,2.1,,,,,0,100,1915016
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,winner,player_a,,0.4776,2.09,2.75,0.3514,12.6,0.3135,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,winner,player_b,,0.5224,1.91,1.49,0.6486,-12.6,-0.2217,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,total_games,over,21.5,0.6057,1.65,1.62,0.5759,3.0,-0.0188,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,total_games,under,21.5,0.3943,2.54,2.2,0.4241,-3.0,-0.1325,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,total_games,over,22.5,0.5197,1.92,1.88,0.4973,2.2,-0.023,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,total_games,under,22.5,0.4803,2.08,1.86,0.5027,-2.2,-0.1066,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,total_games,over,23.5,0.4532,2.21,2.12,0.4406,1.3,-0.0392,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,total_games,under,23.5,0.5468,1.83,1.67,0.5594,-1.3,-0.0869,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,p1_games,over,10.5,0.6994,1.43,1.59,0.587,11.2,0.1121,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,p1_games,under,10.5,0.3006,3.33,2.26,0.413,-11.2,-0.3207,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,p1_games,over,11.5,0.6723,1.49,1.69,0.5517,12.1,0.1362,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,p1_games,under,11.5,0.3277,3.05,2.08,0.4483,-12.1,-0.3184,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,p1_games,over,12.5,0.496,2.02,2.19,0.4267,6.9,0.0862,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,p1_games,under,12.5,0.504,1.98,1.63,0.5733,-6.9,-0.1785,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,p2_games,over,11.5,0.7074,1.41,1.2,0.7778,-7.0,-0.1511,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,p2_games,under,11.5,0.2926,3.42,4.2,0.2222,7.0,0.2288,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,p2_games,over,12.5,0.5124,1.95,1.72,0.5426,-3.0,-0.1186,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,p2_games,under,12.5,0.4876,2.05,2.04,0.4574,3.0,-0.0054,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,p2_games,over,13.5,0.3496,2.86,2.55,0.3657,-1.6,-0.1084,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,p2_games,under,13.5,0.6504,1.54,1.47,0.6343,1.6,-0.044,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,game_handicap,player_a,0.5,0.4971,2.01,,,,,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Nuno Borges,Karen Khachanov,game_handicap,player_b,-0.5,0.5029,1.99,,,,,0,100,1914988
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Quentin Halys,Frances Tiafoe,winner,player_a,,0.3094,3.23,,,,,0,94,1914971
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Quentin Halys,Frances Tiafoe,winner,player_b,,0.6906,1.45,,,,,0,94,1914971
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Quentin Halys,Frances Tiafoe,total_games,over,23.5,0.4305,2.32,,,,,0,94,1914971
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Quentin Halys,Frances Tiafoe,total_games,under,23.5,0.5695,1.76,,,,,0,94,1914971
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Quentin Halys,Frances Tiafoe,p1_games,over,12.5,0.4178,2.39,,,,,0,94,1914971
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Quentin Halys,Frances Tiafoe,p1_games,under,12.5,0.5822,1.72,,,,,0,94,1914971
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Quentin Halys,Frances Tiafoe,p2_games,over,13.5,0.3634,2.75,,,,,0,94,1914971
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Quentin Halys,Frances Tiafoe,p2_games,under,13.5,0.6366,1.57,,,,,0,94,1914971
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Quentin Halys,Frances Tiafoe,game_handicap,player_a,2.5,0.4337,2.31,,,,,0,94,1914971
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Quentin Halys,Frances Tiafoe,game_handicap,player_b,-2.5,0.5663,1.77,,,,,0,94,1914971
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,winner,player_a,,0.1839,5.44,3.75,0.256,-7.2,-0.3103,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,winner,player_b,,0.8161,1.23,1.29,0.744,7.2,0.0527,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,total_games,over,20.5,0.4869,2.05,1.59,0.5881,-10.1,-0.2259,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,total_games,under,20.5,0.5131,1.95,2.27,0.4119,10.1,0.1648,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,total_games,over,21.5,0.4342,2.3,1.75,0.5346,-10.0,-0.2401,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,total_games,under,21.5,0.5658,1.77,2.01,0.4654,10.0,0.1372,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,total_games,over,22.5,0.3684,2.71,2.03,0.4601,-9.2,-0.2522,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,total_games,under,22.5,0.6316,1.58,1.73,0.5399,9.2,0.0927,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,p1_games,over,9.5,0.4276,2.34,1.72,0.5438,-11.6,-0.2645,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,p1_games,under,9.5,0.5724,1.75,2.05,0.4562,11.6,0.1734,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,p1_games,over,10.5,0.3806,2.63,1.9,0.492,-11.1,-0.2769,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,p1_games,under,10.5,0.6194,1.61,1.84,0.508,11.1,0.1397,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,p1_games,over,11.5,0.3445,2.9,2.05,0.4562,-11.2,-0.2937,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,p1_games,under,11.5,0.6555,1.53,1.72,0.5438,11.2,0.1274,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,p2_games,over,11.5,0.9033,1.11,1.12,0.8382,6.5,0.0117,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,p2_games,under,11.5,0.0967,10.34,5.8,0.1618,-6.5,-0.4393,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,p2_games,over,12.5,0.4718,2.12,1.71,0.5464,-7.5,-0.1933,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,p2_games,under,12.5,0.5282,1.89,2.06,0.4536,7.5,0.0882,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,p2_games,over,13.5,0.2784,3.59,2.65,0.3521,-7.4,-0.2622,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,p2_games,under,13.5,0.7216,1.39,1.44,0.6479,7.4,0.0391,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,game_handicap,player_a,4.5,0.4642,2.15,,,,,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tomas Etcheverry,Alex de Minaur,game_handicap,player_b,-4.5,0.5358,1.87,,,,,0,94,1914980
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tommy Paul,Daniel Merida Aguilar,winner,player_a,,0.7193,1.39,,,,,0,94,1915012
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tommy Paul,Daniel Merida Aguilar,winner,player_b,,0.2807,3.56,,,,,0,94,1915012
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tommy Paul,Daniel Merida Aguilar,total_games,over,21.5,0.4831,2.07,,,,,0,94,1915012
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tommy Paul,Daniel Merida Aguilar,total_games,under,21.5,0.5169,1.93,,,,,0,94,1915012
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tommy Paul,Daniel Merida Aguilar,p1_games,over,12.5,0.4805,2.08,,,,,0,94,1915012
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tommy Paul,Daniel Merida Aguilar,p1_games,under,12.5,0.5195,1.92,,,,,0,94,1915012
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tommy Paul,Daniel Merida Aguilar,p2_games,over,10.5,0.4869,2.05,,,,,0,94,1915012
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tommy Paul,Daniel Merida Aguilar,p2_games,under,10.5,0.5131,1.95,,,,,0,94,1915012
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tommy Paul,Daniel Merida Aguilar,game_handicap,player_a,-3.5,0.5563,1.8,,,,,0,94,1915012
+2026-11-04 09:00,atp,ATP 1000,Paris Masters,Hard,3,Tommy Paul,Daniel Merida Aguilar,game_handicap,player_b,3.5,0.4437,2.25,,,,,0,94,1915012
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Oksana Selekhmeteva,Polina Kudermetova,winner,player_a,,0.3873,2.58,,,,,0,94,1914979
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Oksana Selekhmeteva,Polina Kudermetova,winner,player_b,,0.6127,1.63,,,,,0,94,1914979
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Oksana Selekhmeteva,Polina Kudermetova,total_games,over,20.5,0.4821,2.07,,,,,0,94,1914979
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Oksana Selekhmeteva,Polina Kudermetova,total_games,under,20.5,0.5179,1.93,,,,,0,94,1914979
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Oksana Selekhmeteva,Polina Kudermetova,p1_games,over,12.5,0.3317,3.01,,,,,0,94,1914979
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Oksana Selekhmeteva,Polina Kudermetova,p1_games,under,12.5,0.6683,1.5,,,,,0,94,1914979
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Oksana Selekhmeteva,Polina Kudermetova,p2_games,over,12.5,0.3975,2.52,,,,,0,94,1914979
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Oksana Selekhmeteva,Polina Kudermetova,p2_games,under,12.5,0.6025,1.66,,,,,0,94,1914979
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Oksana Selekhmeteva,Polina Kudermetova,game_handicap,player_a,2.5,0.4604,2.17,,,,,0,94,1914979
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Oksana Selekhmeteva,Polina Kudermetova,game_handicap,player_b,-2.5,0.5396,1.85,,,,,0,94,1914979
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,winner,player_a,,0.4537,2.2,1.68,0.5714,-11.8,-0.2378,0,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,winner,player_b,,0.5463,1.83,2.24,0.4286,11.8,0.2237,0,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,total_games,over,20.5,0.5151,1.94,1.62,0.5759,-6.1,-0.1656,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,total_games,under,20.5,0.4849,2.06,2.2,0.4241,6.1,0.0668,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,total_games,over,21.5,0.4662,2.15,1.79,0.5227,-5.6,-0.1655,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,total_games,under,21.5,0.5338,1.87,1.96,0.4773,5.6,0.0463,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,total_games,over,22.5,0.4087,2.45,2.05,0.4562,-4.8,-0.1621,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,total_games,under,22.5,0.5913,1.69,1.72,0.5438,4.8,0.017,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,p1_games,over,11.5,0.5948,1.68,1.34,0.6948,-10.0,-0.203,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,p1_games,under,11.5,0.4052,2.47,3.05,0.3052,10.0,0.2359,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,p1_games,over,12.5,0.3776,2.65,2.06,0.4536,-7.6,-0.2222,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,p1_games,under,12.5,0.6224,1.61,1.71,0.5464,7.6,0.0644,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,p1_games,over,13.5,0.251,3.98,3.1,0.3018,-5.1,-0.222,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,p1_games,under,13.5,0.749,1.34,1.34,0.6982,5.1,0.0037,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,p2_games,over,10.5,0.7036,1.42,1.54,0.6061,9.7,0.0835,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,p2_games,under,10.5,0.2964,3.37,2.37,0.3939,-9.7,-0.2975,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,p2_games,over,11.5,0.6777,1.48,1.63,0.5733,10.4,0.1047,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,p2_games,under,11.5,0.3223,3.1,2.19,0.4267,-10.4,-0.2942,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,p2_games,over,12.5,0.4059,2.46,2.34,0.4,0.6,-0.0502,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,p2_games,under,12.5,0.5941,1.68,1.56,0.6,-0.6,-0.0732,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,game_handicap,player_a,1.5,0.4949,2.02,,,,,1,78,1914953
+2026-11-04 09:30,wta,WTA 250,Chennai Open,Hard,3,Robin Montgomery,Jeline Vandromme,game_handicap,player_b,-1.5,0.5051,1.98,,,,,1,78,1914953
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,winner,player_a,,0.5247,1.91,1.43,0.6735,-14.9,-0.2497,0,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,winner,player_b,,0.4753,2.1,2.95,0.3265,14.9,0.4022,0,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,total_games,over,19.5,0.6093,1.64,1.62,0.5759,3.3,-0.0129,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,total_games,under,19.5,0.3907,2.56,2.2,0.4241,-3.3,-0.1405,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,total_games,over,20.5,0.5377,1.86,1.84,0.508,3.0,-0.0107,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,total_games,under,20.5,0.4623,2.16,1.9,0.492,-3.0,-0.1216,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,total_games,over,21.5,0.4869,2.05,2.04,0.4589,2.8,-0.0067,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,total_games,under,21.5,0.5131,1.95,1.73,0.5411,-2.8,-0.1124,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,p1_games,over,11.5,0.6665,1.5,1.22,0.7663,-10.0,-0.1869,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,p1_games,under,11.5,0.3335,3.0,4.0,0.2337,10.0,0.334,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,p1_games,over,12.5,0.4177,2.39,2.08,0.4497,-3.2,-0.1311,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,p1_games,under,12.5,0.5823,1.72,1.7,0.5503,3.2,-0.0101,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,p1_games,over,13.5,0.2756,3.63,3.25,0.2873,-1.2,-0.1044,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,p1_games,under,13.5,0.7244,1.38,1.31,0.7127,1.2,-0.051,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,p2_games,over,9.5,0.6847,1.46,1.73,0.5411,14.4,0.1846,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,p2_games,under,9.5,0.3153,3.17,2.04,0.4589,-14.4,-0.3569,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,p2_games,over,10.5,0.652,1.53,1.86,0.5027,14.9,0.2127,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,p2_games,under,10.5,0.348,2.87,1.88,0.4973,-14.9,-0.3457,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,p2_games,over,11.5,0.6235,1.6,2.0,0.4681,15.5,0.2471,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,p2_games,under,11.5,0.3765,2.66,1.76,0.5319,-15.5,-0.3374,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,game_handicap,player_a,-0.5,0.5106,1.96,,,,,1,94,1914975
+2026-11-04 11:00,wta,WTA 250,Chennai Open,Hard,3,Janice Tjen,Joanna Garland,game_handicap,player_b,0.5,0.4894,2.04,,,,,1,94,1914975
+2026-11-04 12:30,wta,WTA 250,Chennai Open,Hard,3,Weronika Falkowska,Maaya Rajeshwaran Revathi,winner,player_a,,0.6121,1.63,,,,,0,72,1915030
+2026-11-04 12:30,wta,WTA 250,Chennai Open,Hard,3,Weronika Falkowska,Maaya Rajeshwaran Revathi,winner,player_b,,0.3879,2.58,,,,,0,72,1915030
+2026-11-04 12:30,wta,WTA 250,Chennai Open,Hard,3,Weronika Falkowska,Maaya Rajeshwaran Revathi,total_games,over,20.5,0.4872,2.05,,,,,1,72,1915030
+2026-11-04 12:30,wta,WTA 250,Chennai Open,Hard,3,Weronika Falkowska,Maaya Rajeshwaran Revathi,total_games,under,20.5,0.5128,1.95,,,,,1,72,1915030
+2026-11-04 12:30,wta,WTA 250,Chennai Open,Hard,3,Weronika Falkowska,Maaya Rajeshwaran Revathi,p1_games,over,12.5,0.4019,2.49,,,,,1,72,1915030
+2026-11-04 12:30,wta,WTA 250,Chennai Open,Hard,3,Weronika Falkowska,Maaya Rajeshwaran Revathi,p1_games,under,12.5,0.5981,1.67,,,,,1,72,1915030
+2026-11-04 12:30,wta,WTA 250,Chennai Open,Hard,3,Weronika Falkowska,Maaya Rajeshwaran Revathi,p2_games,over,12.5,0.3358,2.98,,,,,1,72,1915030
+2026-11-04 12:30,wta,WTA 250,Chennai Open,Hard,3,Weronika Falkowska,Maaya Rajeshwaran Revathi,p2_games,under,12.5,0.6642,1.51,,,,,1,72,1915030
+2026-11-04 12:30,wta,WTA 250,Chennai Open,Hard,3,Weronika Falkowska,Maaya Rajeshwaran Revathi,game_handicap,player_a,-2.5,0.5382,1.86,,,,,1,72,1915030
+2026-11-04 12:30,wta,WTA 250,Chennai Open,Hard,3,Weronika Falkowska,Maaya Rajeshwaran Revathi,game_handicap,player_b,2.5,0.4618,2.17,,,,,1,72,1915030
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,winner,player_a,,0.4176,2.39,1.84,0.5221,-10.4,-0.2315,0,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,winner,player_b,,0.5824,1.72,2.01,0.4779,10.4,0.1705,0,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,total_games,over,20.5,0.4935,2.03,1.67,0.5594,-6.6,-0.1758,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,total_games,under,20.5,0.5065,1.97,2.12,0.4406,6.6,0.0737,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,total_games,over,21.5,0.4465,2.24,1.84,0.508,-6.2,-0.1784,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,total_games,under,21.5,0.5535,1.81,1.9,0.492,6.2,0.0516,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,total_games,over,22.5,0.393,2.54,2.1,0.4444,-5.1,-0.1747,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,total_games,under,22.5,0.607,1.65,1.68,0.5556,5.1,0.0197,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,p1_games,over,11.5,0.5545,1.8,1.43,0.6538,-9.9,-0.2071,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,p1_games,under,11.5,0.4455,2.24,2.7,0.3462,9.9,0.2029,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,p1_games,over,12.5,0.3498,2.86,2.15,0.4357,-8.6,-0.2479,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,p1_games,under,12.5,0.6502,1.54,1.66,0.5643,8.6,0.0793,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,p1_games,over,13.5,0.2323,4.3,3.2,0.292,-6.0,-0.2567,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,p1_games,under,13.5,0.7677,1.3,1.32,0.708,6.0,0.0134,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,p2_games,over,11.5,0.7009,1.43,1.51,0.6177,8.3,0.0584,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,p2_games,under,11.5,0.2991,3.34,2.44,0.3823,-8.3,-0.2702,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,p2_games,over,12.5,0.3981,2.51,2.22,0.4204,-2.2,-0.1163,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,p2_games,under,12.5,0.6019,1.66,1.61,0.5796,2.2,-0.0309,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,p2_games,over,13.5,0.2581,3.87,3.3,0.2842,-2.6,-0.1484,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,p2_games,under,13.5,0.7419,1.35,1.31,0.7158,2.6,-0.0281,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,game_handicap,player_a,2.5,0.4937,2.03,,,,,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Antonia Ruzic,Alina Charaeva,game_handicap,player_b,-2.5,0.5063,1.98,,,,,1,94,1913800
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,winner,player_a,,0.8107,1.23,1.33,0.7218,8.9,0.0782,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,winner,player_b,,0.1893,5.28,3.45,0.2782,-8.9,-0.3468,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,total_games,over,19.5,0.4697,2.13,1.75,0.5333,-6.4,-0.178,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,total_games,under,19.5,0.5303,1.89,2.0,0.4667,6.4,0.0606,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,total_games,over,20.5,0.4046,2.47,1.98,0.472,-6.7,-0.1989,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,total_games,under,20.5,0.5954,1.68,1.77,0.528,6.7,0.0538,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,total_games,over,21.5,0.3592,2.78,2.2,0.4256,-6.6,-0.2098,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,total_games,under,21.5,0.6408,1.56,1.63,0.5744,6.6,0.0446,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,p1_games,over,11.5,0.8858,1.13,1.17,0.7972,8.9,0.0364,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,p1_games,under,11.5,0.1142,8.76,4.6,0.2028,-8.9,-0.4746,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,p1_games,over,12.5,0.3898,2.57,2.09,0.4471,-5.7,-0.1853,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,p1_games,under,12.5,0.6102,1.64,1.69,0.5529,5.7,0.0312,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,p1_games,over,13.5,0.2284,4.38,3.25,0.2873,-5.9,-0.2576,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,p1_games,under,13.5,0.7716,1.3,1.31,0.7127,5.9,0.0108,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,p2_games,over,8.5,0.4264,2.35,1.73,0.5399,-11.4,-0.2624,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,p2_games,under,8.5,0.5736,1.74,2.03,0.4601,11.4,0.1644,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,p2_games,over,9.5,0.3797,2.63,1.88,0.4973,-11.8,-0.2861,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,p2_games,under,9.5,0.6203,1.61,1.86,0.5027,11.8,0.1537,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,p2_games,over,10.5,0.3423,2.92,2.05,0.4562,-11.4,-0.2983,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,p2_games,under,10.5,0.6577,1.52,1.72,0.5438,11.4,0.1312,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,game_handicap,player_a,-4.5,0.6062,1.65,,,,,0,100,1913805
+2026-11-04 06:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Leylah Fernandez,Sofia Kenin,game_handicap,player_b,4.5,0.3938,2.54,,,,,0,100,1913805
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,winner,player_a,,0.3129,3.2,2.39,0.4025,-9.0,-0.2522,0,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,winner,player_b,,0.6871,1.46,1.61,0.5975,9.0,0.1063,0,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,total_games,over,20.5,0.4692,2.13,1.7,0.5491,-8.0,-0.2024,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,total_games,under,20.5,0.5308,1.88,2.07,0.4509,8.0,0.0988,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,total_games,over,21.5,0.4222,2.37,1.88,0.4973,-7.5,-0.2062,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,total_games,under,21.5,0.5778,1.73,1.86,0.5027,7.5,0.0746,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,total_games,over,22.5,0.3691,2.71,2.14,0.4368,-6.8,-0.2101,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,total_games,under,22.5,0.6309,1.59,1.66,0.5632,6.8,0.0473,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,p1_games,over,10.5,0.4822,2.07,1.6,0.5833,-10.1,-0.2285,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,p1_games,under,10.5,0.5178,1.93,2.24,0.4167,10.1,0.1599,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,p1_games,over,11.5,0.4491,2.23,1.7,0.5503,-10.1,-0.2365,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,p1_games,under,11.5,0.5509,1.82,2.08,0.4497,10.1,0.1458,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,p1_games,over,12.5,0.3009,3.32,2.42,0.3858,-8.5,-0.2719,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,p1_games,under,12.5,0.6991,1.43,1.52,0.6142,8.5,0.0627,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,p2_games,over,11.5,0.7887,1.27,1.31,0.7127,7.6,0.0332,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,p2_games,under,11.5,0.2113,4.73,3.25,0.2873,-7.6,-0.3134,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,p2_games,over,12.5,0.4089,2.45,2.05,0.4562,-4.7,-0.1618,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,p2_games,under,12.5,0.5911,1.69,1.72,0.5438,4.7,0.0167,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,p2_games,over,13.5,0.2566,3.9,3.1,0.3018,-4.5,-0.2046,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,p2_games,under,13.5,0.7434,1.35,1.34,0.6982,4.5,-0.0038,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,game_handicap,player_a,3.5,0.44,2.27,,,,,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Claire Liu,Katie Boulter,game_handicap,player_b,-3.5,0.56,1.79,,,,,1,94,1914627
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,winner,player_a,,0.4936,2.03,2.55,0.3765,11.7,0.2586,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,winner,player_b,,0.5064,1.97,1.54,0.6235,-11.7,-0.2201,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,total_games,over,19.5,0.5771,1.73,1.58,0.5907,-1.4,-0.0882,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,total_games,under,19.5,0.4229,2.36,2.28,0.4093,1.4,-0.0357,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,total_games,over,20.5,0.5109,1.96,1.79,0.5227,-1.2,-0.0855,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,total_games,under,20.5,0.4891,2.04,1.96,0.4773,1.2,-0.0413,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,total_games,over,21.5,0.4626,2.16,1.97,0.4747,-1.2,-0.0887,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,total_games,under,21.5,0.5374,1.86,1.78,0.5253,1.2,-0.0434,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,p1_games,over,10.5,0.6563,1.52,1.7,0.5503,10.6,0.1157,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,p1_games,under,10.5,0.3437,2.91,2.08,0.4497,-10.6,-0.2851,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,p1_games,over,11.5,0.6282,1.59,1.81,0.5173,11.1,0.137,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,p1_games,under,11.5,0.3718,2.69,1.94,0.4827,-11.1,-0.2787,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,p1_games,over,12.5,0.3861,2.59,2.6,0.358,2.8,0.0038,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,p1_games,under,12.5,0.6139,1.63,1.45,0.642,-2.8,-0.1098,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,p2_games,over,11.5,0.641,1.56,1.29,0.7249,-8.4,-0.1732,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,p2_games,under,11.5,0.359,2.79,3.4,0.2751,8.4,0.2208,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,p2_games,over,12.5,0.3904,2.56,2.11,0.4433,-5.3,-0.1762,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,p2_games,under,12.5,0.6096,1.64,1.68,0.5567,5.3,0.0241,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,p2_games,over,13.5,0.2572,3.89,3.25,0.2888,-3.2,-0.1641,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,p2_games,under,13.5,0.7428,1.35,1.32,0.7112,3.2,-0.0195,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,game_handicap,player_a,-0.5,0.4794,2.09,,,,,0,100,1914894
+2026-11-04 07:30,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Talia Gibson,Aliaksandra Sasnovich,game_handicap,player_b,0.5,0.5206,1.92,,,,,0,100,1914894
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,winner,player_a,,0.3719,2.69,2.7,0.3571,1.5,0.0041,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,winner,player_b,,0.6281,1.59,1.5,0.6429,-1.5,-0.0578,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,total_games,over,19.5,0.5532,1.81,1.6,0.5844,-3.1,-0.1149,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,total_games,under,19.5,0.4468,2.24,2.25,0.4156,3.1,0.0053,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,total_games,over,20.5,0.4885,2.05,1.8,0.5187,-3.0,-0.1208,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,total_games,under,20.5,0.5115,1.95,1.94,0.4813,3.0,-0.0076,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,total_games,over,21.5,0.4411,2.27,1.99,0.4693,-2.8,-0.1222,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,total_games,under,21.5,0.5589,1.79,1.76,0.5307,2.8,-0.0163,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,p1_games,over,10.5,0.5435,1.84,1.75,0.5333,1.0,-0.0489,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,p1_games,under,10.5,0.4565,2.19,2.0,0.4667,-1.0,-0.087,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,p1_games,over,11.5,0.5115,1.96,1.87,0.5,1.1,-0.0435,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,p1_games,under,11.5,0.4885,2.05,1.87,0.5,-1.1,-0.0865,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,p1_games,over,12.5,0.3325,3.01,2.7,0.3462,-1.4,-0.1022,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,p1_games,under,12.5,0.6675,1.5,1.43,0.6538,1.4,-0.0455,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,p2_games,over,11.5,0.7403,1.35,1.26,0.7407,-0.0,-0.0672,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,p2_games,under,11.5,0.2597,3.85,3.6,0.2593,0.0,-0.0651,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,p2_games,over,12.5,0.4075,2.45,2.09,0.4471,-4.0,-0.1484,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,p2_games,under,12.5,0.5925,1.69,1.69,0.5529,4.0,0.0014,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,p2_games,over,13.5,0.2611,3.83,3.25,0.2888,-2.8,-0.1515,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,p2_games,under,13.5,0.7389,1.35,1.32,0.7112,2.8,-0.0246,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,game_handicap,player_a,2.5,0.4476,2.23,,,,,0,100,1914895
+2026-11-04 09:00,wta,WTA 250,Prudential Hong Kong Tennis Open,Hard,3,Maya Joint,Maria Sakkari,game_handicap,player_b,-2.5,0.5524,1.81,,,,,0,100,1914895
+2026-11-04 10:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Vitaliy Sachko,Otto Virtanen,winner,player_a,,0.3569,2.8,2.8,0.3333,2.4,-0.0007,0,100,1914316
+2026-11-04 10:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Vitaliy Sachko,Otto Virtanen,winner,player_b,,0.6431,1.55,1.4,0.6667,-2.4,-0.0997,0,100,1914316
+2026-11-04 10:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Vitaliy Sachko,Otto Virtanen,total_games,over,22.5,0.4685,2.13,1.9,0.4865,-1.8,-0.1098,0,100,1914316
+2026-11-04 10:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Vitaliy Sachko,Otto Virtanen,total_games,under,22.5,0.5315,1.88,1.8,0.5135,1.8,-0.0434,0,100,1914316
+2026-11-04 10:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Vitaliy Sachko,Otto Virtanen,p1_games,over,11.5,0.5438,1.84,1.78,0.5215,2.2,-0.0321,0,100,1914316
+2026-11-04 10:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Vitaliy Sachko,Otto Virtanen,p1_games,under,11.5,0.4562,2.19,1.94,0.4785,-2.2,-0.1149,0,100,1914316
+2026-11-04 10:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Vitaliy Sachko,Otto Virtanen,p2_games,over,12.5,0.5066,1.97,1.7,0.5442,-3.8,-0.1387,0,100,1914316
+2026-11-04 10:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Vitaliy Sachko,Otto Virtanen,p2_games,under,12.5,0.4934,2.03,2.03,0.4558,3.8,0.0015,0,100,1914316
+2026-11-04 10:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Vitaliy Sachko,Otto Virtanen,game_handicap,player_a,2.5,0.4597,2.18,,,,,0,100,1914316
+2026-11-04 10:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Vitaliy Sachko,Otto Virtanen,game_handicap,player_b,-2.5,0.5403,1.85,,,,,0,100,1914316
+2026-11-04 13:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Martin Damm,Tom Gentzsch,winner,player_a,,0.6956,1.44,,,,,0,94,1914314
+2026-11-04 13:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Martin Damm,Tom Gentzsch,winner,player_b,,0.3044,3.28,,,,,0,94,1914314
+2026-11-04 13:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Martin Damm,Tom Gentzsch,total_games,over,23.5,0.4487,2.23,,,,,0,94,1914314
+2026-11-04 13:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Martin Damm,Tom Gentzsch,total_games,under,23.5,0.5513,1.81,,,,,0,94,1914314
+2026-11-04 13:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Martin Damm,Tom Gentzsch,p1_games,over,13.5,0.3855,2.59,,,,,0,94,1914314
+2026-11-04 13:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Martin Damm,Tom Gentzsch,p1_games,under,13.5,0.6145,1.63,,,,,0,94,1914314
+2026-11-04 13:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Martin Damm,Tom Gentzsch,p2_games,over,12.5,0.4371,2.29,,,,,0,94,1914314
+2026-11-04 13:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Martin Damm,Tom Gentzsch,p2_games,under,12.5,0.5629,1.78,,,,,0,94,1914314
+2026-11-04 13:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Martin Damm,Tom Gentzsch,game_handicap,player_a,-2.5,0.5541,1.8,,,,,0,94,1914314
+2026-11-04 13:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Martin Damm,Tom Gentzsch,game_handicap,player_b,2.5,0.4459,2.24,,,,,0,94,1914314
+2026-11-04 14:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Matej Dodig,Michal Krajci,winner,player_a,,0.8752,1.14,1.1,0.8493,2.6,-0.0373,0,97,1914742
+2026-11-04 14:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Matej Dodig,Michal Krajci,winner,player_b,,0.1248,8.01,6.2,0.1507,-2.6,-0.2263,0,97,1914742
+2026-11-04 14:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Matej Dodig,Michal Krajci,total_games,over,19.5,0.5069,1.97,1.73,0.5362,-2.9,-0.123,0,97,1914742
+2026-11-04 14:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Matej Dodig,Michal Krajci,total_games,under,19.5,0.4931,2.03,2.0,0.4638,2.9,-0.0138,0,97,1914742
+2026-11-04 14:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Matej Dodig,Michal Krajci,p1_games,over,12.5,0.4386,2.28,1.95,0.4758,-3.7,-0.1447,0,97,1914742
+2026-11-04 14:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Matej Dodig,Michal Krajci,p1_games,under,12.5,0.5614,1.78,1.77,0.5242,3.7,-0.0064,0,97,1914742
+2026-11-04 14:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Matej Dodig,Michal Krajci,p2_games,over,7.5,0.4933,2.03,1.78,0.5189,-2.6,-0.1219,0,97,1914742
+2026-11-04 14:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Matej Dodig,Michal Krajci,p2_games,under,7.5,0.5067,1.97,1.92,0.4811,2.6,-0.0271,0,97,1914742
+2026-11-04 14:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Matej Dodig,Michal Krajci,game_handicap,player_a,-4.5,0.6109,1.64,,,,,0,97,1914742
+2026-11-04 14:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Matej Dodig,Michal Krajci,game_handicap,player_b,4.5,0.3891,2.57,,,,,0,97,1914742
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Lukas Pokorny,Toby Samuel,winner,player_a,,0.2159,4.63,4.5,0.2077,0.8,-0.0286,0,100,1914317
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Lukas Pokorny,Toby Samuel,winner,player_b,,0.7841,1.28,1.18,0.7923,-0.8,-0.0747,0,100,1914317
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Lukas Pokorny,Toby Samuel,total_games,over,21.5,0.4771,2.1,1.95,0.4744,0.3,-0.0697,0,100,1914317
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Lukas Pokorny,Toby Samuel,total_games,under,21.5,0.5229,1.91,1.76,0.5256,-0.3,-0.0797,0,100,1914317
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Lukas Pokorny,Toby Samuel,p1_games,over,8.5,0.5404,1.85,1.88,0.4919,4.9,0.016,0,100,1914317
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Lukas Pokorny,Toby Samuel,p1_games,under,8.5,0.4596,2.18,1.82,0.5081,-4.9,-0.1636,0,100,1914317
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Lukas Pokorny,Toby Samuel,p2_games,over,12.5,0.5001,2.0,1.88,0.4919,0.8,-0.0598,0,100,1914317
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Lukas Pokorny,Toby Samuel,p2_games,under,12.5,0.4999,2.0,1.82,0.5081,-0.8,-0.0902,0,100,1914317
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Lukas Pokorny,Toby Samuel,game_handicap,player_a,3.5,0.3934,2.54,,,,,0,100,1914317
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Lukas Pokorny,Toby Samuel,game_handicap,player_b,-3.5,0.6066,1.65,,,,,0,100,1914317
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Sascha Gueymard-Wayenburg,Zsombor Piros,winner,player_a,,0.3826,2.61,1.68,0.5556,-17.3,-0.3573,0,100,1914997
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Sascha Gueymard-Wayenburg,Zsombor Piros,winner,player_b,,0.6174,1.62,2.1,0.4444,17.3,0.2966,0,100,1914997
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Sascha Gueymard-Wayenburg,Zsombor Piros,total_games,over,22.5,0.4665,2.14,,,,,0,100,1914997
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Sascha Gueymard-Wayenburg,Zsombor Piros,total_games,under,22.5,0.5335,1.87,,,,,0,100,1914997
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Sascha Gueymard-Wayenburg,Zsombor Piros,p1_games,over,12.5,0.409,2.44,,,,,0,100,1914997
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Sascha Gueymard-Wayenburg,Zsombor Piros,p1_games,under,12.5,0.591,1.69,,,,,0,100,1914997
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Sascha Gueymard-Wayenburg,Zsombor Piros,p2_games,over,12.5,0.4927,2.03,,,,,0,100,1914997
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Sascha Gueymard-Wayenburg,Zsombor Piros,p2_games,under,12.5,0.5073,1.97,,,,,0,100,1914997
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Sascha Gueymard-Wayenburg,Zsombor Piros,game_handicap,player_a,2.5,0.4823,2.07,,,,,0,100,1914997
+2026-11-04 16:00,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Sascha Gueymard-Wayenburg,Zsombor Piros,game_handicap,player_b,-2.5,0.5177,1.93,,,,,0,100,1914997
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jerome Kym,Luka Pavlovic,winner,player_a,,0.725,1.38,1.33,0.7031,2.2,-0.0358,0,100,1914991
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jerome Kym,Luka Pavlovic,winner,player_b,,0.275,3.64,3.15,0.2969,-2.2,-0.1336,0,100,1914991
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jerome Kym,Luka Pavlovic,total_games,over,22.5,0.4927,2.03,,,,,0,100,1914991
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jerome Kym,Luka Pavlovic,total_games,under,22.5,0.5073,1.97,,,,,0,100,1914991
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jerome Kym,Luka Pavlovic,p1_games,over,13.5,0.3588,2.79,,,,,0,100,1914991
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jerome Kym,Luka Pavlovic,p1_games,under,13.5,0.6412,1.56,,,,,0,100,1914991
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jerome Kym,Luka Pavlovic,p2_games,over,11.5,0.4937,2.03,,,,,0,100,1914991
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jerome Kym,Luka Pavlovic,p2_games,under,11.5,0.5063,1.98,,,,,0,100,1914991
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jerome Kym,Luka Pavlovic,game_handicap,player_a,-2.5,0.6012,1.66,,,,,0,100,1914991
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Jerome Kym,Luka Pavlovic,game_handicap,player_b,2.5,0.3988,2.51,,,,,0,100,1914991
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Nishesh Basavareddy,Mika Brunold,winner,player_a,,0.6021,1.66,1.51,0.6196,-1.8,-0.0908,0,100,1914977
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Nishesh Basavareddy,Mika Brunold,winner,player_b,,0.3979,2.51,2.46,0.3804,1.8,-0.0213,0,100,1914977
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Nishesh Basavareddy,Mika Brunold,total_games,over,22.5,0.4688,2.13,,,,,0,100,1914977
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Nishesh Basavareddy,Mika Brunold,total_games,under,22.5,0.5312,1.88,,,,,0,100,1914977
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Nishesh Basavareddy,Mika Brunold,p1_games,over,12.5,0.4891,2.04,,,,,0,100,1914977
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Nishesh Basavareddy,Mika Brunold,p1_games,under,12.5,0.5109,1.96,,,,,0,100,1914977
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Nishesh Basavareddy,Mika Brunold,p2_games,over,12.5,0.416,2.4,,,,,0,100,1914977
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Nishesh Basavareddy,Mika Brunold,p2_games,under,12.5,0.584,1.71,,,,,0,100,1914977
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Nishesh Basavareddy,Mika Brunold,game_handicap,player_a,-2.5,0.5028,1.99,,,,,0,100,1914977
+2026-11-04 17:30,atp,ATP Challenger,"Bratislava 2, Slovakia",Hard,3,Nishesh Basavareddy,Mika Brunold,game_handicap,player_b,2.5,0.4972,2.01,,,,,0,100,1914977
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Liam Draxl,Maks Kasnikowski,winner,player_a,,0.6442,1.55,1.79,0.5214,12.3,0.1532,0,100,1914471
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Liam Draxl,Maks Kasnikowski,winner,player_b,,0.3558,2.81,1.95,0.4786,-12.3,-0.3063,0,100,1914471
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Liam Draxl,Maks Kasnikowski,total_games,over,22.5,0.4664,2.14,1.82,0.5081,-4.2,-0.1511,0,100,1914471
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Liam Draxl,Maks Kasnikowski,total_games,under,22.5,0.5336,1.87,1.88,0.4919,4.2,0.0031,0,100,1914471
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Liam Draxl,Maks Kasnikowski,p1_games,over,12.5,0.5048,1.98,1.98,0.4677,3.7,-0.0005,0,100,1914471
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Liam Draxl,Maks Kasnikowski,p1_games,under,12.5,0.4952,2.02,1.74,0.5323,-3.7,-0.1384,0,100,1914471
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Liam Draxl,Maks Kasnikowski,p2_games,over,12.5,0.401,2.49,2.06,0.4492,-4.8,-0.1739,0,100,1914471
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Liam Draxl,Maks Kasnikowski,p2_games,under,12.5,0.599,1.67,1.68,0.5508,4.8,0.0063,0,100,1914471
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Liam Draxl,Maks Kasnikowski,game_handicap,player_a,-2.5,0.5426,1.84,,,,,0,100,1914471
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Liam Draxl,Maks Kasnikowski,game_handicap,player_b,2.5,0.4574,2.19,,,,,0,100,1914471
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Murphy Cassone,Stefan Kozlov,winner,player_a,,0.5758,1.74,1.76,0.5307,4.5,0.0134,0,100,1915013
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Murphy Cassone,Stefan Kozlov,winner,player_b,,0.4242,2.36,1.99,0.4693,-4.5,-0.1558,0,100,1915013
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Murphy Cassone,Stefan Kozlov,total_games,over,22.5,0.4723,2.12,,,,,0,100,1915013
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Murphy Cassone,Stefan Kozlov,total_games,under,22.5,0.5277,1.89,,,,,0,100,1915013
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Murphy Cassone,Stefan Kozlov,p1_games,over,12.5,0.4819,2.08,,,,,0,100,1915013
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Murphy Cassone,Stefan Kozlov,p1_games,under,12.5,0.5181,1.93,,,,,0,100,1915013
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Murphy Cassone,Stefan Kozlov,p2_games,over,12.5,0.4282,2.34,,,,,0,100,1915013
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Murphy Cassone,Stefan Kozlov,p2_games,under,12.5,0.5718,1.75,,,,,0,100,1915013
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Murphy Cassone,Stefan Kozlov,game_handicap,player_a,-1.5,0.5254,1.9,,,,,0,100,1915013
+2026-11-04 15:00,atp,ATP Challenger,"Charlottesville, USA",Hard,3,Murphy Cassone,Stefan Kozlov,game_handicap,player_b,1.5,0.4746,2.11,,,,,0,100,1915013
+2026-11-04 15:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Gustavo Heide,Juan Carlos Prado Angelo,winner,player_a,,0.6687,1.5,,,,,0,94,1914888
+2026-11-04 15:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Gustavo Heide,Juan Carlos Prado Angelo,winner,player_b,,0.3313,3.02,,,,,0,94,1914888
+2026-11-04 15:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Gustavo Heide,Juan Carlos Prado Angelo,total_games,over,21.5,0.4931,2.03,,,,,0,94,1914888
+2026-11-04 15:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Gustavo Heide,Juan Carlos Prado Angelo,total_games,under,21.5,0.5069,1.97,,,,,0,94,1914888
+2026-11-04 15:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Gustavo Heide,Juan Carlos Prado Angelo,p1_games,over,12.5,0.4703,2.13,,,,,0,94,1914888
+2026-11-04 15:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Gustavo Heide,Juan Carlos Prado Angelo,p1_games,under,12.5,0.5297,1.89,,,,,0,94,1914888
+2026-11-04 15:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Gustavo Heide,Juan Carlos Prado Angelo,p2_games,over,11.5,0.498,2.01,,,,,0,94,1914888
+2026-11-04 15:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Gustavo Heide,Juan Carlos Prado Angelo,p2_games,under,11.5,0.502,1.99,,,,,0,94,1914888
+2026-11-04 15:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Gustavo Heide,Juan Carlos Prado Angelo,game_handicap,player_a,-3.5,0.5098,1.96,,,,,0,94,1914888
+2026-11-04 15:00,atp,ATP Challenger,"Costa do Sauipe, Brazil",Clay,3,Gustavo Heide,Juan Carlos Prado Angelo,game_handicap,player_b,3.5,0.4902,2.04,,,,,0,94,1914888
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Charles Broom,Liam Broady,winner,player_a,,0.4489,2.23,1.73,0.5399,-9.1,-0.2234,0,100,1913879
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Charles Broom,Liam Broady,winner,player_b,,0.5511,1.81,2.03,0.4601,9.1,0.1187,0,100,1913879
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Charles Broom,Liam Broady,total_games,over,22.5,0.4816,2.08,1.89,0.4906,-0.9,-0.0898,0,100,1913879
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Charles Broom,Liam Broady,total_games,under,22.5,0.5184,1.93,1.82,0.5094,0.9,-0.0565,0,100,1913879
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Charles Broom,Liam Broady,p1_games,over,12.5,0.4463,2.24,1.98,0.4677,-2.1,-0.1163,0,100,1913879
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Charles Broom,Liam Broady,p1_games,under,12.5,0.5537,1.81,1.74,0.5323,2.1,-0.0366,0,100,1913879
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Charles Broom,Liam Broady,p2_games,over,12.5,0.4832,2.07,2.11,0.4388,4.4,0.0196,0,100,1913879
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Charles Broom,Liam Broady,p2_games,under,12.5,0.5168,1.94,1.65,0.5612,-4.4,-0.1473,0,100,1913879
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Charles Broom,Liam Broady,game_handicap,player_a,0.5,0.4651,2.15,,,,,0,100,1913879
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Charles Broom,Liam Broady,game_handicap,player_b,-0.5,0.5349,1.87,,,,,0,100,1913879
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Harold Mayot,Petr Bar Biryukov,winner,player_a,,0.6814,1.47,,,,,0,94,1913885
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Harold Mayot,Petr Bar Biryukov,winner,player_b,,0.3186,3.14,,,,,0,94,1913885
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Harold Mayot,Petr Bar Biryukov,total_games,over,22.5,0.4903,2.04,,,,,0,94,1913885
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Harold Mayot,Petr Bar Biryukov,total_games,under,22.5,0.5097,1.96,,,,,0,94,1913885
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Harold Mayot,Petr Bar Biryukov,p1_games,over,13.5,0.3523,2.84,,,,,0,94,1913885
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Harold Mayot,Petr Bar Biryukov,p1_games,under,13.5,0.6477,1.54,,,,,0,94,1913885
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Harold Mayot,Petr Bar Biryukov,p2_games,over,12.5,0.4107,2.43,,,,,0,94,1913885
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Harold Mayot,Petr Bar Biryukov,p2_games,under,12.5,0.5893,1.7,,,,,0,94,1913885
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Harold Mayot,Petr Bar Biryukov,game_handicap,player_a,-2.5,0.5647,1.77,,,,,0,94,1913885
+2026-11-04 02:00,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Harold Mayot,Petr Bar Biryukov,game_handicap,player_b,2.5,0.4353,2.3,,,,,0,94,1913885
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Carl Overbeck,Chun-Hsin Tseng,winner,player_a,,0.3118,3.21,2.65,0.3521,-4.0,-0.1738,0,94,1913888
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Carl Overbeck,Chun-Hsin Tseng,winner,player_b,,0.6882,1.45,1.44,0.6479,4.0,-0.009,0,94,1913888
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Carl Overbeck,Chun-Hsin Tseng,total_games,over,21.5,0.5352,1.87,1.8,0.5148,2.0,-0.0367,0,94,1913888
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Carl Overbeck,Chun-Hsin Tseng,total_games,under,21.5,0.4648,2.15,1.91,0.4852,-2.0,-0.1122,0,94,1913888
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Carl Overbeck,Chun-Hsin Tseng,p1_games,over,11.5,0.5023,1.99,1.81,0.5121,-1.0,-0.0909,0,94,1913888
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Carl Overbeck,Chun-Hsin Tseng,p1_games,under,11.5,0.4977,2.01,1.9,0.4879,1.0,-0.0543,0,94,1913888
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Carl Overbeck,Chun-Hsin Tseng,p2_games,over,12.5,0.5165,1.94,1.88,0.4933,2.3,-0.0291,0,94,1913888
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Carl Overbeck,Chun-Hsin Tseng,p2_games,under,12.5,0.4835,2.07,1.83,0.5067,-2.3,-0.1151,0,94,1913888
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Carl Overbeck,Chun-Hsin Tseng,game_handicap,player_a,2.5,0.4151,2.41,,,,,0,94,1913888
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Carl Overbeck,Chun-Hsin Tseng,game_handicap,player_b,-2.5,0.5849,1.71,,,,,0,94,1913888
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yaroslav Demin,Alexandre Muller,winner,player_a,,0.2213,4.52,2.45,0.3813,-16.0,-0.4577,0,94,1913873
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yaroslav Demin,Alexandre Muller,winner,player_b,,0.7787,1.28,1.51,0.6187,16.0,0.1758,0,94,1913873
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yaroslav Demin,Alexandre Muller,total_games,over,21.5,0.4456,2.24,1.77,0.5242,-7.9,-0.2113,1,94,1913873
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yaroslav Demin,Alexandre Muller,total_games,under,21.5,0.5544,1.8,1.95,0.4758,7.9,0.081,1,94,1913873
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yaroslav Demin,Alexandre Muller,p1_games,over,11.5,0.3816,2.62,1.71,0.5416,-16.0,-0.3474,1,94,1913873
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yaroslav Demin,Alexandre Muller,p1_games,under,11.5,0.6184,1.62,2.02,0.4584,16.0,0.2491,1,94,1913873
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yaroslav Demin,Alexandre Muller,p2_games,over,12.5,0.4676,2.14,1.89,0.4892,-2.2,-0.1163,1,94,1913873
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yaroslav Demin,Alexandre Muller,p2_games,under,12.5,0.5324,1.88,1.81,0.5108,2.2,-0.0363,1,94,1913873
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yaroslav Demin,Alexandre Muller,game_handicap,player_a,4.5,0.4869,2.05,,,,,1,94,1913873
+2026-11-04 03:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yaroslav Demin,Alexandre Muller,game_handicap,player_b,-4.5,0.5131,1.95,,,,,1,94,1913873
+2026-11-04 06:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Jan Kumstat,Billy Harris,winner,player_a,,0.535,1.87,1.78,0.5253,1.0,-0.0477,0,100,1914889
+2026-11-04 06:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Jan Kumstat,Billy Harris,winner,player_b,,0.465,2.15,1.97,0.4747,-1.0,-0.0839,0,100,1914889
+2026-11-04 06:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Jan Kumstat,Billy Harris,total_games,over,22.5,0.5028,1.99,1.75,0.5296,-2.7,-0.1201,0,100,1914889
+2026-11-04 06:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Jan Kumstat,Billy Harris,total_games,under,22.5,0.4972,2.01,1.97,0.4704,2.7,-0.0206,0,100,1914889
+2026-11-04 06:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Jan Kumstat,Billy Harris,p1_games,over,12.5,0.5005,2.0,1.76,0.5256,-2.5,-0.1191,0,100,1914889
+2026-11-04 06:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Jan Kumstat,Billy Harris,p1_games,under,12.5,0.4995,2.0,1.95,0.4744,2.5,-0.026,0,100,1914889
+2026-11-04 06:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Jan Kumstat,Billy Harris,p2_games,over,12.5,0.4742,2.11,1.84,0.504,-3.0,-0.1275,0,100,1914889
+2026-11-04 06:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Jan Kumstat,Billy Harris,p2_games,under,12.5,0.5258,1.9,1.87,0.496,3.0,-0.0167,0,100,1914889
+2026-11-04 06:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Jan Kumstat,Billy Harris,game_handicap,player_a,-0.5,0.5177,1.93,,,,,0,100,1914889
+2026-11-04 06:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Jan Kumstat,Billy Harris,game_handicap,player_b,0.5,0.4823,2.07,,,,,0,100,1914889
+2026-11-04 09:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yuta Shimizu,August Holmgren,winner,player_a,,0.4798,2.08,2.18,0.4293,5.0,0.046,0,100,1914891
+2026-11-04 09:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yuta Shimizu,August Holmgren,winner,player_b,,0.5202,1.92,1.64,0.5707,-5.0,-0.1469,0,100,1914891
+2026-11-04 09:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yuta Shimizu,August Holmgren,total_games,over,22.5,0.5202,1.92,1.77,0.5242,-0.4,-0.0793,0,100,1914891
+2026-11-04 09:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yuta Shimizu,August Holmgren,total_games,under,22.5,0.4798,2.08,1.95,0.4758,0.4,-0.0644,0,100,1914891
+2026-11-04 09:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yuta Shimizu,August Holmgren,p1_games,over,12.5,0.4971,2.01,1.93,0.4798,1.7,-0.0405,0,100,1914891
+2026-11-04 09:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yuta Shimizu,August Holmgren,p1_games,under,12.5,0.5029,1.99,1.78,0.5202,-1.7,-0.1049,0,100,1914891
+2026-11-04 09:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yuta Shimizu,August Holmgren,p2_games,over,12.5,0.5122,1.95,1.72,0.5389,-2.7,-0.1189,0,100,1914891
+2026-11-04 09:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yuta Shimizu,August Holmgren,p2_games,under,12.5,0.4878,2.05,2.01,0.4611,2.7,-0.0196,0,100,1914891
+2026-11-04 09:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yuta Shimizu,August Holmgren,game_handicap,player_a,0.5,0.4989,2.0,,,,,0,100,1914891
+2026-11-04 09:30,atp,ATP Challenger,"Taipei, Taiwan",Hard,3,Yuta Shimizu,August Holmgren,game_handicap,player_b,-0.5,0.5011,2.0,,,,,0,100,1914891
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Aguilar Cardozo,Nicolas Kicker,winner,player_a,,0.2516,3.97,5.0,0.187,6.5,0.2582,0,94,1915011
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Aguilar Cardozo,Nicolas Kicker,winner,player_b,,0.7484,1.34,1.15,0.813,-6.5,-0.1394,0,94,1915011
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Aguilar Cardozo,Nicolas Kicker,total_games,over,20.5,0.478,2.09,,,,,1,94,1915011
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Aguilar Cardozo,Nicolas Kicker,total_games,under,20.5,0.522,1.92,,,,,1,94,1915011
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Aguilar Cardozo,Nicolas Kicker,p1_games,over,9.5,0.4747,2.11,,,,,1,94,1915011
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Aguilar Cardozo,Nicolas Kicker,p1_games,under,9.5,0.5253,1.9,,,,,1,94,1915011
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Aguilar Cardozo,Nicolas Kicker,p2_games,over,12.5,0.4394,2.28,,,,,1,94,1915011
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Aguilar Cardozo,Nicolas Kicker,p2_games,under,12.5,0.5606,1.78,,,,,1,94,1915011
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Aguilar Cardozo,Nicolas Kicker,game_handicap,player_a,4.5,0.4795,2.09,,,,,1,94,1915011
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Federico Aguilar Cardozo,Nicolas Kicker,game_handicap,player_b,-4.5,0.5205,1.92,,,,,1,94,1915011
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Joaquin Aguilar Cardozo,Juan Pablo Ficovich,winner,player_a,,0.6333,1.58,1.45,0.6463,-1.3,-0.0817,0,100,1914455
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Joaquin Aguilar Cardozo,Juan Pablo Ficovich,winner,player_b,,0.3667,2.73,2.65,0.3537,1.3,-0.0283,0,100,1914455
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Joaquin Aguilar Cardozo,Juan Pablo Ficovich,total_games,over,20.5,0.5478,1.83,1.78,0.5202,2.8,-0.0249,0,100,1914455
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Joaquin Aguilar Cardozo,Juan Pablo Ficovich,total_games,under,20.5,0.4522,2.21,1.93,0.4798,-2.8,-0.1273,0,100,1914455
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Joaquin Aguilar Cardozo,Juan Pablo Ficovich,p1_games,over,12.5,0.4607,2.17,2.05,0.4519,0.9,-0.0556,0,100,1914455
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Joaquin Aguilar Cardozo,Juan Pablo Ficovich,p1_games,under,12.5,0.5393,1.85,1.69,0.5481,-0.9,-0.0886,0,100,1914455
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Joaquin Aguilar Cardozo,Juan Pablo Ficovich,p2_games,over,11.5,0.5297,1.89,1.87,0.4946,3.5,-0.0095,0,100,1914455
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Joaquin Aguilar Cardozo,Juan Pablo Ficovich,p2_games,under,11.5,0.4703,2.13,1.83,0.5054,-3.5,-0.1393,0,100,1914455
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Joaquin Aguilar Cardozo,Juan Pablo Ficovich,game_handicap,player_a,-2.5,0.5446,1.84,,,,,0,100,1914455
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Joaquin Aguilar Cardozo,Juan Pablo Ficovich,game_handicap,player_b,2.5,0.4554,2.2,,,,,0,100,1914455
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Lucio Ratti,Carlos Maria Zarate,winner,player_a,,0.3858,2.59,1.94,0.4827,-9.7,-0.2515,0,100,1914844
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Lucio Ratti,Carlos Maria Zarate,winner,player_b,,0.6142,1.63,1.81,0.5173,9.7,0.1116,0,100,1914844
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Lucio Ratti,Carlos Maria Zarate,total_games,over,22.5,0.4475,2.23,1.9,0.4879,-4.0,-0.1497,0,100,1914844
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Lucio Ratti,Carlos Maria Zarate,total_games,under,22.5,0.5525,1.81,1.81,0.5121,4.0,-0.0,0,100,1914844
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Lucio Ratti,Carlos Maria Zarate,p1_games,over,12.5,0.3892,2.57,1.98,0.4677,-7.9,-0.2293,0,100,1914844
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Lucio Ratti,Carlos Maria Zarate,p1_games,under,12.5,0.6108,1.64,1.74,0.5323,7.9,0.0627,0,100,1914844
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Lucio Ratti,Carlos Maria Zarate,p2_games,over,12.5,0.4676,2.14,1.93,0.4798,-1.2,-0.0976,0,100,1914844
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Lucio Ratti,Carlos Maria Zarate,p2_games,under,12.5,0.5324,1.88,1.78,0.5202,1.2,-0.0522,0,100,1914844
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Lucio Ratti,Carlos Maria Zarate,game_handicap,player_a,2.5,0.478,2.09,,,,,0,100,1914844
+2026-11-04 13:00,atp,ATP Challenger,"Villa Maria, Argentina",Clay,3,Lucio Ratti,Carlos Maria Zarate,game_handicap,player_b,-2.5,0.522,1.92,,,,,0,100,1914844
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leolia Jeanjean,Carolina M. Alves,winner,player_a,,0.7973,1.25,1.22,0.764,3.3,-0.0273,0,88,1914819
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leolia Jeanjean,Carolina M. Alves,winner,player_b,,0.2027,4.93,3.95,0.236,-3.3,-0.1994,0,88,1914819
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leolia Jeanjean,Carolina M. Alves,total_games,over,19.5,0.4515,2.21,1.9,0.4865,-3.5,-0.1421,1,88,1914819
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leolia Jeanjean,Carolina M. Alves,total_games,under,19.5,0.5485,1.82,1.8,0.5135,3.5,-0.0128,1,88,1914819
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leolia Jeanjean,Carolina M. Alves,p1_games,over,12.5,0.3735,2.68,2.43,0.3817,-0.8,-0.0924,1,88,1914819
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leolia Jeanjean,Carolina M. Alves,p1_games,under,12.5,0.6265,1.6,1.5,0.6183,0.8,-0.0603,1,88,1914819
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leolia Jeanjean,Carolina M. Alves,p2_games,over,7.5,0.4829,2.07,1.9,0.4865,-0.4,-0.0825,1,88,1914819
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leolia Jeanjean,Carolina M. Alves,p2_games,under,7.5,0.5171,1.93,1.8,0.5135,0.4,-0.0692,1,88,1914819
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leolia Jeanjean,Carolina M. Alves,game_handicap,player_a,-5.5,0.5163,1.94,,,,,1,88,1914819
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leolia Jeanjean,Carolina M. Alves,game_handicap,player_b,5.5,0.4837,2.07,,,,,1,88,1914819
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leyre Romero Gormaz,Solana Sierra,winner,player_a,,0.48,2.08,1.87,0.5,-2.0,-0.1024,0,94,1914830
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leyre Romero Gormaz,Solana Sierra,winner,player_b,,0.52,1.92,1.87,0.5,2.0,-0.0276,0,94,1914830
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leyre Romero Gormaz,Solana Sierra,total_games,over,21.5,0.4474,2.23,1.89,0.4906,-4.3,-0.1543,1,94,1914830
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leyre Romero Gormaz,Solana Sierra,total_games,under,21.5,0.5526,1.81,1.82,0.5094,4.3,0.0057,1,94,1914830
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leyre Romero Gormaz,Solana Sierra,p1_games,over,12.5,0.3681,2.72,2.35,0.3943,-2.6,-0.1349,1,94,1914830
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leyre Romero Gormaz,Solana Sierra,p1_games,under,12.5,0.6319,1.58,1.53,0.6057,2.6,-0.0332,1,94,1914830
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leyre Romero Gormaz,Solana Sierra,p2_games,over,12.5,0.38,2.63,2.35,0.3943,-1.4,-0.107,1,94,1914830
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leyre Romero Gormaz,Solana Sierra,p2_games,under,12.5,0.62,1.61,1.53,0.6057,1.4,-0.0514,1,94,1914830
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leyre Romero Gormaz,Solana Sierra,game_handicap,player_a,0.5,0.4924,2.03,,,,,1,94,1914830
+2026-11-04 16:00,wta,WTA Challenger,"Cali, Colombia",Clay,3,Leyre Romero Gormaz,Solana Sierra,game_handicap,player_b,-0.5,0.5076,1.97,,,,,1,94,1914830
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Adrian Andreev,Jacopo Vasami,winner,player_a,,0.4065,2.46,1.72,0.5438,-13.7,-0.3008,0,81,1915019
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Adrian Andreev,Jacopo Vasami,winner,player_b,,0.5935,1.69,2.05,0.4562,13.7,0.2166,0,81,1915019
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Adrian Andreev,Jacopo Vasami,total_games,over,22.5,0.4838,2.07,,,,,1,81,1915019
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Adrian Andreev,Jacopo Vasami,total_games,under,22.5,0.5162,1.94,,,,,1,81,1915019
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Adrian Andreev,Jacopo Vasami,p1_games,over,12.5,0.4347,2.3,,,,,1,81,1915019
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Adrian Andreev,Jacopo Vasami,p1_games,under,12.5,0.5653,1.77,,,,,1,81,1915019
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Adrian Andreev,Jacopo Vasami,p2_games,over,13.5,0.3329,3.0,,,,,1,81,1915019
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Adrian Andreev,Jacopo Vasami,p2_games,under,13.5,0.6671,1.5,,,,,1,81,1915019
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Adrian Andreev,Jacopo Vasami,game_handicap,player_a,1.5,0.4582,2.18,,,,,1,81,1915019
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Adrian Andreev,Jacopo Vasami,game_handicap,player_b,-1.5,0.5418,1.85,,,,,1,81,1915019
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Felix Gill,Marcus Walters,winner,player_a,,0.793,1.26,1.22,0.7663,2.7,-0.0326,0,72,1915017
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Felix Gill,Marcus Walters,winner,player_b,,0.207,4.83,4.0,0.2337,-2.7,-0.1719,0,72,1915017
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Felix Gill,Marcus Walters,total_games,over,21.5,0.4665,2.14,,,,,1,72,1915017
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Felix Gill,Marcus Walters,total_games,under,21.5,0.5335,1.87,,,,,1,72,1915017
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Felix Gill,Marcus Walters,p1_games,over,12.5,0.4936,2.03,,,,,1,72,1915017
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Felix Gill,Marcus Walters,p1_games,under,12.5,0.5064,1.97,,,,,1,72,1915017
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Felix Gill,Marcus Walters,p2_games,over,9.5,0.4655,2.15,,,,,1,72,1915017
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Felix Gill,Marcus Walters,p2_games,under,9.5,0.5345,1.87,,,,,1,72,1915017
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Felix Gill,Marcus Walters,game_handicap,player_a,-3.5,0.62,1.61,,,,,1,72,1915017
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Felix Gill,Marcus Walters,game_handicap,player_b,3.5,0.38,2.63,,,,,1,72,1915017
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Leonardo Rossi,Remy Bertola,winner,player_a,,0.1895,5.28,3.7,0.2525,-6.3,-0.2989,0,81,1915015
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Leonardo Rossi,Remy Bertola,winner,player_b,,0.8105,1.23,1.25,0.7475,6.3,0.0131,0,81,1915015
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Leonardo Rossi,Remy Bertola,total_games,over,20.5,0.4758,2.1,,,,,1,81,1915015
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Leonardo Rossi,Remy Bertola,total_games,under,20.5,0.5242,1.91,,,,,1,81,1915015
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Leonardo Rossi,Remy Bertola,p1_games,over,8.5,0.4815,2.08,,,,,1,81,1915015
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Leonardo Rossi,Remy Bertola,p1_games,under,8.5,0.5185,1.93,,,,,1,81,1915015
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Leonardo Rossi,Remy Bertola,p2_games,over,12.5,0.4599,2.17,,,,,1,81,1915015
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Leonardo Rossi,Remy Bertola,p2_games,under,12.5,0.5401,1.85,,,,,1,81,1915015
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Leonardo Rossi,Remy Bertola,game_handicap,player_a,4.5,0.453,2.21,,,,,1,81,1915015
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Leonardo Rossi,Remy Bertola,game_handicap,player_b,-4.5,0.547,1.83,,,,,1,81,1915015
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Loann Massard,Thomas Faurel,winner,player_a,,0.3347,2.99,3.65,0.2551,8.0,0.2216,0,78,1915018
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Loann Massard,Thomas Faurel,winner,player_b,,0.6653,1.5,1.25,0.7449,-8.0,-0.1684,0,78,1915018
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Loann Massard,Thomas Faurel,total_games,over,22.5,0.4405,2.27,,,,,1,78,1915018
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Loann Massard,Thomas Faurel,total_games,under,22.5,0.5595,1.79,,,,,1,78,1915018
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Loann Massard,Thomas Faurel,p1_games,over,12.5,0.3682,2.72,,,,,1,78,1915018
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Loann Massard,Thomas Faurel,p1_games,under,12.5,0.6318,1.58,,,,,1,78,1915018
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Loann Massard,Thomas Faurel,p2_games,over,12.5,0.4823,2.07,,,,,1,78,1915018
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Loann Massard,Thomas Faurel,p2_games,under,12.5,0.5177,1.93,,,,,1,78,1915018
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Loann Massard,Thomas Faurel,game_handicap,player_a,2.5,0.4272,2.34,,,,,1,78,1915018
+2026-11-04 09:00,atp,ATP Challenger,"Italy, Taranto",N/A,3,Loann Massard,Thomas Faurel,game_handicap,player_b,-2.5,0.5728,1.75,,,,,1,78,1915018
+2026-11-04 10:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Filippo Romano,Peter Makk,winner,player_a,,0.6877,1.45,1.47,0.6388,4.9,0.011,0,88,1915014
+2026-11-04 10:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Filippo Romano,Peter Makk,winner,player_b,,0.3123,3.2,2.6,0.3612,-4.9,-0.1881,0,88,1915014
+2026-11-04 10:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Filippo Romano,Peter Makk,total_games,over,22.5,0.4596,2.18,,,,,0,88,1915014
+2026-11-04 10:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Filippo Romano,Peter Makk,total_games,under,22.5,0.5404,1.85,,,,,0,88,1915014
+2026-11-04 10:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Filippo Romano,Peter Makk,p1_games,over,13.5,0.3299,3.03,,,,,0,88,1915014
+2026-11-04 10:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Filippo Romano,Peter Makk,p1_games,under,13.5,0.6701,1.49,,,,,0,88,1915014
+2026-11-04 10:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Filippo Romano,Peter Makk,p2_games,over,12.5,0.3815,2.62,,,,,0,88,1915014
+2026-11-04 10:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Filippo Romano,Peter Makk,p2_games,under,12.5,0.6185,1.62,,,,,0,88,1915014
+2026-11-04 10:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Filippo Romano,Peter Makk,game_handicap,player_a,-2.5,0.5845,1.71,,,,,0,88,1915014
+2026-11-04 10:30,atp,ATP Challenger,"Italy, Taranto",N/A,3,Filippo Romano,Peter Makk,game_handicap,player_b,2.5,0.4155,2.41,,,,,0,88,1915014
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Diana Martynov,Yasmine Kabbaj,winner,player_a,,0.3941,2.54,2.8,0.3349,5.9,0.1034,0,56,1914801
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Diana Martynov,Yasmine Kabbaj,winner,player_b,,0.6059,1.65,1.41,0.6651,-5.9,-0.1456,0,56,1914801
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Diana Martynov,Yasmine Kabbaj,total_games,over,20.5,0.4904,2.04,1.85,0.5,-1.0,-0.0928,1,56,1914801
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Diana Martynov,Yasmine Kabbaj,total_games,under,20.5,0.5096,1.96,1.85,0.5,1.0,-0.0572,1,56,1914801
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Diana Martynov,Yasmine Kabbaj,p1_games,over,10.5,0.5639,1.77,1.87,0.496,6.8,0.0544,1,56,1914801
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Diana Martynov,Yasmine Kabbaj,p1_games,under,10.5,0.4361,2.29,1.84,0.504,-6.8,-0.1975,1,56,1914801
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Diana Martynov,Yasmine Kabbaj,p2_games,over,12.5,0.4023,2.49,2.11,0.4388,-3.7,-0.1512,1,56,1914801
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Diana Martynov,Yasmine Kabbaj,p2_games,under,12.5,0.5977,1.67,1.65,0.5612,3.7,-0.0137,1,56,1914801
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Diana Martynov,Yasmine Kabbaj,game_handicap,player_a,2.5,0.4703,2.13,,,,,1,56,1914801
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Diana Martynov,Yasmine Kabbaj,game_handicap,player_b,-2.5,0.5297,1.89,,,,,1,56,1914801
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Franziska Sziedat,Martyna Kubka,winner,player_a,,0.3433,2.91,,,,,0,50,1914981
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Franziska Sziedat,Martyna Kubka,winner,player_b,,0.6567,1.52,,,,,0,50,1914981
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Franziska Sziedat,Martyna Kubka,total_games,over,20.5,0.485,2.06,,,,,1,50,1914981
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Franziska Sziedat,Martyna Kubka,total_games,under,20.5,0.515,1.94,,,,,1,50,1914981
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Franziska Sziedat,Martyna Kubka,p1_games,over,11.5,0.484,2.07,,,,,1,50,1914981
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Franziska Sziedat,Martyna Kubka,p1_games,under,11.5,0.516,1.94,,,,,1,50,1914981
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Franziska Sziedat,Martyna Kubka,p2_games,over,12.5,0.4133,2.42,,,,,1,50,1914981
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Franziska Sziedat,Martyna Kubka,p2_games,under,12.5,0.5867,1.7,,,,,1,50,1914981
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Franziska Sziedat,Martyna Kubka,game_handicap,player_a,3.5,0.4754,2.1,,,,,1,50,1914981
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Franziska Sziedat,Martyna Kubka,game_handicap,player_b,-3.5,0.5246,1.91,,,,,1,50,1914981
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Isabella Shinikova,Gina Feistel,winner,player_a,,0.3502,2.86,,,,,0,53,1914994
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Isabella Shinikova,Gina Feistel,winner,player_b,,0.6498,1.54,,,,,0,53,1914994
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Isabella Shinikova,Gina Feistel,total_games,over,20.5,0.4806,2.08,,,,,1,53,1914994
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Isabella Shinikova,Gina Feistel,total_games,under,20.5,0.5194,1.93,,,,,1,53,1914994
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Isabella Shinikova,Gina Feistel,p1_games,over,11.5,0.4881,2.05,,,,,1,53,1914994
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Isabella Shinikova,Gina Feistel,p1_games,under,11.5,0.5119,1.95,,,,,1,53,1914994
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Isabella Shinikova,Gina Feistel,p2_games,over,12.5,0.4073,2.46,,,,,1,53,1914994
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Isabella Shinikova,Gina Feistel,p2_games,under,12.5,0.5927,1.69,,,,,1,53,1914994
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Isabella Shinikova,Gina Feistel,game_handicap,player_a,3.5,0.4792,2.09,,,,,1,53,1914994
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Isabella Shinikova,Gina Feistel,game_handicap,player_b,-3.5,0.5208,1.92,,,,,1,53,1914994
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Justina Mikulskyte,Tiphanie Lemaitre,winner,player_a,,0.5268,1.9,,,,,0,50,1915022
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Justina Mikulskyte,Tiphanie Lemaitre,winner,player_b,,0.4732,2.11,,,,,0,50,1915022
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Justina Mikulskyte,Tiphanie Lemaitre,total_games,over,21.5,0.4583,2.18,,,,,1,50,1915022
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Justina Mikulskyte,Tiphanie Lemaitre,total_games,under,21.5,0.5417,1.85,,,,,1,50,1915022
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Justina Mikulskyte,Tiphanie Lemaitre,p1_games,over,12.5,0.3922,2.55,,,,,1,50,1915022
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Justina Mikulskyte,Tiphanie Lemaitre,p1_games,under,12.5,0.6078,1.65,,,,,1,50,1915022
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Justina Mikulskyte,Tiphanie Lemaitre,p2_games,over,12.5,0.3765,2.66,,,,,1,50,1915022
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Justina Mikulskyte,Tiphanie Lemaitre,p2_games,under,12.5,0.6235,1.6,,,,,1,50,1915022
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Justina Mikulskyte,Tiphanie Lemaitre,game_handicap,player_a,-0.5,0.5134,1.95,,,,,1,50,1915022
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Justina Mikulskyte,Tiphanie Lemaitre,game_handicap,player_b,0.5,0.4866,2.05,,,,,1,50,1915022
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Sofya Lansere,Kristina Novak,winner,player_a,,0.4986,2.01,,,,,0,50,1914927
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Sofya Lansere,Kristina Novak,winner,player_b,,0.5014,1.99,,,,,0,50,1914927
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Sofya Lansere,Kristina Novak,total_games,over,20.5,0.499,2.0,,,,,1,50,1914927
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Sofya Lansere,Kristina Novak,total_games,under,20.5,0.501,2.0,,,,,1,50,1914927
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Sofya Lansere,Kristina Novak,p1_games,over,12.5,0.378,2.65,,,,,1,50,1914927
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Sofya Lansere,Kristina Novak,p1_games,under,12.5,0.622,1.61,,,,,1,50,1914927
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Sofya Lansere,Kristina Novak,p2_games,over,12.5,0.3787,2.64,,,,,1,50,1914927
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Sofya Lansere,Kristina Novak,p2_games,under,12.5,0.6213,1.61,,,,,1,50,1914927
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Sofya Lansere,Kristina Novak,game_handicap,player_a,-0.5,0.4861,2.06,,,,,1,50,1914927
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Sofya Lansere,Kristina Novak,game_handicap,player_b,0.5,0.5139,1.95,,,,,1,50,1914927
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Suzan Lamens,Kristina Kroitor,winner,player_a,,0.6089,1.64,1.1,0.8533,-24.4,-0.3302,0,47,1914779
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Suzan Lamens,Kristina Kroitor,winner,player_b,,0.3911,2.56,6.4,0.1467,24.4,1.5032,0,47,1914779
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Suzan Lamens,Kristina Kroitor,total_games,over,18.5,0.6236,1.6,2.01,0.4611,16.2,0.2535,1,47,1914779
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Suzan Lamens,Kristina Kroitor,total_games,under,18.5,0.3764,2.66,1.72,0.5389,-16.2,-0.3526,1,47,1914779
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Suzan Lamens,Kristina Kroitor,p1_games,over,12.5,0.3992,2.5,2.8,0.3301,6.9,0.1179,1,47,1914779
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Suzan Lamens,Kristina Kroitor,p1_games,under,12.5,0.6008,1.66,1.38,0.6699,-6.9,-0.1709,1,47,1914779
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Suzan Lamens,Kristina Kroitor,p2_games,over,5.5,0.7973,1.25,1.78,0.5202,27.7,0.4192,1,47,1914779
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Suzan Lamens,Kristina Kroitor,p2_games,under,5.5,0.2027,4.93,1.93,0.4798,-27.7,-0.6088,1,47,1914779
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Suzan Lamens,Kristina Kroitor,game_handicap,player_a,-2.5,0.5343,1.87,,,,,1,47,1914779
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Suzan Lamens,Kristina Kroitor,game_handicap,player_b,2.5,0.4657,2.15,,,,,1,47,1914779
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Wozuko Mdlulwa,Noma Noha Akugue,winner,player_a,,0.2777,3.6,8.0,0.117,16.1,1.2217,0,69,1914776
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Wozuko Mdlulwa,Noma Noha Akugue,winner,player_b,,0.7223,1.38,1.06,0.883,-16.1,-0.2344,0,69,1914776
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Wozuko Mdlulwa,Noma Noha Akugue,total_games,over,16.5,0.7613,1.31,1.72,0.5389,22.2,0.3094,1,69,1914776
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Wozuko Mdlulwa,Noma Noha Akugue,total_games,under,16.5,0.2387,4.19,2.01,0.4611,-22.2,-0.5201,1,69,1914776
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Wozuko Mdlulwa,Noma Noha Akugue,p1_games,over,5.5,0.7158,1.4,2.04,0.4545,26.1,0.4601,1,69,1914776
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Wozuko Mdlulwa,Noma Noha Akugue,p1_games,under,5.5,0.2842,3.52,1.7,0.5455,-26.1,-0.5168,1,69,1914776
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Wozuko Mdlulwa,Noma Noha Akugue,p2_games,over,12.5,0.3979,2.51,3.2,0.2889,10.9,0.2732,1,69,1914776
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Wozuko Mdlulwa,Noma Noha Akugue,p2_games,under,12.5,0.6021,1.66,1.3,0.7111,-10.9,-0.2172,1,69,1914776
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Wozuko Mdlulwa,Noma Noha Akugue,game_handicap,player_a,4.5,0.4795,2.09,,,,,1,69,1914776
+2026-11-04 09:00,wta,WTA Challenger,"Luanda, Angola",N/A,3,Wozuko Mdlulwa,Noma Noha Akugue,game_handicap,player_b,-4.5,0.5205,1.92,,,,,1,69,1914776
