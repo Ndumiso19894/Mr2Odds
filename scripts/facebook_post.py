@@ -30,7 +30,6 @@ ROOT = Path(__file__).resolve().parents[1]
 SAST = ZoneInfo('Africa/Johannesburg')
 BADGE_BASE = 'https://lsm-static-prod.livescore.com/medium/'
 WIKI = 'https://en.wikipedia.org/w/api.php'
-CAPTION = "Today's selections ⚽\n\n#Mr2Odds #Football #FootballTips #BettingTips"
 HEADERS = {'User-Agent': 'Mr2OddsSelections/1.0 (football club badge lookup)'}
 MAX_IMAGE_BYTES = 3 * 1024 * 1024
 
@@ -171,33 +170,79 @@ def fit(draw, text, max_width, size, minimum=18, bold=False):
     return f
 
 
+def draw_team(draw, name, x, center_y, anchor):
+    """Keep each complete club name within its own half, wrapping before shrinking."""
+    max_width = 320
+    words = name.split()
+    splits = [(name,)] + [(' '.join(words[:i]), ' '.join(words[i:])) for i in range(1, len(words))]
+    for size in range(34, 21, -1):
+        f = font(size, True)
+        choices = [lines for lines in splits if all(draw.textbbox((0, 0), line, font=f)[2] <= max_width for line in lines)]
+        if choices:
+            lines = min(choices, key=lambda v: (len(v), max(draw.textbbox((0, 0), t, font=f)[2] for t in v)))
+            for i, line in enumerate(lines):
+                draw.text((x, center_y + (i - (len(lines) - 1) / 2) * 36), line, font=f, fill='#ffffff', anchor=anchor)
+            return
+    raise ValueError('A team name is too long to display safely')
+
+
 def render(selections, path, logo_path=ROOT / 'android/design/mr-2-odds-logo.png'):
     if not 5 <= len(selections) <= 8:
         raise ValueError('An image requires 5 to 8 complete selections')
-    image = Image.new('RGB', (1080, 1350), '#050b1e')
+    # 1080 x 1920 is exactly 9:16. Each match owns a separate spacious card.
+    image = Image.new('RGB', (1080, 1920), '#050b1e')
     draw = ImageDraw.Draw(image)
     logo = Image.open(logo_path).convert('RGBA')
-    logo.thumbnail((185, 185), Image.Resampling.LANCZOS)
-    image.paste(logo, (40, 12), logo)
-    draw.text((244, 48), 'TODAY’S SELECTIONS', font=font(42, True), fill='#f8f4e9')
-    draw.rounded_rectangle((244, 112, 482, 118), radius=3, fill='#09b5a3')
-    height, gap, start = 128, 10, 200
+    logo.thumbnail((210, 210), Image.Resampling.LANCZOS)
+    image.paste(logo, (35, 12), logo)
+    draw.text((260, 72), 'TODAY’S SAFE BETS', font=font(42, True), fill='#f8f4e9')
+    draw.rounded_rectangle((260, 138, 532, 144), radius=3, fill='#09b5a3')
+    gap, start, bottom = 18, 230, 1855
+    height = (bottom - start - gap * (len(selections) - 1)) // len(selections)
     for i, item in enumerate(selections):
         y = start + i * (height + gap)
-        draw.rounded_rectangle((34, y, 1046, y + height), radius=18, fill='#111d2f', outline='#263c4d', width=2)
-        for side, x in (('home_image', 57), ('away_image', 949)):
-            crest = ImageOps.contain(item[side], (70, 70), Image.Resampling.LANCZOS)
-            image.paste(crest, (x + (70 - crest.width)//2, y + 29 + (70 - crest.height)//2), crest)
-        match = item['home'] + '  v  ' + item['away']
-        mf = fit(draw, match, 790, 31, minimum=18, bold=True)
-        draw.text((540, y + 20), match, font=mf, fill='#ffffff', anchor='mt')
-        selection = item['selection']
-        sf = fit(draw, selection, 650, 27, minimum=18)
-        draw.text((157, y + 76), selection, font=sf, fill='#b9d8d1')
-        draw.rounded_rectangle((785, y + 70, 904, y + 112), radius=10, fill='#06aa99')
-        draw.text((844, y + 75), f"{item['odds']:.2f}", font=font(26, True), fill='#061825', anchor='mt')
+        draw.rounded_rectangle((35, y, 1045, y + height), radius=20, fill='#111d2f', outline='#263c4d', width=2)
+        top_y = y + round(height * .30)
+        for side, x in (('home_image', 58), ('away_image', 946)):
+            crest = ImageOps.contain(item[side], (76, 76), Image.Resampling.LANCZOS)
+            image.paste(crest, (x + (76 - crest.width)//2, top_y - crest.height//2), crest)
+        draw_team(draw, item['home'], 158, top_y, 'lm')
+        draw.text((540, top_y), 'v', font=font(27, True), fill='#7f9ba0', anchor='mm')
+        draw_team(draw, item['away'], 922, top_y, 'rm')
+        separator_y = y + round(height * .57)
+        draw.line((157, separator_y, 923, separator_y), fill='#2d4050', width=2)
+        lower_y = y + round(height * .78)
+        sf = fit(draw, item['selection'], 610, 32, minimum=22)
+        draw.text((157, lower_y), item['selection'], font=sf, fill='#c8e2d9', anchor='lm')
+        draw.rounded_rectangle((802, lower_y - 27, 922, lower_y + 27), radius=10, fill='#06aa99')
+        draw.text((862, lower_y), f"{item['odds']:.2f}", font=font(29, True), fill='#061825', anchor='mm')
     path.parent.mkdir(parents=True, exist_ok=True)
     image.save(path, 'PNG', optimize=True)
+
+
+def caption_for(manifest):
+    """Only the teams actually printed on the card become hashtags."""
+    try:
+        date = datetime.strptime(manifest['date'], '%Y-%m-%d')
+        fixtures = manifest['fixtures']
+    except (KeyError, TypeError, ValueError):
+        raise ValueError('Invalid caption data') from None
+    if not 5 <= len(fixtures) <= 8:
+        raise ValueError('Caption requires the same 5 to 8 matches as the image')
+    tags, seen = [], set()
+    for item in fixtures:
+        for side in ('home', 'away'):
+            name = item.get(side)
+            if not isinstance(name, str) or not name.strip():
+                raise ValueError('Missing team name in caption data')
+            tag = ''.join(c for c in unicodedata.normalize('NFKC', name) if c.isalnum() or c == '_')
+            if not tag:
+                raise ValueError('Cannot make a hashtag from the team name')
+            if tag.casefold() not in seen:
+                seen.add(tag.casefold())
+                tags.append('#' + tag)
+    day = f'{date.day} {date.strftime("%B %Y")}'
+    return f"Today's safe bets - {day}\n\n" + ' '.join(tags)
 
 
 def prepare(snapshot, output, now=None, session=None):
@@ -307,7 +352,7 @@ def publish(image_path, now=None, session=None):
     try:
         with image_path.open('rb') as image:
             response = session.post(f'https://graph.facebook.com/v24.0/{page_id}/photos',
-                data={'access_token': token, 'message': CAPTION}, files={'source': ('selections.png', image, 'image/png')}, timeout=60)
+                data={'access_token': token, 'message': caption_for(info)}, files={'source': ('selections.png', image, 'image/png')}, timeout=60)
         if not response.ok:
             raise RuntimeError('Facebook rejected the photo: ' + error_summary(response))
         payload = response.json()

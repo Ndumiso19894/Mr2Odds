@@ -6,6 +6,11 @@ on:
   schedule:
     - cron: '0 5 * * *'
   workflow_dispatch:
+    inputs:
+      retry_today:
+        description: 'Publish one additional corrected card for today (only when explicitly requested)'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -42,16 +47,34 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Compute South African date
+      - name: Compute South African date and claim
         id: day
-        run: echo "date=$(TZ=Africa/Johannesburg date +%F)" >> "$GITHUB_OUTPUT"
+        env:
+          RETRY_TODAY: ${{ inputs.retry_today }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          day=$(TZ=Africa/Johannesburg date +%F)
+          claim="facebook-post-$day"
+          if [ "$EVENT_NAME" = 'workflow_dispatch' ] && [ "$RETRY_TODAY" = 'true' ]; then
+            claim="$claim-retry"
+          fi
+          echo "date=$day" >> "$GITHUB_OUTPUT"
+          echo "claim=$claim" >> "$GITHUB_OUTPUT"
       - name: Check whether today's post was already claimed
         id: claim
         env:
           GH_TOKEN: ${{ github.token }}
-          CLAIM_NAME: facebook-post-${{ steps.day.outputs.date }}
+          CLAIM_NAME: ${{ steps.day.outputs.claim }}
         run: |
           set -euo pipefail
+          if [[ "$CLAIM_NAME" == *-retry ]]; then
+            original=${CLAIM_NAME%-retry}
+            prior=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=$original" --jq ".artifacts[] | select(.name == \"$original\" and .expired == false) | .id")
+            if [ -z "$prior" ]; then
+              echo "A corrected retry requires an existing claim for today's original post." >&2
+              exit 1
+            fi
+          fi
           ids=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=$CLAIM_NAME" --jq ".artifacts[] | select(.name == \"$CLAIM_NAME\" and .expired == false) | .id")
           if [ -n "$ids" ]; then
             echo "A post was already attempted today; check the Page before any manual recovery."
@@ -100,7 +123,7 @@ jobs:
         if: steps.prepare.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: facebook-post-${{ steps.day.outputs.date }}
+          name: ${{ steps.day.outputs.claim }}
           path: facebook-output/
           retention-days: 35
           if-no-files-found: error
