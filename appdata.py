@@ -174,6 +174,55 @@ def _best(sels: list[dict], groups: tuple | None, min_odds: float, min_p: float)
     return best
 
 
+
+def _selection_rows(sels: list[dict]) -> list[list]:
+    """Compact selections used by both the fixture index and detail files."""
+    return [[d["sel"], d["p"], d["p_model"], d["p_sb"], d["odds"],
+             1 if d["diff"] else 0, d.get("diff_pp"), d.get("ev")] for d in sels]
+
+
+def shortlist_payload(index: list[dict], now: datetime) -> dict:
+    """Screen today's upcoming published fixtures, without manufacturing missing prices or probabilities."""
+    import safe
+    today = now.strftime("%Y-%m-%d")
+    current = now.strftime("%Y-%m-%d %H:%M")
+    candidates, results = [], []
+    analysed = screened = 0
+    for f in index:
+        if f.get("date") != today or f.get("kickoff", "") <= current or not f.get("data_ok"):
+            continue
+        analysed += 1
+        for sel, p, model, market, odds, diff, *rest in f.get("sels", []):
+            group = safe.group(sel)
+            if sel not in ("H", "D", "A") and not (sel.startswith("O") and sel != "O05") and not sel.startswith("CO"):
+                continue
+            screened += 1
+            bar = 0.55 if sel in ("H", "D", "A", "O25") else 0.65 if group == "corners" else 0.70
+            if p is None or not 0 < p < 1 or odds is None or odds <= 1 or diff:
+                continue
+            # Without a two-way market view, apply the same raw-price outlier check as the app.
+            if market is None and model is not None and model - 1 / odds >= 0.25:
+                continue
+            x = {"fixture": f["id"], "home": f["home"], "away": f["away"], "country": f["country"],
+                 "league": f["league"], "kickoff": f["kickoff"], "sel": sel, "market": group,
+                 "label": safe.label(sel, f["home"], f["away"]), "p": p, "p_sb": market,
+                 "odds": odds, "quality": f.get("q") or "N/A", "confidence": "N/A"}
+            if group == "result" and p >= 0.60 and 1.20 <= odds <= 3.50:
+                results.append(x)
+            if p >= bar and 1.16 <= odds <= 1.90 and odds * p >= 0.95 and f.get("q") != "Low":
+                candidates.append(x)
+    def unique(items):
+        seen, out = set(), []
+        for x in sorted(items, key=lambda x: (-x["p"], -x["odds"], x["fixture"])):
+            if x["fixture"] not in seen:
+                seen.add(x["fixture"])
+                out.append(dict(x, rank=len(out) + 1))
+        return out
+    primary = unique(candidates)
+    return {"primary": primary, "x12": unique(results),
+            "counts": {"analysed": analysed, "screened": screened},
+            "rules": {"min_odds": 1.16, "max_odds": 1.90}}
+
 def carry_over(prev: dict | None, index: list, bets: list, tracked: set, now: datetime, hours: float = 3.0) -> int:
     """Fixtures of the previous publication that kicked off in the last `hours` and are no longer in the scan window
     are appended unchanged ("frozen"), together with their safest bets and tracked flags; returns how many."""
@@ -270,7 +319,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
                      if d.get("p") is not None and d["p"] >= 0.70 and not d["diff"] and d["group"] in ("goals", "btts", "team", "corners", "cards")
                      and (not d.get("odds") or d["odds"] >= 1.15)], key=lambda x: -x[1])[:12]
         for d in sels:   # biggest model-vs-market edges (already-computed EV, presentation only)
-            if d.get("odds") and d.get("ev") is not None and d["p"] is not None and not d.get("diff"):
+            if fx["date"].strftime("%Y-%m-%d") == now.strftime("%Y-%m-%d") and r.data_ok and (d["sel"] in ("H", "D", "A") or (d["sel"].startswith("O") and d["sel"] != "O05") or d["sel"].startswith("CO")) and d.get("odds") and d.get("ev") is not None and d["ev"] > 0 and d["p"] is not None and not d.get("diff"):
                 value_cands.append({"id": fid, "sel": d["sel"], "odds": round(d["odds"], 2),
                                     "ev": round(d["ev"], 3), "p": round(d["p"], 3)})
         safe_best = _best(sels, safe_groups or None, min_odds, min_p) if r.data_ok else None
@@ -288,6 +337,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
             "p": {"O15": _f(r.p_final["O15"]), "O25": _f(r.p_final["O25"]), "BTTS": _f(r.p_final["BTTS"])},
             "x12": [_f(x12.get("H")), _f(x12.get("D")), _f(x12.get("A"))],
             "priced": bool(r.sb), "top": top, "safe": safe_best, "hi": hi, "bo": _board(sels),
+            "sels": _selection_rows(sels),
             "badges": {"home": badges.get(fx["home"]), "away": badges.get(fx["away"])},
             "livescore_id": eid,
             # full Sportybet event meta so the app can deep-link the match into Sportybet ("open in Sportybet")
@@ -331,7 +381,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
                      "league": m.get("league")} for m in r.h2h[:10]],
             "league_ctx": {"btts": _f(getattr(r.div_avg, "btts_rate", None))},
             # sels: [sel, p (model), p_model, p_market (implied), odds, disagreement flag, diff pp, EV]
-            "sels": [[d["sel"], d["p"], d["p_model"], d["p_sb"], d["odds"], 1 if d["diff"] else 0, d.get("diff_pp"), d.get("ev")] for d in sels],
+            "sels": _selection_rows(sels),
             "trends": r.trends or {},
             # per-fixture news (home / away / the fixture itself). Context only — never a model input.
             "news": getattr(r, "news", None) or None,
@@ -439,13 +489,18 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
     advisor["picks"] = advisor_picks
     advisor["shown_today"] = shown_today
 
-    _classes = tracker_summary.get("classes") or {}
-    shortlist = {"track": {c: {k: v for k, v in i.items()} for c, i in _classes.items()},
-                 "rules": {"calibration": {"status": "raw model — the calibration map goes live only after it "
-                                                  "beats the raw model on recent, unseen picks", "groups": {}}}}
+    shortlist = shortlist_payload(index, now)
+    # The existing tracker records global goals picks, not these screened selections.
+    # Do not present its historical classes as this shortlist's performance.
+    shortlist["track"] = {}
+    shortlist["rules"]["calibration"] = {"status": "raw model", "groups": {}}
 
     # strong signals (>=70% already filtered upstream) with the fixture's data-quality label
-    strong_cands = [(s[1], s[0], f["id"], f.get("q")) for f in index for s in (f.get("hi") or [])[:2]]
+    strong_cands = [(s[1], s[0], f["id"], f.get("q"))
+                    for f in index if f.get("date") == now.strftime("%Y-%m-%d") and f.get("data_ok")
+                    for s in f.get("sels", []) if s[1] is not None and s[1] >= .70 and s[4] is not None
+                    and s[4] >= 1.16 and not s[5]
+                    and (s[0] in ("H", "D", "A") or (s[0].startswith("O") and s[0] != "O05") or s[0].startswith("CO"))]
     strong_sorted = sorted(strong_cands, key=lambda x: -x[0])[:5]
     groups = {"value": sorted(value_cands, key=lambda x: -x["ev"])[:5],
               "strong": [{"id": fid, "sel": sel, "p": p, "q": q} for p, sel, fid, q in strong_sorted]}
@@ -458,6 +513,8 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
     strong_by_fam: dict = {}
     for r in rows:
         fx = r.fx
+        if not r.data_ok or fx["date"].strftime("%Y-%m-%d") != now.strftime("%Y-%m-%d"):
+            continue
         fid = fixture_id(fx["date"].strftime("%Y-%m-%d"), fx["country"], fx["home"], fx["away"])
         for d in selections(r):
             sel = d["sel"]
@@ -500,8 +557,8 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
     if ctx.get("analysis_cache"):
         app_meta["analysis_cache"] = ctx["analysis_cache"]
     if report_run:
-        # shortlist picks published in this full analysis run (the "Shortlist is live — N pick(s)"
-        # notification); refresh runs omit it so the worker does not re-announce an unchanged shortlist
-        app_meta["counts_shortlist"] = {"primary": sum(len(_l) for _l in picks.values())}
+        # Count the actual upcoming shortlist, not the unrelated global goals tracker picks.
+        # Refresh runs omit it so the worker does not re-announce an unchanged shortlist.
+        app_meta["counts_shortlist"] = {"primary": len(shortlist["primary"])}
     _write(app_dir / "meta.json", app_meta)
     return path

@@ -261,8 +261,8 @@ def selections(r) -> list[Sel]:
 def sel_dict(s: Sel, home: str, away: str) -> dict:
     """p / p_model = model probability; p_sb = market implied (comparison); fair = 1 / model probability;
     diff_pp = model − market in percentage points; ev = model probability × price − 1."""
-    return {"sel": s.sel, "group": s.group, "label": label(s.sel, home, away), "p": round(s.p, 3),
-            "p_model": round(s.p_model, 3), "p_sb": round(s.p_sb, 3) if s.p_sb is not None else None,
+    return {"sel": s.sel, "group": s.group, "label": label(s.sel, home, away), "p": s.p,
+            "p_model": s.p_model, "p_sb": s.p_sb if s.p_sb is not None else None,
             "odds": round(s.odds, 2) if s.odds else None, "fair": round(1 / s.p, 2) if s.p > 0 else None,
             "diff": s.diff, "diff_pp": None if s.diff_pp is None else round(s.diff_pp, 1),
             "ev": None if s.ev is None else round(s.ev, 3)}
@@ -308,8 +308,18 @@ def safest(rows: list, now: datetime, window_end: datetime, min_odds: float = MI
                 continue
             bets.append(Bet(key, fx["div"], fx["league"], fx["home"], fx["away"], fx["kickoff"].strftime("%Y-%m-%d %H:%M"),
                             s.sel, s.p, s.p_model, s.p_sb, s.odds))
-    bets.sort(key=lambda b: (-b.p, -b.odds))
-    # one market per match (the most probable): a clean record of which markets perform
+    # The scan covers 60 days but the app's default screen is today. Applying the global cap
+    # before considering the date lets far-future matches crowd every one of today's signals out.
+    # Keep probability ranking within each partition; do not lower any selection thresholds.
+    today = now.strftime("%Y-%m-%d")
+    def app_visible(b):
+        # The Android app hides team goals, BTTS, cards, double chance and Over 0.5.
+        # Keep those markets for reports/ledger where there is room, but don't let
+        # hidden markets occupy every slot in the app's capped signal list.
+        return ((b.sel.startswith("O") and b.sel != "O05") or b.sel.startswith("CO"))
+
+    bets.sort(key=lambda b: (b.key[0] != today, not app_visible(b), -b.p, -b.odds))
+    # one market per match, preferring a visible market where available
     seen_match: set[tuple] = set()
     one = []
     for b in bets:

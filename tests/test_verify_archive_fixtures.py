@@ -24,8 +24,9 @@ def _build(tmp: Path) -> tuple[Path, Path]:
         "meta": {"generated": NOW.strftime("%Y-%m-%d %H:%M")},
         "fixtures": [
             {"id": "f1", "d": "k1", "kickoff": "2026-09-30 14:00", "home": "A", "away": "B",
-             "p": {"O15": 0.8, "O25": 0.6, "BTTS": 0.5}, "x12": [0.4, 0.3, 0.3], "xg": [1.4, 1.0]},
+             "sels": [], "p": {"O15": 0.8, "O25": 0.6, "BTTS": 0.5}, "x12": [0.4, 0.3, 0.3], "xg": [1.4, 1.0]},
         ],
+        "shortlist": {"primary": [], "counts": {}},
         "safe": {"min_p": 0.7, "min_odds": 1.3, "bets": [
             {"id": "x|A|B|O25", "fixture": "archived-fixture-1", "home": "C", "away": "D",
              "kickoff": "2026-10-20 17:00", "sel": "Over 2.5", "label": "Over 2.5", "p": 0.75, "odds": 1.4},

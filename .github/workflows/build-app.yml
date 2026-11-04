@@ -11,6 +11,10 @@ on:
 permissions:
   contents: write
 
+env:
+  # One version for the GitHub release and its Telegram attachment.
+  APP_VERSION_NAME: 1.8.${{ github.run_number }}
+
 concurrency:
   group: build-app
   cancel-in-progress: true
@@ -25,7 +29,6 @@ jobs:
       # live scores, tickets, advisor). (no arithmetic in env expressions - GitHub's env parser
       # does not accept '+')
       APP_VERSION_CODE: ${{ github.run_number }}
-      APP_VERSION_NAME: 1.8.${{ github.run_number }}
       APP_REPO: ${{ github.repository }}
     steps:
       - uses: actions/checkout@v4
@@ -77,3 +80,23 @@ jobs:
           # release notes = android/RELEASE_NOTES.md (shown inside the app before and after updating)
           { cat android/RELEASE_NOTES.md; printf '\n\nMr 2 Odds for Android v%s (build %s). Download PlayReport.apk and install it. Installed apps update themselves automatically.\n' "$APP_VERSION_NAME" "$APP_VERSION_CODE"; } > "$RUNNER_TEMP/notes.md"
           gh release create "$TAG" "$RUNNER_TEMP/PlayReport.apk" --repo "$GITHUB_REPOSITORY" --title "Mr 2 Odds v${APP_VERSION_NAME}" --notes-file "$RUNNER_TEMP/notes.md" --latest
+
+  telegram:
+    name: Send APK to Telegram
+    needs: apk
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download published APK
+        uses: actions/download-artifact@v4
+        with:
+          name: PlayReport-apk
+          path: release-apk
+      - name: Send release to Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python3 scripts/send_release_telegram.py release-apk/PlayReport.apk "$APP_VERSION_NAME" \
+            "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/releases/tag/app-v${APP_VERSION_NAME}"

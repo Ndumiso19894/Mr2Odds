@@ -1379,22 +1379,23 @@ view().innerHTML = parts.join('');
     if (record.markets && Object.keys(record.markets).length) parts.push(`<div class="card compact"><div class="b">Advisor record by market</div><table class="tbl"><tr><th>Market</th><th>W / L</th><th>Hit rate</th><th>ROI</th></tr>${Object.entries(record.markets).map(([sel,r]) => `<tr><td>${esc(selLabel(sel))}</td><td>${r.wins} / ${r.losses}</td><td>${metric(r.hit_rate)}</td><td>${metric(r.roi)}</td></tr>`).join('')}</table><div class="tiny muted">Pending and void picks are excluded from hit rate and ROI. Small samples are not proof of an edge.</div></div>`);
     if ((record.recent || []).length) parts.push(`<div class="card compact"><div class="b">Advisor selection ledger</div><table class="tbl">${record.recent.map((r) => `<tr><td><div class="b">${esc(r.home)} v ${esc(r.away)}</div><div class="tiny muted">${esc(r.label || r.sel)} @ ${f2(r.odds)} · ${esc(r.match_date)}</div></td><td>${esc(String(r.status || 'pending').toUpperCase())}</td></tr>`).join('')}</table></div>`);
     const row = (b) => `<tr class="tap" data-fx="${esc(b.fixture || b.id)}"><td><div class="b">${esc(b.label || selLabel(b.sel, (fx(b.fixture || b.id) || {}).home, (fx(b.fixture || b.id) || {}).away))}</div><div class="tiny muted">${teamSpan(b.home || ((fx(b.fixture || b.id) || {}).home) || '', b.country, (fx(b.fixture || b.id) || {}).div)} v ${teamSpan(b.away || ((fx(b.fixture || b.id) || {}).away) || '', b.country, (fx(b.fixture || b.id) || {}).div)}${b.q ? ' · data ' + esc(b.q) : ''}</div></td><td class="right nowrap"><b>${b.odds ? f2(b.odds) : '–'}</b></td><td class="right">${pill(b.p, 0.8, 0.7)}</td></tr>`;
-    const groups = (sf.today && sf.today.groups) || [];
-    const dayBets = (sf.today && sf.today.bets) || [];
+    const cardToday = sf.today && sf.today.date === today ? sf.today : {};
+    const groups = cardToday.groups || [];
+    const dayBets = cardToday.bets || [];
     if (dayBets.length) {
       const shown = groups.filter((g) => (g.bets || []).length);
       (shown.length ? shown : [{ title: 'Recommendations', bets: dayBets }]).forEach((g) => {
         parts.push(`<div class="card compact"><div class="row"><div class="grow b">${icon('shield', 'sm')} ${esc(g.title)}</div><span class="tiny muted">${g.bets.length} pick${g.bets.length === 1 ? '' : 's'}</span></div>
           <table class="tbl">${g.bets.slice(0, 6).map(row).join('')}</table></div>`);
       });
-      parts.push(`<div class="card small"><b>How the advisor picks</b><div class="muted" style="margin-top:4px">Every line above is a model selection that cleared its bar on <b>today's matches only</b>: ≥70% model probability (Over 2.5 ≥55%, corners ≥65%), one market per match, nothing priced under <b>1.16</b>. Nothing is chosen by hand.</div></div>`);
+      parts.push(`<div class="card small"><b>How the advisor picks</b><div class="muted" style="margin-top:4px">These are the published bets-of-the-day card for today, selected from the scanner's priced, data-checked candidates and retained in its ledger. The card uses market-specific thresholds and at most one selection per match. Nothing is chosen by hand.</div></div>`);
     } else {
-      parts.push(`<div class="card empty">The advisor's card appears with the first analysis of the day (about 07:00) and fills section by section as probabilities firm up.</div>`);
+      parts.push(`<div class="card empty">No bets-of-the-day card is available for today in this publication. It may be empty because no selections qualified, or the data is out of date; check the last update.</div>`);
     }
-    const val = ((d.groups || {}).value || []).slice(0, 5);
+    const val = ((d.groups || {}).value || []).filter((v) => String((fx(v.id) || {}).kickoff || '').slice(0, 10) === today).slice(0, 5);
     if (val.length) parts.push(`<div class="card compact"><div class="row"><div class="grow b">${icon('trend', 'sm')} Biggest model-vs-market edges</div><span class="tiny muted">value</span></div>
-      <table class="tbl">${val.map((v) => { const f = fx(v.id) || {}; return `<tr class="tap" data-fx="${esc(v.id)}"><td><div class="b">${esc(selLabel(v.sel, f.home, f.away))}</div><div class="tiny muted">${esc(f.home || '')} v ${esc(f.away || '')}</div></td><td class="right nowrap"><b>${v.odds ? f2(v.odds) : '–'}</b></td><td class="right good">+${Math.round((v.ev || 0) * 100)} pp</td></tr>`; }).join('')}</table></div>`);
-    const strong = ((d.groups || {}).strong || []).slice(0, 5);
+      <table class="tbl">${val.map((v) => { const f = fx(v.id) || {}; return `<tr class="tap" data-fx="${esc(v.id)}"><td><div class="b">${esc(selLabel(v.sel, f.home, f.away))}</div><div class="tiny muted">${esc(f.home || '')} v ${esc(f.away || '')}</div></td><td class="right nowrap"><b>${v.odds ? f2(v.odds) : '–'}</b></td><td class="right good">${(100 * v.ev).toFixed(1)}% EV</td></tr>`; }).join('')}</table></div>`);
+    const strong = ((d.groups || {}).strong || []).filter((v) => String((fx(v.id) || {}).kickoff || '').slice(0, 10) === today).slice(0, 5);
     if (strong.length) parts.push(`<div class="card compact"><div class="row"><div class="grow b">${icon('star', 'sm')} Strongest signals</div><span class="tiny muted">≥ 70%</span></div>
       <table class="tbl">${strong.map((v) => { const f = fx(v.id) || {}; return `<tr class="tap" data-fx="${esc(v.id)}"><td><div class="b">${esc(selLabel(v.sel, f.home, f.away))}</div><div class="tiny muted">${esc(f.home || '')} v ${esc(f.away || '')}${v.q ? ' · data ' + esc(v.q) : ''}</div></td><td class="right">${pill(v.p, 0.8, 0.7)}</td></tr>`; }).join('')}</table></div>`);
     const conf = (sf.bets || []).filter((b) => String(b.kickoff || '').slice(0, 10) === today).slice(0, 5);

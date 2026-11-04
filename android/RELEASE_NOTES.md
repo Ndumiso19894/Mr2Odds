@@ -1,3 +1,10 @@
+## Android branding, release delivery and recommendation fixes
+- The launcher, splash screen and in-app logo now use the new Mr 2 Odds artwork.
+- Future Android APK releases are sent to the configured Telegram chat.
+- Home collections now receive the published market selections they need, including the exact model probability for the 80% filter.
+- The Shortlist and Sequences now use a published, data-checked list of today's upcoming selections. The advisor displays only today's card.
+- Today's high-probability signals are no longer displaced by matches weeks away. Empty collections still mean no selection met the stated rules.
+
 ## What's new in Mr 2 Odds 1.8.7 — 🧭 Back button fixed + always-current tips
 - ⬅️ **Back now navigates — it only closes the app at Home** — on match, day, league, team, advisor or any other screen, the back button steps you back through the app the way you'd expect. It exits only when you're already on the home screen.
 - 🕒 **You can see exactly which analysis you're looking at** — the small status line under the header shows the publication time of the data on screen, and turns amber with a warning if the publication is more than 3 hours old.

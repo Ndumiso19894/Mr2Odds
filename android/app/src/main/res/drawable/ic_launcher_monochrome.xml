@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Android themed icons are monochrome; a ring and the brand's 2 replace the old chart. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
-    <path android:fillColor="#FFFFFF"
-        android:pathData="M30,26 h40 a6,6 0 0 1 6,6 v44 a6,6 0 0 1 -6,6 h-40 a6,6 0 0 1 -6,-6 v-44 a6,6 0 0 1 6,-6 z M36,64 h6 v10 h-6 z M46,54 h6 v20 h-6 z M56,46 h6 v28 h-6 z"
-        android:fillType="evenOdd" />
+    <path android:fillColor="@android:color/transparent" android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="3" android:pathData="M54,23 A31,31 0,1 1,54,85 A31,31 0,1 1,54,23" />
+    <path android:fillColor="#FFFFFFFF"
+        android:pathData="M41,44 C41,35 46,31 54,31 C62,31 67,35 67,43 C67,49 64,53 59,57 L51,64 L67,64 L67,73 L40,73 L40,65 L53,52 C57,48 58,46 58,43 C58,40 56,39 54,39 C51,39 50,41 50,44 Z" />
 </vector>
