@@ -388,11 +388,11 @@
     const eligible = homeBets(d);
     const all = bestPerMatch(eligible, (r) => r.f.id, strength);
     const high = bestPerMatch(eligible.filter((r) => r.s.p >= HOME_HIGH), (r) => r.f.id, strength);
-    // Analysis-only: all modelled 80%+ markets, including unpriced and restricted markets,
-    // with no per-match deduplication. The published number is never rounded up.
+    // Analysis-only: every 80%+ selection with its own SportyBet price at the exact floor.
+    // No per-match deduplication; never round a probability or price into eligibility.
     const today = ymd(tzNow());
     const eighty = (d.fixtures || []).filter((f) => f.date === today && inScope(f)).flatMap((f) => (f.sels || [])
-      .filter((s) => s && Number.isFinite(s.p) && s.p >= 0.80 && s.p < 1)
+      .filter((s) => s && Number.isFinite(s.p) && s.p >= 0.80 && s.p < 1 && PR.offeredPrice(s.odds))
       .map((s) => ({ f, s, g: selGroup(s.sel) })));
 
     const ev = bestPerMatch(homeEvBets(d), (r) => r.f.id, (r) => evOf(r.s));
@@ -433,8 +433,8 @@
       <div class="row" style="margin-top:6px"><div class="grow tiny muted">${rows.length} ${tab === 'eighty' ? 'market' : 'bet'}${rows.length === 1 ? '' : 's'} · ${matches} match${matches === 1 ? '' : 'es'}</div><span class="tiny muted">Sort&nbsp;</span>${select('home-sort', HOME_SORTS, sort)}</div></div>`);
     const shown = Math.min(rows.length, state.homeShow || 100);
     if (rows.length) out.push(`<div class="card compact"><table class="tbl head home-selection-table" style="margin-top:4px"><tr><th>Time</th><th>Match · bet</th><th class="right">Sportybet</th><th class="right">Model</th></tr>${rows.slice(0, shown).map(row).join('')}</table>${shown < rows.length ? `<div class="row" style="justify-content:center;margin-top:8px"><button class="btn" id="home-more">Show ${Math.min(100, rows.length - shown)} more · ${rows.length - shown} left</button></div>` : ''}</div>`);
-    else out.push(`<div class="card empty small">${tab === 'ev' ? `No bet the model supports has positive EV at a Sportybet price of ${f2(HOME_EV_MIN_ODDS)} or more today${mk !== 'any' ? ' in this market' : ''}.` : tab === 'eighty' ? `No modelled market has a published probability of 80% or more today${mk !== 'any' ? ' in this market' : ''}. The threshold is never lowered to fill this collection.` : tab === 'high' ? `No priced bet reaches ${pct(HOME_HIGH)} today${mk !== 'any' ? ' in this market' : ''} yet.` : `No priced bet clears its model bar today${mk !== 'any' ? ' in this market' : ''} yet.`} The board fills as Sportybet prices and probabilities firm up.${majorOnly() ? ' (Major leagues only — change in Settings.)' : ''}</div>`);
-    if (tab === 'eighty') out.push(`<div class="card tiny muted"><b>Analysis only, not a shortlist or betting recommendation.</b> All published modelled markets at an unrounded ≥80% are shown for today's fixtures, including multiple markets per match, unpriced markets, restricted markets and low-data estimates. Card counts are unverified proxies, not SportyBet booking probabilities. No slip selections are offered here. The Major leagues setting still applies. These are pre-match estimates, not live probabilities; prices and data may be stale. Experimental xG and shots adjustments are unvalidated. A high probability is not a guarantee.</div>`);
+    else out.push(`<div class="card empty small">${tab === 'ev' ? `No bet the model supports has positive EV at a Sportybet price of ${f2(HOME_EV_MIN_ODDS)} or more today${mk !== 'any' ? ' in this market' : ''}.` : tab === 'eighty' ? `No market has a published model probability of at least 80% and its own SportyBet price of 1.16 or more today${mk !== 'any' ? ' in this market' : ''}. The thresholds are never lowered to fill this collection.` : tab === 'high' ? `No priced bet reaches ${pct(HOME_HIGH)} today${mk !== 'any' ? ' in this market' : ''} yet.` : `No priced bet clears its model bar today${mk !== 'any' ? ' in this market' : ''} yet.`} The board fills as Sportybet prices and probabilities firm up.${majorOnly() ? ' (Major leagues only — change in Settings.)' : ''}</div>`);
+    if (tab === 'eighty') out.push(`<div class="card tiny muted"><b>Analysis only, not a shortlist or betting recommendation.</b> Today's published modelled markets with an unrounded probability ≥80% and their own SportyBet price of at least 1.16 are shown, including multiple markets per match. Low-data, restricted or disagreeing estimates may appear with warnings. Bookings remain unverified and are not priced as recommendations. No slip selections are offered here. The Major leagues setting still applies. These are pre-match estimates, not live probabilities; prices and data may be stale. Experimental xG and shots adjustments are unvalidated. A high probability is not a guarantee.</div>`);
     if (tab === 'ev') out.push(`<div class="card tiny muted"><b>Positive EV</b> — bets the model supports (same bars: 1X2, BTTS and Over 2.5 ≥55%, corners ≥65%, other markets ≥70%) whose Sportybet price is <b>${f2(HOME_EV_MIN_ODDS)} or more</b> and pays more than the model thinks is fair: <b>EV = model probability × odds − 1 &gt; 0</b>. EV +5% means the model expects 5c back per R1 staked over many such bets — an estimate that is only as good as the model, not a guarantee. Gaps of 15+ points over the price stay quarantined as data faults.</div>`);
     if (tab !== 'eighty') out.push(`<div class="card tiny muted"><b>How this board is built</b> — <b>one bet per match</b>: the model names each match's strongest market and lists only that one (the match page still shows every market). Today's matches, all markets. A bet appears when the model clears its bar (<b>1X2, BTTS and Over 2.5 from 55%</b>, <b>corners 65%</b>, <b>other markets 70%</b>) <b>and</b> Sportybet prices it at <b>1.16 or more</b>. <b>High probability</b> = model ≥70% on any market. The model probability is independent of the price; large model–market disagreements are excluded. ${d.meta && d.meta.model_signals && d.meta.model_signals.status === "disabled" ? "Experimental xG and shots adjustments are disabled." : "Experimental xG and shots adjustments are enabled where data permits, but have not been backtested."} A high probability is not a certainty.</div>`);
     if (!PR._homeRefreshed && (d.fixtures || []).length && !(d.fixtures || []).some((f) => (f.sels || []).length)) { PR._homeRefreshed = true; setTimeout(() => PR.loadData(false), 250); }
@@ -593,10 +593,14 @@
   function groupsCards(parts, exclude) {
     const excl = exclude || new Set();
     const g = (state.data.groups) || {};
-    const notUnder = (x) => x.f && !excl.has(x.f.id) && !PR.isDropped(x.p.sel);
-    const strong = bestPerMatch((g.strong || []).map((p) => ({ p, f: fx(p.id) })).filter(notUnder), (x) => x.f.id, (x) => x.p.p);
+    const current = (p) => {
+      const f = fx(p.id); const s = f && (f.sels || []).find((x) => x.sel === p.sel);
+      return { f, p: s ? { ...p, odds: s.odds } : p, eligible: !!s && PR.offeredPrice(s.odds) };
+    };
+    const notUnder = (x) => x.f && x.eligible && !excl.has(x.f.id) && !PR.isDropped(x.p.sel);
+    const strong = bestPerMatch((g.strong || []).map(current).filter(notUnder), (x) => x.f.id, (x) => x.p.p);
     const sIds = new Set(strong.map((x) => x.f.id));
-    const value = bestPerMatch((g.value || []).map((p) => ({ p, f: fx(p.id) })).filter((x) => notUnder(x) && !sIds.has(x.f.id)), (x) => x.f.id, (x) => (x.p.ev || 0) * 100 + x.p.p);
+    const value = bestPerMatch((g.value || []).map(current).filter((x) => notUnder(x) && !sIds.has(x.f.id)), (x) => x.f.id, (x) => (x.p.ev || 0) * 100 + x.p.p);
     parts.push(`<div class="section-head">${sh('shield', 'Today’s strong markets', 'green')}<span class="tiny muted">${strong.length}</span></div>`);
     if (!strong.length) parts.push(`<div class="card empty small">No strong market in this window yet — the list fills in as the probabilities firm up.</div>`);
     else {

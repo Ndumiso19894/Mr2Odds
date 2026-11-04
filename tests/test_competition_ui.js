@@ -13,7 +13,7 @@ const PR = ctx.window.PR;
 for (const c of JSON.parse(fs.readFileSync('tests/competition_cases.json'))) {
   assert.equal(PR.competitionAllowed(c.record), c.allowed, JSON.stringify(c.record));
 }
-const f = (id, league) => ({id, country:'England', league, home:'A', away:'B', sels:[], kickoff:'2026-11-04 12:00'});
+const f = (id, league) => ({id, country:'England', league, home:'A', away:'B', sels:[], odds:1.3, kickoff:'2026-11-04 12:00'});
 const d = PR.indexData({ fixtures:[f('league','Premier League'), f('cup','FA Cup')],
   safe:{bets:[f('l','Premier League'), f('c','FA Cup')], today:{bets:[f('l','Premier League'), f('c','FA Cup')], groups:[{bets:[f('c','FA Cup')]}]}},
   shortlist:{primary:[f('l','Premier League'), f('c','FA Cup')], x12:[f('c','FA Cup')]},

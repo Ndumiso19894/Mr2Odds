@@ -350,22 +350,58 @@ window.PR = (function () {
     return !paused.test(meta) && ![f.home, f.away].some((v) => teamPaused.test(String(v || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase()));
   }
   // ------------------------------------------------------------------ data
+  // A real decimal price, without rounding up. Null means unpriced, not a zero or a qualifying price.
+  const MIN_MARKET_ODDS = 1.16;
+  const offeredPrice = (v) => (typeof v === 'number' || (typeof v === 'string' && /^\d+(?:\.\d+)?$/.test(v.trim()))) && Number.isFinite(Number(v)) && Number(v) >= MIN_MARKET_ODDS;
+  const marketVisible = (v) => v == null || v === '' || offeredPrice(v);
+  const visiblePrice = (v) => offeredPrice(v) ? v : null;
+  // Keep each side separately: a low price on one side must not hide an eligible opposite side.
+  function visibleSportyPrices(sb) {
+    if (!sb) return sb;
+    const out = {};
+    for (const [key, val] of Object.entries(sb)) {
+      if (Array.isArray(val)) {
+        const prices = val.map(visiblePrice);
+        if (prices.some((p) => p != null)) out[key] = prices;
+      } else if (val && typeof val === 'object') {
+        const items = {};
+        for (const [line, prices] of Object.entries(val)) {
+          if (Array.isArray(prices)) {
+            const filtered = prices.map(visiblePrice);
+            if (filtered.some((p) => p != null)) items[line] = filtered;
+          } else if (offeredPrice(prices)) items[line] = prices;
+        }
+        if (Object.keys(items).length) out[key] = items;
+      }
+    }
+    return out;
+  }
   /** sels rows: [sel, p (model), p_model, p_market (implied, comparison only), odds, disagreement flag, diff pp, EV] */
   const selObj = (x) => Array.isArray(x) ? { sel: x[0], p: x[1], p_model: x[2], p_sb: x[3], odds: x[4], diff: !!x[5], diff_pp: x.length > 6 ? x[6] : (x[2] != null && x[3] != null ? Math.round(1000 * (x[2] - x[3])) / 10 : null), ev: x.length > 7 ? x[7] : (x[2] != null && x[4] ? Math.round(1000 * (x[2] * x[4] - 1)) / 1000 : null) } : x;
   function indexData(d) {
     d.fixtures = (d.fixtures || []).filter(competitionAllowed);
     if (d.safe) {
-      d.safe.bets = (d.safe.bets || []).filter(competitionAllowed);
+      d.safe.bets = (d.safe.bets || []).filter((b) => competitionAllowed(b) && offeredPrice(b.odds));
       if (d.safe.today) {
-        d.safe.today.bets = (d.safe.today.bets || []).filter(competitionAllowed);
-        (d.safe.today.groups || []).forEach((g) => { g.bets = (g.bets || []).filter(competitionAllowed); });
+        d.safe.today.bets = (d.safe.today.bets || []).filter((b) => competitionAllowed(b) && offeredPrice(b.odds));
+        (d.safe.today.groups || []).forEach((g) => { g.bets = (g.bets || []).filter((b) => competitionAllowed(b) && offeredPrice(b.odds)); });
       }
     }
     if (d.shortlist) {
-      ['primary', 'x12', 'watchlist'].forEach((k) => { if (Array.isArray(d.shortlist[k])) d.shortlist[k] = d.shortlist[k].filter(competitionAllowed); });
+      ['primary', 'x12', 'watchlist'].forEach((k) => { if (Array.isArray(d.shortlist[k])) d.shortlist[k] = d.shortlist[k].filter((x) => competitionAllowed(x) && offeredPrice(x.odds)); });
     }
-    if (d.strong_markets && Array.isArray(d.strong_markets.bets)) d.strong_markets.bets = d.strong_markets.bets.filter(competitionAllowed);
-    d._byId = {}; (d.fixtures || []).forEach((f) => { d._byId[f.id] = f; f.sels = (f.sels || []).map(selObj); f.p = f.p || {}; f.xg = f.xg || [null, null]; f.x12 = f.x12 || [null, null, null]; f.major = f.tier !== 'world'; });
+    if (d.picks) Object.keys(d.picks).forEach((k) => { if (Array.isArray(d.picks[k])) d.picks[k] = d.picks[k].filter((x) => x && marketVisible(x.sportybet)); });
+    if (d.strong_markets && Array.isArray(d.strong_markets.bets)) d.strong_markets.bets = d.strong_markets.bets.filter((x) => competitionAllowed(x) && offeredPrice(x.odds));
+    d._byId = {}; (d.fixtures || []).forEach((f) => {
+      d._byId[f.id] = f;
+      f.sels = (f.sels || []).map(selObj).filter((s) => s && marketVisible(s.odds));
+      if (Array.isArray(f.hi)) f.hi = f.hi.filter((s) => s && offeredPrice(s[2]));
+      if (f.bo) f.bo = Object.fromEntries(Object.entries(f.bo).filter(([, v]) => v && marketVisible(v[1])));
+      if (f.top && !offeredPrice(f.top[2])) f.top = null;
+      if (f.safe && !offeredPrice(f.safe[2])) f.safe = null;
+      f.p = f.p || {}; f.xg = f.xg || [null, null]; f.x12 = f.x12 || [null, null, null]; f.major = f.tier !== 'world';
+    });
+    if (d.groups && Array.isArray(d.groups.value)) d.groups.value = d.groups.value.filter((x) => offeredPrice(x.odds));
     if (d.safe && d.safe.bets) d.safe.bets.forEach((b) => { const f = d._byId[b.fixture]; b.major = f ? f.major : true; });
     return d;
   }
@@ -462,7 +498,13 @@ window.PR = (function () {
     if (k && resources && state.details[k] && !state.details[k].error) loadDetail(id, d).catch(() => {});
     return k ? state.details[k] || null : null;
   }
-  function prepDetail(j) { j.sels = (j.sels || []).map(selObj); j.trends = j.trends || {}; j.teams = j.teams || { home: {}, away: {} }; j.h2h = j.h2h || []; return j; }
+  function prepDetail(j) {
+    j.sels = (j.sels || []).map(selObj).filter((s) => s && marketVisible(s.odds));
+    j.sportybet = visibleSportyPrices(j.sportybet);
+    if (j.odds) j.odds = Object.fromEntries(Object.entries(j.odds).map(([k, v]) => [k, visiblePrice(v)]));
+    j.trends = j.trends || {}; j.teams = j.teams || { home: {}, away: {} }; j.h2h = j.h2h || [];
+    return j;
+  }
   async function fetchDetail(k, stamp) {
     const j = prepDetail(await getJson(rawUrl(`data/app/fx/${k}.json`) + '?t=' + (stamp || Math.floor(Date.now() / 900000))));
     state.details[k] = j; cache.put('fx/' + k, j, stamp); return j;
@@ -757,6 +799,7 @@ window.PR = (function () {
     if (top) PR.pages[top.type](top); else PR.views[state.tab]();
     injectSearch();
     statusLine();
+    if (PR.slipBar) PR.slipBar(); // refresh eligibility when a newer snapshot arrives
     persistNav();
     if (resources) setTimeout(refreshVisible, 0);
   }
@@ -1094,7 +1137,7 @@ window.PR = (function () {
 
   return { native, settings, state, $, $$, saveSettings, nfetch, getJson, resources, migrateResource, validResource, refreshVisible, connectionChanged, clearDataCache, rawUrl, esc, pct, f1, f2, signed, DAYS, MONTHS, parseLocal, tzNow, ymd, stored, persist, cache, prefetchDetails, pubStamp,
     dayName, niceDate, koTime, koShort, toast, pill, competitionAllowed, bar, wdl, formBadges, md, GROUPS, GROUP_ICON, selGroup, isUnder, isDropped, SEL_FLOOR, selLabel, selShort, settleSel,
-    liveVerdict, isLive, isFT, indexData, fx, loadDetail, detailCached, detailKey, loadData, saveLatest, saveAux, statusLine, isOutlier, strictShortlist, loadDay, dayRecord, finalFor, storedIncidents, loadTeams, teamsCached, loadTeamIndex, realTable, slug, TABS, render, setTab, push, replace,
+    liveVerdict, isLive, isFT, indexData, fx, loadDetail, detailCached, detailKey, loadData, saveLatest, saveAux, statusLine, isOutlier, strictShortlist, MIN_MARKET_ODDS, offeredPrice, marketVisible, visiblePrice, visibleSportyPrices, loadDay, dayRecord, finalFor, storedIncidents, loadTeams, teamsCached, loadTeamIndex, realTable, slug, TABS, render, setTab, push, replace,
     sbEventUrl, sbShareUrl, openSportybet, openBookingCode, openExternal, copyText, namesAgree, displayName, fittedSbEvent,
     back, openMatch, openTeam, toggleMenu, closeMenu, contactCard, editorCard, teamLink, teamSpan, matchLine, matchRow, segmented, select, scoreBox, statusIcon, CONTACT, APP_VERSION,
     confirmBox, isFav, toggleFav, favList: () => favs, saveFavs,

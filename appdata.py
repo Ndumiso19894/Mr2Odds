@@ -41,6 +41,15 @@ def _f(x, nd=3):
         return None
 
 
+def _price(x):
+    """Exact quoted decimal price or None; never round up into the eligibility band."""
+    try:
+        v = float(x)
+        return v if math.isfinite(v) else None
+    except (TypeError, ValueError):
+        return None
+
+
 def fixture_id(date: str, country: str, home: str, away: str) -> str:
     return f"{date}|{country}|{home}|{away}"
 
@@ -52,7 +61,7 @@ def detail_key(fid: str) -> str:
 def _lines(d: dict | None) -> dict | None:
     if not d:
         return None
-    return {str(k): [_f(v[0], 2), _f(v[1], 2)] if isinstance(v, (tuple, list)) else _f(v, 3) for k, v in d.items()}
+    return {str(k): [_price(v[0]), _price(v[1])] if isinstance(v, (tuple, list)) else _price(v) for k, v in d.items()}
 
 
 def _sb(sb: dict | None) -> dict | None:
@@ -60,11 +69,11 @@ def _sb(sb: dict | None) -> dict | None:
         return None
     out = {}
     if sb.get("1X2"):
-        out["1X2"] = [_f(x, 2) for x in sb["1X2"]]
+        out["1X2"] = [_price(x) for x in sb["1X2"]]
     if sb.get("DC"):
-        out["DC"] = {k: _f(v, 2) for k, v in sb["DC"].items()}
+        out["DC"] = {k: _price(v) for k, v in sb["DC"].items()}
     if sb.get("BTTS"):
-        out["BTTS"] = [_f(x, 2) for x in sb["BTTS"]]
+        out["BTTS"] = [_price(x) for x in sb["BTTS"]]
     for k in ("OU", "TGH", "TGA", "CORN", "CORNH", "CORNA", "CORN1H", "CARDS", "CARDSH", "CARDSA"):
         if sb.get(k):
             out[k] = _lines(sb[k])
@@ -160,7 +169,7 @@ def _board(sels: list[dict]) -> dict:
     out = {}
     for d in sels:
         if d["sel"] in BOARD_SELS and d.get("p") is not None:
-            out[d["sel"]] = [round(d["p"], 3), round(d["odds"], 2) if d.get("odds") else None]
+            out[d["sel"]] = [round(d["p"], 3), _price(d.get("odds"))]
     return out
 
 
@@ -381,9 +390,9 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
             "team_goals": {k: _f(v) for k, v in (r.extra.tg or {}).items()},
             "corners": _count(r.extra.corners, r.extra.corner_p),
             "cards": _count(r.extra.cards, r.extra.card_p),
-            "odds": {"home": _f(fx.get("odds_h"), 2), "draw": _f(fx.get("odds_d"), 2), "away": _f(fx.get("odds_a"), 2),
-                     "over25": _f(fx.get("odds_over"), 2), "under25": _f(fx.get("odds_under"), 2),
-                     "bfe_over25": _f(fx.get("bfe_over"), 2), "bfe_under25": _f(fx.get("bfe_under"), 2)},
+            "odds": {"home": _price(fx.get("odds_h")), "draw": _price(fx.get("odds_d")), "away": _price(fx.get("odds_a")),
+                     "over25": _price(fx.get("odds_over")), "under25": _price(fx.get("odds_under")),
+                     "bfe_over25": _price(fx.get("bfe_over")), "bfe_under25": _price(fx.get("bfe_under"))},
             "sportybet": _sb(r.sb_full or r.sb),
             "teams": {"home": _profile(r.home), "away": _profile(r.away)},
             "sheet_model": sheet_model.for_match(r, comp(r)),
@@ -422,7 +431,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
             fid = ids_by_key.get(_key) or fixture_id(*_key)   # fall back to the deterministic id if the map missed it
             tracked.add(fid)
             picks_out[mkt].append({"fixture": fid, "p": _f(r.p_final[mkt]), "stars": stars(r.p_final[mkt], mkt),
-                                   "sportybet": _f(helpers["sb_price"](r, mkt), 2)})
+                                   "sportybet": _price(helpers["sb_price"](r, mkt))})
     # safest bets of this run + bets of the day
     safe_out = {"min_odds": sf.get("min_odds"), "min_p": sf.get("min_p"), "groups": list(safe_groups),
                 "bets": [], "today": {"date": now.strftime("%Y-%m-%d"), "bets": []}, "summary": safe_summary or {}}
@@ -432,7 +441,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
         safe_out["bets"].append({"id": f"{b.key[0]}|{b.home}|{b.away}|{b.sel}", "fixture": fid, "home": b.home, "away": b.away,
                                  "kickoff": b.kickoff, "league": b.league, "country": b.key[1],
                                  "sel": b.sel, "group": b.group, "label": b.label, "p": _f(b.p), "p_model": _f(b.p_model),
-                                 "p_sb": _f(b.p_sb), "odds": _f(b.odds, 2), "fair": _f(1 / b.p, 2) if b.p else None,
+                                 "p_sb": _f(b.p_sb), "odds": _price(b.odds), "fair": _f(1 / b.p, 2) if b.p else None,
                                  "q": quality_by_key.get(b.key), "conf": conf_by_key.get(b.key),
                                  "badges": {"home": badges.get(b.home), "away": badges.get(b.away)}})
     for b in botd or []:

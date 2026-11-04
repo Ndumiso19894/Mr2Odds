@@ -291,13 +291,13 @@
     const evs = eventsCard(f, fin0); if (evs) parts.push(evs);
     const bets = betsOn(f.id);
     if (bets.length) parts.push(`<div class="card compact"><div class="b">Bets on this match</div><div class="chips" style="margin-top:6px">${bets.map((b) => { const vd = liveVerdict(b.sel, s); return `<span class="chip ${vd.cls}">${esc(b.kind)}: ${esc(b.label)}${b.odds ? ' @ ' + f2(b.odds) : ''} · ${esc(vd.text)}</span>`; }).join('')}</div></div>`);
-    const best = f.sels.filter((x) => x.odds).slice(0, 5);
+    const best = f.sels.filter((x) => PR.offeredPrice(x.odds)).slice(0, 5);
     if (best.length) parts.push(`<div class="card compact"><div class="row"><div class="grow b">${icon('target', 'sm')} Highest model probabilities (priced)</div><span class="tiny muted">+ adds to your slip</span></div><table class="tbl">${best.map((x) => `<tr><td><div class="b">${esc(selLabel(x.sel, f.home, f.away))}</div><div class="tiny muted">${esc(GROUPS[selGroup(x.sel)])} · market implied ${pct(x.p_sb)}${x.diff_pp != null ? ` · ${x.diff_pp >= 0 ? '+' : ''}${f1(x.diff_pp)} pp` : ''}</div></td><td class="right"><b>${f2(x.odds)}</b></td><td class="right"><div class="row" style="gap:0;justify-content:flex-end">${pill(x.p, 0.8, 0.7)}${PR.addBtn ? PR.addBtn(f.id, x.sel, x.odds) : ''}</div></td></tr>`).join('')}</table></div>`);
     // non-Trends surfaces show only the 3 strongest trends (user rule 2026-10-13) — the Trends tab keeps everything
     const tr = f.trends || {}; const topTrends = [].concat((tr.match || []).filter((t) => t.kind !== 'info'), (tr.home && tr.home.all) || [], (tr.away && tr.away.all) || [], tr.h2h || [])
       .sort((a, b) => (b.s || 0) - (a.s || 0)).slice(0, 3);
     if (topTrends.length) parts.push(`<div class="card compact tap" id="go-trends"><div class="row"><div class="grow b">${icon('trend', 'sm')} Trends</div><span class="tiny muted">all ${icon('next', 'sm')}</span></div><div class="trends">${topTrends.map(trendLine).join('')}</div></div>`);
-    const sb = f.sportybet || {};
+    const sb = PR.visibleSportyPrices(f.sportybet) || {};
     if (Object.keys(sb).length) {
       const ou = sb.OU || {};
       parts.push(`<div class="card compact"><div class="b">Sportybet prices</div><table class="tbl head" style="margin-top:6px"><tr><th>Market</th><th class="right">1 / Over / Yes</th><th class="right">X</th><th class="right">2 / Under / No</th></tr>
@@ -306,7 +306,7 @@
         ${['0.5', '1.5', '2.5', '3.5', '4.5'].filter((l) => ou[l]).map((l) => `<tr><td>Goals ${l}</td><td class="right">${f2(ou[l][0])}</td><td></td><td class="right">${f2(ou[l][1])}</td></tr>`).join('')}
         ${sb.BTTS ? `<tr><td>Both teams to score</td><td class="right">${f2(sb.BTTS[0])}</td><td></td><td class="right">${f2(sb.BTTS[1])}</td></tr>` : ''}</table>
         <div class="tiny muted" style="margin-top:4px">Prices are payout information and a comparison layer — they never change the model probability. All lines under Markets.</div></div>`);
-    } else parts.push(`<div class="card tiny muted">No Sportybet price for this match — no market comparison available.</div>`);
+    } else parts.push(`<div class="card tiny muted">No SportyBet price of 1.16 or more is available for this match in the latest analysis.</div>`);
     setTimeout(() => { const g = $('#go-trends'); if (g) g.onclick = () => { state.matchView = 'trends'; PR.render(); }; }, 0);
   }
   const TICON = { goals: '⚽', ht: '⏱️', corners: '🚩', cards: '🟨', form: '📈', info: 'ℹ️' };
@@ -337,8 +337,8 @@
   }
   function matchMarkets(parts, f) {
     const groups = {};
-    f.sels.forEach((s) => { (groups[selGroup(s.sel)] = groups[selGroup(s.sel)] || []).push(s); });
-    parts.push(`<div class="card tiny muted">Every modelled market is shown here for comparison, including markets not offered on recommendation boards. <b>Model</b> = football-data model probability (used for ranking). <b>Market</b> = Sportybet price with the margin removed — a comparison, never an input. <b>Diff</b> = model − market in points; <b>EV</b> = model % × price − 1. Rows at ≥ 70% model probability are highlighted; ⚠ = model / market disagreement of more than 12 points. The 80% board shows all modelled markets as analysis only, not recommendations; the Shortlist and Advisor apply strict market, data, price and disagreement checks and show one selection per match. Tap <b>+</b> where available to put an offered, priced selection on your bet slip.</div>`);
+    f.sels.filter((s) => s && PR.marketVisible(s.odds)).forEach((s) => { (groups[selGroup(s.sel)] = groups[selGroup(s.sel)] || []).push(s); });
+    parts.push(`<div class="card tiny muted">Every modelled market is shown here for comparison, including markets not offered on recommendation boards. <b>Model</b> = football-data model probability (used for ranking). <b>Market</b> = Sportybet price with the margin removed — a comparison, never an input. <b>Diff</b> = model − market in points; <b>EV</b> = model % × price − 1. Rows at ≥ 70% model probability are highlighted; ⚠ = model / market disagreement of more than 12 points. The 80% board shows markets priced by SportyBet at 1.16 or more as analysis only, not recommendations; the Shortlist and Advisor apply strict market, data, price and disagreement checks and show one selection per match. Markets priced below 1.16 are hidden; missing prices remain unpriced. Tap <b>+</b> where available to put an offered, priced selection on your bet slip.</div>`);
     Object.keys(GROUPS).forEach((g) => {
       const items = groups[g]; if (!items) return;
       const order = { result: ['H', 'D', 'A'], dc: ['1X', '12', 'X2'], btts: ['BTTS', 'NBTTS'] }[g];
@@ -346,10 +346,10 @@
       parts.push(`<div class="card compact"><div class="row" style="margin:4px 0 2px"><span class="ico">${icon(GICON[g] || 'ball')}</span><b>${GROUPS[g]}</b>${(g === 'corners' || g === 'cards') && lowCount(f, g) ? '<span class="chip warn" style="margin-left:6px">LOW DATA CONFIDENCE</span>' : ''}</div><table class="tbl head" style="margin-top:4px"><tr><th>Selection</th><th class="right">Market</th><th class="right">Diff</th><th class="right">Price · EV</th><th class="right">Model</th></tr>
         ${sorted.map((s) => `<tr class="${s.p >= 0.7 ? 'hl' : ''}"><td>${esc(selLabel(s.sel, f.home, f.away))}${s.diff ? ' <span class="warn">⚠</span>' : ''}</td><td class="right muted">${pct(s.p_sb)}</td><td class="right muted">${s.diff_pp == null ? '–' : `${s.diff_pp >= 0 ? '+' : ''}${Math.round(s.diff_pp)}`}</td><td class="right">${s.odds ? `<b>${f2(s.odds)}</b><div class="tiny ${s.ev > 0.02 ? 'pos' : 'muted'}">${s.ev == null ? '' : (s.ev >= 0 ? '+' : '') + Math.round(100 * s.ev) + '%'}</div>` : '<span class="muted">–</span>'}</td><td class="right"><div class="row" style="gap:0;justify-content:flex-end">${pill(s.p_model, 0.8, 0.7)}${PR.addBtn ? PR.addBtn(f.id, s.sel, s.odds) : ''}</div></td></tr>`).join('')}</table></div>`);
     });
-    const sb = f.sportybet || {};
+    const sb = PR.visibleSportyPrices(f.sportybet) || {};
     const lines = (obj, label) => obj ? `<tr><td>${label}</td><td colspan="4" class="tiny">${Object.entries(obj).sort((a, b) => +a[0] - +b[0]).map(([k, v]) => `<span class="chip">${k}: ${f2(v[0])} / ${f2(v[1])}</span>`).join(' ')}</td></tr>` : '';
-    if (sb.CORN || sb.CARDS || sb.CORNH || sb.CORN1H) parts.push(`<div class="card compact"><div class="b">More Sportybet lines (over / under)</div><table class="tbl" style="margin-top:4px">${lines(sb.CORN, 'Corners')}${lines(sb.CORN1H, '1st-half corners')}${lines(sb.CORNH, 'Home corners')}${lines(sb.CORNA, 'Away corners')}${lines(sb.CARDS, 'Cards')}${lines(sb.CARDSH, 'Home cards')}${lines(sb.CARDSA, 'Away cards')}</table></div>`);
-    if (f.cards) parts.push(`<div class="card tiny warn">Card-count estimates are not verified SportyBet booking probabilities. Booking prices and automatic settlement are disabled until the rules and source data match.</div>`);
+    if (sb.CORN || sb.CARDS || sb.CORNH || sb.CORNA || sb.CORN1H || sb.CARDSH || sb.CARDSA) parts.push(`<div class="card compact"><div class="b">More Sportybet lines (over / under)</div><table class="tbl" style="margin-top:4px">${lines(sb.CORN, 'Corners')}${lines(sb.CORN1H, '1st-half corners')}${lines(sb.CORNH, 'Home corners')}${lines(sb.CORNA, 'Away corners')}${lines(sb.CARDS, 'Cards')}${lines(sb.CARDSH, 'Home cards')}${lines(sb.CARDSA, 'Away cards')}</table></div>`);
+    if (f.cards) parts.push(`<div class="card tiny warn">Card-count estimates are not verified SportyBet booking probabilities. Raw bookmaker quotes are for reference only; booking recommendations and automatic settlement are disabled until the rules and source data match.</div>`);
     if (f.corners || f.cards) parts.push(`<div class="card compact"><div class="b">Expected counts (own corner / card models)</div><div class="grid4" style="margin-top:6px">${f.corners ? `<div class="cell"><div class="k">Corners</div><div class="v">${f1(f.corners.total)}</div><div class="tiny muted">${f1(f.corners.home)} – ${f1(f.corners.away)}${countN(f.corners)}</div></div>` : ''}${f.cards ? `<div class="cell"><div class="k">Cards</div><div class="v">${f1(f.cards.total)}</div><div class="tiny muted">${f1(f.cards.home)} – ${f1(f.cards.away)}${countN(f.cards)}</div></div>` : ''}</div></div>`);
     else parts.push(`<div class="card tiny muted">Corners and cards are modelled for the 22 main European leagues, where match statistics are published.</div>`);
   }
@@ -408,7 +408,7 @@
         <div class="tiny warn">Experimental and not calibrated. Uses available current-season sample statistics and an inferred season, not necessarily the full season; at least three matches with each statistic and six recent results are required. These values never change recommendations.</div>
         <div class="tiny muted">Current-competition sample: home ${inp.home_current_n || 0}, away ${inp.away_current_n || 0}; xG observations home ${inp.home_xg_n || 0}/${inp.home_xga_n || 0}, away ${inp.away_xg_n || 0}/${inp.away_xga_n || 0}; shots-on-target observations home ${inp.home_sot_n || 0}, away ${inp.away_sot_n || 0}.</div>
         ${v4.ok ? `<div class="small" style="margin-top:6px">Expected goals: home <b>${f2(v4.model.lambda_h)}</b> · away <b>${f2(v4.model.lambda_a)}</b> · total <b>${f2(v4.model.lambda_total)}</b></div>
-        <table class="tbl head" style="margin-top:6px"><tr><th>Market</th><th class="right">V4 · fair</th><th class="right">Price · EV</th><th class="right">Mr 2 Odds</th></tr>${(v4.markets || []).map(m => `<tr><td>${esc(m.name)}<div class="tiny muted">${esc(m.safety || '')} · ${esc(m.value_signal || '')}</div></td><td class="right">${pct(m.p)}<div class="tiny muted">${m.fair != null ? f2(m.fair) : ''}</div></td><td class="right">${m.odds != null ? f2(m.odds) : '—'}<div class="tiny muted">${m.ev != null ? pct(m.ev) : ''}</div></td><td class="right">${m.playreport == null ? '—' : pct(m.playreport)}</td></tr>`).join('')}</table>
+        <table class="tbl head" style="margin-top:6px"><tr><th>Market</th><th class="right">V4 · fair</th><th class="right">Price · EV</th><th class="right">Mr 2 Odds</th></tr>${(v4.markets || []).filter((m) => PR.marketVisible(m.odds)).map(m => `<tr><td>${esc(m.name)}<div class="tiny muted">${esc(m.safety || '')} · ${esc(m.value_signal || '')}</div></td><td class="right">${pct(m.p)}<div class="tiny muted">${m.fair != null ? f2(m.fair) : ''}</div></td><td class="right">${m.odds != null ? f2(m.odds) : '—'}<div class="tiny muted">${m.ev != null ? pct(m.ev) : ''}</div></td><td class="right">${m.playreport == null ? '—' : pct(m.playreport)}</td></tr>`).join('')}</table>
         <div class="tiny muted">Price and EV use raw Sportybet odds when available. Workbook labels are comparisons, not app recommendations; disabled markets remain paused.</div>` : `<div class="small" style="margin-top:6px">V4 unavailable: ${esc((v4.missing || []).join(', ') || 'V1 inputs missing')}. Missing data is not invented.</div>`}</div>`);
     }
     parts.push(`<div class="card compact"><div class="small muted">Download comparison values as a CSV for Google Sheets or Excel. The CSV contains values, not a live copy of the workbook or its formulas.</div><button class="btn" id="dl-sheet" style="margin-top:8px;width:100%">${icon('download', 'sm')} Download sheet model (CSV)</button></div>`);
@@ -877,6 +877,28 @@
     $$('[data-dv]').forEach((b) => { b.onclick = () => { state.dayView = b.dataset.dv; PR.render(); }; });
   };
 
+  // Current reports can be older than this app version. Mask quoted bookmaker prices in
+  // report price columns and inline SportyBet / market-average lines without changing archives
+  // or treating model fair odds and expected-goal figures as actual prices.
+  PR.filterCurrentMarketReport = function (text) {
+    const mask = (s) => s.replace(/(^|[^\w.])(1\.\d+)(?![\w.%])/g, (all, prefix, num) => Number(num) < PR.MIN_MARKET_ODDS ? prefix + '–' : all);
+    let columns = [];
+    return String(text).split('\n').map((line) => {
+      if (/^\s*\|/.test(line)) {
+        const cells = line.split('|');
+        const priceColumn = (c) => /(?:sportybet|bookmaker|\bprice\b|market.*\bodds\b)/i.test(c) && !/fair/i.test(c);
+        if (cells.some(priceColumn) && !/^\s*\|\s*[-:]+/.test(line)) {
+          columns = cells.map((c, i) => priceColumn(c) ? i : -1).filter((i) => i >= 0);
+        } else if (!/^\s*\|\s*[-:]+/.test(line)) columns.forEach((i) => { if (i < cells.length) cells[i] = mask(cells[i]); });
+        return cells.join('|');
+      }
+      columns = [];
+      const marker = line.search(/(?:sportybet(?: corners \/ cards)?\s*[:*]|sportybet\s+O2\.5|market average 1X2|market:\s*over|market 1X2:)/i);
+      const filtered = marker < 0 ? line : line.slice(0, marker) + mask(line.slice(marker));
+      return filtered.replace(/(@\s*(?:\*\*)?)(1\.\d+)(?![\w.%])/g, (all, prefix, num) => Number(num) < PR.MIN_MARKET_ODDS ? prefix + '–' : all);
+    }).join('\n');
+  };
+
   // ------------------------------------------------------------------ ANALYSIS (full report)
   PR.pages.analysis = function (page) {
     const d = state.data; const dates = d.history.reports || []; const date = page.date || dates[0] || (d.meta.generated || '').slice(0, 10);
@@ -888,7 +910,7 @@
     const rep = state.reports[key];
     const parts = [head('Full analysis', esc(niceDate(date)))];
     if (dates.length > 1) parts.push(`<div class="card compact"><div class="row"><div class="grow tiny muted">Archive</div>${select('an-date', dates.map((r) => [r, r]), date)}</div></div>`);
-    parts.push(`<div class="card md">${rep.md ? md(rep.md) : '<div class="empty">Loading analysis…</div>'}</div>`);
+    parts.push(`<div class="card md">${rep.md ? md(date >= ymd(tzNow()) ? PR.filterCurrentMarketReport(rep.md) : rep.md) : '<div class="empty">Loading analysis…</div>'}</div>`);
     view().innerHTML = parts.join('');
     wireBack();
     const sel = $('#an-date'); if (sel) sel.onchange = (e) => PR.replace({ type: 'analysis', date: e.target.value });

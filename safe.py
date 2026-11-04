@@ -277,7 +277,7 @@ def sel_dict(s: Sel, home: str, away: str) -> dict:
     diff_pp = model − market in percentage points; ev = model probability × price − 1."""
     return {"sel": s.sel, "group": s.group, "label": label(s.sel, home, away), "p": s.p,
             "p_model": s.p_model, "p_sb": s.p_sb if s.p_sb is not None else None,
-            "odds": round(s.odds, 2) if s.odds else None, "fair": round(1 / s.p, 2) if s.p > 0 else None,
+            "odds": s.odds if s.odds is not None else None, "fair": round(1 / s.p, 2) if s.p > 0 else None,
             "diff": s.diff, "diff_pp": None if s.diff_pp is None else round(s.diff_pp, 1),
             "ev": None if s.ev is None else round(s.ev, 3)}
 

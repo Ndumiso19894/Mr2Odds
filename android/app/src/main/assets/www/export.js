@@ -71,7 +71,7 @@
     L.push(row([`${x.home} to score`, pc(tg.H_o05)])); L.push(row([`${x.home} 2+ goals`, pc(tg.H_o15)])); L.push(row([`${x.away} to score`, pc(tg.A_o05)])); L.push(row([`${x.away} 2+ goals`, pc(tg.A_o15)]));
     L.push('');
     L.push(row(['Market selection', 'Code', 'Model %', 'Market implied %', 'Difference (pp)', 'Sportybet price', 'Model fair price', 'EV', 'Model vs market']));
-    (x.sels || []).forEach((s) => L.push(row([selLabel(s.sel, x.home, x.away), s.sel, pc(s.p_model), pc(s.p_sb), s.diff_pp != null ? s.diff_pp : '', s.odds, s.p ? Math.round(100 / s.p) / 100 : '', s.ev != null ? Math.round(1000 * s.ev) / 10 + '%' : '', s.diff ? 'disagreement' : 'agree'])));
+    (x.sels || []).filter((s) => s && PR.marketVisible(s.odds)).forEach((s) => L.push(row([selLabel(s.sel, x.home, x.away), s.sel, pc(s.p_model), pc(s.p_sb), s.diff_pp != null ? s.diff_pp : '', s.odds, s.p ? Math.round(100 / s.p) / 100 : '', s.ev != null ? Math.round(1000 * s.ev) / 10 + '%' : '', s.diff ? 'disagreement' : 'agree'])));
     L.push('');
     L.push(...teamBlock(x.home, teams.home || {}, 'Home'));
     L.push('');
@@ -120,7 +120,7 @@
     if (x.sportybet) {
       L.push('');
       L.push(row(['Sportybet prices', 'Selection', 'Price']));
-      const sb = x.sportybet;
+      const sb = PR.visibleSportyPrices(x.sportybet);
       if (sb['1X2']) { L.push(row(['1X2', 'Home', sb['1X2'][0]])); L.push(row(['1X2', 'Draw', sb['1X2'][1]])); L.push(row(['1X2', 'Away', sb['1X2'][2]])); }
       Object.entries(sb.DC || {}).forEach(([k, v]) => L.push(row(['Double chance', k, v])));
       if (sb.BTTS) { L.push(row(['Both teams to score', 'Yes', sb.BTTS[0]])); L.push(row(['Both teams to score', 'No', sb.BTTS[1]])); }
@@ -204,7 +204,7 @@
         L.push(row(['Expected home goals', v4.model.lambda_h]));
         L.push(row(['Expected away goals', v4.model.lambda_a]));
         L.push(row(['Market', 'V4 probability', 'Fair odds', 'Mr 2 Odds (comparison only)', 'Bookmaker odds', 'Implied probability (raw)', 'Edge', 'EV', 'Safety', 'Value signal', 'Decision group']));
-        (v4.markets || []).forEach((m) => L.push(row([m.name, m.p, m.fair, m.playreport, m.odds, m.implied, m.edge, m.ev, m.safety, m.value_signal, m.decision])));
+        (v4.markets || []).filter((m) => PR.marketVisible(m.odds)).forEach((m) => L.push(row([m.name, m.p, m.fair, m.playreport, m.odds, m.implied, m.edge, m.ev, m.safety, m.value_signal, m.decision])));
       } else L.push(row(['Unavailable inputs', (v4.missing || []).join('; ')]));
     }
     L.push(row(['Inputs used', (sm.used || []).join('; ')]));
@@ -218,6 +218,32 @@
     PR.saveTextFile(name, PR.sheetCsv(x), 'text/csv');
   };
 
+  // Mask actual bookmaker-price cells in current daily reports, not model/fair odds or historical reports.
+  // Keep quoted commas, newlines and the rest of the report intact.
+  PR.filterCurrentMarketCsv = function (text) {
+    const records = []; let cells = [], field = '', quoted = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (ch === '"') {
+        field += ch;
+        if (quoted && text[i + 1] === '"') field += text[++i]; else quoted = !quoted;
+      } else if (!quoted && ch === ',') { cells.push(field); field = ''; }
+      else if (!quoted && (ch === '\n' || ch === '\r')) {
+        cells.push(field); field = '';
+        const ending = ch === '\r' && text[i + 1] === '\n' ? ch + text[++i] : ch;
+        records.push({ cells, ending }); cells = [];
+      } else field += ch;
+    }
+    if (field || cells.length) { cells.push(field); records.push({ cells, ending: '' }); }
+    if (!records.length) return text;
+    const value = (v) => String(v || '').replace(/^\ufeff/, '').replace(/^"|"$/g, '').replace(/""/g, '"').trim();
+    const cols = records[0].cells.map((h, i) => /^(?:odds_|sportybet_)/i.test(value(h)) ? i : -1).filter((i) => i >= 0);
+    records.slice(1).forEach((r) => cols.forEach((i) => {
+      if (i < r.cells.length && value(r.cells[i]) && !PR.offeredPrice(value(r.cells[i]))) r.cells[i] = '';
+    }));
+    return records.map((r) => r.cells.join(',') + r.ending).join('');
+  };
+
   /** the day's analysis table published with every report (reports/<date>.csv) */
   PR.downloadDayCsv = async function (date) {
     const d = date || (state.data && state.data.meta ? state.data.meta.generated.slice(0, 10) : ymd(tzNow()));
@@ -226,7 +252,7 @@
       const r = await PR.nfetch(PR.rawUrl(`reports/${d}.csv`) + '?t=' + Math.floor(Date.now() / 300000));
       if (r.code !== 200) throw new Error(`HTTP ${r.code}`);
       const text = r.body.charCodeAt(0) === 0xfeff ? r.body : BOM + r.body;
-      PR.saveTextFile(`Mr 2 Odds_${d}_analysis.csv`, text, 'text/csv');
+      PR.saveTextFile(`Mr 2 Odds_${d}_analysis.csv`, d >= ymd(tzNow()) ? PR.filterCurrentMarketCsv(text) : text, 'text/csv');
     } catch (e) {
       toast(`Today's data file is not available yet (${e.message})`);
     }
