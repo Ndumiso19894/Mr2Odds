@@ -1,3 +1,6 @@
+## Spreadsheet comparison
+- Compare the supplied workbook's V1 and experimental V4/V5 dashboard with Mr 2 Odds for each match when inputs are available. No recommendation model or spreadsheet file is changed.
+
 ## Recommendation and ticket reliability
 - The scanner's current recommendation families and minimum price now match the app. Earlier records are retained.
 - Background ticket notifications wait for a definitive outcome and use the same football selection codes as the app; existing tennis tickets can check results without resuming tennis scans.

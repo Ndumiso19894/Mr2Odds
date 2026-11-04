@@ -78,3 +78,7 @@ in Telegram. Configure the existing repository Actions secrets `TELEGRAM_BOT_TOK
 fails, the GitHub release is still available and the Telegram job fails visibly. After correcting the problem,
 use **Re-run failed jobs** on the build workflow to retry delivery without rebuilding or republishing the release.
 Telegram's hosted Bot API has a 50 MB document limit.
+
+### Workbook comparison
+
+The match Sheet tab reproduces the supplied workbook's V1 formulas as a separate comparison. Venue rates use the scanner's unweighted team samples (overall sample when the venue split is empty); scanner league baselines are time-weighted and shrunk and may fall back to global data. The V4/V5 comparison uses the workbook's default V3/V4 weights and dashboard rules, is uncalibrated, and requires six recent results plus at least three current-competition observations for each xG/xGA and shots-on-target input. PPG and other inputs use the available capped sample and inferred season, not necessarily a complete season. Missing inputs leave V4 unavailable. Bookmaker implied probabilities are raw 1/odds, not de-margined. The CSV exports values, not spreadsheet formulas. This comparison never changes the production recommendations or the original workbook.

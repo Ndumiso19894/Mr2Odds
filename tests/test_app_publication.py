@@ -66,6 +66,8 @@ def test_export_includes_home_selections_and_shortlist(tmp_path, monkeypatch):
                    reports_dir=tmp_path, tz_label='SAST', thresholds={}, backtest={}, repo=None)
     data = json.loads((stage / 'latest.json').read_text())
     detail = json.loads((stage / 'fx' / (data['fixtures'][0]['d'] + '.json')).read_text())
+    assert detail['sheet_model']['ok'] is False  # empty samples are never fabricated
+    assert detail['sheet_model']['v4']['ok'] is False
     assert data['fixtures'][0]['sels'] == detail['sels']
     assert data['shortlist']['primary'][0]['sel'] == 'O15'
     assert data['shortlist']['primary'][0]['fixture'] == data['fixtures'][0]['id']

@@ -141,7 +141,7 @@
     const eng = sm.model || {};
     const L = [];
     L.push(row(['BOOKMAKER-STYLE FOOTBALL MODEL — V1 (filled for this match)']));
-    L.push(row(['Source', 'Google Sheet MATCH_INPUT / MODEL_ENGINE / SCORE_MATRIX / MARKETS — formulas unchanged']));
+    L.push(row(['Source', 'Workbook V1 and V4 formula outputs; CSV values only, not spreadsheet formulas']));
     L.push(row(['Note', sm.note || 'Comparison only. Mr 2 Odds model is not changed.']));
     L.push('');
     L.push(row(['MATCH INFORMATION']));
@@ -170,6 +170,10 @@
     L.push(row(['Away xGA / match', inp.away_xga]));
     L.push(row(['Away shots / match', inp.away_shots]));
     L.push(row(['Away shots on target / match', inp.away_sot]));
+    L.push(row(['Home PPG (sample)', inp.home_ppg]));
+    L.push(row(['Away PPG (sample)', inp.away_ppg]));
+    L.push(row(['Home current-season sample', inp.home_current_n]));
+    L.push(row(['Away current-season sample', inp.away_current_n]));
     L.push(row(['Home clean-sheet rate', inp.home_cs]));
     L.push(row(['Away clean-sheet rate', inp.away_cs]));
     L.push(row(['Home recent goals scored / game', inp.home_recent_gf]));
@@ -192,6 +196,17 @@
     L.push(row(['Market', 'Sheet probability', 'Fair odds', 'Mr 2 Odds (comparison only)']));
     (sm.markets || []).forEach((m) => L.push(row([m.name, m.p, m.fair, m.playreport])));
     L.push('');
+    const v4 = sm.v4;
+    if (v4) {
+      L.push(''); L.push(row(['V4 COMPARISON — EXPERIMENTAL, NOT CALIBRATED']));
+      L.push(row(['Data note', v4.note || '']));
+      if (v4.ok) {
+        L.push(row(['Expected home goals', v4.model.lambda_h]));
+        L.push(row(['Expected away goals', v4.model.lambda_a]));
+        L.push(row(['Market', 'V4 probability', 'Fair odds', 'Mr 2 Odds (comparison only)', 'Bookmaker odds', 'Implied probability (raw)', 'Edge', 'EV', 'Safety', 'Value signal', 'Decision group']));
+        (v4.markets || []).forEach((m) => L.push(row([m.name, m.p, m.fair, m.playreport, m.odds, m.implied, m.edge, m.ev, m.safety, m.value_signal, m.decision])));
+      } else L.push(row(['Unavailable inputs', (v4.missing || []).join('; ')]));
+    }
     L.push(row(['Inputs used', (sm.used || []).join('; ')]));
     L.push(row(['Inputs not available', (sm.missing || []).join('; ')]));
     return BOM + L.join('\r\n') + '\r\n';

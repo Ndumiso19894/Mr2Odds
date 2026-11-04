@@ -21,6 +21,7 @@ import pandas as pd
 
 import competition_policy
 import recommendation_policy as rec_policy
+import sheet_model
 
 log = logging.getLogger("scanner")
 
@@ -384,6 +385,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
                      "bfe_over25": _f(fx.get("bfe_over"), 2), "bfe_under25": _f(fx.get("bfe_under"), 2)},
             "sportybet": _sb(r.sb_full or r.sb),
             "teams": {"home": _profile(r.home), "away": _profile(r.away)},
+            "sheet_model": sheet_model.for_match(r, comp(r)),
             "league_avg": {"home_goals": _f(r.div_avg.mu_h, 2), "away_goals": _f(r.div_avg.mu_a, 2),
                            "o25": _f(r.div_avg.o25_rate)},
             "h2h": [{"date": _date(m["date"]), "home": m["home"], "away": m["away"], "hg": int(m["hg"]), "ag": int(m["ag"]),
