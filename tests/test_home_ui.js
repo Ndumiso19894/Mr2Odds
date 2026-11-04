@@ -26,10 +26,13 @@ const fixture = (name, selections, data_ok = true) => ({ id: `${today}|England|$
   kickoff: today + ' 23:59', home: name, away: 'Away', country: 'England', league: 'Test', div: 'E0',
   data_ok, q: data_ok ? 'High' : 'Low', tier: 'main', sels: selections });
 const selection = (code, p, odds = 1.3, diff = 0) => [code, p, p, .78, odds, diff, null, null];
-const fixtures = [fixture('Qualifies', [selection('O15', .81), selection('O05', .97), selection('U55', .88), selection('KO35', .91, null)]),
+const fixtures = [fixture('Qualifies', [selection('O15', .81), selection('O05', .97), selection('U55', .88), selection('KO35', .91, 1.16)]),
   fixture('Nearly', [selection('O15', .7996)]),
   fixture('Low', [selection('O15', .9)], false),
   fixture('No price', [selection('O15', .9, null)]),
+  fixture('Too short', [selection('O15', .9, 1.15)]),
+  fixture('Not rounded up', [selection('O15', .9, 1.159)]),
+  fixture('Malformed price', [selection('O15', .9, 'bad')]),
   fixture('Disagreement', [selection('O15', .9, 1.3, 1)]),
   fixture('Lower bar', [selection('O25', .60)])];
 const id = fixtures[0].id;
@@ -42,9 +45,10 @@ PR.state.data = d;
 const collections = PR.testCollections(d);
 assert.equal(collections.all.length, 3);
 assert.equal(collections.high.length, 2); // O2.5 at 60% is not "high probability"
-assert.equal(collections.eighty.length, 7); // includes multiple markets, restricted, unpriced, low-data and disagreement
+assert.equal(collections.eighty.length, 6); // multiple priced markets, including restricted, low-data and disagreement
 assert.equal(collections.eighty.filter((r) => r.f.home === 'Qualifies').length, 4);
-assert(collections.eighty.some((r) => r.s.sel === 'KO35' && r.s.odds == null));
+assert(collections.eighty.some((r) => r.s.sel === 'KO35' && r.s.odds === 1.16));
+for (const name of ['No price', 'Too short', 'Not rounded up', 'Malformed price']) assert(!collections.eighty.some((r) => r.f.home === name));
 assert(!collections.eighty.some((r) => r.f.home === 'Nearly')); // .7996 never rounds up
 assert.equal(PR.strictShortlist(d).length, 1);
 // Strict Advisor and Shortlist enforce the same price, quality, probability and timing gates.
@@ -58,7 +62,7 @@ const cases = [
   fixture('Already started', [selection('O15', .9, 1.3)]),
 ];
 cases[5].q = 'Low'; cases[6].kickoff = today + ' 00:00';
-const checked = PR.indexData({fixtures: cases, shortlist: {primary: cases.map((f) => ({fixture:f.id, sel:f.sels[0][0], kickoff:f.kickoff}))}});
+const checked = PR.indexData({fixtures: cases, shortlist: {primary: cases.map((f) => ({fixture:f.id, sel:f.sels[0][0], odds:f.sels[0][4], kickoff:f.kickoff}))}});
 assert.deepEqual(Array.from(PR.strictShortlist(checked), (x) => x.fixture), [cases[0].id]);
 PR.state.homeTab = 'eighty';
 PR.addBtn = () => 'SHOULD_NOT_RENDER_ADD';
@@ -66,7 +70,8 @@ const board = PR.testHomeBoard(d, collections);
 assert.match(board, /Analysis only, not a shortlist/);
 assert.match(board, /Card-count proxy, not verified bookings/);
 assert.doesNotMatch(board, /SHOULD_NOT_RENDER_ADD/);
-assert.match(board, /7 markets · 4 matches/);
+assert.match(board, /6 markets · 3 matches/);
+assert.match(board, /SportyBet price of at least 1\.16/);
 PR.views.shortlist();
 assert.match(view.innerHTML, /Qualifies v Away/);
 assert.match(view.innerHTML, /BTTS yes/);

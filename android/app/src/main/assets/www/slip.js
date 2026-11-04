@@ -16,6 +16,13 @@
     if (PR.native && PR.native.setString) { try { PR.native.setString('tickets', JSON.stringify(tickets.filter((t) => t.status === 'pending').map((t) => ({ id: t.id, odds: t.odds, stake: t.stake, legs: t.legs.map((l) => ({ eid: l.eid, sel: l.sel, sport: l.sport || 'football', market: l.market || '', selection: l.selection || '', line: l.line == null ? null : l.line, home: l.home, away: l.away, kickoff: l.kickoff, label: l.label })) })))); } catch (e) { /* ignore */ } }
   }
   const totalOdds = (legs) => legs.reduce((a, l) => a * (l.status === 'void' ? 1 : (l.odds || 1)), 1);
+  // Do not lock a stale slip against a newer snapshot where its selection disappeared,
+  // fell below the floor or changed price. Existing locked tickets remain untouched.
+  function validSlipLeg(l) {
+    if (!PR.offeredPrice(l.odds) || l.sport === 'tennis') return false; // tennis remains paused
+    const f = fx(l.fixture); const s = f && (f.sels || []).find((x) => x.sel === l.sel);
+    return !!s && PR.offeredPrice(s.odds) && Number(s.odds) === Number(l.odds);
+  }
 
   // ------------------------------------------------------------------ slip
   function leg(f, s) {
@@ -47,7 +54,7 @@
     if (!r.book_odds && m.markets) {   // buttons pass only market/selection/line — the prices come from the detail row
       row = (m.markets || []).find((x) => x.market === r.market && x.selection === (r.selection || null) && x.line === r.line) || r;
     }
-    if (!row.book_odds) return null;
+    if (!PR.offeredPrice(row.book_odds)) return null;
     const p1 = m.p1 ? m.p1.name : 'Player 1', p2 = m.p2 ? m.p2.name : 'Player 2';
     const line = row.line == null ? null : +row.line;
     const sel = row.market === 'winner' ? `TNW:${row.selection}` : row.market === 'game_handicap' ? `TGH:${row.selection}:${line}` : `TNG:${row.market}:${row.selection}:${line}`;
@@ -58,7 +65,7 @@
   }
   PR.tennisInSlip = (id, r) => slip.items.some((l) => l.sport === 'tennis' && tnKeyOf(l) === tnLegKey(id, r));
   PR.tennisAddBtn = function (id, r) {
-    if (!r || !r.book_odds) return '';
+    if (!r || !PR.offeredPrice(r.book_odds)) return '';
     const T = TNS();
     const m = (T.data && (T.data.matches || []).find((x) => String(x.id) === String(id)));
     const ko = m && parseLocal(tnLocal(m.start)); const started = ko && ko < tzNow();
@@ -73,7 +80,7 @@
     if (i >= 0) { slip.items.splice(i, 1); saveSlip(); bar(); PR.render(); return; }
     const det = T.details && T.details[String(id)];
     const g = tennisLeg(id, r, det && !det.error && det.p1 ? det : null);
-    if (!g) { toast('No Sportybet price for this selection'); return; }
+    if (!g) { toast('A SportyBet price of at least 1.16 is required'); return; }
     const ko = parseLocal(g.kickoff); if (ko && ko < tzNow()) { toast('This match has already started'); return; }
     const same = slip.items.findIndex((l) => l.sport === 'tennis' && l.fixture === String(id));
     if (same >= 0) { slip.items.splice(same, 1); toast('One leg per tennis match — replaced the earlier pick'); }
@@ -165,8 +172,7 @@
     if (!s) { const b = ((state.data.safe || {}).bets || []).find((x) => x.fixture === fid && x.sel === sel); if (b) s = { sel: b.sel, odds: b.odds, p: b.p }; }
     if (!s) { const h = (f.hi || []).find((x) => x[0] === sel); if (h) s = { sel: h[0], p: h[1], odds: h[2] }; }
     if (!s && f.top && f.top[0] === sel) s = { sel: f.top[0], p: f.top[1], odds: f.top[2] };
-    if (!s || !s.odds) { toast('No Sportybet price for this selection'); return; }
-    if (s.odds < 1.16) { toast('The minimum offered price is 1.16'); return; }
+    if (!s || !PR.offeredPrice(s.odds)) { toast('A SportyBet price of at least 1.16 is required'); return; }
     const ko = parseLocal(f.kickoff); if (ko && ko < tzNow()) { toast('This match has already started'); return; }
     const same = slip.items.findIndex((l) => l.fixture === fid);
     if (same >= 0) { const old = slip.items[same]; slip.items.splice(same, 1); toast(`Replaced ${old.label}`); }
@@ -177,7 +183,7 @@
   PR.addBtn = function (fid, sel, odds) {
     if (!odds) return '';
     const on = PR.inSlip(fid, sel);
-    if (!on && (PR.isDropped(sel) || odds < 1.16)) return '';
+    if (!on && (PR.isDropped(sel) || !PR.offeredPrice(odds))) return '';
     const f = fx(fid); const ko = f && parseLocal(f.kickoff); const started = ko && ko < tzNow();
     if (started) return '';
     return `<button class="addsel ${on ? 'on' : ''}" data-add-fx="${esc(fid)}" data-add-sel="${esc(sel)}" title="${on ? 'Remove from slip' : 'Add to slip'}" aria-label="Add to slip">${on ? icon('check') : '+'}</button>`;
@@ -190,7 +196,8 @@
     const el = $('#slipbar'); if (!el) return;
     if (!slip.items.length) { el.classList.remove('show'); el.innerHTML = ''; document.body.classList.remove('has-slip'); return; }
     document.body.classList.add('has-slip');
-    el.innerHTML = `<button class="slipbtn" id="slip-open"><span class="cnt">${slip.items.length}</span><span class="grow"><b>Bet slip</b> · ${slip.items.length} selection${slip.items.length > 1 ? 's' : ''} · odds <b>${f2(totalOdds(slip.items))}</b></span><span class="tiny">Done ${icon('next', 'sm')}</span></button>`;
+    const valid = slip.items.every(validSlipLeg);
+    el.innerHTML = `<button class="slipbtn" id="slip-open"><span class="cnt">${slip.items.length}</span><span class="grow"><b>Bet slip</b> · ${slip.items.length} selection${slip.items.length > 1 ? 's' : ''} · ${valid ? `odds <b>${f2(totalOdds(slip.items))}</b>` : '<b>remove ineligible selections</b>'}</span><span class="tiny">Done ${icon('next', 'sm')}</span></button>`;
     el.classList.add('show');
     $('#slip-open').onclick = () => { state.stack = []; PR.push({ type: 'slip' }); };
   }
@@ -200,13 +207,14 @@
     const tn = slip.items.filter((l) => l.sport === 'tennis').length;
     const parts = [head('Bet slip', slip.items.length ? `${slip.items.length} selection${slip.items.length > 1 ? 's' : ''}${tn ? ` · ${tn} tennis` : ''}` : 'empty')];
     if (!slip.items.length) {
-      parts.push(`<div class="card empty">Your slip is empty.<br><span class="small muted">Tap <b>+</b> next to any priced selection — football (match page › Markets, safest bets, bets of the day) or tennis (markets &amp; selections). One leg per match; the new pick replaces the earlier one.</span></div>`);
+      parts.push(`<div class="card empty">Your slip is empty.<br><span class="small muted">Tap <b>+</b> next to an eligible football selection priced at least 1.16 (match page › Markets, safest bets or bets of the day). One leg per match; the new pick replaces the earlier one. Tennis is paused.</span></div>`);
       if (tickets.length) parts.push(`<div class="card compact tap" id="go-tickets"><div class="row"><span class="ico">${icon('ticket')}</span><div class="grow b">My tickets (${tickets.length})</div>${icon('next')}</div></div>`);
     } else {
       const odds = totalOdds(slip.items); const stake = parseFloat(slip.stake) || 0;
-      parts.push(`<div class="card compact"><table class="tbl">${slip.items.map((l, i) => `<tr><td class="tiny muted nowrap">${esc(koShort(l.kickoff))}</td><td><div class="row" style="gap:6px">${badge(l.home, l.badges && l.badges.home, 20)}${badge(l.away, l.badges && l.badges.away, 20)}<div class="b grow">${teamSpan(l.home, l.country, l.div)} <span class="muted">v</span> ${teamSpan(l.away, l.country, l.div)}</div>${sbLink(l)}</div><div class="sel"><b>${esc(l.label)}</b>${l.sport === 'tennis' ? '<span class="sport-chip">🎾 tennis</span>' : ''}</div><div class="tiny muted">${flag(l.country)} ${esc(l.competition)} · ${pct(l.p)}</div></td><td class="right nowrap"><b>${f2(l.odds)}</b></td><td class="right"><button class="link" data-rm="${i}" aria-label="Remove">${icon('x')}</button></td></tr>`).join('')}</table></div>`);
-      parts.push(`<div class="card"><div class="row"><div class="grow"><div class="k tiny muted">Total odds</div><div class="v" style="font-size:24px;font-weight:800">${f2(odds)}</div></div><div class="grow"><label class="tiny muted">Stake (optional)</label><input id="slip-stake" type="number" inputmode="decimal" placeholder="e.g. 50" value="${esc(slip.stake)}"></div></div>
-        ${stake ? `<div class="small" style="margin-top:8px">Potential return <b>${f2(stake * odds)}</b> · profit ${f2(stake * odds - stake)}</div>` : ''}
+      const valid = slip.items.every(validSlipLeg);
+      parts.push(`<div class="card compact"><table class="tbl">${slip.items.map((l, i) => `<tr><td class="tiny muted nowrap">${esc(koShort(l.kickoff))}</td><td><div class="row" style="gap:6px">${badge(l.home, l.badges && l.badges.home, 20)}${badge(l.away, l.badges && l.badges.away, 20)}<div class="b grow">${teamSpan(l.home, l.country, l.div)} <span class="muted">v</span> ${teamSpan(l.away, l.country, l.div)}</div>${sbLink(l)}</div><div class="sel"><b>${esc(l.label)}</b>${l.sport === 'tennis' ? '<span class="sport-chip">🎾 tennis</span>' : ''}</div><div class="tiny muted">${flag(l.country)} ${esc(l.competition)} · ${pct(l.p)}</div></td><td class="right nowrap"><b>${validSlipLeg(l) ? f2(l.odds) : l.sport === 'tennis' ? 'Tennis paused — remove' : 'Remove and re-add: price unavailable, changed or below 1.16'}</b></td><td class="right"><button class="link" data-rm="${i}" aria-label="Remove">${icon('x')}</button></td></tr>`).join('')}</table></div>`);
+      parts.push(`<div class="card"><div class="row"><div class="grow"><div class="k tiny muted">Total odds</div><div class="v" style="font-size:24px;font-weight:800">${valid ? f2(odds) : '–'}</div></div><div class="grow"><label class="tiny muted">Stake (optional)</label><input id="slip-stake" type="number" inputmode="decimal" placeholder="e.g. 50" value="${esc(slip.stake)}"></div></div>
+        ${stake && valid ? `<div class="small" style="margin-top:8px">Potential return <b>${f2(stake * odds)}</b> · profit ${f2(stake * odds - stake)}</div>` : ''}
         <div class="tiny muted" style="margin-top:8px">Model probability that every leg wins: <b>${pct(slip.items.reduce((a, l) => a * (l.p || 0), 1))}</b> (fair odds ${f2(1 / Math.max(1e-6, slip.items.reduce((a, l) => a * (l.p || 0), 1)))}). Prices are the Sportybet prices at the last analysis — check them before you bet.</div>
         <div class="row" style="margin-top:12px;gap:8px"><button class="btn primary grow" id="slip-place">${icon('lock', 'sm')} Done — lock this ticket</button><button class="btn" id="slip-copy">Copy</button><button class="btn" id="slip-clear">Clear</button></div>
         <div class="tiny muted" style="margin-top:6px">A locked ticket cannot be edited. Mr 2 Odds follows the scores and tells you when it is won or lost. This records your bet — it does not place it anywhere.</div></div>`);
@@ -220,6 +228,7 @@
     const g = $('#go-tickets'); if (g) g.onclick = () => PR.push({ type: 'tickets' });
     const c = $('#slip-clear'); if (c) c.onclick = () => { slip.items = []; saveSlip(); bar(); PR.render(); };
     const cp = $('#slip-copy'); if (cp) cp.onclick = async () => {
+      if (slip.items.some((l) => !validSlipLeg(l))) { toast('Remove and re-add selections whose price is unavailable, changed or below 1.16; tennis is paused'); return; }
       const ok = await PR.copyText(ticketText({ id: 'slip', odds: totalOdds(slip.items), legs: slip.items, stake: slip.stake }));
       PR.toast(ok ? 'Ticket copied' : 'Could not copy');
     };
@@ -229,8 +238,10 @@
       PR.openBookingCode(code);
     };
     const p = $('#slip-place'); if (p) p.onclick = async () => {
+      if (slip.items.some((l) => !validSlipLeg(l))) { toast('Remove and re-add selections whose price is unavailable, changed or below 1.16; tennis is paused'); return; }
       const ok = await PR.confirmBox('Lock this ticket?', `${slip.items.length} selection${slip.items.length > 1 ? 's' : ''} · total odds ${f2(totalOdds(slip.items))}${slip.stake ? ` · stake ${slip.stake}` : ''}\n\nA locked ticket cannot be edited. It goes to Bets › Today and ☰ › My tickets, and is graded from the scores.`, 'Lock ticket');
       if (!ok) return;
+      if (slip.items.some((l) => !validSlipLeg(l))) { toast('A selection changed while confirming. Remove it and check the latest analysis.'); return; }
       const t = { id: 'T' + Date.now().toString(36).toUpperCase(), created: tzNow().toISOString().slice(0, 16).replace('T', ' '), legs: slip.items.map((l) => Object.assign({ status: 'pending' }, l)), odds: +totalOdds(slip.items).toFixed(2), stake: parseFloat(slip.stake) || null, status: 'pending' };
       tickets.unshift(t); slip.items = []; slip.stake = ''; saveSlip(); saveTickets(); bar();
       toast('Ticket locked — good luck!'); state.stack = []; state.betsView = 'today'; PR.setTab('bets');

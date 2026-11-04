@@ -1279,7 +1279,8 @@ def build_run_parlays(rows: list[MatchRow], now: datetime, window_end: datetime,
             prices = r.sb if sb_ok else avg_prices(r.fx)
             if not prices and sb_ok:
                 continue
-            legs += parlay_mod.candidate_legs(r.fx, r.extra.x12, r.p_model["O25"], prices, source)
+            legs += [leg for leg in parlay_mod.candidate_legs(r.fx, r.extra.x12, r.p_model["O25"], prices, source)
+                     if math.isfinite(leg.odds) and leg.odds >= safe_mod.MIN_ODDS]
         return legs
 
     short = [r for r in rows if start <= r.fx["kickoff"] <= window_end]
@@ -1475,7 +1476,7 @@ def form_str(r: MatchRow, mkt: str) -> str:
 def market_str(r: MatchRow) -> str:
     if math.isnan(r.p_market_o25):
         return "–"
-    return f"{r.fx['odds_over']:.2f} ({pct(r.p_market_o25)})"
+    return f"{fmt_odds(r.fx['odds_over'])} ({pct(r.p_market_o25)})"
 
 
 def basis_str(r: MatchRow) -> str:
@@ -1577,10 +1578,10 @@ def render_details(r: MatchRow) -> list[str]:
                  f"{' (avg age ' + str(h_.get('avg_age')) + ')' if h_.get('avg_age') else ''} · {html.escape(r.fx['away'])} "
                  f"**{squads_mod.fmt_value(a_.get('value'))}**{' (avg age ' + str(a_.get('avg_age')) + ')' if a_.get('avg_age') else ''}")
     if not math.isnan(r.p_market_o25):
-        L.append(f"* Market: Over 2.5 @ {r.fx['odds_over']:.2f} / Under 2.5 @ {r.fx['odds_under']:.2f} "
-                 f"(implied O2.5 {pct(r.p_market_o25)}) · 1X2 {f2(r.fx['odds_h'])} / {f2(r.fx['odds_d'])} / {f2(r.fx['odds_a'])}")
+        L.append(f"* Market: Over 2.5 @ {fmt_odds(r.fx['odds_over'])} / Under 2.5 @ {fmt_odds(r.fx['odds_under'])} "
+                 f"(implied O2.5 {pct(r.p_market_o25)}) · 1X2 {fmt_odds(r.fx['odds_h'])} / {fmt_odds(r.fx['odds_d'])} / {fmt_odds(r.fx['odds_a'])}")
     elif pd.notna(r.fx["odds_h"]):
-        L.append(f"* Market 1X2: {f2(r.fx['odds_h'])} / {f2(r.fx['odds_d'])} / {f2(r.fx['odds_a'])} (no O/U odds published in feed)")
+        L.append(f"* Market 1X2: {fmt_odds(r.fx['odds_h'])} / {fmt_odds(r.fx['odds_d'])} / {fmt_odds(r.fx['odds_a'])} (no O/U odds published in feed)")
     L.append(f"* League context: avg {r.div_avg.mu_h:.2f} home + {r.div_avg.mu_a:.2f} away goals · "
              f"O2.5 in {pct(r.div_avg.o25_rate)} · BTTS in {pct(r.div_avg.btts_rate)} of matches")
     L += render_extra_lines(r)
@@ -1601,7 +1602,7 @@ def render_details(r: MatchRow) -> list[str]:
 
 
 def fmt_odds(o) -> str:
-    return "–" if o is None or (isinstance(o, float) and math.isnan(o)) else f"{o:.2f}"
+    return "–" if o is None or not math.isfinite(o) or o < safe_mod.MIN_ODDS else f"{o:.2f}"
 
 
 def sb_line_str(d: dict | None, lines=None) -> str:
@@ -1802,7 +1803,7 @@ def render_value_check(picks: dict, sb_ok: bool) -> list[str]:
         for r in picks.get(mkt, []):
             price = sb_price(r, mkt)
             p = r.p_model[mkt]
-            if price is None or p is None or math.isnan(p) or p <= 0:
+            if price is None or not math.isfinite(price) or price < safe_mod.MIN_ODDS or p is None or math.isnan(p) or p <= 0:
                 continue
             n += 1
             pm = (r.fair or {}).get(mkt)
@@ -2092,7 +2093,13 @@ def rows_to_csv(rows: list[MatchRow], path: Path) -> None:
             "sportybet_away": r.sb["1X2"][2] if r.sb and r.sb.get("1X2") else None,
             "sportybet_over25": sb_price(r, "O25"), "sportybet_btts": sb_price(r, "BTTS"),
         })
-    pd.DataFrame(recs).round(3).to_csv(path, index=False)
+    frame = pd.DataFrame(recs)
+    rounded = frame.round(3)
+    # Keep the exact bookmaker quotes so the app never rounds a sub-1.16 price into eligibility.
+    for col in frame.columns:
+        if col.startswith(("odds_", "sportybet_")):
+            rounded[col] = frame[col]
+    rounded.to_csv(path, index=False)
 
 
 def render_dossier(ctx: dict, pr: dict, ids: list[str], rows_by_key: dict, headlines: dict) -> str:
@@ -2138,9 +2145,9 @@ def render_dossier(ctx: dict, pr: dict, ids: list[str], rows_by_key: dict, headl
             L.append((f"* Market xG {r.mkt_h:.2f} – {r.mkt_a:.2f} (comparison only)" if not math.isnan(r.mkt_h) else "* Market xG N/A")
                      + f" · league avg {r.div_avg.mu_h:.2f} + {r.div_avg.mu_a:.2f} goals, O2.5 in {pct(r.div_avg.o25_rate)}")
             if pd.notna(r.fx.get("odds_h")):
-                L.append(f"* Market average 1X2 {f2(r.fx['odds_h'])} / {f2(r.fx['odds_d'])} / {f2(r.fx['odds_a'])}"
-                         + (f" · O/U 2.5 {f2(r.fx['odds_over'])} / {f2(r.fx['odds_under'])}" if pd.notna(r.fx.get("odds_over")) else "")
-                         + (f" · Betfair Exchange 1X2 {f2(r.fx['bfe_h'])} / {f2(r.fx['bfe_d'])} / {f2(r.fx['bfe_a'])}" if pd.notna(r.fx.get("bfe_h")) else ""))
+                L.append(f"* Market average 1X2 {fmt_odds(r.fx['odds_h'])} / {fmt_odds(r.fx['odds_d'])} / {fmt_odds(r.fx['odds_a'])}"
+                         + (f" · O/U 2.5 {fmt_odds(r.fx['odds_over'])} / {fmt_odds(r.fx['odds_under'])}" if pd.notna(r.fx.get("odds_over")) else "")
+                         + (f" · Betfair Exchange 1X2 {fmt_odds(r.fx['bfe_h'])} / {fmt_odds(r.fx['bfe_d'])} / {fmt_odds(r.fx['bfe_a'])}" if pd.notna(r.fx.get("bfe_h")) else ""))
             L += render_extra_lines(r)
             L.append("")
             L += render_team_block(r.home, "Home")

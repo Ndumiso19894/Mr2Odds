@@ -1,5 +1,8 @@
-## 80% markets, strict Advisor and match form
-- The 80%+ view shows every published modelled market at or above 80%, including multiple markets per match and unpriced or restricted markets. It is analysis only, not a shortlist; card-count proxies are not verified booking probabilities.
+## 80% markets and the 1.16 price floor
+- The 80%+ view now requires each selection to have its own SportyBet price of at least 1.16, as well as a published model probability of at least 80%. Multiple markets per match can appear; the board remains analysis only, not a shortlist.
+- Current markets priced below 1.16 are hidden throughout the app and current exports. Saved slip selections with an unavailable or changed price must be removed and re-added; existing locked tickets and historical results are retained. Prices are from the latest analysis and can change.
+
+## Strict Advisor and match form
 - The Shortlist, Sequences and Bet Advisor use the same strict upcoming shortlist checks. The Advisor's historical goals-pick record is labelled separately from these current selections.
 - The match Form tab uses responsive result rows so long team and competition names wrap on smaller screens.
 
