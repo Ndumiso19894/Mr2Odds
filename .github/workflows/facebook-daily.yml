@@ -1,33 +1,21 @@
 name: Facebook daily selections
 
 on:
-  # 07:00 South African time. The scan workflow also dispatches this after each
-  # successful scan as a fallback if GitHub's scheduled event is delayed.
+  # UTC = SAST minus two hours: selection cards at 07, 12, 17 and results at 08.
   schedule:
-    - cron: '0 5 * * *'
+    - cron: '0 5,6,10,15 * * *'
   workflow_dispatch:
-    inputs:
-      retry_today:
-        description: 'Publish one additional corrected card for today (only when explicitly requested)'
-        type: boolean
-        default: false
-      redesign_today:
-        description: 'Publish the separately authorized white redesign once today'
-        type: boolean
-        default: false
 
 permissions:
   contents: read
   actions: read
 
-# Serialize all triggers. A persisted daily claim prevents reposts across runs.
+# Serialize triggers so two runs cannot claim the same slot or reuse a fixture.
 concurrency:
   group: facebook-daily-selections
   cancel-in-progress: false
 
 jobs:
-  # Dispatching this existing workflow on a feature branch runs a read-only Page
-  # identity check, never a post. Production posts run from main only.
   diagnose:
     if: github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -44,6 +32,17 @@ jobs:
           FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
         run: python scripts/facebook_post.py diagnose
+      - name: Check prior post records without posting
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          from datetime import datetime
+          from scripts.facebook_history import load_claims
+          from scripts.facebook_post import SAST
+          claims = load_claims(datetime.now(SAST).date().isoformat(), confirmed_only=True)
+          print(f'Found {len(claims)} confirmed selection-card records for today.')
+          PY
   post:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -51,45 +50,34 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Compute South African date and claim
+      - name: Select current South African posting window
         id: day
-        env:
-          RETRY_TODAY: ${{ inputs.retry_today }}
-          REDESIGN_TODAY: ${{ inputs.redesign_today }}
-          EVENT_NAME: ${{ github.event_name }}
         run: |
           set -euo pipefail
           day=$(TZ=Africa/Johannesburg date +%F)
-          claim="facebook-post-$day"
-          if [ "$EVENT_NAME" = 'workflow_dispatch' ] && [ "$RETRY_TODAY" = 'true' ] && [ "$REDESIGN_TODAY" = 'true' ]; then
-            echo 'Select only one corrected-post option.' >&2
-            exit 1
-          elif [ "$EVENT_NAME" = 'workflow_dispatch' ] && [ "$REDESIGN_TODAY" = 'true' ]; then
-            claim="$claim-redesign"
-          elif [ "$EVENT_NAME" = 'workflow_dispatch' ] && [ "$RETRY_TODAY" = 'true' ]; then
-            claim="$claim-retry"
-          fi
+          yesterday=$(TZ=Africa/Johannesburg date -d yesterday +%F)
+          slot=$(TZ=Africa/Johannesburg date +%H)
+          case "$slot" in
+            07|12|17) claim="facebook-post-$day-$slot" ;;
+            08) claim="facebook-results-$day" ;;
+            *) slot=none; claim=none ;;
+          esac
           echo "date=$day" >> "$GITHUB_OUTPUT"
+          echo "yesterday=$yesterday" >> "$GITHUB_OUTPUT"
+          echo "slot=$slot" >> "$GITHUB_OUTPUT"
           echo "claim=$claim" >> "$GITHUB_OUTPUT"
-      - name: Check whether today's post was already claimed
+          echo "Current posting window: $slot SAST"
+      - name: Check whether this slot was already claimed
         id: claim
+        if: steps.day.outputs.slot != 'none'
         env:
           GH_TOKEN: ${{ github.token }}
           CLAIM_NAME: ${{ steps.day.outputs.claim }}
         run: |
           set -euo pipefail
-          if [[ "$CLAIM_NAME" == *-retry || "$CLAIM_NAME" == *-redesign ]]; then
-            original=${CLAIM_NAME%-retry}
-            original=${original%-redesign}
-            prior=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=$original" --jq ".artifacts[] | select(.name == \"$original\" and .expired == false) | .id")
-            if [ -z "$prior" ]; then
-              echo "A corrected retry requires an existing claim for today's original post." >&2
-              exit 1
-            fi
-          fi
           ids=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=$CLAIM_NAME" --jq ".artifacts[] | select(.name == \"$CLAIM_NAME\" and .expired == false) | .id")
           if [ -n "$ids" ]; then
-            echo "A post was already attempted today; check the Page before any manual recovery."
+            echo "This slot was already attempted; check the Page before manual recovery."
             echo "available=false" >> "$GITHUB_OUTPUT"
           else
             echo "available=true" >> "$GITHUB_OUTPUT"
@@ -125,14 +113,22 @@ jobs:
           FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
         run: python scripts/facebook_post.py diagnose
-      - name: Prepare photo with eligible selections and real crests
-        if: steps.claim.outputs.available == 'true'
-        id: prepare
-        run: python scripts/facebook_post.py prepare --snapshot live-data/data/app/latest.json --output facebook-output/selections.png
-      # Claim before the external API call: if Facebook times out after accepting a photo,
-      # no later run is allowed to risk an accidental duplicate.
-      - name: Record the daily posting claim
-        if: steps.prepare.outputs.ready == 'true'
+      - name: Prepare different eligible selections with real crests
+        if: steps.claim.outputs.available == 'true' && steps.day.outputs.slot != '08'
+        id: prepare-picks
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/facebook_post.py prepare --exclude-claimed --snapshot live-data/data/app/latest.json --output facebook-output/selections.png
+      - name: Prepare two images of yesterday's recorded results
+        if: steps.claim.outputs.available == 'true' && steps.day.outputs.slot == '08'
+        id: prepare-results
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/facebook_results.py prepare --day-file "live-data/data/app/days/${{ steps.day.outputs.yesterday }}.json" --badges live-data/data/app/badges.json --output facebook-output
+      # Claim before the first external write: even ambiguous Facebook outcomes are never retried automatically.
+      - name: Record the slot posting claim
+        if: steps.prepare-picks.outputs.ready == 'true' || steps.prepare-results.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.day.outputs.claim }}
@@ -140,8 +136,14 @@ jobs:
           retention-days: 35
           if-no-files-found: error
       - name: Publish photo and caption to Facebook
-        if: steps.prepare.outputs.ready == 'true'
+        if: steps.prepare-picks.outputs.ready == 'true'
         env:
           FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
         run: python scripts/facebook_post.py publish --image facebook-output/selections.png
+      - name: Publish the two-image results post to Facebook
+        if: steps.prepare-results.outputs.ready == 'true'
+        env:
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+        run: python scripts/facebook_results.py publish --output facebook-output
