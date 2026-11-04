@@ -246,33 +246,49 @@ def error_summary(response):
         return f'HTTP {int(response.status_code)}'
 
 
+def resolve_page_token(session, token, page_id):
+    """Use a Page token directly, or retrieve this Page's token from an authorized user token.
+
+    Derived tokens remain in memory; responses, names, IDs and credentials are never logged.
+    """
+    try:
+        headers = {'Authorization': 'Bearer ' + token}
+        response = session.get('https://graph.facebook.com/v24.0/me', params={'fields': 'id'}, headers=headers, timeout=30)
+        if not response.ok:
+            raise RuntimeError('Facebook token check rejected: ' + error_summary(response))
+        identity = response.json().get('id')
+        if not identity:
+            raise RuntimeError('Facebook token check returned no identity')
+        if str(identity) == page_id:
+            return token, False
+        params = {'fields': 'id,access_token', 'limit': 100}
+        for _ in range(10):
+            accounts = session.get('https://graph.facebook.com/v24.0/me/accounts', params=params, headers=headers, timeout=30)
+            if not accounts.ok:
+                raise RuntimeError('Page access check rejected: ' + error_summary(accounts))
+            body = accounts.json()
+            for entry in body.get('data', []):
+                if isinstance(entry, dict) and str(entry.get('id', '')) == page_id:
+                    page_token = entry.get('access_token')
+                    if not isinstance(page_token, str) or not page_token.strip():
+                        raise RuntimeError('Facebook did not provide a Page access token; check Page permissions')
+                    return page_token.strip(), True
+            paging = body.get('paging') or {}
+            cursor = (paging.get('cursors') or {}).get('after') if paging.get('next') else None
+            if not cursor:
+                break
+            params = {'fields': 'id,access_token', 'limit': 100, 'after': cursor}
+        raise RuntimeError('The configured Page was not found among the token’s accessible Pages')
+    except requests.RequestException:
+        raise RuntimeError('Could not reach Facebook for the read-only token check') from None
+
+
 def diagnose(session=None):
     """Read-only token check; no photo is posted and no identifiers are logged."""
     token, page_id = credentials()
-    session = session or requests.Session()
-    try:
-        response = session.get('https://graph.facebook.com/v24.0/me', params={'fields': 'id'},
-                               headers={'Authorization': 'Bearer ' + token}, timeout=30)
-        if not response.ok:
-            raise RuntimeError('Facebook token check rejected: ' + error_summary(response))
-        user_id = response.json().get('id')
-        if not user_id:
-            raise RuntimeError('Facebook token check returned no identity')
-        if str(user_id) != page_id:
-            # A user token may still administer the configured Page. Check without
-            # requesting or logging any Page tokens, names, or identifiers.
-            accounts = session.get('https://graph.facebook.com/v24.0/me/accounts',
-                                   params={'fields': 'id', 'limit': 100},
-                                   headers={'Authorization': 'Bearer ' + token}, timeout=30)
-            if not accounts.ok:
-                raise RuntimeError('Token identity differs from the configured Page; Page-access check rejected: ' + error_summary(accounts))
-            data = accounts.json().get('data', [])
-            if any(str(x.get('id', '')) == page_id for x in data if isinstance(x, dict)):
-                raise RuntimeError('The supplied token is not the Page token, but it can see the configured Page; generate a Page access token for that Page')
-            raise RuntimeError('The token identity differs from FACEBOOK_PAGE_ID and the configured Page was not found in its first 100 accessible Pages')
-    except requests.RequestException:
-        raise RuntimeError('Could not reach Facebook for the read-only token check') from None
-    print('::notice::Facebook confirmed the token identity matches the configured Page.')
+    _, derived = resolve_page_token(session or requests.Session(), token, page_id)
+    detail = 'using an authorized user token' if derived else 'using the Page token'
+    print(f'::notice::Facebook confirmed access to the configured Page {detail}.')
 
 
 def publish(image_path, now=None, session=None):
@@ -287,6 +303,7 @@ def publish(image_path, now=None, session=None):
     if not 5 <= len(info['fixtures']) <= 8 or any(datetime.strptime(x['kickoff'], '%Y-%m-%d %H:%M').replace(tzinfo=SAST) <= now + timedelta(minutes=5) for x in info['fixtures']):
         raise ValueError('At least one fixture has started or is about to start; not posting')
     session = session or requests.Session()
+    token, _ = resolve_page_token(session, token, page_id)
     try:
         with image_path.open('rb') as image:
             response = session.post(f'https://graph.facebook.com/v24.0/{page_id}/photos',

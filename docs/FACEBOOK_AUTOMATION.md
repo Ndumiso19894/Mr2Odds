@@ -4,7 +4,7 @@ The `Facebook daily selections` Actions workflow posts one portrait PNG to the c
 
 ## Setup
 
-Create the GitHub Actions repository secrets `FACEBOOK_PAGE_ACCESS_TOKEN` and `FACEBOOK_PAGE_ID` (numeric Page ID). Use a Page access token with the necessary Facebook Page posting permissions and the app in an appropriate mode. No token or Page ID is stored in the repository or printed to logs.
+Create the GitHub Actions repository secrets `FACEBOOK_PAGE_ACCESS_TOKEN` and `FACEBOOK_PAGE_ID` (numeric Page ID). Use a Page access token, or an authorized user access token that can retrieve a token for that specific Page. The user token must have the necessary Facebook Page listing and posting permissions; the app must be in an appropriate mode. Derived Page tokens are kept only in memory. No token or Page ID is stored in the repository or printed to logs. Tokens can be revoked or invalidated, so monitor the workflow even if a token has no scheduled expiry.
 
 The schedule is 07:00 South African time. Following successful football scans after 07:00, the scan workflow also triggers the Facebook workflow as a fallback for delayed GitHub schedules. A manual run is available under Actions → Facebook daily selections → Run workflow. The current snapshot must be no more than 90 minutes old. Only upcoming fixtures today qualify. If there are fewer than five with usable crests for both teams, nothing is posted; the next scan can try again. It produces at most one card per South African day.
 
