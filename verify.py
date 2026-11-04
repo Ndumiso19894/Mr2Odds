@@ -91,6 +91,20 @@ def check_publication(staging: Path, live: Path, ledger: Path, now: datetime, ex
         xg = f.get("xg") or []
         if len(xg) == 2 and all(_num(v) for v in xg) and (min(xg) < 0 or max(xg) > 6):
             warns.append(f"odd expected goals {xg} for {fid}")
+        # Home collections consume these rows directly; a valid detail file alone cannot fill them.
+        if not f.get("frozen"):
+            selections = f.get("sels")
+            if not isinstance(selections, list):
+                errors.append(f"fixture {fid} missing index selections")
+            else:
+                seen_sels = set()
+                for selection in selections:
+                    if not isinstance(selection, list) or len(selection) < 6 or not isinstance(selection[0], str):
+                        errors.append(f"malformed index selection for {fid}")
+                        continue
+                    if selection[0] in seen_sels or not _prob(selection[1]) or not _prob(selection[2]):
+                        errors.append(f"duplicate or invalid index selection {selection[0]} for {fid}")
+                    seen_sels.add(selection[0])
         key = f.get("d")
         if key and not (staging / "fx" / f"{key}.json").exists() and not (live / "fx" / f"{key}.json").exists():
             n_detail_missing += 1
@@ -126,6 +140,20 @@ def check_publication(staging: Path, live: Path, ledger: Path, now: datetime, ex
     if n_blend:
         errors.append(f"{n_blend} detail file(s) where a published probability / xG differs from the football-data model "
                       "(market contamination)")
+    shortlist = d.get("shortlist") or {}
+    if not isinstance(shortlist.get("primary"), list) or not isinstance(shortlist.get("counts"), dict):
+        errors.append("shortlist payload missing primary selections or counts")
+    else:
+        seen_shortlist = set()
+        by_id = {f.get("id"): f for f in fixtures}
+        for pick in shortlist["primary"]:
+            fid = pick.get("fixture")
+            f = by_id.get(fid)
+            if not f or fid in seen_shortlist:
+                errors.append(f"shortlist has unknown or repeated fixture {fid}")
+            elif f.get("date") != now.strftime("%Y-%m-%d") or f.get("kickoff", "") <= now.strftime("%Y-%m-%d %H:%M"):
+                errors.append(f"shortlist fixture is not upcoming today: {fid}")
+            seen_shortlist.add(fid)
     sf = d.get("safe") or {}
     min_p, min_odds = float(sf.get("min_p") or 0.7), float(sf.get("min_odds") or 1.3)
     known = ids | _archive_ids(staging)

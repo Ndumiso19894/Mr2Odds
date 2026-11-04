@@ -67,3 +67,12 @@ the football model code; the only shared piece is the generic Markdown → PDF h
   wrapped, not modified. Tennis Home / Bets / Live / Matches / Days and a match page with Overview / Markets /
   Stats / Data (sample labels, last 10 matches with raw scores, H2H context only, quality checks, identity, inputs).
   Smoke test: `android/tennis_ui_test.py`.
+
+### Android releases to Telegram
+
+Each successful Android build publishes its APK on GitHub and then uploads that same APK as a document
+in Telegram. Configure the existing repository Actions secrets `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`
+(the same ones used for scanner reports); the bot must be able to send documents to that chat. If delivery
+fails, the GitHub release is still available and the Telegram job fails visibly. After correcting the problem,
+use **Re-run failed jobs** on the build workflow to retry delivery without rebuilding or republishing the release.
+Telegram's hosted Bot API has a 50 MB document limit.
