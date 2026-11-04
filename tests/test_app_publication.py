@@ -1,6 +1,6 @@
 """Regression tests for the scanner-to-home and shortlist payload contracts."""
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
 
 import pandas as pd
@@ -34,7 +34,7 @@ def test_shortlist_screening_and_1x2():
             fixture('Started', NOW - timedelta(hours=1), selections=[sel('O15', .9)]),
             fixture('Tomorrow', NOW + timedelta(days=1), selections=[sel('O15', .9)])]
     result = appdata.shortlist_payload(data, NOW)
-    assert [(x['home'], x['sel']) for x in result['primary']] == [('Qualified', 'O15'), ('Other', 'CO95')]
+    assert [(x['home'], x['sel']) for x in result['primary']] == [('Dropped', 'BTTS'), ('Qualified', 'O15'), ('Other', 'CO95')]
     assert [(x['home'], x['sel']) for x in result['x12']] == [('Qualified', 'H')]
     assert result['counts']['analysed'] == 6
 
@@ -47,7 +47,7 @@ def test_probability_precision_does_not_promote_rounded_80():
 
 def test_export_includes_home_selections_and_shortlist(tmp_path, monkeypatch):
     fx = pd.Series({'date': NOW, 'kickoff': NOW + timedelta(hours=2), 'country': 'England',
-                    'home': 'Home', 'away': 'Away', 'league': 'Test', 'div': 'X'}, name=0)
+                    'home': 'Home', 'away': 'Away', 'league': 'Test', 'div': 'E0'}, name=0)
     prof = SimpleNamespace(n=12)
     extra = SimpleNamespace(x12={}, tg={}, corners=None, corner_p={}, cards=None, card_p={})
     probs = {'O15': .82, 'O25': .6, 'O35': .3, 'BTTS': .55}
@@ -60,12 +60,16 @@ def test_export_includes_home_selections_and_shortlist(tmp_path, monkeypatch):
     rows = [safe.sel_dict(s, 'Home', 'Away') for s in safe.selections(row)]
     stage = tmp_path / 'stage'; stage.mkdir()
     appdata.export(stage / 'latest.json', ctx={'now': NOW, 'start': NOW, 'end': NOW + timedelta(days=1),
-                   'window_end': NOW + timedelta(hours=4), 'run': 'test'}, rows=[row], picks={}, tracker_summary={},
+                   'window_end': NOW + timedelta(hours=4), 'run': 'test',
+                   'lineup_as_of': NOW.replace(tzinfo=timezone(timedelta(hours=2)))}, rows=[row], picks={}, tracker_summary={},
                    notes=[], ls_map={}, helpers={'render_details': lambda *_: '', 'stars': lambda *_: 1,
                    'comp': lambda _: 'Test', 'sb_price': lambda *_: 1.3, 'selections': lambda _: rows},
                    reports_dir=tmp_path, tz_label='SAST', thresholds={}, backtest={}, repo=None)
     data = json.loads((stage / 'latest.json').read_text())
     detail = json.loads((stage / 'fx' / (data['fixtures'][0]['d'] + '.json')).read_text())
+    assert detail['lineup_context']['status'] == 'not_confirmed'
+    assert detail['lineup_context']['home']['status'] == 'collecting'
+    assert detail['p']['O15'] == .82  # lineup pilot never alters the baseline model
     assert detail['sheet_model']['ok'] is False  # empty samples are never fabricated
     assert detail['sheet_model']['v4']['ok'] is False
     assert data['fixtures'][0]['sels'] == detail['sels']

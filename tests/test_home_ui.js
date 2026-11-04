@@ -32,7 +32,7 @@ const id = fixtures[0].id;
 const d = PR.indexData({ fixtures, safe: { today: { date: today, bets: [{ fixture: id, home: 'Qualifies', away: 'Away', sel: 'O15', p: .81, odds: 1.3 }], groups: [] } },
   shortlist: { counts: { analysed: 1, screened: 1 }, rules: {}, primary: [{ fixture: id, home: 'Qualifies', away: 'Away', country: 'England', league: 'Test', kickoff: today + ' 23:59', rank: 1, market: 'goals', label: 'Over 1.5 goals', sel: 'O15', p: .81, odds: 1.3 }] }, groups: {} });
 const old = PR.indexData({fixtures: [], picks: {BTTS: [{fixture: 'old'}], O15: []}, tracker: {BTTS: {settled: 4}}});
-assert.equal(old.picks.BTTS.length, 0);
+assert.equal(old.picks.BTTS.length, 1);
 assert.equal(old.tracker.BTTS.settled, 4);
 PR.state.data = d;
 const collections = PR.testCollections(d);

@@ -11,9 +11,9 @@ PRICE_FLOOR = 1.16
 
 
 def allowed(sel: str) -> bool:
-    """Match the app's current offered markets: 1X2, overs and total corners."""
+    """Match the app's current offered markets: 1X2, BTTS yes, goals overs and corner overs; booking counts are not yet bookmaker-equivalent."""
     sel = str(sel or '')
-    return sel in ('H', 'D', 'A') or bool(re.fullmatch(r'O(?:15|25|35|45|55)|CO\d+', sel))
+    return sel in ('H', 'D', 'A', 'BTTS') or bool(re.fullmatch(r'O(?:15|25|35|45|55)|C(?:[HA])?O\d+', sel))
 
 
 def outlier(model: float | None, market: float | None, odds: float | None) -> bool:

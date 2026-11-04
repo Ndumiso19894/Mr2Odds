@@ -31,7 +31,7 @@ import pandas as pd
 
 log = logging.getLogger("acache")
 
-SCHEMA = 1   # bump whenever a payload layout changes (the whole cache is rebuilt, nothing breaks)
+SCHEMA = 2   # bump whenever a payload layout changes (the whole cache is rebuilt, nothing breaks)
 
 
 def digest_rows(df: pd.DataFrame) -> str:

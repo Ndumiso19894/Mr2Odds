@@ -126,7 +126,7 @@ def fetch_stats(eid: str) -> list | None:
         return None if v is None else v + (yr or 0)
 
     return [g(h, "Cos"), g(a, "Cos"), cards(h, "Ycs"), cards(a, "Ycs"), cards(h, "Rcs"), cards(a, "Rcs"),
-            shots(h), shots(a), g(h, "Shon"), g(a, "Shon"), g(h, "Pss"), g(a, "Pss"), g(h, "Fls"), g(a, "Fls")]
+            shots(h), shots(a), g(h, "Shon"), g(a, "Shon"), g(h, "Pss"), g(a, "Pss"), g(h, "Fls"), g(a, "Fls"), g(h, "Shof"), g(a, "Shof")]
 
 
 class Archive:
@@ -391,14 +391,14 @@ class Archive:
                 if int(esd) < cutoff:
                     continue
                 st = stats.get(eid) or []
-                st = (st + [None] * 12)[:12] if st else [None] * 12
+                st = (st + [None] * 16)[:16] if st else [None] * 16
                 rows.append((data.get("country") or "", div, data.get("league") or "", esd[:8], home, away, hid, aid,
                              hg, ag, hth, hta, eid, *st))
         if not rows:
             return pd.DataFrame()
         df = pd.DataFrame(rows, columns=["country", "div", "league", "d", "home", "away", "home_id", "away_id",
                                          "hg", "ag", "hth", "hta", "eid",
-                                         "hc", "ac", "hy", "ay", "hr", "ar", "hs", "as", "hst", "ast", "hposs", "aposs"])
+                                         "hc", "ac", "hy", "ay", "hr", "ar", "hs", "as", "hst", "ast", "hposs", "aposs", "hf", "af", "hsoff", "asoff"])
         df["date"] = pd.to_datetime(df["d"], format="%Y%m%d")
         df = df.drop(columns=["d"])
         for c in ("hg", "ag"):
@@ -407,7 +407,7 @@ class Archive:
             df[c] = pd.to_numeric(df[c], errors="coerce")
         for c in ("hxg", "axg"):
             df[c] = np.nan
-        for c in ("hc", "ac", "hy", "ay", "hr", "ar", "hs", "as", "hst", "ast", "hposs", "aposs"):
+        for c in ("hc", "ac", "hy", "ay", "hr", "ar", "hs", "as", "hst", "ast", "hposs", "aposs", "hf", "af", "hsoff", "asoff"):
             df[c] = pd.to_numeric(df[c], errors="coerce") if c in df.columns else np.nan
         df["referee"] = ""
         return df

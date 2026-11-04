@@ -40,13 +40,13 @@ GROUPS = {"result": "Match result", "dc": "Double chance", "goals": "Total goals
 SAFE_BET_COLS = ["match_date", "kickoff", "country", "div", "league", "home", "away", "sel", "label", "p", "p_model",
                  "p_sb", "odds", "status", "score", "settled_on", "run", "report_date", "botd", "kind"]
 # The latest app policy offers result, total-goals overs and total-corners overs.
-SAFE_GROUPS = ("result", "goals", "corners")
+SAFE_GROUPS = ("result", "goals", "btts", "corners", "cards")
 # v5: overs only — no "under x goals / corners / cards", no "team under", no "no BTTS" (user decision)
 OVERS_ONLY = True
 
 
 def is_under(sel: str) -> bool:
-    return sel == "NBTTS" or bool(re.match(r"^(U\d+|[HA]U\d+|CU\d+|KU\d+)$", sel))
+    return sel == "NBTTS" or bool(re.fullmatch(r"(?:[HA]|C[HA]?|K[HA]?)?U\d+", sel))
 
 
 # Day card groups in priority order; 1X2 and O2.5 additionally require recent form backing.
@@ -57,7 +57,8 @@ BOTD_GROUPS = [
     ("result", "1X2", lambda sel: sel in ("H", "A"), 0.70, 5),
     ("o25", "Over 2.5 goals", lambda sel: sel == "O25", 0.55, 7),
     ("o15", "Goals · Over 1.5", lambda sel: sel == "O15", 0.70, 7),
-    ("corners", "Corners", lambda sel: sel.startswith("CO"), 0.65, 7),
+    ("corners", "Corners", lambda sel: bool(re.fullmatch(r"C(?:[HA])?O\d+", sel)), 0.65, 7),
+    ("btts", "Both teams to score", lambda sel: sel == "BTTS", 0.55, 7),
 ]
 SIGNAL_SECTIONS = ("result", "o25")
 BOTD_PER_GROUP = 3
@@ -85,6 +86,9 @@ def label(sel: str, home: str = "Home", away: str = "Away") -> str:
     if sel[0] in "HA" and sel[1] in "OU":
         team = home if sel[0] == "H" else away
         return f"{team} {'over' if sel[1] == 'O' else 'under'} {_line(sel):.1f} goals"
+    if re.fullmatch(r"[CK][HA][OU]\d+", sel):
+        team = home if sel[1] == "H" else away
+        return f"{team} {'over' if sel[2] == 'O' else 'under'} {_line(sel):.1f} {'corners' if sel[0] == 'C' else 'cards'}"
     if sel[0] == "C":
         return f"{'Over' if sel[1] == 'O' else 'Under'} {_line(sel):.1f} corners"
     if sel[0] == "K":
@@ -125,16 +129,22 @@ def settle(sel: str, hg, ag, hc=None, ac=None, hcards=None, acards=None) -> bool
     if sel[0] in "HA" and sel[1] in "OU":
         g = hg if sel[0] == "H" else ag
         return g > _line(sel) if sel[1] == "O" else g < _line(sel)
-    if sel[0] == "C":
-        if hc is None or ac is None or _nan(hc) or _nan(ac):
+    # Provider card counts do not establish SportyBet's booking settlement (red and second-yellow rules).
+    # Leave these undecided rather than falsely grading a user's ticket.
+    if sel.startswith("K"):
+        return None
+    count_match = re.fullmatch(r"C([HA])?([OU])\d+", sel)
+    if count_match:
+        h, a = (hc, ac) if sel[0] == "C" else (hcards, acards)
+        side = sel[1] if sel[1] in "HA" else None
+        vals = [h] if side == "H" else [a] if side == "A" else [h, a]
+        if any(v is None or _nan(v) for v in vals):
             return None
-        c = int(hc) + int(ac)
-        return c > _line(sel) if sel[1] == "O" else c < _line(sel)
-    if sel[0] == "K":
-        if hcards is None or acards is None or _nan(hcards) or _nan(acards):
+        count = sum(float(v) for v in vals)
+        line = _line(sel)
+        if count == line:  # a push is not a loss; legacy ledger cannot encode a push here
             return None
-        k = int(hcards) + int(acards)
-        return k > _line(sel) if sel[1] == "O" else k < _line(sel)
+        return count > line if count_match.group(2) == "O" else count < line
     return None
 
 
@@ -241,10 +251,16 @@ def selections(r) -> list[Sel]:
     # corners / cards (model; prices only when the full market list was fetched)
     full = r.sb_full or {}
     for prefix, probs, key in (("C", (r.extra.corner_p or {}).get("total"), "CORN"),
-                               ("K", (r.extra.card_p or {}).get("total"), "CARDS")):
+                               ("CH", (r.extra.corner_p or {}).get("home"), "CORNH"),
+                               ("CA", (r.extra.corner_p or {}).get("away"), "CORNA"),
+                               ("K", (r.extra.card_p or {}).get("total"), "CARDS"),
+                               ("KH", (r.extra.card_p or {}).get("home"), "CARDSH"),
+                               ("KA", (r.extra.card_p or {}).get("away"), "CARDSA")):
         if not probs:
             continue
-        lines = full.get(key) or {}
+        # Counts are a card-count proxy, not verified SportyBet booking probabilities. Never attach
+        # booking prices until training data matches its rules, even if the feed has a price.
+        lines = (full.get(key) or {}) if not prefix.startswith("K") else {}
         for line, po in probs.items():
             if not _valid(po):
                 continue
@@ -568,9 +584,9 @@ def _lookup(results: pd.DataFrame, country: str, home: str, away: str, date: str
 
 def _cards(row, side: str):
     y, r = row.get(f"{side}y"), row.get(f"{side}r")
-    if y is None or _nan(y):
+    if y is None or r is None or _nan(y) or _nan(r):
         return None
-    return float(y) + (0.0 if r is None or _nan(r) else float(r))
+    return float(y) + float(r)
 
 
 def settle_bets(df: pd.DataFrame, results: pd.DataFrame, today: datetime) -> pd.DataFrame:
@@ -585,7 +601,7 @@ def settle_bets(df: pd.DataFrame, results: pd.DataFrame, today: datetime) -> pd.
                 df.loc[i, ["status", "score", "settled_on"]] = ["hit" if ok else "miss", f"{int(row['hg'])}-{int(row['ag'])}",
                                                                 today.strftime("%Y-%m-%d")]
                 continue
-        if (pd.Timestamp(today.date()) - pd.Timestamp(r["match_date"])).days > 21:
+        if not str(r["sel"]).startswith("K") and (pd.Timestamp(today.date()) - pd.Timestamp(r["match_date"])).days > 21:
             df.loc[i, ["status", "settled_on"]] = ["void", today.strftime("%Y-%m-%d")]
     return df
 
@@ -614,7 +630,8 @@ def settle_accas(df: pd.DataFrame, results: pd.DataFrame, today: datetime) -> pd
             status = "won"
         else:
             oldest = min(pd.Timestamp(l["date"]) for l in legs)
-            status = "void" if (pd.Timestamp(today.date()) - oldest).days > 21 else "pending"
+            unresolved_booking = any(str(l.get("sel", "")).startswith("K") and o is None for l, o in zip(legs, outcomes))
+            status = "void" if not unresolved_booking and (pd.Timestamp(today.date()) - oldest).days > 21 else "pending"
         if status != "pending":
             df.loc[i, ["status", "settled_on", "legs"]] = [status, today.strftime("%Y-%m-%d"), json.dumps(legs)]
         else:

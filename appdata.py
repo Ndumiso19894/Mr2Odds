@@ -22,6 +22,7 @@ import pandas as pd
 import competition_policy
 import recommendation_policy as rec_policy
 import sheet_model
+import lineup_pilot
 
 log = logging.getLogger("scanner")
 
@@ -151,7 +152,7 @@ def update_badges(path: Path, rows: list, ls_map: dict, extra: dict | None = Non
     return badges
 
 
-BOARD_SELS = ("H", "A", "O15", "O25", "BTTS", "CO95", "KO35")
+BOARD_SELS = ("H", "D", "A", "O15", "O25", "BTTS", "CO95", "KO35")
 
 
 def _board(sels: list[dict]) -> dict:
@@ -202,7 +203,7 @@ def shortlist_payload(index: list[dict], now: datetime) -> dict:
             if not rec_policy.allowed(sel):
                 continue
             screened += 1
-            bar = 0.55 if sel in ("H", "D", "A", "O25") else 0.65 if group == "corners" else 0.70
+            bar = 0.55 if sel in ("H", "D", "A", "O25", "BTTS") else 0.65 if group == "corners" else 0.70
             if p is None or not 0 < p < 1 or odds is None or odds <= 1 or diff:
                 continue
             # Without a two-way market view, apply the same raw-price outlier check as the app.
@@ -386,6 +387,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
             "sportybet": _sb(r.sb_full or r.sb),
             "teams": {"home": _profile(r.home), "away": _profile(r.away)},
             "sheet_model": sheet_model.for_match(r, comp(r)),
+            "lineup_context": lineup_pilot.context(fx, ctx.get("lineup_as_of", now), ctx.get("lineup_archive") or []),
             "league_avg": {"home_goals": _f(r.div_avg.mu_h, 2), "away_goals": _f(r.div_avg.mu_a, 2),
                            "o25": _f(r.div_avg.o25_rate)},
             "h2h": [{"date": _date(m["date"]), "home": m["home"], "away": m["away"], "hg": int(m["hg"]), "ag": int(m["ag"]),
@@ -462,7 +464,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
         "report_md": f"reports/{now:%Y-%m-%d}.md", "csv": f"reports/{now:%Y-%m-%d}.csv",
         "thresholds": {m: t["p"] for m, t in thresholds.items()}, "backtest": backtest,
         "next_run": ctx["window_end"].strftime("%Y-%m-%d %H:%M"), "refresh_minutes": 30,
-        "coverage": coverage or {},
+        "coverage": coverage or {}, "model_signals": ctx.get("model_signals"),
     }
     # ---- blocks for the Mr 2 Odds web layer: advisor live record, shortlist report card, value/strong groups.
     # Pure presentation of what the tracker and picks already contain — no new model maths.
@@ -565,6 +567,8 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
         "botd": [b["id"] for b in safe_out["today"]["bets"]],
         "alerts": [a["id"] for a in alerts[-30:]], "tracked_eids": sorted(set(live_eids)),
     }
+    if ctx.get("model_signals") is not None:
+        app_meta["model_signals"] = ctx["model_signals"]
     if ctx.get("analysis_cache"):
         app_meta["analysis_cache"] = ctx["analysis_cache"]
     if report_run:
