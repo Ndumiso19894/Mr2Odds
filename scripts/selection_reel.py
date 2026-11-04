@@ -148,6 +148,13 @@ def prepare(snapshot, output, now=None, session=None, music=None):
     return True
 
 
+def reel_caption(info, test=False):
+    caption = fb.caption_for(info)
+    if test:
+        caption = caption.replace('\n\n', '\n\nTest reel\n\n', 1)
+    return caption
+
+
 def validate_prepared(output, now=None):
     now = (now or datetime.now(fb.SAST)).astimezone(fb.SAST)
     video = output/'selection-reel.mp4'
@@ -163,7 +170,8 @@ def validate_prepared(output, now=None):
         raise ValueError('Reel contains an expired or invalid selection')
     if not video.is_file() or not 0 < video.stat().st_size <= MAX_VIDEO_BYTES:
         raise ValueError('Reel is missing or exceeds the upload size limit')
-    if len(fb.caption_for(info)) > 1024:
+    # Reserve space for the test label even before a delivery claim is written.
+    if len(reel_caption(info, test=True)) > 1024:
         raise ValueError('The reel caption is too long for Telegram')
     return video, info
 
@@ -190,7 +198,7 @@ def publish_facebook(output, now=None, session=None, pause=time.sleep):
             raise RuntimeError('Facebook rejected the reel video upload: ' + fb.error_summary(r))
         # This write can be ambiguous. Never retry automatically after claiming.
         r = session.post(endpoint, data={'access_token':token,'upload_phase':'finish', 'video_id':video_id,
-                         'video_state':'PUBLISHED', 'description':fb.caption_for(info)}, timeout=60)
+                         'video_state':'PUBLISHED', 'description':reel_caption(info, os.environ.get('REEL_TEST') == 'true')}, timeout=60)
         if not r.ok or r.json().get('success') is not True:
             raise RuntimeError('Facebook did not confirm reel publication; check the Page before retrying')
         for attempt in range(12):
@@ -222,7 +230,7 @@ def publish_telegram(output, now=None, session=None):
     try:
         with video.open('rb') as src:
             r = session.post(f'https://api.telegram.org/bot{token}/sendVideo',
-                data={'chat_id':chat, 'caption':fb.caption_for(info), 'supports_streaming':'true'},
+                data={'chat_id':chat, 'caption':reel_caption(info, os.environ.get('REEL_TEST') == 'true'), 'supports_streaming':'true'},
                 files={'video':('selection-reel.mp4',src,'video/mp4')}, timeout=180)
         if not r.ok or r.json().get('ok') is not True:
             raise RuntimeError('Telegram did not confirm video delivery; check the chat before retrying')
