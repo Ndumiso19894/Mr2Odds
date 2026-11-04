@@ -1,3 +1,7 @@
+## Competition pause
+- New analysis and live lists focus on senior men’s domestic leagues; women’s and youth competitions, cups and international tournaments are paused.
+- Tennis scanning and notifications are paused. Historical records and existing tickets are retained.
+
 ## Android branding, release delivery and recommendation fixes
 - The launcher, splash screen and in-app logo now use the new Mr 2 Odds artwork.
 - Future Android APK releases are sent to the configured Telegram chat.

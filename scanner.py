@@ -60,6 +60,7 @@ import acache
 import squads as squads_mod
 import worldfeed
 import appdata
+import competition_policy
 import verify
 import safe as safe_mod
 import history as history_mod
@@ -530,6 +531,7 @@ def load_fixtures(tz: ZoneInfo) -> pd.DataFrame:
     fx["kickoff"] = fx.apply(kickoff, axis=1)
     fx["time_known"] = fx["time"].apply(lambda t: bool(t) and t.lower() not in ("nan", "none"))
     fx["referee"] = fx["referee"].replace({"nan": "", "None": ""})
+    fx = fx[fx.apply(competition_policy.allows_record, axis=1)]
     if CONFIG["LEAGUES"]:
         fx = fx[fx["code"].isin(CONFIG["LEAGUES"])]
     return fx.sort_values(["kickoff", "country", "league"]).reset_index(drop=True)
@@ -1944,7 +1946,7 @@ def render_report(ctx: dict, rows: list[MatchRow], picks: dict, summary: dict, n
         "totals; cards include a referee factor where the referee is published (UK leagues). Both are calibrated "
         "within ~2 points on the standard lines (`backtest/MARKETS_RESULTS.md`). Half-time corners have no free data "
         "source and are shown as Sportybet prices only, without a model.",
-        "* **World coverage (v4):** every competition on Livescore.com that Sportybet prices is analysed with the same "
+        "* **World coverage:** senior men's domestic leagues on Livescore.com are analysed with the same "
         "team-form model from Livescore's season results (goals markets only; corners and cards need the richer "
         "football-data feed of the 22 main European leagues). Sportybet's de-margined prices are the market view there.",
         "* **High-probability selections** = goals, corners and cards selections with model probability ≥70% (and the de-margined "
@@ -2367,6 +2369,9 @@ def main() -> None:
     if CONFIG["LIVESCORE"]:
         try:
             ls_events = worldfeed.fetch_window(start, end, tz_off)
+            ls_events = [e for e in ls_events if competition_policy.allowed(
+                e.get("country"), e.get("league"), home=e.get("home"), away=e.get("away"),
+                key=f"{e.get('ccd', '')}/{e.get('scd', '')}")]
             log.info("Livescore: %d events on the window days", len(ls_events))
         except Exception as exc:  # noqa: BLE001
             log.warning("Livescore window failed: %s", exc)
@@ -2415,17 +2420,19 @@ def main() -> None:
                         prios[k] = 0
             try:
                 for ev in worldfeed.fetch_day(now - timedelta(days=2), tz_off):
-                    if ev["ccd"] and ev["scd"]:
+                    if ev["ccd"] and ev["scd"] and competition_policy.allowed(
+                            ev.get("country"), ev.get("league"), home=ev.get("home"), away=ev.get("away"),
+                            key=f"{ev['ccd']}/{ev['scd']}"):
                         k = worldfeed.stage_key(ev["ccd"], ev["scd"])
                         if k not in prios:
                             prios[k] = 0
             except Exception as exc:  # noqa: BLE001
                 log.warning("Stage discovery day failed: %s", exc)
             for k in worldfeed.known_stages(LS_DIR / "stages"):
-                if k not in prios:
+                if k not in prios and competition_policy.allows_record(archive.load(k)):
                     prios[k] = 0
             for k in (s.strip() for s in str(CONFIG["SEED_STAGES"]).split(",")):
-                if k and k not in prios:
+                if k and k not in prios and competition_policy.allowed(key=k):
                     prios[k] = 0
             archive.refresh(prios, now, tz_off)
             archive.backfill(prios, now, tz_off, seasons=CONFIG["BACKFILL_SEASONS"], budget_s=CONFIG["BACKFILL_BUDGET_S"])
@@ -2607,6 +2614,10 @@ def main() -> None:
     ctx["safe"] = safe_res
     ctx["safe_summary"] = safe_mod.summary(bets_df, accas_df, now)
     botd_card = safe_mod.bets_of_the_day(bets_df, now)
+    # Sticky historical card entries can predate the pause; retain the ledger but do not republish them.
+    botd_card["bets"] = [b for b in botd_card["bets"] if competition_policy.allows_record(b)]
+    for g in botd_card["groups"]:
+        g["bets"] = [b for b in g["bets"] if competition_policy.allows_record(b)]
     ctx["botd"], ctx["botd_groups"] = botd_card["bets"], botd_card["groups"]
     log.info("Safest: %d bets (%d new), bets of the day: %d", len(safe_res["bets"]), len(new_bets), len(ctx["botd"]))
 

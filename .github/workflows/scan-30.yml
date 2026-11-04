@@ -8,7 +8,12 @@ on:
     # idle-slot tests at 12:00 and 12:30 UTC missed even after re-registering the workflow) —
     # the cadence is therefore kept alive by the self-dispatch chain in the `gate` job below.
     - cron: "*/30 * * * *"
-  workflow_dispatch:        # run it manually from the Actions tab at any time
+  workflow_dispatch:        # optionally force a fresh scan even inside the cadence window
+    inputs:
+      force_scan:
+        description: "Run a full scan now instead of waiting for the normal cadence"
+        type: boolean
+        default: false
 
 permissions:
   contents: write           # push the state branch
@@ -40,10 +45,16 @@ jobs:
         id: check
         env:
           GH_TOKEN: ${{ github.token }}
+          FORCE_SCAN: ${{ inputs.force_scan }}
         run: |
           python3 - "${GITHUB_OUTPUT}" <<'EOF'
           import datetime, json, os, sys, time, urllib.request
           out = sys.argv[1]
+          if os.environ.get("FORCE_SCAN", "").lower() == "true":
+              print("Manual override: running a fresh scan")
+              with open(out, "a") as f:
+                  f.write("skip=false\n")
+              sys.exit(0)
           token, repo = os.environ["GH_TOKEN"], os.environ["GITHUB_REPOSITORY"]
           # The last REAL scan is when data/app/meta.json was generated (SAST = UTC+2).
           # (The heartbeat runs of this workflow are not scans and must not reset the clock.)

@@ -13,6 +13,7 @@ from datetime import datetime
 from pathlib import Path
 
 import safe
+import competition_policy
 
 MAX_LATEST_MB = 4.0
 STATUSES = {"pending", "hit", "miss", "void"}
@@ -75,6 +76,8 @@ def check_publication(staging: Path, live: Path, ledger: Path, now: datetime, ex
             errors.append(f"duplicate or empty fixture id {fid!r}")
             continue
         ids.add(fid)
+        if not competition_policy.allows_record(f):
+            errors.append(f"paused competition in published fixture {fid}")
         try:
             datetime.strptime(f.get("kickoff", ""), "%Y-%m-%d %H:%M")
         except ValueError:
@@ -179,6 +182,8 @@ def check_publication(staging: Path, live: Path, ledger: Path, now: datetime, ex
     section_keys = {g[0] for g in safe.BOTD_GROUPS}
     card_matches = {}
     for b in today.get("bets") or []:
+        if not competition_policy.allows_record(b):
+            errors.append(f"paused competition in day card {b.get('id')}")
         if b.get("status") not in STATUSES:
             errors.append(f"bad status {b.get('status')!r} on day-card bet {b.get('id')}")
         if b.get("section") not in section_keys:

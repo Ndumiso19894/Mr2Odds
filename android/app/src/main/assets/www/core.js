@@ -337,10 +337,34 @@ window.PR = (function () {
   const isLive = (s) => s && s.status && s.status !== 'NS' && !['FT', 'AET', 'AP', 'Postp.', 'Canc.', 'Aband.'].includes(s.status);
   const isFT = (s) => s && ['FT', 'AET', 'AP'].includes(s.status);
 
+  // Same temporary competition pause as competition_policy.py. The feed does not provide a
+  // reliable competition-type flag, so use its competition/category/slug and team markers.
+  function competitionAllowed(f) {
+    f = f || {};
+    const norm = (v) => String(v || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    const continent = new Set(['world', 'international', 'europe', 'asia', 'africa', 'oceania', 'north and central america', 'north central america', 'south america']);
+    if (continent.has(norm(f.country))) return false;
+    const meta = [f.country, f.league || f.competition, f.div, f.key, f.slug].map(norm).join(' ');
+    const paused = /\b(?:women|womens|woman|ladies|female|feminine|feminin|femminile|femmes|femenina|femenino|feminina|feminino|frauen|damen|damer|kvinde|kvinder|damallsvenskan|nwsl|wsl|girls|youth|junior|juniors|juvenil|academy|cup|cups|copa|coppa|coupe|pokal|kupa|taca|trophy|shield|supercup|supercopa|supercoppa|supercoupe|recopa|friendlies|friendly|olympics|olympic|libertadores|sudamericana)\b|\b(?:u|under|sub)\s*(?:1[0-9]|2[0-3])\b|\b(?:liga\s+f|we\s+league)\b|\b(?:champions|europa|conference|nations)\s+league\b|\b(?:world|european|african|asian|continental)\s+championship\b|\b(?:world|european|african|asian)\s+(?:qualifiers?|qualification)\b/;
+    const teamPaused = /\b(?:women|womens|woman|ladies|female|feminine|feminin|femminile|femmes|femenina|femenino|feminina|feminino|frauen|girls|youth)\b|\b(?:u|under|sub)\s*(?:1[0-9]|2[0-3])\b|\(\s*w\s*\)\s*$|\s+w\s*$/;
+    return !paused.test(meta) && ![f.home, f.away].some((v) => teamPaused.test(String(v || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase()));
+  }
   // ------------------------------------------------------------------ data
   /** sels rows: [sel, p (model), p_model, p_market (implied, comparison only), odds, disagreement flag, diff pp, EV] */
   const selObj = (x) => Array.isArray(x) ? { sel: x[0], p: x[1], p_model: x[2], p_sb: x[3], odds: x[4], diff: !!x[5], diff_pp: x.length > 6 ? x[6] : (x[2] != null && x[3] != null ? Math.round(1000 * (x[2] - x[3])) / 10 : null), ev: x.length > 7 ? x[7] : (x[2] != null && x[4] ? Math.round(1000 * (x[2] * x[4] - 1)) / 1000 : null) } : x;
   function indexData(d) {
+    d.fixtures = (d.fixtures || []).filter(competitionAllowed);
+    if (d.safe) {
+      d.safe.bets = (d.safe.bets || []).filter(competitionAllowed);
+      if (d.safe.today) {
+        d.safe.today.bets = (d.safe.today.bets || []).filter(competitionAllowed);
+        (d.safe.today.groups || []).forEach((g) => { g.bets = (g.bets || []).filter(competitionAllowed); });
+      }
+    }
+    if (d.shortlist) {
+      ['primary', 'x12', 'watchlist'].forEach((k) => { if (Array.isArray(d.shortlist[k])) d.shortlist[k] = d.shortlist[k].filter(competitionAllowed); });
+    }
+    if (d.strong_markets && Array.isArray(d.strong_markets.bets)) d.strong_markets.bets = d.strong_markets.bets.filter(competitionAllowed);
     d._byId = {}; (d.fixtures || []).forEach((f) => { d._byId[f.id] = f; f.sels = (f.sels || []).map(selObj); f.p = f.p || {}; f.xg = f.xg || [null, null]; f.x12 = f.x12 || [null, null, null]; f.major = f.tier !== 'world'; });
     if (d.safe && d.safe.bets) d.safe.bets.forEach((b) => { const f = d._byId[b.fixture]; b.major = f ? f.major : true; });
     return d;
@@ -934,12 +958,12 @@ window.PR = (function () {
     // teams (worldwide index, loaded on demand)
     const tIdx = state.teamIdx;
     if (!tIdx) PR.loadTeamIndex().then((j) => { if (j && (state.q || '').trim().toLowerCase() === q) paintResults(); }).catch(() => { /* offline */ });
-    const teams = tIdx ? (tIdx.teams || []).filter((t) => hit(t.n)).slice(0, 6)
+    const teams = tIdx ? (tIdx.teams || []).filter((t) => competitionAllowed({country:t.c, league:t.l, div:t.d, home:t.n})).filter((t) => hit(t.n)).slice(0, 6)
       .map((t) => `<div class="list-item tap gsr" data-gsteam="${esc(t.n)}|${esc(t.c)}|${esc(t.d)}"><span class="ko">${badge(t.n, null, 24)}</span><div class="main"><div class="match">${esc(t.n)}</div><div class="meta">${flag(t.c)} ${esc(t.c || '')} · ${esc(t.l || '')}</div></div>${icon('next')}</div>`) : [];
     out.push(grp('Teams', teams));
     // leagues
     const lidx = (PR.leaguesIndex && PR.leaguesIndex()) || null;
-    const lgs = lidx ? (lidx.leagues || []).filter((x) => hit(x.league) || hit(x.country)).slice(0, 5)
+    const lgs = lidx ? (lidx.leagues || []).filter(competitionAllowed).filter((x) => hit(x.league) || hit(x.country)).slice(0, 5)
       .map((x) => `<div class="list-item tap gsr" data-gslg="${esc(x.slug)}"><span class="ko">${x.table ? icon('trophy') : flag(x.country)}</span><div class="main"><div class="match">${esc(x.league)}</div><div class="meta">${esc(x.country || '')}${x.next ? ` · next ${esc(koShort(x.next))}` : ''}</div></div>${icon('next')}</div>`) : [];
     out.push(grp('Leagues', lgs));
     // days (archive)
@@ -1054,7 +1078,7 @@ window.PR = (function () {
   }
 
   return { native, settings, state, $, $$, saveSettings, nfetch, getJson, resources, migrateResource, validResource, refreshVisible, connectionChanged, clearDataCache, rawUrl, esc, pct, f1, f2, signed, DAYS, MONTHS, parseLocal, tzNow, ymd, stored, persist, cache, prefetchDetails, pubStamp,
-    dayName, niceDate, koTime, koShort, toast, pill, bar, wdl, formBadges, md, GROUPS, GROUP_ICON, selGroup, isUnder, isDropped, SEL_FLOOR, selLabel, selShort, settleSel,
+    dayName, niceDate, koTime, koShort, toast, pill, competitionAllowed, bar, wdl, formBadges, md, GROUPS, GROUP_ICON, selGroup, isUnder, isDropped, SEL_FLOOR, selLabel, selShort, settleSel,
     liveVerdict, isLive, isFT, indexData, fx, loadDetail, detailCached, detailKey, loadData, saveLatest, saveAux, statusLine, isOutlier, loadDay, dayRecord, finalFor, storedIncidents, loadTeams, teamsCached, loadTeamIndex, realTable, slug, TABS, render, setTab, push, replace,
     sbEventUrl, sbShareUrl, openSportybet, openBookingCode, openExternal, copyText, namesAgree, displayName, fittedSbEvent,
     back, openMatch, openTeam, toggleMenu, closeMenu, contactCard, editorCard, teamLink, teamSpan, matchLine, matchRow, segmented, select, scoreBox, statusIcon, CONTACT, APP_VERSION,

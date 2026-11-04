@@ -24,11 +24,12 @@ def test_uploads_document_and_version(config, monkeypatch, capsys):
         assert timeout == 120
         return io.BytesIO(json.dumps({'ok': True}).encode())
     monkeypatch.setattr(delivery.urllib.request, 'urlopen', fake_open)
-    delivery.send(config, '1.8.8', 'https://github.com/example/project/releases/tag/app-v1.8.8')
+    delivery.send(config, '1.8.8')
     req = captured['request']
     assert req.full_url.endswith('/sendDocument')
     assert b'filename="PlayReport.apk"' in req.data
     assert b'APK_BYTES' in req.data and b'1.8.8' in req.data and b'test-chat' in req.data
+    assert b'http://' not in req.data and b'https://' not in req.data  # file, not a release link
     assert 'test-token' not in capsys.readouterr().out
 
 
@@ -36,7 +37,7 @@ def test_missing_secrets_fail_without_request(config, monkeypatch):
     monkeypatch.delenv('TELEGRAM_CHAT_ID')
     monkeypatch.setattr(delivery.urllib.request, 'urlopen', lambda *_a, **_kw: pytest.fail('network request'))
     with pytest.raises(RuntimeError, match='requires TELEGRAM_BOT_TOKEN'):
-        delivery.send(config, '1.8.8', 'https://example.test')
+        delivery.send(config, '1.8.8')
 
 
 def test_telegram_rejection_fails_without_leaking_credentials(config, monkeypatch):
@@ -44,17 +45,17 @@ def test_telegram_rejection_fails_without_leaking_credentials(config, monkeypatc
         raise urllib.error.HTTPError(req.full_url, 403, 'Forbidden', {}, None)
     monkeypatch.setattr(delivery.urllib.request, 'urlopen', fail)
     with pytest.raises(RuntimeError, match='HTTP 403') as error:
-        delivery.send(config, '1.8.8', 'https://example.test')
+        delivery.send(config, '1.8.8')
     assert 'test-token' not in str(error.value) and 'test-chat' not in str(error.value)
 
 
 def test_unconfirmed_delivery_fails(config, monkeypatch):
     monkeypatch.setattr(delivery.urllib.request, 'urlopen', lambda *a, **kw: io.BytesIO(b'{"ok":false}'))
     with pytest.raises(RuntimeError, match='did not confirm'):
-        delivery.send(config, '1.8.8', 'https://example.test')
+        delivery.send(config, '1.8.8')
 
 
 def test_large_apk_is_not_uploaded(config, monkeypatch):
     monkeypatch.setattr(delivery, 'MAX_BYTES', 2)
     with pytest.raises(RuntimeError, match='50 MB'):
-        delivery.send(config, '1.8.8', 'https://example.test')
+        delivery.send(config, '1.8.8')

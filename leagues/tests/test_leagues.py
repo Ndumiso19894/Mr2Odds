@@ -114,12 +114,13 @@ def test_build_publishes_index_and_details(tmp_path):
         {"key": "england/empty", "country": "England", "league": "Empty", "events": {}}))
 
     n = leagues.build(stages, datetime(2026, 9, 29, 9, 0), tmp_path / "out", tz_hours=2)
-    assert n == 2
+    assert n == 1
     idx = json.loads((tmp_path / "out" / "index.json").read_text())
-    assert idx["count"] == 2
+    assert idx["count"] == 1
     by_slug = {x["slug"]: x for x in idx["leagues"]}
     assert by_slug["england__test-league.json"]["table"] is True
-    assert by_slug["england__test-cup.json"]["table"] is False
+    assert "england__test-cup.json" not in by_slug
+    assert (stages / "england__test-cup.json").exists()  # archive is preserved
     assert by_slug["england__test-league.json"]["season"] == "2025-2026"
     det = json.loads((tmp_path / "out" / "england__test-league.json").read_text())
     assert [r["team"] for r in det["table"]][:1] == ["A"]

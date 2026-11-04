@@ -17,7 +17,7 @@ from pathlib import Path
 MAX_BYTES = 50 * 1024 * 1024
 
 
-def send(apk: Path, version: str, release_url: str) -> None:
+def send(apk: Path, version: str) -> None:
     token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     chat_id = os.environ.get('TELEGRAM_CHAT_ID', '').strip()
     if not token or not chat_id:
@@ -25,7 +25,7 @@ def send(apk: Path, version: str, release_url: str) -> None:
     if not apk.is_file() or not 0 < apk.stat().st_size <= MAX_BYTES:
         raise RuntimeError('APK is missing, empty, or larger than Telegram’s 50 MB document limit.')
     boundary = 'mr2odds-' + uuid.uuid4().hex
-    caption = f'Mr 2 Odds {version} for Android\n\nDownload the APK attached below.\nRelease: {release_url}'
+    caption = f'Mr 2 Odds {version} for Android\n\nInstall the attached APK.'
     parts = []
     for name, value in [('chat_id', chat_id), ('caption', caption)]:
         parts.append(f'--{boundary}\r\nContent-Disposition: form-data; name="{name}"\r\n\r\n{value}\r\n'.encode())
@@ -49,11 +49,11 @@ def send(apk: Path, version: str, release_url: str) -> None:
 
 
 def main() -> int:
-    if len(sys.argv) != 4:
-        print('Usage: send_release_telegram.py APK VERSION RELEASE_URL', file=sys.stderr)
+    if len(sys.argv) != 3:
+        print('Usage: send_release_telegram.py APK VERSION', file=sys.stderr)
         return 2
     try:
-        send(Path(sys.argv[1]), sys.argv[2], sys.argv[3])
+        send(Path(sys.argv[1]), sys.argv[2])
     except RuntimeError as exc:
         print(f'::error::{exc}', file=sys.stderr)
         return 1

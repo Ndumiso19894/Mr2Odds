@@ -24,6 +24,8 @@ from collections import Counter
 from datetime import datetime, timedelta
 from pathlib import Path
 
+import competition_policy
+
 log = logging.getLogger("coverage")
 
 MIN_TEAM_MATCHES = 5     # quality._score_sample tier boundary: >=5 matches -> 0.55 (moderate)
@@ -184,7 +186,7 @@ def build(stages_dir: Path, out_dir: Path, now: datetime,
             d = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, ValueError):
             continue
-        if not isinstance(d, dict) or not d.get("key"):
+        if not isinstance(d, dict) or not d.get("key") or not competition_policy.allows_record(d):
             continue
         key = d["key"]
         entries.append(assess_stage(d, now, int(window.get(key, 0)), nexts.get(key)))

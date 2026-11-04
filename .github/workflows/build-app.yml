@@ -98,5 +98,4 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          python3 scripts/send_release_telegram.py release-apk/PlayReport.apk "$APP_VERSION_NAME" \
-            "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/releases/tag/app-v${APP_VERSION_NAME}"
+          python3 scripts/send_release_telegram.py release-apk/PlayReport.apk "$APP_VERSION_NAME"
