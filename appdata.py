@@ -19,6 +19,8 @@ from pathlib import Path
 
 import pandas as pd
 
+import competition_policy
+
 log = logging.getLogger("scanner")
 
 VERSION = 3
@@ -233,6 +235,8 @@ def carry_over(prev: dict | None, index: list, bets: list, tracked: set, now: da
     prev_tracked = set(prev.get("tracked") or [])
     frozen_ids = set()
     for f in prev.get("fixtures") or []:
+        if not competition_policy.allows_record(f):
+            continue
         if f.get("id") in cur_ids:
             continue
         try:

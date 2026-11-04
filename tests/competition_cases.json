@@ -1,0 +1,211 @@
+[
+  {
+    "record": {
+      "country": "England",
+      "league": "Premier League",
+      "home": "Arsenal",
+      "away": "Bournemouth"
+    },
+    "allowed": true
+  },
+  {
+    "record": {
+      "country": "England",
+      "league": "Championship",
+      "home": "Birmingham",
+      "away": "Bristol City"
+    },
+    "allowed": true
+  },
+  {
+    "record": {
+      "country": "Argentina",
+      "league": "Liga Profesional",
+      "home": "Boca Juniors",
+      "away": "River Plate"
+    },
+    "allowed": true
+  },
+  {
+    "record": {
+      "country": "Brazil",
+      "league": "Serie A",
+      "home": "Cuiaba",
+      "away": "Santos"
+    },
+    "allowed": true
+  },
+  {
+    "record": {
+      "country": "England",
+      "league": "FA Cup",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "Spain",
+      "league": "Copa del Rey",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "Germany",
+      "league": "DFB Pokal",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "Europe",
+      "league": "League Phase",
+      "key": "uefa-champions-league/league-phase",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "Brazil",
+      "league": "Group A",
+      "div": "LS:brasil/copa-do-brasil",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "England",
+      "league": "Women's Super League",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "Sweden",
+      "league": "Damallsvenskan",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "Italy",
+      "league": "Serie A Femminile",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "England",
+      "league": "Premier League 2 U21",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "Brazil",
+      "league": "Brasileiro Sub-20",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "England",
+      "league": "Premier League",
+      "home": "Arsenal U19",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "England",
+      "league": "Premier League",
+      "home": "Chelsea (W)",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "World",
+      "league": "Club Friendly",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "Denmark",
+      "league": "Kvinde LP",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "Spain",
+      "league": "Liga F",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "Japan",
+      "league": "WE League",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "England",
+      "league": "Community Shield",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "Spain",
+      "league": "Primera Division",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": true
+  },
+  {
+    "record": {
+      "country": "Brazil",
+      "league": "Liga Feminina",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  }
+]

@@ -788,12 +788,30 @@
 
   // ------------------------------------------------------------------ DAY PAGE
   PR.pages.day = function (page) {
-    const day = state.days[page.date];
-    if (!day) {
+    const rawDay = state.days[page.date];
+    if (!rawDay) {
       if (!state.days[page.date + '_loading']) { state.days[page.date + '_loading'] = true; PR.loadDay(page.date).then(() => PR.render()).catch((e) => { state.days[page.date] = { error: e.message }; PR.render(); }); }
       view().innerHTML = head(esc(dayName(page.date))) + skeleton(8); wireBack(); return;
     }
-    if (day.error) { view().innerHTML = head(esc(dayName(page.date))) + `<div class="card empty">Could not load this day (${esc(day.error)}).</div>`; wireBack(); return; }
+    if (rawDay.error) { view().innerHTML = head(esc(dayName(page.date))) + `<div class="card empty">Could not load this day (${esc(rawDay.error)}).</div>`; wireBack(); return; }
+    // Preserve historical files and existing tickets. Hide paused competitions from current/future
+    // day pages, including cached day files created before the policy changed.
+    let day = rawDay;
+    if (page.date >= ymd(tzNow())) {
+      const fixtures = (rawDay.fixtures || []).filter(PR.competitionAllowed);
+      const fin = fixtures.filter((f) => f.score && f.score.hg != null && f.score.ag != null);
+      const goals = fin.map((f) => f.score.hg + f.score.ag);
+      const count = (kind) => {
+        const bets = fixtures.flatMap((f) => (f.bets || []).filter((b) => kind === 'botd' ? b.botd : b.kind === kind));
+        return { n: bets.length, hit: bets.filter((b) => b.status === 'hit').length,
+          miss: bets.filter((b) => b.status === 'miss').length, pending: bets.filter((b) => b.status === 'pending').length };
+      };
+      day = { ...rawDay, fixtures, summary: { ...(rawDay.summary || {}), n: fixtures.length, finished: fin.length,
+        goals_avg: goals.length ? goals.reduce((a, b) => a + b, 0) / goals.length : null,
+        o25_rate: goals.length ? goals.filter((g) => g >= 3).length / goals.length : null,
+        btts_rate: fin.length ? fin.filter((f) => f.score.hg > 0 && f.score.ag > 0).length / fin.length : null,
+        botd: count('botd'), safes: count('safe'), picks: count('pick') } };
+    }
     const s = day.summary || {}; const v = state.dayView || 'results';
     const parts = [head(esc(dayName(page.date)), `${s.n || 0} matches · ${s.finished || 0} finished${s.goals_avg != null ? ` · ${f1(s.goals_avg)} goals/match` : ''}`)];
     const box = (label, o, k) => { if (!o || !o.n) return `<div class="cell"><div class="k">${label}</div><div class="v muted">–</div><div class="tiny muted">none</div></div>`; const settled = o.n - (o.pending || 0);
@@ -1248,7 +1266,7 @@ view().innerHTML = parts.join('');
     parts.push(sec('shield', 'Match result', `<p><b>1X2</b>: home win, draw or away win after 90 minutes. Shown on every match page for context; Mr 2 Odds's high-probability selections stay in the goals, corners and 1X2 markets, must carry a price of 1.16 or more, and are shown with the model-anchored probability.</p>`));
     parts.push(sec('trend', 'How the probabilities are made (data-first)', `<p>Every probability starts from <b>football data</b> and is then anchored to the price — a 25 % model / 75 % de-vigged-market blend (2026-10-27 audit: the market forecast better than the model over 3,910 settled priced picks, and the blend scored best on Brier and log-loss). The raw model number is shown beside it as <b>model</b>. Each team gets a time-weighted attack and defence rating from its last 60 competitive matches (recent games weighted most, league-normalised, home and away blended, shrunk towards the league average when the sample is small). League baseline × attack × opponent's defence gives the <b>Model xG</b> of each team, and a Dixon-Coles Poisson score matrix turns that into a probability for every line.</p><p>Bookmaker prices have two jobs: the margin is removed and the implied probability shown with the difference in points and the EV, and — since the audit — that de-vigged number <b>sets the anchor for the published probability</b>. The blend is capped at market + 3 points and at 90 % (80 % when nothing is priced), so a wild model value can never be published. <b>Market xG</b> (from the prices) is shown next to Model xG as a comparison.</p><p>Every statistic carries its sample size — Very small 1–4, Small 5–9, Moderate 10–19, Strong 20–39, Very strong 40+ — and each match has a <b>data quality</b> assessment (completeness, sample, recency, consistency, competition, home/away relevance, source) under the <b>Data</b> tab, with the raw matches used, the extreme results flagged and the model's own numbers. Data quality drives the confidence wording, never the probability. Missing data is shown as N/A, never as 0.</p><p><b>High-probability selection</b> = published probability of at least 70% (its market bar, whichever is higher) in the goals, corners and 1X2 markets, <b>priced at 1.16 or more</b> and at least 95 % of its own fair price — the price anchors the probability now, so it is a gate as well as a display. <b>⭐ Bets of the day</b> = the best of those at 07:00, one market per match. <b>Low data</b> = fewer than four useful matches for a team; those games are shown but never selected. No selection is ever certain — a 75% probability loses one time in four.</p>`));
     parts.push(sec('ticket', 'Bet slip & tickets', `<p>Tap <b>+</b> next to any priced selection (match page › Markets, high-probability selections, bets of the day) to put it on your slip — one selection per match, like a real multiple. Press <b>Done</b> to lock the ticket: Mr 2 Odds multiplies the prices, records an optional stake, and then follows the scores. Goals markets settle from the final score; corners and cards settle from the match statistics a few hours after full time. You get a notification when the ticket is won or lost, and ☰ › <b>My tickets</b> keeps your record.</p><p>This is a private record on your phone — nothing is placed with a bookmaker.</p>`));
-    parts.push(sec('info', 'Reading the numbers honestly', `<p>A 75% bet loses one time in four. A card of five 75% singles has all five winning only about 24% of the time — that is why Mr 2 Odds shows singles and grades every one of them, and does not build accumulators. Compare the <b>Hit</b> and <b>Exp.</b> columns under Performance: they should be close over a few weeks.</p><p>Coverage: every competition on the live feed, worldwide, including women's and youth leagues, priced by Sportybet South Africa. Prices move; check the price before you bet. Statistical information, not betting advice. 18+, bet responsibly.</p>`));
+    parts.push(sec('info', 'Reading the numbers honestly', `<p>A 75% bet loses one time in four. A card of five 75% singles has all five winning only about 24% of the time — that is why Mr 2 Odds shows singles and grades every one of them, and does not build accumulators. Compare the <b>Hit</b> and <b>Exp.</b> columns under Performance: they should be close over a few weeks.</p><p>Coverage is currently limited to senior men's domestic leagues. Women's and youth competitions, cups, international tournaments and tennis are paused. Prices are from Sportybet South Africa where available. Prices move; check the price before you bet. Statistical information, not betting advice. 18+, bet responsibly.</p>`));
     parts.push(sec('star', 'Bets of the day, favourites & alerts', `<p><b>⭐ Bets of the day</b> is built on Over 1.5, Over 2.5, 1X2 and corners (up to seven picks a block); <b>1X2 claims its matches first — up to five picks a day</b> — then <b>Over 2.5</b> gets its place, then the rest: 1X2 needs ≥70% and Over 2.5 needs ≥55%, all with recent form backing them; corners need ≥65%. Every one must carry a price of 1.16 or more. Overs only, one market per match, picked by the first analysis of the day and graded separately — so the performance page can compare the markets fairly. Every match page has <b>Download stats (CSV)</b> and the ☰ menu downloads the whole day's analysis as a spreadsheet file. <b>Top leagues</b> ranks the major leagues by home wins, away wins, overs, corners and bookings.</p><p>Tap <b>☆</b> in a match header to make it a favourite: you get goal, half-time, full-time and kick-off alerts for it, it appears under Your matches on Home, and in the ★ filter of Matches.</p>`));
     parts.push(PR.editorCard(false));
     parts.push(contactCard(false));
@@ -1289,7 +1307,7 @@ view().innerHTML = parts.join('');
       <div style="margin-top:8px"><button class="btn" id="s-whatsnew">What's new in this version</button></div></div>`);
     parts.push(PR.editorCard(false));
     parts.push(contactCard(false));
-    parts.push(`<div class="card small"><b>About Mr 2 Odds</b><div class="muted" style="margin-top:4px">Football analysis for every competition worldwide, refreshed every 30 minutes with a full report at 07:00, 12:00 and 17:00 SAST: expected goals, probabilities for every market, high-probability selections, bets of the day, trends, head-to-head, live scores and an audited day-by-day record. Live scores come from a public feed and never influence the model.</div>
+    parts.push(`<div class="card small"><b>About Mr 2 Odds</b><div class="muted" style="margin-top:4px">Football analysis for senior men's domestic leagues, refreshed every 30 minutes with a full report at 07:00, 12:00 and 17:00 SAST: expected goals, probabilities for every market, high-probability selections, bets of the day, trends, head-to-head, live scores and an audited day-by-day record. Live scores come from a public feed and never influence the model.</div>
       <div class="muted" style="margin-top:6px">Statistical information, not betting advice. Bet responsibly — 18+.</div></div>`);
     view().innerHTML = parts.join('');
     wireBack();

@@ -168,6 +168,7 @@ class CheckWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx,
             val now = LocalDateTime.now(SAST)
             for (i in 0 until favs.length()) {
                 val f = favs.getJSONObject(i)
+                if (f.optString("sport") == "tennis") continue // tennis is paused
                 val eid = f.optString("eid")
                 if (eid.isEmpty() || prefs.getBoolean("ko_$eid", false)) continue
                 val kickoff = try { LocalDateTime.parse(f.optString("kickoff"), KICKOFF_FMT) } catch (e: Exception) { null } ?: continue
@@ -233,9 +234,13 @@ class CheckWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx,
             }
         }
 
-        // Tennis live results (tracked + ticket legs).
+        // Only fetch tennis while an existing ticket still needs its results; no new scans or alerts.
         val tennis = HashMap<String, TNev>()
-        try {
+        val hasTennisTicket = (0 until tickets.length()).any { t ->
+            val legs = tickets.getJSONObject(t).optJSONArray("legs")
+            legs != null && (0 until legs.length()).any { i -> legs.getJSONObject(i).optString("sport") == "tennis" }
+        }
+        if (hasTennisTicket) try {
             val day = LocalDate.now(SAST).format(DateTimeFormatter.ofPattern("yyyyMMdd"))
             val response = Net.get("https://prod-public-api.livescore.com/v1/api/app/date/tennis/$day/2?MD=1")
             if (response.code == 200) {
@@ -264,17 +269,8 @@ class CheckWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx,
             }
         } catch (e: Exception) {}
 
-        if (prefs.getBoolean("pref_tennis", false)) {
-            for (eid in track) {
-                val ev = tennis[eid] ?: continue
-                if (ev.finished && !prefs.getBoolean("tn_$eid", false)) {
-                    prefs.edit().putBoolean("tn_$eid", true).apply()
-                    val score = ev.sets.map { "${it[0]}:${it[1]}" }.filter { it != "0:0" }.joinToString(", ")
-                    Notifier.notify(ctx, Notifier.CH_TENNIS, (eid.hashCode() and 4095) + 8000,
-                        "🎾 ${ev.status}  $score".trim(), "${ev.eid}", "tennis|$eid")
-                }
-            }
-        }
+        // Tennis notifications are paused; keep the result lookup above so existing
+        // tennis ticket legs can still settle without losing the user's records.
 
         // Ticket settlement: a leg settles when its match is finished (or void).
         val settledNow = mutableListOf<Pair<JSONObject, Boolean>>()

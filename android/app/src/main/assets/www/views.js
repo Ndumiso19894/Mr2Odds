@@ -51,9 +51,10 @@
           state.live[eid] = cur;
           if (!saved && want.has(eid) && prev && prev.hg != null && cur.hg != null && (cur.hg + cur.ag) > (prev.hg + prev.ag)) goalEvents.push(eid);
           if (!saved && want.has(eid) && prev && prev.status !== cur.status && (cur.status === 'HT' || isFT(cur))) phaseEvents.push(eid);
-          if (isLive(cur) && !seenAll.has(eid)) {
+          const t1 = (e.T1 || [])[0] || {}, t2 = (e.T2 || [])[0] || {};
+          if (isLive(cur) && !seenAll.has(eid) && PR.competitionAllowed({ country: st.Cnm, league: st.Snm,
+              key: `${st.Ccd || ''}/${st.Scd || ''}`, home: t1.Nm, away: t2.Nm })) {
             seenAll.add(eid);
-            const t1 = (e.T1 || [])[0] || {}, t2 = (e.T2 || [])[0] || {};
             all.push({ eid, status, hg: cur.hg, ag: cur.ag, home: t1.Nm || '?', away: t2.Nm || '?', img: [t1.Img, t2.Img], country: st.Cnm || '', league: st.Snm || '', fixture: byEid[eid] ? byEid[eid].id : null, esd: String(e.Esd || '') });
           }
         }));
@@ -663,7 +664,7 @@
       if (!cur || p.p > cur.p.p) claimed.set(p.fixture, { mk, p });
     }
     for (const mk of ['O15', 'O25', 'BTTS']) {
-      const lst = [...claimed.entries()].filter(([, v]) => v.mk === mk).map(([, v]) => v.p).filter((p) => inScope(fx(p.fixture)));
+      const lst = [...claimed.entries()].filter(([, v]) => v.mk === mk).map(([, v]) => v.p).filter((p) => fx(p.fixture) && inScope(fx(p.fixture)));
       parts.push(`<div class="card compact"><div class="row"><div class="grow"><b>${MK[mk]}</b> <span class="muted small">· threshold ${pct(m.thresholds[mk])}</span></div><span class="chip">${lst.length}</span></div>`);
       if (!lst.length) parts.push(`<div class="muted small">None met the criteria.</div>`);
       else parts.push(`<table class="tbl">${lst.map((p) => { const f = fx(p.fixture); if (!f) return ''; return `<tr class="tap" data-fx="${esc(f.id)}"><td class="tiny muted nowrap">${esc(koShort(f.kickoff))}</td><td><div class="row" style="gap:6px">${fxBadge(f, 'home').replace('s24', 's20')}${fxBadge(f, 'away').replace('s24', 's20')}<div class="b grow">${teamSpan(f.home, f.country, f.div)} v ${teamSpan(f.away, f.country, f.div)}</div></div><div class="tiny muted">${flag(f.country)} ${esc(f.competition)}</div></td><td class="right">${p.sportybet ? `<b>${f2(p.sportybet)}</b>` : '<span class="muted">–</span>'}</td><td class="right">${pill(p.p, 0.7, 0.6)}<div class="stars">${esc(p.stars)}</div></td></tr>`; }).join('')}</table>`);

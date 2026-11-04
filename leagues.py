@@ -27,6 +27,8 @@ from collections import defaultdict
 from datetime import datetime, timedelta
 from pathlib import Path
 
+import competition_policy
+
 from teamstats import CALENDAR_YEAR   # season-boundary convention (presentation only — never model input)
 
 log = logging.getLogger("leagues")
@@ -221,7 +223,9 @@ def _upcoming(now: datetime, tz_hours: int = 2) -> list[dict]:
         day = now + timedelta(hours=off)
         try:
             for e in worldfeed.fetch_day(day, tz_hours):
-                if e["status"] == "NS" and e["eid"] not in out:
+                if e["status"] == "NS" and e["eid"] not in out and competition_policy.allowed(
+                        e.get("country"), e.get("league"), home=e.get("home"), away=e.get("away"),
+                        key=f"{e.get('ccd', '')}/{e.get('scd', '')}"):
                     out[e["eid"]] = e
         except Exception as exc:  # noqa: BLE001
             log.warning("leagues: fixture day %s failed: %s", day.date(), exc)
@@ -239,6 +243,9 @@ def _window_events(events: list[dict] | None, now: datetime, days: int = 60) -> 
         return out
     lo, hi = now - timedelta(minutes=5), now + timedelta(days=days)
     for e in events:
+        if not competition_policy.allowed(e.get("country"), e.get("league"), home=e.get("home"), away=e.get("away"),
+                                          key=f"{e.get('ccd', '')}/{e.get('scd', '')}"):
+            continue
         if e.get("status") != "NS" or not (lo <= e["kickoff"] <= hi):
             continue
         if e.get("ccd") and e.get("scd"):
@@ -282,7 +289,7 @@ def build(stages_dir: Path, now: datetime, out_dir: Path, tz_hours: int = 2, eve
     n = 0
     for path in sorted(stages_dir.glob("*.json")):
         d = _stage_data(path)
-        if not d:
+        if not d or not competition_policy.allows_record(d):
             continue
         evts = [ev for ev in (_evt(eid, v) for eid, v in (d.get("events") or {}).items()) if ev]
         if not evts:

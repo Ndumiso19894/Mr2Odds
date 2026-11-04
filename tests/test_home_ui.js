@@ -45,4 +45,19 @@ assert.match(view.innerHTML, /Qualifies/);
 d.safe.today.date = '2000-01-01';
 PR.pages.advisor();
 assert.match(view.innerHTML, /No bets-of-the-day card is available for today/);
-console.log('Home, shortlist and advisor UI regression tests passed');
+// Previously published current-day archives must hide paused fixtures without rewriting history.
+const archived = (id, league) => ({ id, kickoff: today + ' 10:00', country: 'England', league,
+  competition: league, home: id, away: 'Opponent', xg: [1,1], p: { O25: .5 },
+  score: { hg: 1, ag: 0 }, bets: [] });
+const day = { summary: { n: 2, finished: 2 }, fixtures: [archived('League Club', 'Premier League'), archived('Cup Club', 'FA Cup')] };
+PR.state.days[today] = day;
+PR.pages.day({ date: today });
+assert.match(view.innerHTML, /League Club/);
+assert.doesNotMatch(view.innerHTML, /Cup Club/);
+assert.match(view.innerHTML, /1 matches · 1 finished/);
+assert.equal(day.fixtures.length, 2); // stored archive remains intact
+const oldDate = '2020-01-01';
+PR.state.days[oldDate] = day;
+PR.pages.day({ date: oldDate });
+assert.match(view.innerHTML, /Cup Club/); // past history remains available
+console.log('Home, shortlist, advisor and day UI regression tests passed');

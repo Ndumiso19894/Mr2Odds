@@ -24,6 +24,7 @@ from pathlib import Path
 import pandas as pd
 
 import markets
+import competition_policy
 
 MIN_ODDS = 1.30      # user decision: a "safe" price must be at least 1.30
 MIN_P = 0.70         # ... and the probability at least 70%
@@ -458,9 +459,13 @@ def pick_bets_of_the_day(df: pd.DataFrame, now: datetime, n: int = BOTD_PER_GROU
             df[col] = default
     df["botd"] = df["botd"].replace({"1": "o15"})           # v4 cards were goals-only
     # candidates from this run's rows (today only), most probable first
-    cands = [b for b in (candidates or []) if b.key[0] == today]
+    cands = [b for b in (candidates or []) if b.key[0] == today and
+             competition_policy.allowed(b.key[1], b.league, b.div, b.home, b.away)]
     cands.sort(key=lambda b: (-b.p, -b.odds))
     df_today = df[df["match_date"] == today]
+    # Entries from before the pause remain in the ledger, but do not consume card slots.
+    if not df_today.empty:
+        df_today = df_today[df_today.apply(competition_policy.allows_record, axis=1)]
     # one market per match across the whole card
     used = set(zip(df_today.loc[df_today["botd"].astype(str) != "", "home"], df_today.loc[df_today["botd"].astype(str) != "", "away"]))
     for gkey, _title, match, _thr, cap in BOTD_GROUPS:

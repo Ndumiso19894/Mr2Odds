@@ -3,7 +3,7 @@
 Automatic football analysis that runs **every 30 minutes** on GitHub Actions and publishes to the PlayReport
 Android app and Telegram — no servers, no API keys, and it runs while your phone is in your pocket.
 
-* **Coverage** — every competition on the public live feed, worldwide (including women's and youth leagues),
+* **Coverage** — senior men's domestic leagues on the public live feed, worldwide (women's and youth competitions, cups and international tournaments are paused),
   priced by Sportybet South Africa; the 22 main European leagues additionally get corners, cards and referee models.
 * **Data-first model** — every probability comes from football data only (goals, form, venue, league baseline →
   Dixon-Coles score matrix); bookmaker prices are a *separate comparison layer* (implied %, difference, EV, market xG)
@@ -35,7 +35,9 @@ orphan `data` branch, which is force-pushed by every run so the history stays sm
 
 Statistical information, not betting advice. 18+.
 
-## 🎾 Tennis Scanner (separate module)
+## 🎾 Tennis Scanner (paused)
+
+Tennis scanning and Telegram reports are paused; the workflow is disabled and has no schedule. Historical data and existing tickets are retained. To resume, restore the schedule in `.github/workflows/tennis-scan.yml` and enable the workflow in GitHub Actions.
 
 `tennis/` is an independent package built beside the football scanner — own data (`data/tennis/`, `data/app/tennis/`
 on the orphan `tennis-data` branch), own model, tracker (`data/tennis/tracker.csv`), reports (`reports/tennis/`),

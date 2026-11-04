@@ -83,14 +83,19 @@
   PR.views.leagues = function () {
     if (PR.resources && LG.idx) loadIndex(false).catch(() => {});
     const parts = [];
-    const sum = LG.idx && LG.idx.summary;
-    parts.push(`<div class="lg-head"><div class="grow"><div class="b">${icon('trophy', 'sm')} Leagues</div><div class="tiny muted">Tables, results &amp; fixtures — every competition on the public feed</div></div>
-      ${LG.idx ? `<span class="tiny muted">${LG.idx.count} competitions · ${new Set((LG.idx.leagues || []).map((x) => x.country)).size} countries${LG.idxStale ? ' · saved copy' : ''}</span>` : ''}</div>`);
+    const visible = LG.idx ? (LG.idx.leagues || []).filter(PR.competitionAllowed) : [];
+    const sum = LG.idx ? { active: visible.filter((x) => x.status === 'ACTIVE').length,
+      eligible: visible.filter((x) => x.eligible === true).length,
+      collecting: visible.filter((x) => x.stats && x.stats.publishes !== false && x.stats.pct != null && x.stats.pct < .99).length,
+      no_stats: visible.filter((x) => x.stats && x.stats.publishes === false).length,
+      data_error: visible.filter((x) => x.status === 'DATA_ERROR').length } : null;
+    parts.push(`<div class="lg-head"><div class="grow"><div class="b">${icon('trophy', 'sm')} Leagues</div><div class="tiny muted">Tables, results &amp; fixtures — senior domestic leagues</div></div>
+      ${LG.idx ? `<span class="tiny muted">${visible.length} competitions · ${new Set(visible.map((x) => x.country)).size} countries${LG.idxStale ? ' · saved copy' : ''}</span>` : ''}</div>`);
     if (sum) parts.push(`<div class="tiny muted" style="margin:2px 4px 0">Data collection: <b>${sum.active}</b> active · <b>${sum.eligible}</b> model-eligible${sum.collecting ? ` · <b>${sum.collecting}</b> still collecting stats` : ''}${sum.no_stats ? ` · <b>${sum.no_stats}</b> where the provider publishes no stats (corners/cards N/A)` : ''}${sum.data_error ? ` · ${sum.data_error} data error${sum.data_error === 1 ? '' : 's'}` : ''}. One bad league never stops the worldwide scan.</div>`);
     parts.push(`<div class="card compact" style="margin-bottom:8px">${segmented([['comps', `${icon('trophy', 'sm')} Competitions`], ['fixtures', `${icon('calendar', 'sm')} Fixtures`]], state.lgTab, 'lgtab')}</div>`);
     const wireSeg = () => $$('[data-lgtab]').forEach((b) => { b.onclick = () => { state.lgTab = b.dataset.lgtab; PR.render(); window.scrollTo(0, 0); }; });
     if (state.lgTab === 'fixtures') { fixturesTab(parts); return; }
-    parts.push(`<div class="row" style="padding:0 4px 6px;gap:8px"><div class="grow tiny muted">${LG.idx ? `${LG.idx.count} competitions` : ''} · tap a league to open it · the search bar above filters everything</div>${select('lg-sort', [['country', 'Sort: Country'], ['name', 'Sort: Name'], ['next', 'Sort: Next fixture'], ['played', 'Sort: Most played'], ['teams', 'Sort: Most teams']], state.lgSort || 'country')}</div>`);
+    parts.push(`<div class="row" style="padding:0 4px 6px;gap:8px"><div class="grow tiny muted">${LG.idx ? `${visible.length} competitions` : ''} · tap a league to open it · the search bar above filters everything</div>${select('lg-sort', [['country', 'Sort: Country'], ['name', 'Sort: Name'], ['next', 'Sort: Next fixture'], ['played', 'Sort: Most played'], ['teams', 'Sort: Most teams']], state.lgSort || 'country')}</div>`);
     if (!LG.idx) {
       if (!LG.loading) parts.push(LG.error ? `<div class="card empty">Could not load the league data (${esc(LG.error)}).<br><button class="btn" id="lg-retry">Try again</button></div>` : skeleton(8));
       else parts.push(skeleton(8));
@@ -102,7 +107,7 @@
     }
     const q = (state.q || '').trim().toLowerCase();
     const sort = state.lgSort || 'country';
-    let rows = (LG.idx.leagues || []).filter((x) => !q || (x.league || '').toLowerCase().includes(q) || (x.country || '').toLowerCase().includes(q));
+    let rows = (LG.idx.leagues || []).filter(PR.competitionAllowed).filter((x) => !q || (x.league || '').toLowerCase().includes(q) || (x.country || '').toLowerCase().includes(q));
     if (!rows.length) parts.push(`<div class="card empty small">No league matches the search.</div>`);
     const rowCard = (x, showCountry) => `<div class="lg-row tap" data-lg="${esc(x.slug)}"><div class="lg-ic">${x.table ? icon('trophy') : flag(x.country)}</div>
       <div class="grow"><div class="b">${showCountry ? `${flag(x.country)} ` : ''}${esc(x.league)}</div><div class="tiny muted">${showCountry ? (x.country || '') : ''}${showCountry && x.teams ? ' · ' : ''}${x.teams ? `${x.teams} teams` : ''}${x.played ? ` · ${x.played} played` : ''}${x.season ? ` · ${x.season}` : ''}</div></div>
@@ -130,12 +135,12 @@
     if (q) {
       if (!state.teamIdx) PR.loadTeamIndex().then((j) => { if (j) PR.render(); });
       const tIdx = state.teamIdx;
-      const hits = tIdx ? (tIdx.teams || []).filter((t) => (t.n || '').toLowerCase().includes(q)).slice(0, 12) : [];
+      const hits = tIdx ? (tIdx.teams || []).filter((t) => PR.competitionAllowed({country:t.c, league:t.l, div:t.d, home:t.n})).filter((t) => (t.n || '').toLowerCase().includes(q)).slice(0, 12) : [];
       if (hits.length) {
         parts.push(`<div class="card compact"><div class="comp-head">Teams (${hits.length}${tIdx && hits.length >= 12 ? '+' : ''})</div>${hits.map((t) => `<div class="lg-row tap" data-lgtm="${esc(t.n)}|${esc(t.c)}|${esc(t.d)}"><div class="lg-ic">${badge(t.n, null, 24)}</div><div class="grow"><div class="b">${esc(t.n)}</div><div class="tiny muted">${flag(t.c)} ${esc(t.c || '')} · ${esc(t.l || '')}</div></div></div>`).join('')}</div>`);
       } else if (tIdx && !rows.length) parts.push(`<div class="card empty small">No club matches the search either.</div>`);
     }
-    parts.push(`<div class="tiny muted" style="margin:10px 4px 18px">Updated every 30 minutes from the public live-score archive · ${LG.idx.count} competitions · season history accumulates each matchday.</div>`);
+    parts.push(`<div class="tiny muted" style="margin:10px 4px 18px">Updated every 30 minutes from the public live-score archive · ${visible.length} competitions · season history accumulates each matchday.</div>`);
     view().innerHTML = parts.join('');
     const so = $('#lg-sort'); if (so) so.onchange = (e) => { state.lgSort = e.target.value; PR.render(); };
     $$('#view [data-lg]').forEach((el) => { el.onclick = () => openLeague(el.dataset.lg); });
@@ -161,13 +166,13 @@
       const r = $('#lg-fx-retry'); if (r) r.onclick = () => { LG.fxError = null; loadFixtures(true).then(() => PR.render()).catch(() => PR.render()); };
       return;
     }
-    const all = LG.fx.fixtures || [];
+    const all = (LG.fx.fixtures || []).filter(PR.competitionAllowed);
     const rows = all.filter((f) => !q || (f.home || '').toLowerCase().includes(q) || (f.away || '').toLowerCase().includes(q) || (f.league || '').toLowerCase().includes(q) || (f.country || '').toLowerCase().includes(q));
     // fixtures inside the analysis window get the Match Center; the rest open their league page
     const winKeys = new Set();
     (state.data.fixtures || []).forEach((f) => { const day = String(f.kickoff).slice(0, 10); winKeys.add(`${day}|${f.home}|${f.away}`); winKeys.add(`${day}|${f.away}|${f.home}`); });
     const inWin = (f) => { const day = String(f.ko).slice(0, 10); return winKeys.has(`${day}|${f.home}|${f.away}`); };
-    parts.push(`<div class="card small"><b>Every upcoming fixture, all competitions</b> — ${all.length} matches in the next ${LG.fx.days || 10} days${LG.fxStale ? ' (saved copy)' : ''}. Matches in today's analysis open the Match Center; the rest open their league.</div>`);
+    parts.push(`<div class="card small"><b>Upcoming league fixtures</b> — ${all.length} matches in the next ${LG.fx.days || 10} days${LG.fxStale ? ' (saved copy)' : ''}. Matches in today's analysis open the Match Center; the rest open their league.</div>`);
     if (!rows.length) parts.push(`<div class="card empty small">No fixture matches the search.</div>`);
     const byDay = {};
     rows.forEach((f) => { const day = String(f.ko).slice(0, 10); (byDay[day] = byDay[day] || []).push(f); });
