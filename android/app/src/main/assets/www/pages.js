@@ -366,7 +366,7 @@
       </table>
       <div class="tiny muted" style="margin-top:6px">Home sample ${inp.home_venue_n || 0} games · away sample ${inp.away_venue_n || 0}. When a venue split is empty we use overall goals / game (still real data). Context kept for the sheet but not used by V1: xG ${cell(inp.home_xg, f2)} / ${cell(inp.away_xg, f2)}, SOT ${cell(inp.home_sot, f1)} / ${cell(inp.away_sot, f1)}.</div>
       ${(sm.missing || []).length ? `<div class="tiny warn" style="margin-top:4px">Not available: ${esc((sm.missing || []).join('; '))}.</div>` : ''}</div>`);
-    if (!sm.ok || !eng.lambda_h) {
+    if (!sm.ok || eng.lambda_h == null) {
       parts.push(`<div class="card empty">V1 cannot run until the six statistical inputs are present. Nothing was invented.</div>`);
     } else {
       parts.push(`<div class="card compact"><div class="b">${icon('sparkle', 'sm')} Sheet engine (unchanged formulas)</div>
@@ -375,7 +375,7 @@
           <tr><td>Expected away goals (λA)</td><td class="right"><b>${f2(eng.lambda_a)}</b></td><td class="right">${f2((f.xg || {}).model_away)}</td></tr>
           <tr><td>Expected total</td><td class="right">${f2(eng.lambda_total)}</td><td class="right">${f2((f.xg || {}).model_total)}</td></tr>
         </table>
-        <div class="tiny muted" style="margin-top:4px">Sheet: league home × home attack × away defence (raw venue rates, no shrinkage). Mr 2 Odds: league × shrunk ratings × Dixon-Coles. 1X2 sheet sum ${eng.x12_sum != null ? Math.round(eng.x12_sum * 1000) / 10 + '%' : '—'} (0–7 matrix residual ${eng.matrix_residual != null ? Math.round(eng.matrix_residual * 10000) / 100 + ' pp' : '—'}).</div></div>`);
+        <div class="tiny muted" style="margin-top:4px">Sheet V1 uses unweighted sample rates; scanner baselines are time-weighted and shrunk and may fall back to global data. Mr 2 Odds uses shrunk ratings and Dixon-Coles. 1X2 sheet sum ${eng.x12_sum != null ? Math.round(eng.x12_sum * 1000) / 10 + '%' : '—'} (0–7 matrix residual ${eng.matrix_residual != null ? Math.round(eng.matrix_residual * 10000) / 100 + ' pp' : '—'}).</div></div>`);
       const rows = (sm.markets || []).map((m) => {
         const sp = m.p, pp = m.playreport;
         return `<tr><td>${esc(m.name)}</td><td class="right"><b>${pct(sp)}</b><div class="tiny muted">${m.fair != null ? f2(m.fair) : ''}</div></td><td class="right">${pp == null ? '<span class="muted">—</span>' : pct(pp)}</td></tr>`;
@@ -384,7 +384,16 @@
         <table class="tbl head" style="margin-top:6px"><tr><th>Market</th><th class="right">Sheet · fair</th><th class="right">Mr 2 Odds</th></tr>${rows}</table>
         <div class="tiny muted" style="margin-top:4px">Fair odds = 1 / sheet probability. Mr 2 Odds column is this app's model for the same market (blank when that market is not modelled the same way, e.g. Over 0.5).</div></div>`);
     }
-    parts.push(`<div class="card compact"><div class="small muted">Download this match's filled MATCH_INPUT + MARKETS as a spreadsheet file (opens in Google Sheets / Excel). Calculations are the sheet's V1 formulas; Mr 2 Odds's model is not in this file except as a comparison column.</div><button class="btn" id="dl-sheet" style="margin-top:8px;width:100%">${icon('download', 'sm')} Download sheet model (CSV)</button></div>`);
+    const v4 = sm.v4;
+    if (v4) {
+      parts.push(`<div class="card compact"><div class="b">${icon('sparkle', 'sm')} Workbook V4 / V5 comparison</div>
+        <div class="tiny warn">Experimental and not calibrated. Uses available current-season sample statistics and an inferred season, not necessarily the full season; at least three matches with each statistic and six recent results are required. These values never change recommendations.</div>
+        <div class="tiny muted">Current-competition sample: home ${inp.home_current_n || 0}, away ${inp.away_current_n || 0}; xG observations home ${inp.home_xg_n || 0}/${inp.home_xga_n || 0}, away ${inp.away_xg_n || 0}/${inp.away_xga_n || 0}; shots-on-target observations home ${inp.home_sot_n || 0}, away ${inp.away_sot_n || 0}.</div>
+        ${v4.ok ? `<div class="small" style="margin-top:6px">Expected goals: home <b>${f2(v4.model.lambda_h)}</b> · away <b>${f2(v4.model.lambda_a)}</b> · total <b>${f2(v4.model.lambda_total)}</b></div>
+        <table class="tbl head" style="margin-top:6px"><tr><th>Market</th><th class="right">V4 · fair</th><th class="right">Price · EV</th><th class="right">Mr 2 Odds</th></tr>${(v4.markets || []).map(m => `<tr><td>${esc(m.name)}<div class="tiny muted">${esc(m.safety || '')} · ${esc(m.value_signal || '')}</div></td><td class="right">${pct(m.p)}<div class="tiny muted">${m.fair != null ? f2(m.fair) : ''}</div></td><td class="right">${m.odds != null ? f2(m.odds) : '—'}<div class="tiny muted">${m.ev != null ? pct(m.ev) : ''}</div></td><td class="right">${m.playreport == null ? '—' : pct(m.playreport)}</td></tr>`).join('')}</table>
+        <div class="tiny muted">Price and EV use raw Sportybet odds when available. Workbook labels are comparisons, not app recommendations; disabled markets remain paused.</div>` : `<div class="small" style="margin-top:6px">V4 unavailable: ${esc((v4.missing || []).join(', ') || 'V1 inputs missing')}. Missing data is not invented.</div>`}</div>`);
+    }
+    parts.push(`<div class="card compact"><div class="small muted">Download comparison values as a CSV for Google Sheets or Excel. The CSV contains values, not a live copy of the workbook or its formulas.</div><button class="btn" id="dl-sheet" style="margin-top:8px;width:100%">${icon('download', 'sm')} Download sheet model (CSV)</button></div>`);
   }
   // ------------------------------------------------------------------ DATA / AUDIT TAB (data-first engine)
   const EVIDENCE = [[40, 'Very strong'], [20, 'Strong'], [10, 'Moderate'], [5, 'Small'], [1, 'Very small']];
