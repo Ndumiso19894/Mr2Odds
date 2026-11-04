@@ -61,6 +61,7 @@ import squads as squads_mod
 import worldfeed
 import appdata
 import competition_policy
+import recommendation_policy as rec_policy
 import verify
 import safe as safe_mod
 import history as history_mod
@@ -1266,6 +1267,9 @@ def build_run_parlays(rows: list[MatchRow], now: datetime, window_end: datetime,
 def select_picks(rows: list[MatchRow]) -> dict[str, list[MatchRow]]:
     picks: dict[str, list[MatchRow]] = {}
     for mkt, thr in CONFIG["THRESHOLDS"].items():
+        if mkt == "BTTS":  # keep historical tracker entries, but do not issue new BTTS picks
+            picks[mkt] = []
+            continue
         # backtest: team hit-rate floors and model-vs-market filters added nothing once the
         # probabilities were calibrated, so the rule is simply "final probability >= threshold"
         cand = [r for r in rows if r.data_ok and r.p_final[mkt] >= thr["p"]]
@@ -1704,7 +1708,7 @@ def render_safest(ctx: dict) -> list[str]:
     if not sf:
         return []
     L = [f"## 📈 High-probability selections — {run_desc(ctx['run'])}", ""]
-    L.append(f"_Goals, corners and cards selections whose **football-data model** probability is at least {pct(sf['min_p'])} "
+    L.append(f"_1X2, goals and corners selections whose **football-data model** probability is at least {pct(sf['min_p'])} "
              f"(the de-margined Sportybet price is shown for comparison and only excludes a selection when it contradicts the model by "
              f"a wide margin) at a Sportybet price of {sf['min_odds']:.2f} or more, ranked by model probability. "
              f"A 75% probability still loses about one time in four. Graded automatically (`data/safe_bets.csv`)._")
@@ -1713,10 +1717,9 @@ def render_safest(ctx: dict) -> list[str]:
     if groups:
         L.append(f"### ⭐ Bets of the day — {ctx['now']:%A %d %B}")
         L.append("")
-        L.append("_Strong on Over 1.5 & team goals (up to five picks); 1X2, Both teams to score and Over 2.5 only with strong "
-                 "supporting form (model ≥70%, up to two each); Bookings and Corners ≥65%. Overs only, Sportybet price "
-                 "≥ 1.30, the de-margined price must not contradict the model, one market per match on the whole card. "
-                 "Probabilities are model probabilities (football data only); each pick shows its data quality._")
+        L.append(f"_1X2 ≥70% and Over 2.5 ≥55% require supporting form; Over 1.5 ≥70%, corners ≥65%. "
+                 f"Sportybet price ≥ {safe_mod.MIN_ODDS:.2f}; one market per match. Probabilities are model-only; "
+                 "the market view is a comparison and disagreement check._")
         L.append("")
         icon = {"hit": "✅ hit", "miss": "❌ miss", "pending": "⏳", "void": "void"}
         for g in groups:
@@ -1731,7 +1734,7 @@ def render_safest(ctx: dict) -> list[str]:
                          f"**{b['odds']:.2f}** | {pct(b['p'])} | {q} | {icon.get(b['status'], b['status'])} |")
             L.append("")
     bets = sf.get("bets") or []
-    L.append(f"### High-probability singles (model ≥70%, price ≥1.30) — top {min(len(bets), 25)} of {len(bets)}")
+    L.append(f"### High-probability singles (model ≥70%, price ≥{safe_mod.MIN_ODDS:.2f}) — top {min(len(bets), 25)} of {len(bets)}")
     L.append("")
     if bets:
         L.append("| Kick-off | Match | Competition | Selection | Price | Model % | Market implied % | Diff (pp) | Data quality |")
@@ -1791,7 +1794,7 @@ def render_other_markets(rows: list[MatchRow]) -> list[str]:
     L = ["## 🧾 Other markets — 1X2, double chance, team goals, corners, cards", ""]
     if not rows:
         return L + ["_No fixtures._", ""]
-    L.append("_Probabilities are model + sharp-market blends (1X2, team goals) or the backtested count models "
+    L.append("_Probabilities use the football-data model (1X2, team goals) or the backtested count models "
              "(corners / cards, main leagues only). Sportybet column = 1X2 prices where the match was found._")
     L.append("")
     L.append(f"| Kick-off ({TZL}) | Match | Competition | Home / Draw / Away | 1X / X2 | Home to score / 2+ | "
@@ -1949,12 +1952,10 @@ def render_report(ctx: dict, rows: list[MatchRow], picks: dict, summary: dict, n
         "* **World coverage:** senior men's domestic leagues on Livescore.com are analysed with the same "
         "team-form model from Livescore's season results (goals markets only; corners and cards need the richer "
         "football-data feed of the 22 main European leagues). Sportybet's de-margined prices are the market view there.",
-        "* **High-probability selections** = goals, corners and cards selections with model probability ≥70% (and the de-margined "
-        "Sportybet price not contradicting it), priced 1.30 or better, **overs only** (no unders / no-BTTS); parlays and accumulators are no longer produced "
-        "(the backtest showed they lose money). **Bets of the day** = strong on Over 1.5 & team goals (≥70%, up to five); "
-        "1X2, BTTS and Over 2.5 only with strong supporting form (model ≥70% plus recent-form backing, up to two each); "
-        "bookings and corners ≥65% (up to two each); one market per match; graded separately. The tracked record keeps one "
-        "market per match so markets can be compared.",
+        f"* **High-probability selections** = 1X2, goals and corners selections with model probability ≥70%, "
+        f"priced {safe_mod.MIN_ODDS:.2f} or better, with large model–market disagreements excluded. "
+        "**Bets of the day** prioritise 1X2 (≥70%, supporting form), then Over 2.5 (≥55%, supporting form), "
+        "Over 1.5 (≥70%) and corners (≥65%), one market per match. Historical selections remain in the record.",
         "* **Sportybet prices** never enter the probability model; they are the market view shown next to it.",
         f"* Data: football-data.co.uk, Livescore.com. All times are {TZL} ({CONFIG['TIMEZONE']}). ⚠️ marks teams with too little history "
         "— they are never shortlisted.",
@@ -2274,8 +2275,7 @@ def send_telegram(text: str) -> None:
 
 
 def strong_signal(r: MatchRow, sel: str) -> bool:
-    """Form backing required before 1X2 / BTTS / Over 2.5 enter the bets-of-the-day card (the probabilities alone are
-    not enough for these markets). Over 1.5 and team goals need no extra signal."""
+    """Form backing for 1X2 and Over 2.5; other current day-card markets need no extra signal."""
     H, A = r.home, r.away
 
     def wins(p):
@@ -2338,8 +2338,15 @@ def all_sels(r: MatchRow) -> list[dict]:
 
 def top_sels(r: MatchRow) -> list[dict]:
     """The three best priced selections (for the day history)."""
-    out = [d for d in all_sels(r) if d["odds"] and d["odds"] >= safe_mod.MIN_ODDS and not d["diff"]]
+    out = [d for d in all_sels(r) if d["odds"] and d["odds"] >= safe_mod.MIN_ODDS and not d["diff"]
+           and rec_policy.allowed(d["sel"]) and not rec_policy.outlier(d.get("p_model"), d.get("p_sb"), d["odds"])]
     return [{"sel": d["sel"], "label": d["label"], "p": d["p"], "odds": d["odds"]} for d in out[:3]]
+
+
+def require_publication(ctx: dict) -> None:
+    """Do not let a successful scan workflow publish stale or incomplete app data."""
+    if not (ctx.get("data_check") or {}).get("ok"):
+        raise RuntimeError("App publication failed; refusing to publish incomplete state")
 
 
 def main() -> None:
@@ -2596,7 +2603,7 @@ def main() -> None:
     pr = {"parlays": [], "legs": [], "source": "none", "extended": False}
     ctx.update({"parlays": pr, "parlay_ids": [], "parlay_summary": parlay_mod.summary(ledger, now), "parlay_recent": []})
 
-    # ---- high-probability selections (goals / corners / cards, model >= 70%, market not contradicting, price >= 1.30) + bets of the day
+    # ---- high-probability selections and the day card (current app recommendation policy)
     safe_res = safe_mod.safest(rows, now, window_end, groups=safe_mod.SAFE_GROUPS, trebles=False)
     safe_res["quality"] = {(r.fx["date"].strftime("%Y-%m-%d"), r.fx["country"], r.fx["home"], r.fx["away"]):
                            ((r.audit or {}).get("quality") or {}).get("overall") for r in rows if r.data_ok}
@@ -2754,10 +2761,14 @@ def main() -> None:
             ctx["data_check"] = {"ok": True, "warnings": warns[:30]}
             promote_publication(staging, APP_FILE.parent, now)
             log.info("App data: %s (%d checks passed, %d warning(s))", APP_FILE, 1, len(warns))
-    except Exception as exc:  # noqa: BLE001 - never lose the run because of the app export
+    except Exception as exc:  # noqa: BLE001 - keep the old publication if export fails
+        ctx["data_check"] = {"ok": False, "errors": ["App data export failed"]}
         log.exception("App data export failed: %s", exc)
+        send_telegram("⚠️ Mr 2 Odds app data export failed — the previous publication remains live.")
     finally:
         shutil.rmtree(staging, ignore_errors=True)
+    # A successful workflow must mean a checked app publication is ready for the state push.
+    require_publication(ctx)
     if os.getenv("README_AUTO") == "1":
         update_readme(render_readme_block(ctx, rows, picks, summary, f"reports/{today_str}.md"))
 

@@ -148,10 +148,18 @@ jobs:
       - name: Restore state (data branch)
         run: |
           set -e
-          if git clone -q --depth 1 --branch data --single-branch "$STATE_URL" state 2>/dev/null; then
+          if git clone -q --depth 1 --branch data --single-branch "$STATE_URL" state; then
             echo "state branch restored: $(du -sh state | cut -f1)"
           else
-            echo "no state branch yet - bootstrapping from the code branch"
+            # Only bootstrap when the data branch really does not exist. A network/auth error
+            # must never be mistaken for an empty repository and then force-pushed over history.
+            rc=0
+            git ls-remote --exit-code --heads "$STATE_URL" data >/dev/null || rc=$?
+            if [ "$rc" -ne 2 ]; then
+              echo "State clone failed; refusing to bootstrap over existing or unreachable data." >&2
+              exit 1
+            fi
+            echo "data branch does not exist - bootstrapping"
             mkdir -p state
             cp -r data state/ 2>/dev/null || true
             cp -r reports state/reports 2>/dev/null || true
@@ -170,13 +178,29 @@ jobs:
           git config user.name "playreport-bot"
           git config user.email "playreport-bot@users.noreply.github.com"
           git add -A
+          expected=""
           if git rev-parse -q --verify HEAD >/dev/null 2>&1; then
+            expected=$(git rev-parse HEAD)
             if git diff --cached --quiet; then echo "state unchanged"; exit 0; fi
             git commit -q --amend -m "State $(date -u +'%Y-%m-%d %H:%M UTC')"
           else
             git commit -q -m "State $(date -u +'%Y-%m-%d %H:%M UTC')"
           fi
-          git push -q -f "$STATE_URL" HEAD:data
+          # Retrying transient transport failures is safe: the lease still forbids overwriting
+          # another writer's newer data branch, even when a retry is attempted.
+          pushed=false
+          for delay in 0 5 15; do
+            if [ "$delay" -gt 0 ]; then sleep "$delay"; fi
+            if git push -q --force-with-lease="refs/heads/data:$expected" "$STATE_URL" HEAD:data; then
+              pushed=true
+              break
+            fi
+            echo "State push failed; retrying only if the data branch has not changed." >&2
+          done
+          if [ "$pushed" != true ]; then
+            echo "State publication failed; the previous data remains live." >&2
+            exit 1
+          fi
           echo "published $(git rev-parse --short HEAD)"
 
   unit-tests:
@@ -199,3 +223,9 @@ jobs:
           pip install --only-binary=:all: --retries 10 --timeout 60 -q -r requirements.txt
           pip install --only-binary=:all: --retries 10 --timeout 60 -q pytest
           python -m pytest leagues/tests tests -q
+
+      - name: App regression tests
+        run: |
+          node tests/test_home_ui.js
+          node tests/test_competition_ui.js
+          node tests/test_tickets_ui.js

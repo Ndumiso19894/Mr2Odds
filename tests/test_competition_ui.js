@@ -39,3 +39,6 @@ PR.live.refresh(true).then(() => {
   assert.equal(PR.state.liveAll[0].eid, '1');
   console.log('Competition policy and live-feed UI tests passed');
 }).catch((e) => { console.error(e); process.exitCode = 1; });
+for (const c of JSON.parse(fs.readFileSync('tests/recommendation_cases.json'))) {
+  assert.equal(!PR.isDropped(c.sel), c.allowed, `recommendation ${c.sel}`);
+}

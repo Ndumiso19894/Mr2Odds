@@ -10,11 +10,11 @@ Android app and Telegram — no servers, no API keys, and it runs while your pho
   and never feed the model. Every statistic carries its sample size (Very small 1–4 … Very strong 40+), every match
   has a transparent data-quality assessment, the raw matches used, extreme results flagged and the model's own
   numbers ("why 1.35 goals?") in the app's **Data** tab and in `python audit.py HOME AWAY`. Missing data is N/A, never 0.
-* **Goals shortlists** — Over 1.5, Over 2.5, Both Teams To Score, from the backtested and calibrated model.
+* **Goals shortlists** — Over 1.5 and Over 2.5, from the backtested and calibrated model.
 * **High-probability selections** — singles with model probability ≥ 70 % (the de-margined Sportybet price must not
-  contradict it), price ≥ 1.30, in the goals / BTTS / team-goals / corners / cards markets. New ones are announced
+  contradict it), price ≥ 1.16, in the 1X2 / total-goals overs / total-corners overs markets. New ones are announced
   immediately (Telegram + app). Nothing is ever labelled "safe" or "guaranteed".
-* **⭐ Bets of the day** — grouped card, strong on Over 1.5 & team goals; 1X2 / BTTS / Over 2.5 only with strong supporting form; one market per match; graded separately.
+* **⭐ Bets of the day** — grouped card for 1X2, Over 1.5, Over 2.5 and corners; 1X2 and Over 2.5 require supporting form. One market per match; graded separately.
 * **Trends, head-to-head and home/away form** on every match page; live scores, line-ups and match statistics for
   every match in play; squad values (Transfermarkt) for the main leagues.
 * **Bet slip & tickets** in the app — build a multiple from priced selections, lock it, and PlayReport grades it from
@@ -57,7 +57,7 @@ the football model code; the only shared piece is the generic Markdown → PDF h
   (a 14-check score of the evidence, not a win probability). Reports at 08:00 / 18:00 SAST on Telegram labelled
   "🎾 TENNIS SCANNER". No parlays, no tennis + football combinations.
 * **Selections of the day** — one preferred market per match (`tennis/markets.py::select`): the highest model
-  probability ≥ 60 % among Sportybet-priced markets (price ≥ 1.30) whose margin-free implied probability is ≥ 45 %
+  probability ≥ 60 % among Sportybet-priced markets (price ≥ 1.16) whose margin-free implied probability is ≥ 45 %
   (the market must not contradict the pick), data quality ≥ 60, both players ≥ 30 rated matches, no low-confidence
   game data, model − market ≤ 20 pp. **Strong** = model ≥ 70 % and market ≥ 50 %. Ranked by probability, never by
   edge. Grouped by market (Match winner / Total games / Player games / Game handicap) in `latest.json`

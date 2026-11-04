@@ -29,7 +29,7 @@ def _build(tmp: Path) -> tuple[Path, Path]:
         "shortlist": {"primary": [], "counts": {}},
         "safe": {"min_p": 0.7, "min_odds": 1.3, "bets": [
             {"id": "x|A|B|O25", "fixture": "archived-fixture-1", "home": "C", "away": "D",
-             "kickoff": "2026-10-20 17:00", "sel": "Over 2.5", "label": "Over 2.5", "p": 0.75, "odds": 1.4},
+             "kickoff": "2026-10-20 17:00", "sel": "O25", "label": "Over 2.5", "p": 0.75, "odds": 1.4},
         ], "today": {"bets": []}},
         "picks": {"O25": [{"fixture": "archived-fixture-1", "p": 0.62, "stars": 1, "sportybet": 1.5}]},
     }

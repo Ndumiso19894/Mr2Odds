@@ -14,6 +14,7 @@ from pathlib import Path
 
 import safe
 import competition_policy
+import recommendation_policy as rec_policy
 
 MAX_LATEST_MB = 4.0
 STATUSES = {"pending", "hit", "miss", "void"}
@@ -168,8 +169,8 @@ def check_publication(staging: Path, live: Path, ledger: Path, now: datetime, ex
                 errors.append(f"safest bet below the probability rule: {b.get('label')} {b.get('p')}")
             if not _num(b.get("odds")) or b["odds"] < min_odds - 1e-6:
                 errors.append(f"safest bet below the price rule: {b.get('label')} {b.get('odds')}")
-        if safe.OVERS_ONLY and safe.is_under(str(b.get("sel", ""))):
-            errors.append(f"under selection in safest bets: {b.get('sel')}")
+        if not rec_policy.allowed(b.get("sel")):
+            errors.append(f"disabled market in safest bets: {b.get('sel')}")
     seen_match = set()
     for b in (sf.get("bets") or []):
         if b.get("live"):
@@ -184,6 +185,8 @@ def check_publication(staging: Path, live: Path, ledger: Path, now: datetime, ex
     for b in today.get("bets") or []:
         if not competition_policy.allows_record(b):
             errors.append(f"paused competition in day card {b.get('id')}")
+        if not rec_policy.allowed(b.get("sel")) or safe.botd_group(b.get("sel", "")) != b.get("section"):
+            errors.append(f"disabled market or incorrect section in day card {b.get('id')}")
         if b.get("status") not in STATUSES:
             errors.append(f"bad status {b.get('status')!r} on day-card bet {b.get('id')}")
         if b.get("section") not in section_keys:
@@ -193,6 +196,8 @@ def check_publication(staging: Path, live: Path, ledger: Path, now: datetime, ex
             warns.append(f"two markets on {m[0]} v {m[1]} in the day card")
         card_matches[m] = b.get("sel")
     for mkt, lst in (d.get("picks") or {}).items():
+        if lst and not rec_policy.allowed(mkt):
+            errors.append(f"disabled market in new shortlist picks: {mkt}")
         for pk in lst:
             if pk.get("fixture") not in known:
                 errors.append(f"{mkt} pick on unknown fixture {pk.get('fixture')}")

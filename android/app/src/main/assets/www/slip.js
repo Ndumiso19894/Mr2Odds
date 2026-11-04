@@ -85,9 +85,40 @@
     e.preventDefault(); e.stopPropagation();
     PR.tennisSlipToggle(b.dataset.taddFx, { market: b.dataset.taddMarket, selection: b.dataset.taddSel || null, line: b.dataset.taddLine === '' ? null : +b.dataset.taddLine, label: b.dataset.taddLabel || '' });
   }, true);
-  /** final result of a tennis leg: the day file once published, otherwise the live feed (sum of set games) */
+  // Tennis scanning and the tennis tab are paused. Fetch scores only for existing pending
+  // tennis ticket dates, without starting the tennis scanner or producing new selections.
+  const ticketTennisDays = {};
+  async function loadTicketTennisDay(day) {
+    const cached = ticketTennisDays[day];
+    if (cached && (cached.loading || Date.now() - cached.at < 5 * 60 * 1000)) return;
+    ticketTennisDays[day] = { loading: true, at: Date.now(), matches: (cached && cached.matches) || {} };
+    try {
+      const root = await PR.getJson(`https://prod-public-api.livescore.com/v1/api/app/date/tennis/${day.replace(/-/g, '')}/2?MD=1`);
+      const matches = {};
+      (root.Stages || []).forEach((stage) => (stage.Events || []).forEach((e) => {
+        const status = String(e.Eps || ''), retired = /^(ret|w[.\/\s-]*o)/i.test(status);
+        if (!(Number(e.Ewt) === 2 || status === 'FT' || retired)) return;
+        const sets = []; let complete = true;
+        for (let i = 1; i <= 5; i++) {
+          const a = e['Tr1S' + i], b = e['Tr2S' + i];
+          if ((a == null || a === '') && (b == null || b === '')) continue;
+          const x = Number(a), y = Number(b);
+          if (a == null || a === '' || b == null || b === '' || !Number.isFinite(x) || !Number.isFinite(y)) { complete = false; break; }
+          sets.push([x, y]);
+        }
+        const w1 = sets.filter((x) => x[0] > x[1]).length, w2 = sets.filter((x) => x[1] > x[0]).length;
+        matches[String(e.Eid)] = { ft: true, postponed: false, retired, status,
+          winner: !retired && complete && w1 !== w2 ? (w1 > w2 ? 1 : 2) : null,
+          games: complete && sets.length ? [sets.reduce((n, x) => n + x[0], 0), sets.reduce((n, x) => n + x[1], 0)] : null };
+      }));
+      ticketTennisDays[day] = { at: Date.now(), matches };
+    } catch (_) { ticketTennisDays[day] = { at: Date.now(), matches: (cached && cached.matches) || {} }; }
+  }
+  /** final result of a tennis leg, using a live score only for existing tickets */
   function tennisScoreFor(l) {
     const T = TNS();
+    const cached = ticketTennisDays[String(l.kickoff || '').slice(0, 10)];
+    if (cached && cached.matches && cached.matches[String(l.eid)]) return cached.matches[String(l.eid)];
     const lv = T && T.liveFor ? T.liveFor(l.eid) : null;
     if (lv && lv.finished) {
       const games = [0, 0]; (lv.sets || []).forEach((s) => { games[0] += s[0]; games[1] += s[1]; });
@@ -107,13 +138,15 @@
       if (!w) return 'pending';
       return l.selection === (w === 1 ? 'player_a' : 'player_b') ? 'won' : 'lost';
     }
+    if (sc.retired) return 'void';   // game markets are void on retirement, even without a complete score
     const g = sc.games;
-    if (!g || g.length < 2) return 'pending';
-    if (sc.retired) return 'void';   // same rule as the tracker: retirements void the game markets
+    if (!g || g.length < 2) return 'pending';   // same rule as the tracker: retirements void the game markets
     const ga = g[0], gb = g[1];
-    if (l.market === 'p1_games') return overUnder(ga, l) ? 'won' : 'lost';
-    if (l.market === 'p2_games') return overUnder(gb, l) ? 'won' : 'lost';
-    if (l.market === 'total_games') return overUnder(ga + gb, l) ? 'won' : 'lost';
+    if (['p1_games', 'p2_games', 'total_games'].includes(l.market)) {
+      const games = l.market === 'p1_games' ? ga : l.market === 'p2_games' ? gb : ga + gb;
+      if (l.line == null || !['over', 'under'].includes(l.selection)) return 'pending';
+      return games === l.line ? 'void' : overUnder(games, l) ? 'won' : 'lost';
+    }
     if (l.market === 'game_handicap') {
       const gx = l.selection === 'player_a' ? ga : gb, go = l.selection === 'player_a' ? gb : ga;
       const adj = gx + (l.line || 0);
@@ -265,9 +298,15 @@
   };
   /** make sure the day files needed to grade pending legs are loaded, then settle */
   PR.reconcileTickets = async function () {
-    const need = new Set(); const today = ymd(tzNow());
-    tickets.forEach((t) => { if (t.status === 'pending') t.legs.forEach((l) => { if (l.status === 'pending' && l.kickoff.slice(0, 10) <= today && !(state.days[l.kickoff.slice(0, 10)] && state.days[l.kickoff.slice(0, 10)].fixtures)) need.add(l.kickoff.slice(0, 10)); }); });
+    const need = new Set(); const tennisNeed = new Set(); const today = ymd(tzNow());
+    tickets.forEach((t) => { if (t.status === 'pending') t.legs.forEach((l) => {
+      const date = String(l.kickoff || '').slice(0, 10);
+      if (l.status !== 'pending' || !/^\d{4}-\d{2}-\d{2}$/.test(date) || date > today) return;
+      if (l.sport === 'tennis') tennisNeed.add(date);
+      else if (!(state.days[date] && state.days[date].fixtures)) need.add(date);
+    }); });
     for (const d of need) { try { await PR.loadDay(d); } catch (e) { /* not published yet */ } }
+    await Promise.all([...tennisNeed].map(loadTicketTennisDay));
     // refresh stale day files (stats arrive a few hours after full time)
     if (PR.settleTickets(true)) { const top = state.stack[state.stack.length - 1]; if (top && (top.type === 'tickets' || top.type === 'ticket')) PR.render(); }
   };

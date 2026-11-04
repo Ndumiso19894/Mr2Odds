@@ -54,6 +54,7 @@ android {
 }
 
 dependencies {
+    testImplementation("junit:junit:4.13.2")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.webkit:webkit:1.11.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
