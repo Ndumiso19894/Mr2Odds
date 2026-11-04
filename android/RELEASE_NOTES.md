@@ -1,3 +1,9 @@
+## What's new in Mr 2 Odds 1.8.7 — 🧭 Back button fixed + always-current tips
+- ⬅️ **Back now navigates — it only closes the app at Home** — on match, day, league, team, advisor or any other screen, the back button steps you back through the app the way you'd expect. It exits only when you're already on the home screen.
+- 🕒 **You can see exactly which analysis you're looking at** — the small status line under the header shows the publication time of the data on screen, and turns amber with a warning if the publication is more than 3 hours old.
+- 🔄 **Self-healing data** — if the copy stored on your phone is more than 2 hours old, the app now forces a fresh download when it opens, so the Bet Advisor's picks and the strong-markets list are never silently stuck on an older day.
+- 🧊 **Model untouched** — identical input, identical numbers; this release is navigation and data freshness only.
+
 ## What's new in Mr 2 Odds 1.8 — 🐾 Full integration: offline cache, live scores, advisor, tickets
 - 🐾 **Rebranded to Mr 2 Odds** — the name, the dark-green theme and the football-intelligence look you know from the shared build, now running on the new worldwide pipeline.
 - 📡 **Offline resource cache** — the app now keeps a phone-side cache of every analysis file (SQLite-backed, 32 MB, conditional revalidation with ETags). It opens instantly from cache and refreshes in the background every 15 minutes, even with the app closed.

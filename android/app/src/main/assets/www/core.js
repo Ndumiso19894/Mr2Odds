@@ -551,7 +551,11 @@ window.PR = (function () {
     if (info.checkedAt) text += ' · checked ' + new Date(info.checkedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     if (m && screenResource() === DATA_URL) {
       text += ' · published ' + m.generated;
-      const published = parseLocal(m.generated); if (published && tzNow() - published > 60 * 60000) text += ' · publication may be out of date';
+      const published = parseLocal(m.generated);
+      if (published && tzNow() - published > 60 * 60000) {
+        if (tzNow() - published > 3 * 3600000) { text += ' · ⚠ publication is old — pull down to refresh'; el.classList.add('stale'); }
+        else text += ' · publication may be out of date';
+      }
     }
     if ((state.tab === 'live' && (info.stale || info.offline || info.error)) || state.liveStale && (state.tab === 'live' || state.tab === 'home' || (state.stack[state.stack.length - 1] || {}).type === 'match')) text += ' · scores are not confirmed current';
     if (el.textContent !== text) el.textContent = text;
@@ -700,6 +704,7 @@ window.PR = (function () {
     });
   }
   function render(quiet) {
+    reportBackState();
     if (!state.data && !(state.stack.length && state.stack[state.stack.length - 1].type === 'settings')) return;
     closeMenu();
     const top = state.stack[state.stack.length - 1];
@@ -805,8 +810,11 @@ window.PR = (function () {
     }).catch(() => toast('Stats for this match are not available yet.'));
   }
   function openTeam(name, country, div) { state.teamView = 'overview'; push({ type: 'team', name, country, div }); }
-  function toggleMenu() { state.menuOpen = !state.menuOpen; $('#menu').classList.toggle('open', state.menuOpen); }
-  function closeMenu() { state.menuOpen = false; const m = $('#menu'); if (m) m.classList.remove('open'); }
+  function toggleMenu() { state.menuOpen = !state.menuOpen; $('#menu').classList.toggle('open', state.menuOpen); reportBackState(); }
+  function closeMenu() { state.menuOpen = false; const m = $('#menu'); if (m) m.classList.remove('open'); reportBackState(); }
+  /** Tell the native shell whether the web app can consume the Android back key (menu open,
+   *  a page pushed on the stack, or a tab other than Home). The shell exits only at root. */
+  function reportBackState() { try { if (native && native.backState) native.backState(!!(state.menuOpen || state.stack.length || state.tab !== 'home')); } catch (e) { /* ignore */ } }
 
   // ------------------------------------------------------------------ shared UI fragments
   const EDITOR = { name: 'Ndumiso Msani', role: 'Founder & Football Analyst', place: 'Mthwalume, KwaZulu-Natal',

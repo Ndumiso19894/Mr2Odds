@@ -114,7 +114,15 @@
   const cached = PR.stored ? PR.stored('pr_latest') : localStorage.getItem('pr_latest');
   if (cached) { try { const saved = JSON.parse(cached); if (!PR.validResource(PR.rawUrl('data/app/latest.json'), saved)) throw new Error('Invalid saved copy'); state.data = PR.indexData(saved); PR.statusLine(); PR.render(); } catch (e) { /* ignore */ } }
   PR.loadBadges().then(() => { if (state.data) PR.render(); });
-  PR.loadData(false).then(() => { if (state.data) { PR.live.refresh(false); setTimeout(() => PR.prefetchDetails(), 1500); } });
+  // Self-heal: a saved copy older than 2 h (a dead network window, an interrupted sync) is not
+  // trusted for the session — force a fresh fetch on boot so tips are never silently stale.
+  let bootForce = false;
+  try {
+    const gen = state.data && state.data.meta ? String(state.data.meta.generated || '') : '';
+    const t = gen ? PR.parseLocal(gen) : null;
+    if (t) bootForce = Date.now() - t.getTime() > 2 * 3600000;
+  } catch (e) { /* ignore */ }
+  PR.loadData(bootForce).then(() => { if (state.data) { PR.live.refresh(false); setTimeout(() => PR.prefetchDetails(), 1500); } });
   PR.live.schedule();
   if (PR.native && PR.native.setPref) { try { PR.native.setPref('goals', !!settings.goalAlerts); PR.native.setPref('ht', !!settings.htAlerts); PR.native.setPref('ft', settings.ftAlerts !== false); PR.native.setPref('ko', settings.koAlerts !== false); if (PR.saveFavs) PR.saveFavs(); PR.native.setPref('bets', settings.betAlerts !== false); PR.native.setPref('reports', settings.reportAlerts !== false); PR.native.setPref('tennis', false); } catch (e) { /* ignore */ } }
   if (PR.reconcileTickets) setTimeout(() => PR.reconcileTickets(), 2500);

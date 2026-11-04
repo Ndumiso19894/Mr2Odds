@@ -16,6 +16,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -47,6 +48,8 @@ class MainActivity : AppCompatActivity() {
     private var networkCallback: ConnectivityManager.NetworkCallback? = null
     private var pendingSave: Pair<String, String>? = null
     private var pendingSaveBytes: Pair<String, ByteArray>? = null
+    /** The web app can consume the Android back key (menu open / a page pushed / off the Home tab). */
+    private var webCanGoBack = false
 
     private val askNotifications: ActivityResultLauncher<String> =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { ok ->
@@ -137,6 +140,16 @@ class MainActivity : AppCompatActivity() {
             js("window.app && app.refresh && app.refresh();")
             swipe.isRefreshing = false
         }
+
+        // The web layer owns the navigation (menu, pushed pages, tabs). Hand it the Android back key
+        // first; it reports (backState) whether it can consume the press. Only at the root — Home with
+        // an empty stack — does back exit the app, instead of bailing out of a match/day/page view.
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (webCanGoBack) js("window.app && window.app.back && window.app.back();")
+                else { isEnabled = false; onBackPressedDispatcher.onBackPressed() }
+            }
+        })
 
         savedInstanceState?.getString("tab")?.let { pendingTab = it }
         web.loadUrl("file:///android_asset/www/index.html")
@@ -320,6 +333,12 @@ class MainActivity : AppCompatActivity() {
         @android.webkit.JavascriptInterface
         fun refreshDone() {
             runOnUiThread { swipe.isRefreshing = false }
+        }
+
+        /** The web app reports whether it can consume the Android back key. */
+        @android.webkit.JavascriptInterface
+        fun backState(canGoBack: Boolean) {
+            webCanGoBack = canGoBack
         }
 
         @android.webkit.JavascriptInterface
