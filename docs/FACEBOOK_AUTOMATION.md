@@ -1,5 +1,7 @@
 # Facebook selections and results
 
+The separate daily Bet Advisor reel and Telegram video are documented in [REEL_AUTOMATION.md](REEL_AUTOMATION.md).
+
 All times are South African time (SAST, UTC+2):
 
 | Time | Post |

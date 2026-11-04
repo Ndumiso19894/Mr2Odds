@@ -1,0 +1,203 @@
+name: Daily selection reel
+
+on:
+  # 07:00 South African time (UTC+2). Scan fallback can dispatch within this hour.
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: daily-selection-reel
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    # Branch dispatch is strictly read-only: verify the supplied music and account setup.
+    if: github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          pip install --only-binary=:all: --retries 5 --timeout 60 -r requirements.txt 'Pillow>=10,<12' 'imageio-ffmpeg>=0.6,<1'
+      - name: Check supplied music without posting
+        env:
+          REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import tempfile
+          from scripts.selection_reel import download_music
+          with tempfile.TemporaryDirectory() as d:
+              download_music(Path(d) / 'music.mp3')
+          print('Supplied music is accessible and verified.')
+          PY
+      - name: Check Facebook Page access without posting
+        env:
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+        run: python scripts/facebook_post.py diagnose
+      - name: Check Telegram configuration without sending
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo 'Configure the existing Telegram bot and chat Actions secrets.' >&2
+            exit 1
+          fi
+          echo 'Telegram delivery secrets are configured.'
+  reel:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Determine morning slot and existing records
+        id: claims
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          day=$(TZ=Africa/Johannesburg date +%F)
+          hour=$(TZ=Africa/Johannesburg date +%H)
+          echo "date=$day" >> "$GITHUB_OUTPUT"
+          if [ "$hour" != '07' ]; then
+            echo "active=false" >> "$GITHUB_OUTPUT"
+            echo 'Outside the 07:00 SAST reel window.'
+            exit 0
+          fi
+          echo "active=true" >> "$GITHUB_OUTPUT"
+          for service in source facebook telegram; do
+            name="daily-reel-$service-$day"
+            gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=$name" > "$RUNNER_TEMP/$service-artifacts.json"
+            SERVICE="$service" NAME="$name" python3 - <<'PY'
+          import json, os
+          service, name = os.environ['SERVICE'], os.environ['NAME']
+          # --paginate emits multiple JSON objects on large pages. A named match is
+          # normally one page; fail closed instead of guessing if not parseable.
+          with open(os.path.join(os.environ['RUNNER_TEMP'], service + '-artifacts.json')) as f:
+              data = json.load(f)
+          arts = [a for a in data.get('artifacts', []) if a.get('name') == name and not a.get('expired')]
+          if len(arts) > 1:
+              raise SystemExit('Duplicate reel records require manual review')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f'{service}_exists={str(bool(arts)).lower()}\n')
+              if service == 'source' and arts:
+                  f.write(f"source_run={arts[0]['workflow_run']['id']}\n")
+          PY
+          done
+      - name: Set up Python
+        if: steps.claims.outputs.active == 'true' && (steps.claims.outputs.facebook_exists != 'true' || steps.claims.outputs.telegram_exists != 'true')
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install reel dependencies
+        if: steps.claims.outputs.active == 'true' && (steps.claims.outputs.facebook_exists != 'true' || steps.claims.outputs.telegram_exists != 'true')
+        run: |
+          pip install --only-binary=:all: --retries 5 --timeout 60 -r requirements.txt 'Pillow>=10,<12' 'imageio-ffmpeg>=0.6,<1'
+      - name: Download previously prepared reel
+        if: steps.claims.outputs.active == 'true' && steps.claims.outputs.source_exists == 'true' && (steps.claims.outputs.facebook_exists != 'true' || steps.claims.outputs.telegram_exists != 'true')
+        uses: actions/download-artifact@v4
+        with:
+          name: daily-reel-source-${{ steps.claims.outputs.date }}
+          path: reel-output
+          run-id: ${{ steps.claims.outputs.source_run }}
+          github-token: ${{ github.token }}
+      - name: Check out latest published football data
+        if: steps.claims.outputs.active == 'true' && steps.claims.outputs.source_exists != 'true' && (steps.claims.outputs.facebook_exists != 'true' || steps.claims.outputs.telegram_exists != 'true')
+        uses: actions/checkout@v4
+        with:
+          ref: data
+          path: live-data
+      - name: Prepare reel with supplied music and verified selections
+        id: prepare
+        if: steps.claims.outputs.active == 'true' && steps.claims.outputs.source_exists != 'true' && (steps.claims.outputs.facebook_exists != 'true' || steps.claims.outputs.telegram_exists != 'true')
+        env:
+          REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
+        run: python scripts/selection_reel.py prepare --snapshot live-data/data/app/latest.json --output reel-output
+      - name: Save prepared reel for both platforms
+        if: steps.prepare.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-reel-source-${{ steps.claims.outputs.date }}
+          path: reel-output/
+          retention-days: 3
+          if-no-files-found: error
+      - name: Revalidate the prepared reel before delivery
+        id: valid
+        if: steps.claims.outputs.active == 'true' && (steps.claims.outputs.facebook_exists != 'true' || steps.claims.outputs.telegram_exists != 'true') && (steps.claims.outputs.source_exists == 'true' || steps.prepare.outputs.ready == 'true')
+        run: python scripts/selection_reel.py validate --output reel-output
+      - name: Verify Facebook Page access
+        id: facebook-check
+        continue-on-error: true
+        if: steps.valid.outcome == 'success' && steps.claims.outputs.facebook_exists != 'true'
+        env:
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+        run: python scripts/facebook_post.py diagnose
+      - name: Verify Telegram configuration
+        id: telegram-check
+        continue-on-error: true
+        if: steps.valid.outcome == 'success' && steps.claims.outputs.telegram_exists != 'true'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo 'Configure the existing Telegram bot and chat Actions secrets.' >&2
+            exit 1
+          fi
+      # Separate irreversible preclaims keep one platform's failure from retrying or blocking the other.
+      - name: Prepare delivery claim markers
+        if: steps.valid.outcome == 'success'
+        run: |
+          mkdir -p facebook-claim telegram-claim
+          sha256sum reel-output/selection-reel.mp4 | cut -d' ' -f1 > facebook-claim/sha256.txt
+          cp facebook-claim/sha256.txt telegram-claim/sha256.txt
+      - name: Claim Facebook reel delivery
+        id: facebook-claim
+        if: steps.facebook-check.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-reel-facebook-${{ steps.claims.outputs.date }}
+          path: facebook-claim/
+          retention-days: 35
+          if-no-files-found: error
+      - name: Publish Facebook reel
+        id: facebook
+        continue-on-error: true
+        if: steps.facebook-claim.outcome == 'success'
+        env:
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+        run: python scripts/selection_reel.py facebook --output reel-output
+      - name: Claim Telegram reel delivery
+        id: telegram-claim
+        if: always() && steps.telegram-check.outcome == 'success' && steps.valid.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-reel-telegram-${{ steps.claims.outputs.date }}
+          path: telegram-claim/
+          retention-days: 35
+          if-no-files-found: error
+      - name: Send the same video to Telegram
+        id: telegram
+        continue-on-error: true
+        if: always() && steps.telegram-claim.outcome == 'success'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scripts/selection_reel.py telegram --output reel-output
+      - name: Report failed or unconfirmed delivery
+        if: always() && (steps.facebook-check.outcome == 'failure' || steps.telegram-check.outcome == 'failure' || steps.facebook-claim.outcome == 'failure' || steps.telegram-claim.outcome == 'failure' || steps.facebook.outcome == 'failure' || steps.telegram.outcome == 'failure')
+        run: |
+          echo 'At least one delivery failed or is unconfirmed. Check the relevant Page/chat before any manual recovery.' >&2
+          exit 1
