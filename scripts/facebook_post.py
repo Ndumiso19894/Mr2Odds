@@ -59,8 +59,12 @@ def candidates(data, now):
         f = fixtures.get(pick.get('fixture'))
         if not f or f.get('id') in seen or not competition_policy.allows_record(f) or not f.get('data_ok') or f.get('q') == 'Low':
             continue
-        if f.get('date') != now.date().isoformat():
+        if f.get('date') != now.date().isoformat() or f.get('time_known') is not True:
             continue
+        country, league = f.get('country'), f.get('league')
+        if not isinstance(country, str) or not country.strip() or not isinstance(league, str) or not league.strip():
+            continue
+        country, league = country.strip(), league.strip()
         try:
             kickoff = datetime.strptime(f['kickoff'], '%Y-%m-%d %H:%M').replace(tzinfo=SAST)
         except (KeyError, TypeError, ValueError):
@@ -85,7 +89,8 @@ def candidates(data, now):
             continue
         seen.add(f['id'])
         result.append({'fixture': f['id'], 'home': home, 'away': away, 'selection': safe.label(code, home, away),
-                       'odds': odds, 'kickoff': f['kickoff'], 'badges': f.get('badges') or {}})
+                       'country': country, 'league': league, 'odds': odds, 'kickoff': f['kickoff'],
+                       'badges': f.get('badges') or {}})
     return result
 
 
@@ -175,13 +180,13 @@ def draw_team(draw, name, x, center_y, anchor):
     max_width = 320
     words = name.split()
     splits = [(name,)] + [(' '.join(words[:i]), ' '.join(words[i:])) for i in range(1, len(words))]
-    for size in range(34, 21, -1):
+    for size in range(32, 21, -1):
         f = font(size, True)
         choices = [lines for lines in splits if all(draw.textbbox((0, 0), line, font=f)[2] <= max_width for line in lines)]
         if choices:
             lines = min(choices, key=lambda v: (len(v), max(draw.textbbox((0, 0), t, font=f)[2] for t in v)))
             for i, line in enumerate(lines):
-                draw.text((x, center_y + (i - (len(lines) - 1) / 2) * 36), line, font=f, fill='#ffffff', anchor=anchor)
+                draw.text((x, center_y + (i - (len(lines) - 1) / 2) * 33), line, font=f, fill='#122b3d', anchor=anchor)
             return
     raise ValueError('A team name is too long to display safely')
 
@@ -190,32 +195,39 @@ def render(selections, path, logo_path=ROOT / 'android/design/mr-2-odds-logo.png
     if not 5 <= len(selections) <= 8:
         raise ValueError('An image requires 5 to 8 complete selections')
     # 1080 x 1920 is exactly 9:16. Each match owns a separate spacious card.
-    image = Image.new('RGB', (1080, 1920), '#050b1e')
+    image = Image.new('RGB', (1080, 1920), '#ffffff')
     draw = ImageDraw.Draw(image)
     logo = Image.open(logo_path).convert('RGBA')
     logo.thumbnail((210, 210), Image.Resampling.LANCZOS)
     image.paste(logo, (35, 12), logo)
-    draw.text((260, 72), 'TODAY’S SAFE BETS', font=font(42, True), fill='#f8f4e9')
-    draw.rounded_rectangle((260, 138, 532, 144), radius=3, fill='#09b5a3')
+    draw.text((260, 72), 'TODAY’S SAFE BETS', font=font(42, True), fill='#122b3d')
+    draw.rounded_rectangle((260, 138, 532, 144), radius=3, fill='#008f80')
     gap, start, bottom = 18, 230, 1855
     height = (bottom - start - gap * (len(selections) - 1)) // len(selections)
     for i, item in enumerate(selections):
         y = start + i * (height + gap)
-        draw.rounded_rectangle((35, y, 1045, y + height), radius=20, fill='#111d2f', outline='#263c4d', width=2)
-        top_y = y + round(height * .30)
+        draw.rounded_rectangle((35, y, 1045, y + height), radius=20, fill='#f3f7f6', outline='#b3c8c4', width=2)
+        # Kickoff timestamps in the published snapshot are in South African time.
+        competition = f"{item['country']}  ·  {item['league']}"
+        cf = fit(draw, competition, 725, 25, minimum=19, bold=True)
+        metadata_y = y + max(24, round(height * .13))
+        draw.text((60, metadata_y), competition, font=cf, fill='#335a58', anchor='lm')
+        kickoff = datetime.strptime(item['kickoff'], '%Y-%m-%d %H:%M').strftime('%H:%M')
+        draw.text((1018, metadata_y), f'{kickoff} SAST', font=font(24, True), fill='#174b48', anchor='rm')
+        top_y = y + round(height * .43)
         for side, x in (('home_image', 58), ('away_image', 946)):
-            crest = ImageOps.contain(item[side], (76, 76), Image.Resampling.LANCZOS)
-            image.paste(crest, (x + (76 - crest.width)//2, top_y - crest.height//2), crest)
+            crest = ImageOps.contain(item[side], (70, 70), Image.Resampling.LANCZOS)
+            image.paste(crest, (x + (70 - crest.width)//2, top_y - crest.height//2), crest)
         draw_team(draw, item['home'], 158, top_y, 'lm')
-        draw.text((540, top_y), 'v', font=font(27, True), fill='#7f9ba0', anchor='mm')
+        draw.text((540, top_y), 'v', font=font(27, True), fill='#52716f', anchor='mm')
         draw_team(draw, item['away'], 922, top_y, 'rm')
-        separator_y = y + round(height * .57)
-        draw.line((157, separator_y, 923, separator_y), fill='#2d4050', width=2)
-        lower_y = y + round(height * .78)
-        sf = fit(draw, item['selection'], 610, 32, minimum=22)
-        draw.text((157, lower_y), item['selection'], font=sf, fill='#c8e2d9', anchor='lm')
-        draw.rounded_rectangle((802, lower_y - 27, 922, lower_y + 27), radius=10, fill='#06aa99')
-        draw.text((862, lower_y), f"{item['odds']:.2f}", font=font(29, True), fill='#061825', anchor='mm')
+        separator_y = y + round(height * .67)
+        draw.line((157, separator_y, 923, separator_y), fill='#c7d8d5', width=2)
+        lower_y = y + round(height * .83)
+        sf = fit(draw, item['selection'], 610, 30, minimum=22)
+        draw.text((157, lower_y), item['selection'], font=sf, fill='#183b42', anchor='lm')
+        draw.rounded_rectangle((802, lower_y - 24, 922, lower_y + 24), radius=10, fill='#007f72')
+        draw.text((862, lower_y), f"{item['odds']:.2f}", font=font(28, True), fill='#ffffff', anchor='mm')
     path.parent.mkdir(parents=True, exist_ok=True)
     image.save(path, 'PNG', optimize=True)
 
@@ -262,7 +274,8 @@ def prepare(snapshot, output, now=None, session=None):
         return False
     render(complete, output)
     manifest = {'date': now.astimezone(SAST).date().isoformat(), 'generated': json.loads(Path(snapshot).read_text())['meta']['generated'],
-                'fixtures': [{'kickoff': p['kickoff'], 'home': p['home'], 'away': p['away']} for p in complete]}
+                'fixtures': [{'kickoff': p['kickoff'], 'country': p['country'], 'league': p['league'],
+                              'home': p['home'], 'away': p['away']} for p in complete]}
     output.with_suffix('.json').write_text(json.dumps(manifest), encoding='utf-8')
     print(f'Prepared {len(complete)} selections with both club crests.')
     return True

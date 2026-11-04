@@ -16,7 +16,7 @@ def snapshot():
     fixtures, primary = [], []
     for i in range(10):
         f = {'id': str(i), 'home': f'Home {i}', 'away': f'Away {i}', 'country': 'England',
-             'league': 'Championship', 'date': NOW.date().isoformat(), 'kickoff': '2026-11-04 12:00',
+             'league': 'Championship', 'date': NOW.date().isoformat(), 'kickoff': '2026-11-04 12:00', 'time_known': True,
              'data_ok': True, 'q': 'High', 'badges': {'home': f'enet/{i}.png', 'away': f'enet/{i+10}.png'},
              'sels': [['O15', .82, .82, .8, 1.20, 0, None, None]]}
         fixtures.append(f); primary.append({'fixture': str(i), 'sel': 'O15', 'odds': 2.5, 'label': 'wrong'})
@@ -28,6 +28,7 @@ def test_exact_current_selection_and_freshness():
     picks = fb.candidates(data, NOW)
     assert len(picks) == 10
     assert picks[0]['odds'] == 1.2 and picks[0]['selection'] == 'Over 1.5 goals'
+    assert (picks[0]['country'], picks[0]['league'], picks[0]['kickoff']) == ('England', 'Championship', '2026-11-04 12:00')
     data['meta']['generated'] = '2026-11-04 06:00'
     with pytest.raises(ValueError, match='stale'):
         fb.candidates(data, NOW)
@@ -62,8 +63,10 @@ def test_prepare_requires_two_crests_and_maximum_eight(tmp_path, monkeypatch):
     monkeypatch.setattr(fb, 'badge', lambda session, team, path: None if team.endswith('0') else im)
     assert fb.prepare(source, output, NOW, session=object())
     assert Image.open(output).size == (1080, 1920)
+    assert Image.open(output).getpixel((0, 0)) == (255, 255, 255)
     manifest = json.loads(output.with_suffix('.json').read_text())
     assert len(manifest['fixtures']) == 8
+    assert all(f['country'] == 'England' and f['league'] == 'Championship' and f['kickoff'] == '2026-11-04 12:00' for f in manifest['fixtures'])
     assert all(not f['home'].endswith('0') for f in manifest['fixtures'])
     monkeypatch.setattr(fb, 'badge', lambda *args: None)
     other = tmp_path/'other.png'
@@ -194,3 +197,22 @@ def test_workflow_corrected_retry_is_explicit_and_separate():
     assert 'claim="$claim-retry"' in workflow
     assert 'corrected retry requires an existing claim' in workflow
     assert 'name: ${{ steps.day.outputs.claim }}' in workflow
+
+
+def test_missing_country_league_or_unknown_kickoff_are_not_invented():
+    data = snapshot()
+    data['fixtures'][0]['country'] = ''
+    data['fixtures'][1]['league'] = None
+    data['fixtures'][2]['time_known'] = False
+    data['fixtures'][3].pop('time_known')
+    assert [p['fixture'] for p in fb.candidates(data, NOW)] == ['4', '5', '6', '7', '8', '9']
+
+
+def test_redesign_has_its_own_manual_claim():
+    workflow = Path('.github/workflows/facebook-daily.yml').read_text()
+    assert 'redesign_today:' in workflow
+    assert "[ \"$EVENT_NAME\" = 'workflow_dispatch' ] && [ \"$REDESIGN_TODAY\" = 'true' ]" in workflow
+    assert 'claim="$claim-redesign"' in workflow
+    assert 'Select only one corrected-post option' in workflow
+    assert 'original=${original%-redesign}' in workflow
+    assert workflow.index('Record the daily posting claim') < workflow.index('Publish photo and caption')
