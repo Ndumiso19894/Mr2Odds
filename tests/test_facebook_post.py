@@ -84,6 +84,7 @@ def test_publish_uses_photo_endpoint_and_secret_without_logging(tmp_path, monkey
         'fixtures':[{'kickoff':'2026-11-04 12:00'}]*5}))
     response = Mock(); response.json.return_value={'id':'123_456'}
     session = Mock(); session.post.return_value = response
+    session.get.return_value = Mock(ok=True, json=Mock(return_value={'id': '123456'}))
     fb.publish(path, NOW, session=session)
     assert session.post.call_count == 1
     args, kwargs = session.post.call_args
@@ -101,3 +102,62 @@ def test_workflow_claim_precedes_publish_and_never_retries():
     assert 'FACEBOOK_PAGE_ACCESS_TOKEN' in workflow and 'FACEBOOK_PAGE_ID' in workflow
     assert 'actions/artifacts?per_page=100&name=$CLAIM_NAME' in workflow
     assert 'cron:' in workflow
+
+
+def test_diagnose_is_read_only_and_sanitizes_facebook_errors(monkeypatch, capsys):
+    monkeypatch.setenv('FACEBOOK_PAGE_ACCESS_TOKEN', 'example_token_not_real')
+    monkeypatch.setenv('FACEBOOK_PAGE_ID', '123456')
+    response = Mock(ok=True); response.json.return_value = {'id': '123456'}
+    session = Mock(); session.get.return_value = response
+    fb.diagnose(session)
+    assert session.get.call_count == 1 and not session.post.called
+    assert 'configured Page' in capsys.readouterr().out
+    response.json.side_effect = [{'id': '98765'}, {'data': [{'id': '123456', 'access_token': 'example_page_token'}]}]
+    fb.diagnose(session)
+    assert 'authorized user token' in capsys.readouterr().out
+    response.json.side_effect = [{'id': '98765'}, {'data': [{'id': '123456'}]}]
+    with pytest.raises(RuntimeError, match='did not provide'):
+        fb.diagnose(session)
+    response.json.side_effect = [{'id': '98765'}, {'data': []}]
+    with pytest.raises(RuntimeError, match='configured Page was not found'):
+        fb.diagnose(session)
+    response.json.side_effect = None
+    response.ok = False; response.status_code = 400
+    response.json.return_value = {'error': {'code': 190, 'error_subcode': 463, 'message': 'example_token_not_real'}}
+    with pytest.raises(RuntimeError) as exc:
+        fb.diagnose(session)
+    assert 'HTTP 400' in str(exc.value) and 'Facebook code 190' in str(exc.value)
+    assert 'example_token_not_real' not in str(exc.value)
+
+
+def test_publish_error_reports_numeric_code_without_token(tmp_path, monkeypatch):
+    monkeypatch.setenv('FACEBOOK_PAGE_ACCESS_TOKEN', 'example_test_secret_not_real')
+    monkeypatch.setenv('FACEBOOK_PAGE_ID', '123456')
+    path = tmp_path/'selections.png'; path.write_bytes(b'png')
+    path.with_suffix('.json').write_text(json.dumps({'date':'2026-11-04', 'generated':'2026-11-04 07:45',
+        'fixtures':[{'kickoff':'2026-11-04 12:00'}]*5}))
+    response = Mock(ok=False, status_code=403)
+    response.json.return_value = {'error': {'code': 200, 'message': 'example_test_secret_not_real'}}
+    session = Mock(); session.post.return_value = response
+    session.get.return_value = Mock(ok=True, json=Mock(return_value={'id': '123456'}))
+    with pytest.raises(RuntimeError) as exc:
+        fb.publish(path, NOW, session=session)
+    assert 'HTTP 403' in str(exc.value) and 'Facebook code 200' in str(exc.value)
+    assert 'example_test_secret_not_real' not in str(exc.value)
+    assert session.post.call_count == 1
+
+
+def test_publish_derives_only_configured_page_token_in_memory(tmp_path, monkeypatch, capsys):
+    monkeypatch.setenv('FACEBOOK_PAGE_ACCESS_TOKEN', 'example_user_token')
+    monkeypatch.setenv('FACEBOOK_PAGE_ID', '123456')
+    path = tmp_path/'card.png'; path.write_bytes(b'png')
+    path.with_suffix('.json').write_text(json.dumps({'date':'2026-11-04', 'generated':'2026-11-04 07:45',
+        'fixtures':[{'kickoff':'2026-11-04 12:00'}]*5}))
+    session = Mock()
+    session.get.side_effect = [Mock(ok=True, json=Mock(return_value={'id':'99'})),
+                               Mock(ok=True, json=Mock(return_value={'data':[{'id':'123456','access_token':'example_derived_page_token'}]}))]
+    session.post.return_value = Mock(ok=True, json=Mock(return_value={'id':'published'}))
+    fb.publish(path, NOW, session=session)
+    assert session.post.call_args.kwargs['data']['access_token'] == 'example_derived_page_token'
+    assert 'example_derived_page_token' not in capsys.readouterr().out
+    assert 'example_derived_page_token' not in path.with_suffix('.json').read_text()

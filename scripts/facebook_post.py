@@ -223,11 +223,76 @@ def prepare(snapshot, output, now=None, session=None):
     return True
 
 
-def publish(image_path, now=None, session=None):
+def credentials():
     token = os.environ.get('FACEBOOK_PAGE_ACCESS_TOKEN', '').strip()
     page_id = os.environ.get('FACEBOOK_PAGE_ID', '').strip()
     if not token or not re.fullmatch(r'\d+', page_id):
         raise ValueError('FACEBOOK_PAGE_ACCESS_TOKEN and numeric FACEBOOK_PAGE_ID must be configured as Actions secrets')
+    return token, page_id
+
+
+def error_summary(response):
+    """Report only numeric Graph codes; never print responses, URLs or secrets."""
+    try:
+        err = response.json().get('error', {})
+        code, subcode = err.get('code'), err.get('error_subcode')
+        fields = [f'HTTP {int(response.status_code)}']
+        if isinstance(code, int) and not isinstance(code, bool):
+            fields.append(f'Facebook code {code}')
+        if isinstance(subcode, int) and not isinstance(subcode, bool):
+            fields.append(f'subcode {subcode}')
+        return ', '.join(fields)
+    except (ValueError, TypeError, AttributeError):
+        return f'HTTP {int(response.status_code)}'
+
+
+def resolve_page_token(session, token, page_id):
+    """Use a Page token directly, or retrieve this Page's token from an authorized user token.
+
+    Derived tokens remain in memory; responses, names, IDs and credentials are never logged.
+    """
+    try:
+        headers = {'Authorization': 'Bearer ' + token}
+        response = session.get('https://graph.facebook.com/v24.0/me', params={'fields': 'id'}, headers=headers, timeout=30)
+        if not response.ok:
+            raise RuntimeError('Facebook token check rejected: ' + error_summary(response))
+        identity = response.json().get('id')
+        if not identity:
+            raise RuntimeError('Facebook token check returned no identity')
+        if str(identity) == page_id:
+            return token, False
+        params = {'fields': 'id,access_token', 'limit': 100}
+        for _ in range(10):
+            accounts = session.get('https://graph.facebook.com/v24.0/me/accounts', params=params, headers=headers, timeout=30)
+            if not accounts.ok:
+                raise RuntimeError('Page access check rejected: ' + error_summary(accounts))
+            body = accounts.json()
+            for entry in body.get('data', []):
+                if isinstance(entry, dict) and str(entry.get('id', '')) == page_id:
+                    page_token = entry.get('access_token')
+                    if not isinstance(page_token, str) or not page_token.strip():
+                        raise RuntimeError('Facebook did not provide a Page access token; check Page permissions')
+                    return page_token.strip(), True
+            paging = body.get('paging') or {}
+            cursor = (paging.get('cursors') or {}).get('after') if paging.get('next') else None
+            if not cursor:
+                break
+            params = {'fields': 'id,access_token', 'limit': 100, 'after': cursor}
+        raise RuntimeError('The configured Page was not found among the token’s accessible Pages')
+    except requests.RequestException:
+        raise RuntimeError('Could not reach Facebook for the read-only token check') from None
+
+
+def diagnose(session=None):
+    """Read-only token check; no photo is posted and no identifiers are logged."""
+    token, page_id = credentials()
+    _, derived = resolve_page_token(session or requests.Session(), token, page_id)
+    detail = 'using an authorized user token' if derived else 'using the Page token'
+    print(f'::notice::Facebook confirmed access to the configured Page {detail}.')
+
+
+def publish(image_path, now=None, session=None):
+    token, page_id = credentials()
     now = now or datetime.now(SAST)
     info = json.loads(image_path.with_suffix('.json').read_text(encoding='utf-8'))
     if info['date'] != now.astimezone(SAST).date().isoformat():
@@ -238,11 +303,13 @@ def publish(image_path, now=None, session=None):
     if not 5 <= len(info['fixtures']) <= 8 or any(datetime.strptime(x['kickoff'], '%Y-%m-%d %H:%M').replace(tzinfo=SAST) <= now + timedelta(minutes=5) for x in info['fixtures']):
         raise ValueError('At least one fixture has started or is about to start; not posting')
     session = session or requests.Session()
+    token, _ = resolve_page_token(session, token, page_id)
     try:
         with image_path.open('rb') as image:
             response = session.post(f'https://graph.facebook.com/v24.0/{page_id}/photos',
                 data={'access_token': token, 'message': CAPTION}, files={'source': ('selections.png', image, 'image/png')}, timeout=60)
-        response.raise_for_status()
+        if not response.ok:
+            raise RuntimeError('Facebook rejected the photo: ' + error_summary(response))
         payload = response.json()
         if not payload.get('id'):
             raise ValueError('Facebook did not confirm the photo ID; check the Page before retrying')
@@ -257,12 +324,15 @@ def main():
     sub = parser.add_subparsers(dest='cmd', required=True)
     p = sub.add_parser('prepare'); p.add_argument('--snapshot', type=Path, required=True); p.add_argument('--output', type=Path, required=True)
     p = sub.add_parser('publish'); p.add_argument('--image', type=Path, required=True)
+    sub.add_parser('diagnose')
     args = parser.parse_args()
     if args.cmd == 'prepare':
         ready = prepare(args.snapshot, args.output)
         if os.environ.get('GITHUB_OUTPUT'):
             with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
                 out.write(f'ready={str(ready).lower()}\n')
+    elif args.cmd == 'diagnose':
+        diagnose()
     else:
         publish(args.image)
 
@@ -271,5 +341,5 @@ if __name__ == '__main__':
     try:
         main()
     except (ValueError, OSError, RuntimeError) as exc:
-        print(str(exc), file=sys.stderr)
+        print(f'::error::{exc}', file=sys.stderr)
         sys.exit(1)
