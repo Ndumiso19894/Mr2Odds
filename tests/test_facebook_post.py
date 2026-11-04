@@ -61,7 +61,7 @@ def test_prepare_requires_two_crests_and_maximum_eight(tmp_path, monkeypatch):
     im = Image.new('RGBA', (20,20), 'teal')
     monkeypatch.setattr(fb, 'badge', lambda session, team, path: None if team.endswith('0') else im)
     assert fb.prepare(source, output, NOW, session=object())
-    assert Image.open(output).size == (1080, 1350)
+    assert Image.open(output).size == (1080, 1920)
     manifest = json.loads(output.with_suffix('.json').read_text())
     assert len(manifest['fixtures']) == 8
     assert all(not f['home'].endswith('0') for f in manifest['fixtures'])
@@ -81,7 +81,7 @@ def test_publish_uses_photo_endpoint_and_secret_without_logging(tmp_path, monkey
     monkeypatch.setenv('FACEBOOK_PAGE_ID', '123456')
     path = tmp_path/'selections.png'; path.write_bytes(b'png')
     path.with_suffix('.json').write_text(json.dumps({'date':'2026-11-04', 'generated':'2026-11-04 07:45',
-        'fixtures':[{'kickoff':'2026-11-04 12:00'}]*5}))
+        'fixtures':[{'kickoff':'2026-11-04 12:00','home':'Home FC','away':'Away United'}]*5}))
     response = Mock(); response.json.return_value={'id':'123_456'}
     session = Mock(); session.post.return_value = response
     session.get.return_value = Mock(ok=True, json=Mock(return_value={'id': '123456'}))
@@ -89,7 +89,7 @@ def test_publish_uses_photo_endpoint_and_secret_without_logging(tmp_path, monkey
     assert session.post.call_count == 1
     args, kwargs = session.post.call_args
     assert args[0] == 'https://graph.facebook.com/v24.0/123456/photos'
-    assert '#Mr2Odds' in kwargs['data']['message']
+    assert kwargs['data']['message'] == "Today's safe bets - 4 November 2026\n\n#HomeFC #AwayUnited"
     assert 'example_test_secret_not_real' not in capsys.readouterr().out
     with pytest.raises(ValueError): fb.publish(path, NOW + timedelta(hours=4), session=session)
     assert session.post.call_count == 1
@@ -135,7 +135,7 @@ def test_publish_error_reports_numeric_code_without_token(tmp_path, monkeypatch)
     monkeypatch.setenv('FACEBOOK_PAGE_ID', '123456')
     path = tmp_path/'selections.png'; path.write_bytes(b'png')
     path.with_suffix('.json').write_text(json.dumps({'date':'2026-11-04', 'generated':'2026-11-04 07:45',
-        'fixtures':[{'kickoff':'2026-11-04 12:00'}]*5}))
+        'fixtures':[{'kickoff':'2026-11-04 12:00','home':'Home FC','away':'Away United'}]*5}))
     response = Mock(ok=False, status_code=403)
     response.json.return_value = {'error': {'code': 200, 'message': 'example_test_secret_not_real'}}
     session = Mock(); session.post.return_value = response
@@ -152,7 +152,7 @@ def test_publish_derives_only_configured_page_token_in_memory(tmp_path, monkeypa
     monkeypatch.setenv('FACEBOOK_PAGE_ID', '123456')
     path = tmp_path/'card.png'; path.write_bytes(b'png')
     path.with_suffix('.json').write_text(json.dumps({'date':'2026-11-04', 'generated':'2026-11-04 07:45',
-        'fixtures':[{'kickoff':'2026-11-04 12:00'}]*5}))
+        'fixtures':[{'kickoff':'2026-11-04 12:00','home':'Home FC','away':'Away United'}]*5}))
     session = Mock()
     session.get.side_effect = [Mock(ok=True, json=Mock(return_value={'id':'99'})),
                                Mock(ok=True, json=Mock(return_value={'data':[{'id':'123456','access_token':'example_derived_page_token'}]}))]
@@ -161,3 +161,36 @@ def test_publish_derives_only_configured_page_token_in_memory(tmp_path, monkeypa
     assert session.post.call_args.kwargs['data']['access_token'] == 'example_derived_page_token'
     assert 'example_derived_page_token' not in capsys.readouterr().out
     assert 'example_derived_page_token' not in path.with_suffix('.json').read_text()
+
+
+def test_caption_has_only_the_teams_on_the_picture():
+    info = {'date': '2026-11-04', 'fixtures': [
+        {'home': 'St. John’s FC', 'away': 'AS Étoile'},
+        {'home': 'Manchester United', 'away': 'Away United'},
+        {'home': 'Home Club', 'away': 'Away Club'},
+        {'home': 'Home 4', 'away': 'Away 4'},
+        {'home': 'Home 5', 'away': 'Away 5'},
+    ]}
+    caption = fb.caption_for(info)
+    assert caption.startswith("Today's safe bets - 4 November 2026\n\n")
+    assert caption.splitlines()[2].split() == ['#StJohnsFC', '#ASÉtoile', '#ManchesterUnited', '#AwayUnited',
+                                                '#HomeClub', '#AwayClub', '#Home4', '#Away4', '#Home5', '#Away5']
+    assert '#Mr2Odds' not in caption and '#BettingTips' not in caption
+    info['fixtures'][4]['away'] = 'Away United'  # repeated clubs appear only once
+    assert fb.caption_for(info).count('#AwayUnited') == 1
+
+
+def test_portrait_fits_long_team_names_without_colliding():
+    from PIL import ImageDraw
+    draw = ImageDraw.Draw(Image.new('RGB', (1080,1920)))
+    fb.draw_team(draw, 'A very long football club name', 158, 300, 'lm')
+    fb.draw_team(draw, 'Another very long away team name', 922, 300, 'rm')
+
+
+def test_workflow_corrected_retry_is_explicit_and_separate():
+    workflow = Path('.github/workflows/facebook-daily.yml').read_text()
+    assert 'retry_today:' in workflow
+    assert "[ \"$EVENT_NAME\" = 'workflow_dispatch' ] && [ \"$RETRY_TODAY\" = 'true' ]" in workflow
+    assert 'claim="$claim-retry"' in workflow
+    assert 'corrected retry requires an existing claim' in workflow
+    assert 'name: ${{ steps.day.outputs.claim }}' in workflow
