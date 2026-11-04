@@ -1,3 +1,8 @@
+## 80% markets, strict Advisor and match form
+- The 80%+ view shows every published modelled market at or above 80%, including multiple markets per match and unpriced or restricted markets. It is analysis only, not a shortlist; card-count proxies are not verified booking probabilities.
+- The Shortlist, Sequences and Bet Advisor use the same strict upcoming shortlist checks. The Advisor's historical goals-pick record is labelled separately from these current selections.
+- The match Form tab uses responsive result rows so long team and competition names wrap on smaller screens.
+
 ## Markets and experimental model signals
 - 1X2, BTTS and team corners can be shortlisted when the existing price and screening rules are met. Booking recommendations and ticket grading remain paused until card data matches the bookmaker’s booking rules.
 - Experimental xG/xGA and shots adjustments are enabled where sufficient inputs exist, but are not yet backtested; missing inputs are not guessed. No improved accuracy is claimed.

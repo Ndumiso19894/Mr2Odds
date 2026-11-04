@@ -252,7 +252,7 @@
   PR.views.shortlist = function () {
     const d = state.data; const sl = d.shortlist || {}; const c = sl.counts || {}; const R = sl.rules || {};
     const parts = [];
-    const primary = (sl.primary || []).filter((x) => String(x.kickoff || '').slice(0, 10) === ymd(tzNow()) && parseLocal(x.kickoff) > tzNow());
+    const primary = PR.strictShortlist(d);
     const np = primary.length;
     const yr = sl.yesterday_results || {};
     parts.push(`<div class="hero-row"><div><div class="kicker">High-conviction shortlist</div><h1>Shortlist</h1></div><span class="quality">today only</span></div>`);
@@ -301,7 +301,7 @@
     } else {
       parts.push(`<div class="card empty small"><b>NO QUALIFYING SELECTIONS${state.slMk === 'any' ? '' : ' IN THIS MARKET'}.</b> Nothing passed every gate — standards are not lowered to fill the list.</div>`);
     }
-    parts.push(`<div class="card tiny muted"><b>How this shortlist is built</b> — upcoming matches today with sufficient data, in 1X2, total goals overs (except Over 0.5) and total corners overs. The model must reach 55% for 1X2 and Over 2.5, 65% for corners, or 70% for other goals lines. A Sportybet price of 1.16–1.90 and at least 95% of the model's fair price is required. Large model/market disagreements and Low data quality are excluded. One selection per match, ranked by model probability. Missing prices and probabilities are never assumed. This is statistical information, not a guarantee.</div>`);
+    parts.push(`<div class="card tiny muted"><b>How this shortlist is built</b> — upcoming matches today with sufficient data, in 1X2, BTTS yes, total goals overs (except Over 0.5), and total or team corners overs. The model must reach 55% for 1X2, BTTS and Over 2.5, 65% for corners, or 70% for other goals lines. The exact Sportybet selection must be priced 1.16–1.90 and probability × odds must be at least 0.95. Model/market disagreements over 12 points, outliers and Low data quality are excluded. One selection per match, ranked by model probability. Missing prices and probabilities are never assumed. This is statistical information, not a guarantee.</div>`);
     view().innerHTML = parts.join('');
     $$('[data-slmk]').forEach((b) => { b.onclick = () => { state.slMk = b.dataset.slmk; PR.render(); window.scrollTo(0, 0); }; });
     $$('[data-pick-open]').forEach((b) => { b.onclick = (e) => { e.stopPropagation(); const a = art[b.dataset.pickOpen]; if (a) { state.pickArt = a; PR.push({ type: 'pick' }); } }; });
@@ -361,7 +361,7 @@
       return;
     }
     // the day's qualified picks only (kickoff still ahead); every window counts, even when empty
-    const prim = (sl.primary || []).filter((x) => x.fixture && String(x.kickoff || '').slice(0, 10) === ymd(now) && parseLocal(x.kickoff) > now);
+    const prim = PR.strictShortlist(d);
     const buckets = SEQ_WINDOWS.map(([k, name, range, lo, hi, col]) => ({ k, name, range, lo, hi, col, items: [] }));
     prim.forEach((x) => {
       const h = +String(x.kickoff).slice(11, 13);
@@ -388,9 +388,13 @@
     const eligible = homeBets(d);
     const all = bestPerMatch(eligible, (r) => r.f.id, strength);
     const high = bestPerMatch(eligible.filter((r) => r.s.p >= HOME_HIGH), (r) => r.f.id, strength);
-    // Filter BEFORE choosing one market per match: a lower-bar 79% line must not hide an 80% line.
-    // Compare the actual published number, not a rounded percentage or a bookmaker implied probability.
-    const eighty = bestPerMatch(eligible.filter((r) => Number.isFinite(r.s.p) && r.s.p >= 0.80), (r) => r.f.id, strength);
+    // Analysis-only: all modelled 80%+ markets, including unpriced and restricted markets,
+    // with no per-match deduplication. The published number is never rounded up.
+    const today = ymd(tzNow());
+    const eighty = (d.fixtures || []).filter((f) => f.date === today && inScope(f)).flatMap((f) => (f.sels || [])
+      .filter((s) => s && Number.isFinite(s.p) && s.p >= 0.80 && s.p < 1)
+      .map((s) => ({ f, s, g: selGroup(s.sel) })));
+
     const ev = bestPerMatch(homeEvBets(d), (r) => r.f.id, (r) => evOf(r.s));
     return { all, high, eighty, ev };
   }
@@ -400,7 +404,7 @@
     return `<nav class="home-launchpad" aria-label="Home collections">
       ${tile('advisor', 'shield', 'Bet Advisor', 'Analysis &amp; record', 'data-page-go="advisor"')}
       ${tile('daily', 'star', 'Bets of the Day', `${collections.all.length} selections today`, `data-home-open="all" aria-pressed="${!state.homeTab || state.homeTab === 'all'}"`)}
-      ${tile('eighty', 'trend', '80%+ Markets', `${collections.eighty.length} qualifying today`, `data-home-open="eighty" aria-pressed="${state.homeTab === 'eighty'}"`)}
+      ${tile('eighty', 'trend', '80%+ Markets', `${collections.eighty.length} modelled markets today`, `data-home-open="eighty" aria-pressed="${state.homeTab === 'eighty'}"`)}
     </nav>`;
   }
   function homeBoard(d, collections) {
@@ -410,27 +414,29 @@
     const base = tab === 'eighty' ? eighty : tab === 'high' ? high : tab === 'ev' ? evAll : all;
     const groups = Object.keys(GROUPS).filter((g) => base.some((r) => r.g === g));
     const rows = base.filter((r) => mk === 'any' || r.g === mk);
-    const cmp = { p: (a, b) => b.s.p - a.s.p, ev: (a, b) => evOf(b.s) - evOf(a.s), odds_d: (a, b) => b.s.odds - a.s.odds, odds_a: (a, b) => a.s.odds - b.s.odds,
+    const evSort = (r) => Number.isFinite(r.s.odds) && r.s.odds > 1 ? evOf(r.s) : -Infinity;
+    const oddsSort = (r) => Number.isFinite(r.s.odds) && r.s.odds > 1 ? r.s.odds : null;
+    const cmp = { p: (a, b) => b.s.p - a.s.p, ev: (a, b) => evSort(b) - evSort(a), odds_d: (a, b) => (oddsSort(b) ?? -Infinity) - (oddsSort(a) ?? -Infinity), odds_a: (a, b) => (oddsSort(a) ?? Infinity) - (oddsSort(b) ?? Infinity),
       ko: (a, b) => String(a.f.kickoff).localeCompare(String(b.f.kickoff)) || b.s.p - a.s.p,
       league: (a, b) => String(a.f.league || a.f.competition || '').localeCompare(String(b.f.league || b.f.competition || '')) || b.s.p - a.s.p }[sort] || ((a, b) => b.s.p - a.s.p);
     rows.sort(cmp);
     const matches = new Set(rows.map((r) => r.f.id)).size;
     const row = ({ f, s, g }) => { const lv = live.for(f); const st = lv && lv.hg != null ? `<span class="live-txt">${esc(lv.status || 'LIVE')} ${lv.hg}–${lv.ag}</span>` : esc(koTime(f.kickoff));
       return `<tr class="tap" data-fx="${esc(f.id)}"><td class="tiny muted nowrap">${st}</td>
-        <td><div class="b">${GROUP_ICON[g] || ''} ${esc(s.label || selLabel(s.sel, f.home, f.away))}</div><div class="tiny muted">${flag(f.country)} ${esc(f.league || f.competition || '')} · ${teamSpan(f.home, f.country, f.div)} v ${teamSpan(f.away, f.country, f.div)}</div></td>
-        <td class="right nowrap"><b>${f2(s.odds)}</b>${s.p_sb != null ? `<div class="tiny muted">${pct(s.p_sb)} implied</div>` : ''}${evOf(s) > 0 ? `<div class="tiny good">EV +${f1(100 * evOf(s))}%</div>` : ''}</td>
-        <td class="right nowrap">${pill(s.p, 0.8, 0.7)} ${PR.addBtn ? PR.addBtn(f.id, s.sel, s.odds) : ''}</td></tr>`; };
+        <td><div class="b">${GROUP_ICON[g] || ''} ${esc(s.label || selLabel(s.sel, f.home, f.away))}</div><div class="tiny muted">${flag(f.country)} ${esc(f.league || f.competition || '')} · ${teamSpan(f.home, f.country, f.div)} v ${teamSpan(f.away, f.country, f.div)}</div>${tab === 'eighty' ? `<div class="tiny warn">${g === 'cards' ? 'Card-count proxy, not verified bookings · ' : ''}${!f.data_ok ? 'Low team history · ' : ''}${s.diff || PR.isOutlier(s) ? 'Model/market disagreement · ' : ''}${PR.isDropped(s.sel) ? 'Not offered · ' : ''}Analysis only</div>` : ''}</td>
+        <td class="right nowrap"><b>${s.odds ? f2(s.odds) : '–'}</b>${s.p_sb != null ? `<div class="tiny muted">${pct(s.p_sb)} implied</div>` : ''}${tab !== 'eighty' && s.odds && evOf(s) > 0 ? `<div class="tiny good">EV +${f1(100 * evOf(s))}%</div>` : ''}</td>
+        <td class="right nowrap">${pill(s.p, 0.8, 0.7)} ${tab !== 'eighty' && PR.addBtn ? PR.addBtn(f.id, s.sel, s.odds) : ''}</td></tr>`; };
     const out = [];
     out.push(`<section id="home-board" class="home-board-head" tabindex="-1"><div class="kicker">Your matchday collections</div><h2>${tab === 'eighty' ? '80%+ probability markets' : tab === 'high' ? 'High probability' : tab === 'ev' ? 'Positive EV' : 'Bets of the Day'}</h2><p>${tab === 'eighty' ? 'Published model probability of at least 80%. No lower-probability fillers.' : 'Explore today’s selections. Open a match for the full analysis.'}</p></section>`);
     out.push(`<div class="card compact home-board-controls">${segmented([['all', `${icon('star')} Bets of the Day (${all.length})`], ['eighty', `${icon('trend')} 80%+ (${eighty.length})`], ['high', `${icon('trend')} High probability (${high.length})`], ['ev', `${icon('tag')} Positive EV (${evAll.length})`]], tab, 'ht')}
       <div class="chips small-chips" style="margin-top:6px"><button class="chip tapchip ${mk === 'any' ? 'on' : ''}" data-hmk="any">All markets <b>${base.length}</b></button>${groups.map((g) => `<button class="chip tapchip ${mk === g ? 'on' : ''}" data-hmk="${g}">${GROUP_ICON[g]} ${esc(GROUPS[g])} <b>${base.filter((r) => r.g === g).length}</b></button>`).join('')}</div>
-      <div class="row" style="margin-top:6px"><div class="grow tiny muted">${rows.length} bet${rows.length === 1 ? '' : 's'} · ${matches} match${matches === 1 ? '' : 'es'}</div><span class="tiny muted">Sort&nbsp;</span>${select('home-sort', HOME_SORTS, sort)}</div></div>`);
+      <div class="row" style="margin-top:6px"><div class="grow tiny muted">${rows.length} ${tab === 'eighty' ? 'market' : 'bet'}${rows.length === 1 ? '' : 's'} · ${matches} match${matches === 1 ? '' : 'es'}</div><span class="tiny muted">Sort&nbsp;</span>${select('home-sort', HOME_SORTS, sort)}</div></div>`);
     const shown = Math.min(rows.length, state.homeShow || 100);
     if (rows.length) out.push(`<div class="card compact"><table class="tbl head home-selection-table" style="margin-top:4px"><tr><th>Time</th><th>Match · bet</th><th class="right">Sportybet</th><th class="right">Model</th></tr>${rows.slice(0, shown).map(row).join('')}</table>${shown < rows.length ? `<div class="row" style="justify-content:center;margin-top:8px"><button class="btn" id="home-more">Show ${Math.min(100, rows.length - shown)} more · ${rows.length - shown} left</button></div>` : ''}</div>`);
-    else out.push(`<div class="card empty small">${tab === 'ev' ? `No bet the model supports has positive EV at a Sportybet price of ${f2(HOME_EV_MIN_ODDS)} or more today${mk !== 'any' ? ' in this market' : ''}.` : tab === 'eighty' ? `No eligible priced market has a published model probability of 80% or more today${mk !== 'any' ? ' in this market' : ''}. The threshold is never lowered to fill this collection.` : tab === 'high' ? `No priced bet reaches ${pct(HOME_HIGH)} today${mk !== 'any' ? ' in this market' : ''} yet.` : `No priced bet clears its model bar today${mk !== 'any' ? ' in this market' : ''} yet.`} The board fills as Sportybet prices and probabilities firm up.${majorOnly() ? ' (Major leagues only — change in Settings.)' : ''}</div>`);
-    if (tab === 'eighty') out.push(`<div class="card tiny muted"><b>80% is a filter, not a promise.</b> This collection uses the unrounded published model probability (≥0.80), today’s fixtures, existing market restrictions, data checks and odds floor of 1.16. One qualifying market per match. Saved data may be out of date; check the cache/updated indicator. A selection can still lose.</div>`);
+    else out.push(`<div class="card empty small">${tab === 'ev' ? `No bet the model supports has positive EV at a Sportybet price of ${f2(HOME_EV_MIN_ODDS)} or more today${mk !== 'any' ? ' in this market' : ''}.` : tab === 'eighty' ? `No modelled market has a published probability of 80% or more today${mk !== 'any' ? ' in this market' : ''}. The threshold is never lowered to fill this collection.` : tab === 'high' ? `No priced bet reaches ${pct(HOME_HIGH)} today${mk !== 'any' ? ' in this market' : ''} yet.` : `No priced bet clears its model bar today${mk !== 'any' ? ' in this market' : ''} yet.`} The board fills as Sportybet prices and probabilities firm up.${majorOnly() ? ' (Major leagues only — change in Settings.)' : ''}</div>`);
+    if (tab === 'eighty') out.push(`<div class="card tiny muted"><b>Analysis only, not a shortlist or betting recommendation.</b> All published modelled markets at an unrounded ≥80% are shown for today's fixtures, including multiple markets per match, unpriced markets, restricted markets and low-data estimates. Card counts are unverified proxies, not SportyBet booking probabilities. No slip selections are offered here. The Major leagues setting still applies. These are pre-match estimates, not live probabilities; prices and data may be stale. Experimental xG and shots adjustments are unvalidated. A high probability is not a guarantee.</div>`);
     if (tab === 'ev') out.push(`<div class="card tiny muted"><b>Positive EV</b> — bets the model supports (same bars: 1X2, BTTS and Over 2.5 ≥55%, corners ≥65%, other markets ≥70%) whose Sportybet price is <b>${f2(HOME_EV_MIN_ODDS)} or more</b> and pays more than the model thinks is fair: <b>EV = model probability × odds − 1 &gt; 0</b>. EV +5% means the model expects 5c back per R1 staked over many such bets — an estimate that is only as good as the model, not a guarantee. Gaps of 15+ points over the price stay quarantined as data faults.</div>`);
-    out.push(`<div class="card tiny muted"><b>How this board is built</b> — <b>one bet per match</b>: the model names each match's strongest market and lists only that one (the match page still shows every market). Today's matches, all markets. A bet appears when the model clears its bar (<b>1X2, BTTS and Over 2.5 from 55%</b>, <b>corners 65%</b>, <b>other markets 70%</b>) <b>and</b> Sportybet prices it at <b>1.16 or more</b>. <b>High probability</b> = model ≥70% on any market. The model probability is independent of the price; large model–market disagreements are excluded. ${d.meta && d.meta.model_signals && d.meta.model_signals.status === "disabled" ? "Experimental xG and shots adjustments are disabled." : "Experimental xG and shots adjustments are enabled where data permits, but have not been backtested."} A high probability is not a certainty.</div>`);
+    if (tab !== 'eighty') out.push(`<div class="card tiny muted"><b>How this board is built</b> — <b>one bet per match</b>: the model names each match's strongest market and lists only that one (the match page still shows every market). Today's matches, all markets. A bet appears when the model clears its bar (<b>1X2, BTTS and Over 2.5 from 55%</b>, <b>corners 65%</b>, <b>other markets 70%</b>) <b>and</b> Sportybet prices it at <b>1.16 or more</b>. <b>High probability</b> = model ≥70% on any market. The model probability is independent of the price; large model–market disagreements are excluded. ${d.meta && d.meta.model_signals && d.meta.model_signals.status === "disabled" ? "Experimental xG and shots adjustments are disabled." : "Experimental xG and shots adjustments are enabled where data permits, but have not been backtested."} A high probability is not a certainty.</div>`);
     if (!PR._homeRefreshed && (d.fixtures || []).length && !(d.fixtures || []).some((f) => (f.sels || []).length)) { PR._homeRefreshed = true; setTimeout(() => PR.loadData(false), 250); }
     return out.join('');
   }
@@ -797,6 +803,7 @@
       <div style="margin-top:8px">${segmented([['time', `${icon('clock')} By time`], ['comp', `${icon('trend')} By country & competition`]], mode, 'mmode')}</div>
       <div class="chips small-chips" style="margin-top:6px">${[['all', `All ${d.fixtures.length}`], ['today', 'Today'], ['analysed', 'Analysed today'], ['live', '🔴 Live'], ['fav', '★ Favourites'], ['major', '🏆 Major'], ['priced', 'Priced'], ['safe', '📈 High probability'], ['ok', 'Enough data']].map(([k, l]) => `<button class="chip tapchip ${filt === k ? 'on' : ''}" data-mf="${k}">${l}</button>`).join('')}
       ${mode === 'time' ? select('fx-sort', [['ko', 'Kick-off'], ['safe', 'Best bet first'], ['O25', 'Over 2.5'], ['O15', 'Over 1.5'], ['BTTS', 'BTTS'], ['H', 'Home win']], key) : ''}</div></div>`];
+    parts.push(`<div class="card tiny muted">Matches uses the published rolling 24-hour window, plus recently started matches retained from the previous publication; it is not the full 60-day analysis. Youth and women’s competitions and cups are paused. Search and the filters above can narrow the list; captured finished matches may appear in Days.</div>`);
     if (q) globalSearchParts(parts, q, d);
     if (!q && (filt === 'all' || filt === 'live')) {
       // matches that finished earlier today (or yesterday evening) leave the current analysis — point to the day archive

@@ -1100,3 +1100,18 @@ body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-even
 .matchday-stat:hover { border-color:var(--brand-text); }
 .matchday-stat:focus-visible { outline:2px solid var(--brand-text); outline-offset:3px; }
 .matchday-stat:active { box-shadow:inset 0 0 0 2px var(--brand-text); }
+
+/* Match Form: flexible result cards keep long club and competition names readable on phones. */
+.form-card { min-width:0; }
+.form-team { display:flex; flex-wrap:wrap; align-items:flex-start; gap:8px; }
+.form-team-name { display:flex; align-items:center; gap:6px; flex:1 1 180px; min-width:0; }
+.form-team-name span { min-width:0; overflow-wrap:anywhere; }
+.form-stats { display:flex; flex-wrap:wrap; gap:5px; min-width:0; }
+.form-stats .chip { white-space:normal; line-height:1.35; }
+.form-results { margin-top:6px; }
+.form-result { padding:9px 0; border-top:1px solid var(--line-2); min-width:0; }
+.form-result-main { display:grid; grid-template-columns:auto auto minmax(0, 1fr) auto; align-items:center; gap:6px; min-width:0; }
+.form-opponent { min-width:0; overflow-wrap:anywhere; line-height:1.35; }
+.form-score { white-space:nowrap; font-variant-numeric:tabular-nums; }
+.form-result-meta { display:flex; flex-wrap:wrap; column-gap:10px; row-gap:2px; padding-left:50px; margin-top:4px; color:var(--muted); font-size:11px; line-height:1.4; overflow-wrap:anywhere; }
+.form-result-meta span { min-width:0; }

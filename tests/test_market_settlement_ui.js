@@ -23,4 +23,7 @@ assert.equal(PR.testSettleLeg(leg('CHO35'), {...score, ac:null}), 'won');
 assert.equal(PR.testSettleLeg(leg('CO95'), {...score, ac:null}), 'pending');
 assert.equal(PR.testSettleLeg(leg('KAO15'), {...score, acards:null}), 'pending');
 for (const c of JSON.parse(fs.readFileSync('tests/recommendation_cases.json'))) assert.equal(!PR.isDropped(c.sel), c.allowed, c.sel);
+for (const sel of ['1X', 'HO05', 'U25', 'KO35', 'O05']) assert.equal(PR.addBtn('f', sel, 1.3), '', sel);
+assert.equal(PR.addBtn('f', 'O15', 1.15), '');
+assert.match(PR.addBtn('f', 'O15', 1.16), /data-add-fx/);
 console.log('Team market settlement and eligibility UI tests passed');
