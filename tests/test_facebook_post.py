@@ -206,7 +206,7 @@ def test_four_slot_workflow_and_old_claims_are_recognized():
     assert "0 5,6,10,15 * * *" in workflow
     assert '07|12|17) claim="facebook-post-$day-$slot"' in workflow
     assert '08) claim="facebook-results-$day"' in workflow
-    assert '07|08|12|17)' in fallback
+    assert '07)' in fallback and '08|12|17)' in fallback
     assert '--exclude-claimed' in workflow
     assert workflow.index('Record the slot posting claim') < workflow.index('Publish the two-image results')
     assert fb.facebook_history.claim_names('2026-11-04') == [

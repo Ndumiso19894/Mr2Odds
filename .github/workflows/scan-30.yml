@@ -213,7 +213,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           case "$(TZ=Africa/Johannesburg date +%H)" in
-            07|08|12|17) gh workflow run facebook-daily.yml --repo "$GITHUB_REPOSITORY" --ref main ;;
+            07)
+              gh workflow run facebook-daily.yml --repo "$GITHUB_REPOSITORY" --ref main
+              gh workflow run facebook-reel.yml --repo "$GITHUB_REPOSITORY" --ref main
+              ;;
+            08|12|17) gh workflow run facebook-daily.yml --repo "$GITHUB_REPOSITORY" --ref main ;;
             *) echo "Outside a Facebook posting window." ;;
           esac
 

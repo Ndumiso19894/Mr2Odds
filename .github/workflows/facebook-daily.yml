@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: |
-          pip install --only-binary=:all: -r requirements.txt 'Pillow>=10,<12'
+          pip install --only-binary=:all: -r requirements.txt 'Pillow>=10,<12' 'imageio-ffmpeg>=0.6,<1'
       - name: Check Page token without posting
         env:
           FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
@@ -43,6 +43,35 @@ jobs:
           claims = load_claims(datetime.now(SAST).date().isoformat(), confirmed_only=True)
           print(f'Found {len(claims)} confirmed selection-card records for today.')
           PY
+      - name: Check optional reel music without posting
+        env:
+          REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
+        run: |
+          python - <<'PY'
+          import os, tempfile
+          from pathlib import Path
+          if not os.environ.get('REEL_MUSIC_FILE_ID'):
+              raise SystemExit('Reel music is not configured; set the REEL_MUSIC_FILE_ID repository secret.')
+          from scripts.selection_reel import download_music
+          with tempfile.TemporaryDirectory() as d:
+              download_music(Path(d) / 'music.mp3')
+          print('Supplied reel music is accessible and verified.')
+          PY
+      - name: Check out data for a private reel dry run
+        uses: actions/checkout@v4
+        with:
+          ref: data
+          path: live-data
+      - name: Render a reel without publishing
+        env:
+          REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
+        run: |
+          python scripts/selection_reel.py prepare --snapshot live-data/data/app/latest.json --output "$RUNNER_TEMP/reel-dry-run"
+          if [ -s "$RUNNER_TEMP/reel-dry-run/selection-reel.mp4" ]; then
+            echo '::notice::Reel dry run rendered successfully; nothing was published.'
+          else
+            echo '::notice::Reel dry run skipped because too few eligible matches have verified crests.'
+          fi
   post:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest

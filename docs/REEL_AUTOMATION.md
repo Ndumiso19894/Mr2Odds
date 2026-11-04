@@ -1,0 +1,17 @@
+# Daily Bet Advisor selection reel
+
+A separate automation creates one vertical 1080 × 1920 reel per day at **07:00 SAST**. It uses the same strict upcoming shortlist as the app's Bet Advisor, revalidates the snapshot and actual SportyBet odds, and includes 5–8 different matches with the Mr 2 Odds logo, actual club crests, country, league, kickoff, selection and odds. Each match gets a readable four-second animated slide. The supplied music plays throughout with no voiceover. Captions use `Today's safe bets - <date>` and only the pictured teams' hashtags.
+
+This adds a reel without replacing the existing selection pictures or 08:00 results post. It sends the same MP4 to the configured Facebook Page via the Reels API and to the existing Telegram chat as a video. Each channel is independently claimed before upload, so an ambiguous Facebook or Telegram response is never automatically resent. Facebook must confirm its publishing phase, not just accept the upload. The reel is not made if fewer than five qualifying matches with both real crests are available; it never manufactures prices or substitutes a badge. GitHub's schedule and scan fallback are best-effort, not exact-minute guarantees.
+
+## One-time setup
+
+The Facebook and Telegram credentials are the existing `FACEBOOK_PAGE_ACCESS_TOKEN`, `FACEBOOK_PAGE_ID`, `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` Actions secrets. On the Page, the token/app must also be allowed to publish Reels. The Telegram bot must be able to send video to the configured chat.
+
+Add one more GitHub Actions repository secret named **`REEL_MUSIC_FILE_ID`**. Its value is the ID between `/d/` and `/view` in the supplied Google Drive music link. The file must remain accessible to anyone with its link so a GitHub runner can download it; this workflow does not change its sharing permissions. The file ID is kept out of the public repository. Only a SHA-256 hash of the selected track is in the code; the downloaded bytes must match, so an inaccessible link, an HTML error page, or a changed file cannot silently replace the music. If the track is intentionally changed, update the expected digest and verify you have the rights to use it on Facebook and Telegram. The provided audio itself is not committed to this repository.
+
+## Recovery and monitoring
+
+The `Daily selection reel` workflow is scheduled for 07:00 SAST and can also be dispatched by the scan fallback during the 07:00 hour. A manual run outside that hour is a no-op. Before any publication, the exact MP4 and manifest are saved as the short-lived `daily-reel-source-YYYY-MM-DD` artifact; independently named Facebook and Telegram claim artifacts are kept for 35 days. A later run reuses the same MP4 for a missing destination rather than generating a different video. Snapshot age and kickoffs are rechecked before either upload.
+
+A failure before a platform claim is safe to retry during the morning window. After a platform is claimed, check the actual Facebook Page or Telegram chat before manual recovery: a timeout can mean the video was accepted. Never remove a claim or resend without confirming it did not arrive. A Facebook publishing status that remains processing is reported as unconfirmed, not as a verified live reel. A lack of matches, a missing music secret, failed download, or missing permissions is visible in the Actions run and does not alter existing image or results posting.
