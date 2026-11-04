@@ -25,7 +25,7 @@ from scripts import facebook_post as fb
 MUSIC_SHA256 = 'ec242d687e52716fda5ff0a0cd9877ddaff45052251cdc27f36db57cd4b2c4b8'
 MAX_MUSIC_BYTES = 20 * 1024 * 1024
 MAX_VIDEO_BYTES = 49 * 1024 * 1024  # below Telegram's hosted Bot API limit
-SLIDE_SECONDS = 4
+SLIDE_SECONDS = 7
 FPS = 25
 
 
@@ -52,39 +52,78 @@ def download_music(path, session=None):
         raise RuntimeError('Could not download the music; check its Drive link access') from None
 
 
-def render_slide(item, index, count, day, out, logo_path=fb.ROOT / 'android/design/mr-2-odds-logo.png'):
-    image = Image.new('RGB', (1080, 1920), 'white')
-    draw = ImageDraw.Draw(image)
+def make_logo_disc(logo_path=fb.ROOT / 'android/design/mr-2-odds-logo.png', size=180):
+    """Crop the supplied circular artwork, with transparent corners for rotation."""
     logo = Image.open(logo_path).convert('RGBA')
-    logo.thumbnail((165, 165), Image.Resampling.LANCZOS)
-    image.paste(logo, (100, 145), logo)
-    draw.text((298, 181), 'BET ADVISOR', font=fb.font(48, True), fill='#122b3d')
-    draw.text((300, 253), 'TODAY’S SELECTIONS', font=fb.font(28, True), fill='#2b615b')
-    draw.rounded_rectangle((95, 355, 985, 1545), radius=35, fill='#f3f7f6', outline='#b3c8c4', width=3)
+    # The supplied logo contains a centered disc surrounded by a dark square.
+    width, height = logo.size
+    disc = logo.crop((round(width * .145), round(height * .145),
+                      round(width * .855), round(height * .855)))
+    disc = ImageOps.fit(disc, (size * 3, size * 3), Image.Resampling.LANCZOS)
+    mask = Image.new('L', disc.size, 0)
+    ImageDraw.Draw(mask).ellipse((1, 1, disc.width - 2, disc.height - 2), fill=255)
+    from PIL import ImageChops
+    disc.putalpha(ImageChops.multiply(disc.getchannel('A'), mask))
+    return disc.resize((size, size), Image.Resampling.LANCZOS)
+
+
+def draw_centered_team(draw, name, x, center_y):
+    """Fit a complete club name in one or two lines below its crest."""
+    words = name.split()
+    splits = [(name,)] + [(' '.join(words[:i]), ' '.join(words[i:])) for i in range(1, len(words))]
+    for size in range(38, 21, -1):
+        font = fb.font(size, True)
+        options = [lines for lines in splits if all(draw.textbbox((0, 0), t, font=font)[2] <= 365 for t in lines)]
+        if options:
+            lines = min(options, key=lambda v: (len(v), max(draw.textbbox((0, 0), t, font=font)[2] for t in v)))
+            for i, text in enumerate(lines):
+                y = center_y + (i - (len(lines) - 1) / 2) * 43
+                draw.text((x, y), text, font=font, fill='#152c3d', anchor='mm')
+            return
+    raise ValueError('A team name is too long to display safely')
+
+
+def render_slide(item, index, count, day, out):
+    # Keep all useful content inside the central 9:16 safe area for social overlays.
+    image = Image.new('RGB', (1080, 1920), '#ffffff')
+    draw = ImageDraw.Draw(image)
+    # The animated logo is overlaid during encoding; this ring anchors its position.
+    draw.ellipse((95, 135, 285, 325), fill='#eff6f4', outline='#c2ddd7', width=3)
+    draw.text((310, 180), 'BET ADVISOR', font=fb.font(45, True), fill='#102c3f')
+    draw.text((312, 250), 'TODAY’S SELECTIONS', font=fb.font(26, True), fill='#35736a')
+    draw.rounded_rectangle((874, 175, 968, 235), radius=18, fill='#ffffff', outline='#8faca8', width=3)
+    draw.text((921, 205), '18+', font=fb.font(27, True), fill='#274c49', anchor='mm')
+
+    # Gentle shadow and a high-contrast, uncluttered white match card.
+    draw.rounded_rectangle((99, 378, 991, 1568), radius=35, fill='#edf3f1')
+    draw.rounded_rectangle((90, 365, 990, 1555), radius=35, fill='#fafcfb', outline='#c8dcd8', width=3)
     competition = item['country'] + '  ·  ' + item['league']
-    cf = fb.fit(draw, competition, 800, 30, minimum=21, bold=True)
-    draw.text((540, 430), competition, font=cf, fill='#335a58', anchor='mm')
+    cf = fb.fit(draw, competition, 805, 30, minimum=21, bold=True)
+    draw.text((540, 430), competition, font=cf, fill='#355b58', anchor='mm')
     kick = datetime.strptime(item['kickoff'], '%Y-%m-%d %H:%M').strftime('%H:%M')
-    draw.text((540, 495), kick + ' SAST', font=fb.font(30, True), fill='#174b48', anchor='mm')
+    draw.rounded_rectangle((433, 480, 647, 532), radius=20, fill='#e8f2ef')
+    draw.text((540, 506), kick + ' SAST', font=fb.font(25, True), fill='#235c53', anchor='mm')
     for side, cx in (('home_image', 300), ('away_image', 780)):
-        crest = ImageOps.contain(item[side], (210, 210), Image.Resampling.LANCZOS)
-        image.paste(crest, (cx - crest.width//2, 735 - crest.height//2), crest)
-    fb.draw_team(draw, item['home'], 200, 930, 'lm', max_size=34, line_spacing=38)
-    fb.draw_team(draw, item['away'], 880, 930, 'rm', max_size=34, line_spacing=38)
-    draw.text((540, 930), 'v', font=fb.font(34, True), fill='#52716f', anchor='mm')
-    draw.line((155, 1020, 925, 1020), fill='#c7d8d5', width=3)
-    draw.text((540, 1090), 'SELECTION', font=fb.font(27, True), fill='#335a58', anchor='mm')
-    sf = fb.fit(draw, item['selection'], 785, 42, minimum=25, bold=True)
-    draw.text((540, 1175), item['selection'], font=sf, fill='#122b3d', anchor='mm')
-    draw.rounded_rectangle((405, 1260, 675, 1350), radius=18, fill='#007f72')
-    draw.text((540, 1305), f"{item['odds']:.2f}", font=fb.font(47, True), fill='white', anchor='mm')
-    draw.text((540, 1460), f'{index:02d} / {count:02d}', font=fb.font(27, True), fill='#335a58', anchor='mm')
-    draw.text((540, 1650), day, font=fb.font(26, True), fill='#52716f', anchor='mm')
+        draw.ellipse((cx - 135, 600, cx + 135, 870), fill='#ffffff', outline='#d5e4e1', width=3)
+        crest = ImageOps.contain(item[side], (208, 208), Image.Resampling.LANCZOS)
+        image.paste(crest, (cx - crest.width // 2, 735 - crest.height // 2), crest)
+    draw_centered_team(draw, item['home'], 300, 937)
+    draw_centered_team(draw, item['away'], 780, 937)
+    draw.text((540, 735), 'VS', font=fb.font(28, True), fill='#7a9893', anchor='mm')
+    draw.line((150, 1018, 930, 1018), fill='#d4e4df', width=3)
+    draw.text((540, 1090), 'SELECTION', font=fb.font(24, True), fill='#48736c', anchor='mm')
+    sf = fb.fit(draw, item['selection'], 785, 43, minimum=25, bold=True)
+    draw.text((540, 1170), item['selection'], font=sf, fill='#102c3f', anchor='mm')
+    draw.rounded_rectangle((395, 1255, 685, 1355), radius=22, fill='#008878')
+    draw.text((540, 1305), f"{item['odds']:.2f}", font=fb.font(48, True), fill='white', anchor='mm')
+    draw.text((540, 1468), f'{index:02d}  /  {count:02d}', font=fb.font(25, True), fill='#52716b', anchor='mm')
+    date = datetime.strptime(day, '%Y-%m-%d')
+    draw.text((540, 1645), f'{date.day} {date.strftime("%B %Y")}', font=fb.font(26, True), fill='#52716b', anchor='mm')
     image.save(out, 'PNG')
 
 
 def encode(slides, music, output):
-    """H.264/AAC, 25 fps, 9:16. A subtle pan/zoom animates each 4-second card."""
+    """H.264/AAC, 25 fps, 9:16, with a continuously rotating brand disc."""
     import imageio_ffmpeg
     if not slides or not music.is_file():
         raise ValueError('Missing reel slides or music')
@@ -97,10 +136,17 @@ def encode(slides, music, output):
         lines.append(f"file '{str(slides[-1].resolve()).replace(chr(39), chr(39)+chr(92)+chr(39)+chr(39))}'")
         listing.write_text('\n'.join(lines)+'\n', encoding='utf-8')
         duration = SLIDE_SECONDS * len(slides)
-        zoom = "zoompan=z='1+0.02*mod(on,100)/100':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1080x1920:fps=25"
+        logo = Path(td) / 'brand-disc.png'
+        make_logo_disc().save(logo)
+        # Only the brand disc rotates. The match card and both club crests remain
+        # visible and stationary for the entire slide, with no transition blackout.
+        filters = (f'[0:v]fps={FPS},format=yuv420p[base];'
+                   '[2:v]format=rgba,rotate=angle=2*PI*t/10:ow=iw:oh=ih:c=none[disc];'
+                   '[base][disc]overlay=100:140:shortest=1,format=yuv420p[video]')
         args = [imageio_ffmpeg.get_ffmpeg_exe(), '-hide_banner', '-loglevel', 'error', '-y',
                 '-f','concat','-safe','0','-i',str(listing), '-stream_loop','-1','-i',str(music),
-                '-t',str(duration),'-vf',f'fps={FPS},{zoom},format=yuv420p',
+                '-loop','1','-framerate',str(FPS),'-i',str(logo),
+                '-t',str(duration),'-filter_complex',filters,'-map','[video]','-map','1:a:0',
                 '-af',f'afade=t=in:st=0:d=1,afade=t=out:st={duration-1}:d=1',
                 '-c:v','libx264','-preset','veryfast','-crf','24','-pix_fmt','yuv420p',
                 '-r',str(FPS),'-c:a','aac','-b:a','128k','-ar','48000','-movflags','+faststart',str(output)]

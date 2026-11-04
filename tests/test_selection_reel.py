@@ -137,7 +137,7 @@ def test_actual_encoded_video_is_vertical_with_audio(tmp_path):
     reel.encode([img],audio,video)
     p=subprocess.run([imageio.get_ffmpeg_exe(),'-i',str(video)],capture_output=True,text=True)
     assert '1080x1920' in p.stderr and 'Video: h264' in p.stderr and 'Audio: aac' in p.stderr
-    assert '00:00:04.00' in p.stderr
+    assert '00:00:07.00' in p.stderr
 
 
 def test_reel_workflow_claims_before_each_platform_and_preserves_existing_schedule():
@@ -153,3 +153,48 @@ def test_reel_workflow_claims_before_each_platform_and_preserves_existing_schedu
     assert 'name: ${{ steps.claims.outputs.prefix }}-facebook-${{ steps.claims.outputs.date }}' in text
     assert 'name: ${{ steps.claims.outputs.prefix }}-telegram-${{ steps.claims.outputs.date }}' in text
     assert 'facebook-reel.yml' in scan and 'facebook-daily.yml' in scan
+
+
+def test_reel_brand_spins_while_both_crests_stay_visible(tmp_path):
+    imageio = pytest.importorskip('imageio_ffmpeg')
+    from PIL import ImageChops, ImageDraw, ImageStat
+    disc = reel.make_logo_disc()
+    assert disc.mode == 'RGBA' and disc.size == (180, 180)
+    assert disc.getpixel((0, 0))[3] == 0 and disc.getpixel((90, 90))[3] > 240
+    home = Image.new('RGBA', (100, 100), (0, 0, 0, 0))
+    ImageDraw.Draw(home).ellipse((0, 0, 99, 99), fill='#db9126')
+    away = Image.new('RGBA', (100, 100), (0, 0, 0, 0))
+    ImageDraw.Draw(away).rectangle((0, 0, 99, 99), fill='#007f72')
+    item = {'home':'Home FC', 'away':'Away United', 'country':'England', 'league':'Championship',
+            'kickoff':'2026-11-04 15:00','selection':'Over 1.5 goals','odds':1.2,
+            'home_image':home,'away_image':away}
+    slide = tmp_path/'slide.png'; reel.render_slide(item, 1, 5, '2026-11-04', slide)
+    music = tmp_path/'tone.wav'
+    with wave.open(str(music),'wb') as w:
+        w.setparams((1,2,44100,0,'NONE','not compressed'))
+        w.writeframes(b''.join(struct.pack('<h', int(5000*math.sin(2*math.pi*440*i/44100))) for i in range(44100)))
+    output = tmp_path/'reel.mp4'; reel.encode([slide], music, output)
+    ffmpeg = imageio.get_ffmpeg_exe()
+    frames = []
+    for second in (0, 3, 6):
+        frame = tmp_path/f'frame-{second}.png'
+        subprocess.run([ffmpeg, '-loglevel','error','-ss',str(second),'-i',str(output),'-frames:v','1','-y',str(frame)], check=True)
+        frames.append(Image.open(frame).convert('RGB'))
+    def mean_difference(a, b, box):
+        diff = ImageChops.difference(a.crop(box), b.crop(box))
+        return sum(ImageStat.Stat(diff).mean) / 3
+    assert mean_difference(frames[0], frames[1], (100, 140, 280, 320)) > 10  # rotating logo
+    for box in ((160, 600, 430, 870), (650, 600, 920, 870)):
+        assert mean_difference(frames[0], frames[2], box) < 1  # club crests stay in place
+    # The 18+ badge has visible non-white ink in the top-right safe area throughout.
+    for frame in frames:
+        assert frame.crop((870, 170, 970, 240)).getextrema()[0][0] < 200
+
+
+def test_logo_and_required_crests_are_not_replaced_when_missing(tmp_path, monkeypatch):
+    source = tmp_path/'snapshot.json'; source.write_text(json.dumps(data()))
+    music = tmp_path/'music.mp3'; music.write_bytes(b'music')
+    im = Image.new('RGBA', (20,20), 'teal')
+    monkeypatch.setattr(fb, 'badge', lambda session, team, path: None if team.startswith('Away') else im)
+    assert not reel.prepare(source, tmp_path/'out', NOW, object(), music)
+    assert not (tmp_path/'out'/'selection-reel.mp4').exists()
