@@ -147,5 +147,9 @@ def test_reel_workflow_claims_before_each_platform_and_preserves_existing_schedu
     assert text.index('Claim Facebook reel delivery') < text.index('Publish Facebook reel')
     assert text.index('Claim Telegram reel delivery') < text.index('Send the same video to Telegram')
     assert 'steps.facebook-claim.outcome' in text and 'steps.telegram-claim.outcome' in text
-    assert 'daily-reel-source-' in text and 'daily-reel-facebook-' in text and 'daily-reel-telegram-' in text
+    assert 'prefix=daily-reel' in text and 'prefix=test-reel' in text
+    assert "[ \"$EVENT_NAME\" = 'workflow_dispatch' ] && [ \"$LIVE_TEST\" = 'true' ]" in text
+    assert 'name: ${{ steps.claims.outputs.prefix }}-source-${{ steps.claims.outputs.date }}' in text
+    assert 'name: ${{ steps.claims.outputs.prefix }}-facebook-${{ steps.claims.outputs.date }}' in text
+    assert 'name: ${{ steps.claims.outputs.prefix }}-telegram-${{ steps.claims.outputs.date }}' in text
     assert 'facebook-reel.yml' in scan and 'facebook-daily.yml' in scan
