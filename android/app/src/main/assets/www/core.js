@@ -620,6 +620,21 @@ window.PR = (function () {
     if (s.p_sb != null && s.p_sb > 0) return (s.p_model - s.p_sb) >= OUTLIER_PP;
     return (s.p_model - 1 / s.odds) >= OUTLIER_RAW_PP;
   };
+  // Validate published shortlist rows again against the same fixture's exact current selection.
+  // This also protects the Advisor and briefing from old cached, less restrictive payloads.
+  function strictShortlist(d) {
+    const now = tzNow(), today = ymd(now), seen = new Set();
+    return (((d || {}).shortlist || {}).primary || []).flatMap((x) => {
+      const f = (d._byId || {})[x.fixture];
+      if (!f || !competitionAllowed(f) || !f.data_ok || f.q === 'Low' || f.date !== today || !(parseLocal(f.kickoff) > now) || seen.has(f.id)) return [];
+      const s = (f.sels || []).find((v) => v.sel === x.sel);
+      if (!s || !/^(?:H|D|A|BTTS|O(?:15|25|35|45|55)|C[HA]?O\d+)$/.test(s.sel)) return [];
+      const bar = /^(?:H|D|A|BTTS|O25)$/.test(s.sel) ? 0.55 : /^C/.test(s.sel) ? 0.65 : 0.70;
+      if (!Number.isFinite(s.p) || s.p < bar || s.p >= 1 || !Number.isFinite(s.odds) || s.odds < 1.16 || s.odds > 1.90 || s.p * s.odds < 0.95 || s.diff || isOutlier(s)) return [];
+      seen.add(f.id);
+      return [{ ...x, p: s.p, odds: s.odds, p_sb: s.p_sb, quality: f.q || 'N/A', kickoff: f.kickoff }];
+    });
+  }
   const slug = (div) => String(div || '').replace(/[^A-Za-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
   async function loadTeams(div) {
     const k = slug(div);
@@ -1079,7 +1094,7 @@ window.PR = (function () {
 
   return { native, settings, state, $, $$, saveSettings, nfetch, getJson, resources, migrateResource, validResource, refreshVisible, connectionChanged, clearDataCache, rawUrl, esc, pct, f1, f2, signed, DAYS, MONTHS, parseLocal, tzNow, ymd, stored, persist, cache, prefetchDetails, pubStamp,
     dayName, niceDate, koTime, koShort, toast, pill, competitionAllowed, bar, wdl, formBadges, md, GROUPS, GROUP_ICON, selGroup, isUnder, isDropped, SEL_FLOOR, selLabel, selShort, settleSel,
-    liveVerdict, isLive, isFT, indexData, fx, loadDetail, detailCached, detailKey, loadData, saveLatest, saveAux, statusLine, isOutlier, loadDay, dayRecord, finalFor, storedIncidents, loadTeams, teamsCached, loadTeamIndex, realTable, slug, TABS, render, setTab, push, replace,
+    liveVerdict, isLive, isFT, indexData, fx, loadDetail, detailCached, detailKey, loadData, saveLatest, saveAux, statusLine, isOutlier, strictShortlist, loadDay, dayRecord, finalFor, storedIncidents, loadTeams, teamsCached, loadTeamIndex, realTable, slug, TABS, render, setTab, push, replace,
     sbEventUrl, sbShareUrl, openSportybet, openBookingCode, openExternal, copyText, namesAgree, displayName, fittedSbEvent,
     back, openMatch, openTeam, toggleMenu, closeMenu, contactCard, editorCard, teamLink, teamSpan, matchLine, matchRow, segmented, select, scoreBox, statusIcon, CONTACT, APP_VERSION,
     confirmBox, isFav, toggleFav, favList: () => favs, saveFavs,

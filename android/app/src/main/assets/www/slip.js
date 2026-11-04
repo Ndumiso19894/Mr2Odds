@@ -159,12 +159,14 @@
     const f = fx(fid); if (!f) { toast('This match is no longer in the current analysis'); return; }
     const i = slip.items.findIndex((l) => l.fixture === fid && l.sel === sel);
     if (i >= 0) { slip.items.splice(i, 1); saveSlip(); bar(); PR.render(); return; }
+    if (PR.isDropped(sel)) { toast('This market is not offered for new selections'); return; }
     let s = null;
     const det = PR.detailCached(fid); if (det && det.sels) s = det.sels.find((x) => x.sel === sel);
     if (!s) { const b = ((state.data.safe || {}).bets || []).find((x) => x.fixture === fid && x.sel === sel); if (b) s = { sel: b.sel, odds: b.odds, p: b.p }; }
     if (!s) { const h = (f.hi || []).find((x) => x[0] === sel); if (h) s = { sel: h[0], p: h[1], odds: h[2] }; }
     if (!s && f.top && f.top[0] === sel) s = { sel: f.top[0], p: f.top[1], odds: f.top[2] };
     if (!s || !s.odds) { toast('No Sportybet price for this selection'); return; }
+    if (s.odds < 1.16) { toast('The minimum offered price is 1.16'); return; }
     const ko = parseLocal(f.kickoff); if (ko && ko < tzNow()) { toast('This match has already started'); return; }
     const same = slip.items.findIndex((l) => l.fixture === fid);
     if (same >= 0) { const old = slip.items[same]; slip.items.splice(same, 1); toast(`Replaced ${old.label}`); }
@@ -174,9 +176,10 @@
   /** small add / added button for any priced selection */
   PR.addBtn = function (fid, sel, odds) {
     if (!odds) return '';
+    const on = PR.inSlip(fid, sel);
+    if (!on && (PR.isDropped(sel) || odds < 1.16)) return '';
     const f = fx(fid); const ko = f && parseLocal(f.kickoff); const started = ko && ko < tzNow();
     if (started) return '';
-    const on = PR.inSlip(fid, sel);
     return `<button class="addsel ${on ? 'on' : ''}" data-add-fx="${esc(fid)}" data-add-sel="${esc(sel)}" title="${on ? 'Remove from slip' : 'Add to slip'}" aria-label="Add to slip">${on ? icon('check') : '+'}</button>`;
   };
   document.addEventListener('click', (e) => {
