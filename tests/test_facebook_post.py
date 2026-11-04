@@ -111,9 +111,13 @@ def test_diagnose_is_read_only_and_sanitizes_facebook_errors(monkeypatch, capsys
     fb.diagnose(session)
     assert session.get.call_count == 1 and not session.post.called
     assert 'matches' in capsys.readouterr().out
-    response.json.return_value = {'id': '98765'}
-    with pytest.raises(RuntimeError, match='does not match'):
+    response.json.side_effect = [{'id': '98765'}, {'data': [{'id': '123456'}]}]
+    with pytest.raises(RuntimeError, match='not the Page token'):
         fb.diagnose(session)
+    response.json.side_effect = [{'id': '98765'}, {'data': []}]
+    with pytest.raises(RuntimeError, match='configured Page was not found'):
+        fb.diagnose(session)
+    response.json.side_effect = None
     response.ok = False; response.status_code = 400
     response.json.return_value = {'error': {'code': 190, 'error_subcode': 463, 'message': 'example_token_not_real'}}
     with pytest.raises(RuntimeError) as exc:

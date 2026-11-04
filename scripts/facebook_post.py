@@ -259,7 +259,17 @@ def diagnose(session=None):
         if not user_id:
             raise RuntimeError('Facebook token check returned no identity')
         if str(user_id) != page_id:
-            raise RuntimeError('The token identity does not match FACEBOOK_PAGE_ID; use that Page’s access token')
+            # A user token may still administer the configured Page. Check without
+            # requesting or logging any Page tokens, names, or identifiers.
+            accounts = session.get('https://graph.facebook.com/v24.0/me/accounts',
+                                   params={'fields': 'id', 'limit': 100},
+                                   headers={'Authorization': 'Bearer ' + token}, timeout=30)
+            if not accounts.ok:
+                raise RuntimeError('Token identity differs from the configured Page; Page-access check rejected: ' + error_summary(accounts))
+            data = accounts.json().get('data', [])
+            if any(str(x.get('id', '')) == page_id for x in data if isinstance(x, dict)):
+                raise RuntimeError('The supplied token is not the Page token, but it can see the configured Page; generate a Page access token for that Page')
+            raise RuntimeError('The token identity differs from FACEBOOK_PAGE_ID and the configured Page was not found in its first 100 accessible Pages')
     except requests.RequestException:
         raise RuntimeError('Could not reach Facebook for the read-only token check') from None
     print('::notice::Facebook confirmed the token identity matches the configured Page.')
