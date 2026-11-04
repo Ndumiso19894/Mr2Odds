@@ -25,7 +25,7 @@ from scripts import facebook_post as fb
 MUSIC_SHA256 = 'ec242d687e52716fda5ff0a0cd9877ddaff45052251cdc27f36db57cd4b2c4b8'
 MAX_MUSIC_BYTES = 20 * 1024 * 1024
 MAX_VIDEO_BYTES = 49 * 1024 * 1024  # below Telegram's hosted Bot API limit
-SLIDE_SECONDS = 7
+SLIDE_SECONDS = 10
 FPS = 25
 
 

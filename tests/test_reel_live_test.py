@@ -47,3 +47,16 @@ def test_default_caption_has_no_test_label(tmp_path, monkeypatch):
     monkeypatch.delenv('REEL_TEST', raising=False)
     assert reel.reel_caption(info) == fb.caption_for(info)
     assert 'Test reel' not in reel.reel_caption(info)
+
+
+def test_revised_live_test_has_separate_opt_in_claims():
+    from pathlib import Path
+    workflow = Path('.github/workflows/facebook-reel.yml').read_text()
+    assert 'revised_test:' in workflow
+    assert "[ \"$EVENT_NAME\" = 'workflow_dispatch' ] && [ \"$REVISED_TEST\" = 'true' ]" in workflow
+    assert 'Select only one live-test option' in workflow
+    assert 'prefix=test-reel-10s' in workflow and 'prefix=test-reel\n' in workflow
+    assert 'prefix=daily-reel' in workflow
+    assert workflow.count("startsWith(steps.claims.outputs.prefix, 'test-reel')") == 2
+    assert workflow.index('Claim Facebook reel delivery') < workflow.index('Publish Facebook reel')
+    assert workflow.index('Claim Telegram reel delivery') < workflow.index('Send the same video to Telegram')

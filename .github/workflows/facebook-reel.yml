@@ -10,6 +10,10 @@ on:
         description: 'Send one explicitly requested live test to Facebook and Telegram today'
         type: boolean
         default: false
+      revised_test:
+        description: 'Send one separately authorized revised 10-second-slide test today'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -71,13 +75,19 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           EVENT_NAME: ${{ github.event_name }}
           LIVE_TEST: ${{ inputs.live_test }}
+          REVISED_TEST: ${{ inputs.revised_test }}
         run: |
           set -euo pipefail
           day=$(TZ=Africa/Johannesburg date +%F)
           hour=$(TZ=Africa/Johannesburg date +%H)
           echo "date=$day" >> "$GITHUB_OUTPUT"
           prefix=daily-reel
-          if [ "$EVENT_NAME" = 'workflow_dispatch' ] && [ "$LIVE_TEST" = 'true' ]; then
+          if [ "$EVENT_NAME" = 'workflow_dispatch' ] && [ "$LIVE_TEST" = 'true' ] && [ "$REVISED_TEST" = 'true' ]; then
+            echo 'Select only one live-test option.' >&2
+            exit 1
+          elif [ "$EVENT_NAME" = 'workflow_dispatch' ] && [ "$REVISED_TEST" = 'true' ]; then
+            prefix=test-reel-10s
+          elif [ "$EVENT_NAME" = 'workflow_dispatch' ] && [ "$LIVE_TEST" = 'true' ]; then
             prefix=test-reel
           elif [ "$hour" != '07' ]; then
             echo "active=false" >> "$GITHUB_OUTPUT"
@@ -189,7 +199,7 @@ jobs:
         env:
           FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-          REEL_TEST: ${{ steps.claims.outputs.prefix == 'test-reel' }}
+          REEL_TEST: ${{ startsWith(steps.claims.outputs.prefix, 'test-reel') }}
         run: python scripts/selection_reel.py facebook --output reel-output
       - name: Claim Telegram reel delivery
         id: telegram-claim
@@ -207,7 +217,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          REEL_TEST: ${{ steps.claims.outputs.prefix == 'test-reel' }}
+          REEL_TEST: ${{ startsWith(steps.claims.outputs.prefix, 'test-reel') }}
         run: python scripts/selection_reel.py telegram --output reel-output
       - name: Report failed or unconfirmed delivery
         if: always() && (steps.facebook-check.outcome == 'failure' || steps.telegram-check.outcome == 'failure' || steps.facebook-claim.outcome == 'failure' || steps.telegram-claim.outcome == 'failure' || steps.facebook.outcome == 'failure' || steps.telegram.outcome == 'failure')

@@ -137,7 +137,7 @@ def test_actual_encoded_video_is_vertical_with_audio(tmp_path):
     reel.encode([img],audio,video)
     p=subprocess.run([imageio.get_ffmpeg_exe(),'-i',str(video)],capture_output=True,text=True)
     assert '1080x1920' in p.stderr and 'Video: h264' in p.stderr and 'Audio: aac' in p.stderr
-    assert '00:00:07.00' in p.stderr
+    assert '00:00:10.00' in p.stderr
 
 
 def test_reel_workflow_claims_before_each_platform_and_preserves_existing_schedule():
@@ -176,7 +176,7 @@ def test_reel_brand_spins_while_both_crests_stay_visible(tmp_path):
     output = tmp_path/'reel.mp4'; reel.encode([slide], music, output)
     ffmpeg = imageio.get_ffmpeg_exe()
     frames = []
-    for second in (0, 3, 6):
+    for second in (0, 3, 9):
         frame = tmp_path/f'frame-{second}.png'
         subprocess.run([ffmpeg, '-loglevel','error','-ss',str(second),'-i',str(output),'-frames:v','1','-y',str(frame)], check=True)
         frames.append(Image.open(frame).convert('RGB'))
