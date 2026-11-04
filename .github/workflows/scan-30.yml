@@ -206,18 +206,16 @@ jobs:
           fi
           echo "published $(git rev-parse --short HEAD)"
 
-      - name: Trigger daily Facebook card after a fresh scan
-        # Schedules in this repository have occasionally been delayed. A daily claim in
-        # facebook-daily.yml makes these extra triggers safe and prevents duplicate posts.
+      - name: Trigger Facebook posting window after a fresh scan
+        # GitHub schedules can be delayed. Slot-specific claims make fallback dispatches safe.
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if [ "$(TZ=Africa/Johannesburg date +%H)" -lt 7 ]; then
-            echo "Waiting until 07:00 SAST for the daily post."
-            exit 0
-          fi
-          gh workflow run facebook-daily.yml --repo "$GITHUB_REPOSITORY" --ref main
+          case "$(TZ=Africa/Johannesburg date +%H)" in
+            07|08|12|17) gh workflow run facebook-daily.yml --repo "$GITHUB_REPOSITORY" --ref main ;;
+            *) echo "Outside a Facebook posting window." ;;
+          esac
 
   unit-tests:
     needs: gate

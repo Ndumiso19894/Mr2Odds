@@ -343,11 +343,14 @@ window.PR = (function () {
     f = f || {};
     const norm = (v) => String(v || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
     const continent = new Set(['world', 'international', 'europe', 'asia', 'africa', 'oceania', 'north and central america', 'north central america', 'south america']);
-    if (continent.has(norm(f.country))) return false;
+    const category = norm(f.country);
     const meta = [f.country, f.league || f.competition, f.div, f.key, f.slug].map(norm).join(' ');
     const paused = /\b(?:women|womens|woman|ladies|female|feminine|feminin|femminile|femmes|femenina|femenino|feminina|feminino|frauen|damen|damer|kvinde|kvinder|damallsvenskan|nwsl|wsl|girls|youth|junior|juniors|juvenil|academy|cup|cups|copa|coppa|coupe|pokal|kupa|taca|trophy|shield|supercup|supercopa|supercoppa|supercoupe|recopa|friendlies|friendly|olympics|olympic|libertadores|sudamericana)\b|\b(?:u|under|sub)\s*(?:1[0-9]|2[0-3])\b|\b(?:liga\s+f|we\s+league)\b|\b(?:champions|europa|conference|nations)\s+league\b|\b(?:world|european|african|asian|continental)\s+championship\b|\b(?:world|european|african|asian)\s+(?:qualifiers?|qualification)\b/;
     const teamPaused = /\b(?:women|womens|woman|ladies|female|feminine|feminin|femminile|femmes|femenina|femenino|feminina|feminino|frauen|girls|youth)\b|\b(?:u|under|sub)\s*(?:1[0-9]|2[0-3])\b|\(\s*w\s*\)\s*$|\s+w\s*$/;
-    return !paused.test(meta) && ![f.home, f.away].some((v) => teamPaused.test(String(v || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase()));
+    const demographicPaused = /\b(?:women|womens|woman|ladies|female|feminine|feminin|femminile|femmes|femenina|femenino|feminina|feminino|frauen|damen|damer|kvinde|kvinder|damallsvenskan|nwsl|wsl|girls|youth|junior|juniors|juvenil|academy)\b|\b(?:u|under|sub)\s*(?:1[0-9]|2[0-3])\b|\b(?:liga\s+f|we\s+league)\b/;
+    if (demographicPaused.test(meta) || [f.home, f.away].some((v) => teamPaused.test(String(v || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase()))) return false;
+    const uefa = !/\b(?:afc|caf|concacaf|conmebol|ofc|fifa)\b/.test(meta) && (/\buefa\b/.test(meta) || (['europe', 'champions league', 'europa league', 'conference league', 'europa conference league'].includes(category) && /\b(?:champions|europa|conference)\s+league\b/.test(meta)));
+    return uefa || (!continent.has(category) && !paused.test(meta));
   }
   // ------------------------------------------------------------------ data
   // A real decimal price, without rounding up. Null means unpriced, not a zero or a qualifying price.

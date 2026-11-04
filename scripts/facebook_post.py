@@ -25,6 +25,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import competition_policy
 import recommendation_policy as policy
 import safe
+from scripts import facebook_history
 
 ROOT = Path(__file__).resolve().parents[1]
 SAST = ZoneInfo('Africa/Johannesburg')
@@ -88,9 +89,9 @@ def candidates(data, now):
         if not home or not away:
             continue
         seen.add(f['id'])
-        result.append({'fixture': f['id'], 'home': home, 'away': away, 'selection': safe.label(code, home, away),
+        result.append({'fixture': f['id'], 'home': home, 'away': away, 'selection': safe.label(code, home, away), 'sel': code,
                        'country': country, 'league': league, 'odds': odds, 'kickoff': f['kickoff'],
-                       'badges': f.get('badges') or {}})
+                       'livescore_id': f.get('livescore_id'), 'badges': f.get('badges') or {}})
     return result
 
 
@@ -175,18 +176,18 @@ def fit(draw, text, max_width, size, minimum=18, bold=False):
     return f
 
 
-def draw_team(draw, name, x, center_y, anchor):
+def draw_team(draw, name, x, center_y, anchor, max_size=32, line_spacing=33):
     """Keep each complete club name within its own half, wrapping before shrinking."""
     max_width = 320
     words = name.split()
     splits = [(name,)] + [(' '.join(words[:i]), ' '.join(words[i:])) for i in range(1, len(words))]
-    for size in range(32, 21, -1):
+    for size in range(max_size, 20, -1):
         f = font(size, True)
         choices = [lines for lines in splits if all(draw.textbbox((0, 0), line, font=f)[2] <= max_width for line in lines)]
         if choices:
             lines = min(choices, key=lambda v: (len(v), max(draw.textbbox((0, 0), t, font=f)[2] for t in v)))
             for i, line in enumerate(lines):
-                draw.text((x, center_y + (i - (len(lines) - 1) / 2) * 33), line, font=f, fill='#122b3d', anchor=anchor)
+                draw.text((x, center_y + (i - (len(lines) - 1) / 2) * line_spacing), line, font=f, fill='#122b3d', anchor=anchor)
             return
     raise ValueError('A team name is too long to display safely')
 
@@ -257,9 +258,13 @@ def caption_for(manifest):
     return f"Today's safe bets - {day}\n\n" + ' '.join(tags)
 
 
-def prepare(snapshot, output, now=None, session=None):
+def prepare(snapshot, output, now=None, session=None, prior_claims=None):
     now = now or datetime.now(SAST)
-    picks = candidates(json.loads(Path(snapshot).read_text(encoding='utf-8')), now)
+    excluded = facebook_history.prior_matches(prior_claims or [])
+    excluded_ids = {str(p['livescore_id']) for c in (prior_claims or []) for p in c['manifest']['fixtures'] if p.get('livescore_id')}
+    picks = [p for p in candidates(json.loads(Path(snapshot).read_text(encoding='utf-8')), now)
+             if facebook_history.match_key(p) not in excluded
+             and (not p.get('livescore_id') or str(p['livescore_id']) not in excluded_ids)]
     session = session or requests.Session()
     complete = []
     for item in picks:
@@ -267,15 +272,17 @@ def prepare(snapshot, output, now=None, session=None):
         away = badge(session, item['away'], item['badges'].get('away'))
         if home is not None and away is not None:
             complete.append({**item, 'home_image': home, 'away_image': away})
-        if len(complete) == 8:
+        # Five per slot leaves more distinct fixtures for later cards and keeps the
+        # following morning's two-image recap readable without dropping results.
+        if len(complete) == 5:
             break
     if len(complete) < 5:
         print(f'Not posting: only {len(complete)} eligible matches have both crests (minimum 5).')
         return False
     render(complete, output)
     manifest = {'date': now.astimezone(SAST).date().isoformat(), 'generated': json.loads(Path(snapshot).read_text())['meta']['generated'],
-                'fixtures': [{'kickoff': p['kickoff'], 'country': p['country'], 'league': p['league'],
-                              'home': p['home'], 'away': p['away']} for p in complete]}
+                'fixtures': [{k: p[k] for k in ('fixture', 'kickoff', 'country', 'league', 'home', 'away',
+                                                  'sel', 'selection', 'odds', 'livescore_id', 'badges')} for p in complete]}
     output.with_suffix('.json').write_text(json.dumps(manifest), encoding='utf-8')
     print(f'Prepared {len(complete)} selections with both club crests.')
     return True
@@ -381,11 +388,13 @@ def main():
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(dest='cmd', required=True)
     p = sub.add_parser('prepare'); p.add_argument('--snapshot', type=Path, required=True); p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--exclude-claimed', action='store_true', help='exclude every match claimed earlier today')
     p = sub.add_parser('publish'); p.add_argument('--image', type=Path, required=True)
     sub.add_parser('diagnose')
     args = parser.parse_args()
     if args.cmd == 'prepare':
-        ready = prepare(args.snapshot, args.output)
+        prior = facebook_history.load_claims(datetime.now(SAST).date().isoformat()) if args.exclude_claimed else None
+        ready = prepare(args.snapshot, args.output, prior_claims=prior)
         if os.environ.get('GITHUB_OUTPUT'):
             with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
                 out.write(f'ready={str(ready).lower()}\n')

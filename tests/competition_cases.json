@@ -70,7 +70,7 @@
       "home": "A",
       "away": "B"
     },
-    "allowed": false
+    "allowed": true
   },
   {
     "record": {
@@ -203,6 +203,61 @@
     "record": {
       "country": "Brazil",
       "league": "Liga Feminina",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "Europa League",
+      "league": "League Stage",
+      "div": "LS:europa-league/league-stage",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": true
+  },
+  {
+    "record": {
+      "country": "Europe",
+      "league": "UEFA Nations League",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": true
+  },
+  {
+    "record": {
+      "country": "Europe",
+      "league": "UEFA Champions League Women",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "Europe",
+      "league": "UEFA Youth League",
+      "home": "A U19",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "Asia",
+      "league": "AFC Champions League",
+      "home": "A",
+      "away": "B"
+    },
+    "allowed": false
+  },
+  {
+    "record": {
+      "country": "World",
+      "league": "FIFA World Cup",
       "home": "A",
       "away": "B"
     },

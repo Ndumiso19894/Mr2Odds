@@ -1,4 +1,4 @@
-"""Temporary publication policy: senior men's domestic leagues only.
+"""Temporary publication policy: senior men's domestic leagues and UEFA competitions.
 
 The source exposes competition names and stage slugs but no reliable competition-type flag.
 Screen known cup, international, women's and youth markers in both metadata and team names.
@@ -34,17 +34,32 @@ _TEAM_PAUSED = re.compile(
 )
 _CONTINENTS = {'world', 'international', 'europe', 'asia', 'africa', 'oceania',
                'north and central america', 'north central america', 'south america'}
+# UEFA is an explicit exception, never an exception to the women's/youth pause.
+_DEMOGRAPHIC_PAUSED = re.compile(
+    r'\b(?:women|womens|woman|ladies|female|feminine|feminin|femminile|femmes|femenina|femenino|feminina|feminino|frauen|damen|damer|kvinde|kvinder|damallsvenskan|nwsl|wsl|girls|youth|junior|juniors|juvenil|academy)\b'
+    r'|\b(?:u|under|sub)\s*(?:1[0-9]|2[0-3])\b|\b(?:liga\s+f|we\s+league)\b')
+_UEFA_NAMED = re.compile(r'\buefa\b')
+_UEFA_CLUB = re.compile(r'\b(?:champions|europa|conference)\s+league\b')
 
 
 def allowed(country='', league='', div='', home='', away='', key='') -> bool:
     """Whether a fixture/stage is in scope, using all available source identifiers."""
-    if _text(country) in _CONTINENTS:
-        return False
     metadata = ' '.join(_text(v) for v in (country, league, div, key))
-    if _PAUSED.search(metadata):
+    if _DEMOGRAPHIC_PAUSED.search(metadata) or any(
+        _TEAM_PAUSED.search(unicodedata.normalize('NFKD', str(t or '')).encode('ascii', 'ignore').decode().lower())
+        for t in (home, away)
+    ):
         return False
-    return not any(_TEAM_PAUSED.search(unicodedata.normalize('NFKD', str(t or '')).encode('ascii', 'ignore').decode().lower())
-                   for t in (home, away))
+    category = _text(country)
+    other_confederation = re.search(r'\b(?:afc|caf|concacaf|conmebol|ofc|fifa)\b', metadata)
+    uefa = not other_confederation and (bool(_UEFA_NAMED.search(metadata)) or (
+        category in {'europe', 'champions league', 'europa league', 'conference league', 'europa conference league'}
+        and bool(_UEFA_CLUB.search(metadata))))
+    if uefa:
+        return True
+    if category in _CONTINENTS or _PAUSED.search(metadata):
+        return False
+    return True
 
 
 def allows_record(record) -> bool:

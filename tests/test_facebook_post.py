@@ -56,7 +56,7 @@ def test_minimum_exact_floor_and_too_many_are_not_fabricated():
     assert not any(p['fixture'] == '1' for p in picks)
 
 
-def test_prepare_requires_two_crests_and_maximum_eight(tmp_path, monkeypatch):
+def test_prepare_requires_two_crests_and_five_distinct_matches(tmp_path, monkeypatch):
     source = tmp_path/'data.json'; source.write_text(json.dumps(snapshot()))
     output = tmp_path/'selections.png'
     im = Image.new('RGBA', (20,20), 'teal')
@@ -65,7 +65,7 @@ def test_prepare_requires_two_crests_and_maximum_eight(tmp_path, monkeypatch):
     assert Image.open(output).size == (1080, 1920)
     assert Image.open(output).getpixel((0, 0)) == (255, 255, 255)
     manifest = json.loads(output.with_suffix('.json').read_text())
-    assert len(manifest['fixtures']) == 8
+    assert len(manifest['fixtures']) == 5
     assert all(f['country'] == 'England' and f['league'] == 'Championship' and f['kickoff'] == '2026-11-04 12:00' for f in manifest['fixtures'])
     assert all(not f['home'].endswith('0') for f in manifest['fixtures'])
     monkeypatch.setattr(fb, 'badge', lambda *args: None)
@@ -100,7 +100,7 @@ def test_publish_uses_photo_endpoint_and_secret_without_logging(tmp_path, monkey
 
 def test_workflow_claim_precedes_publish_and_never_retries():
     workflow = Path('.github/workflows/facebook-daily.yml').read_text()
-    assert workflow.index('Record the daily posting claim') < workflow.index('Publish photo and caption')
+    assert workflow.index('Record the slot posting claim') < workflow.index('Publish photo and caption')
     assert "group: facebook-daily-selections" in workflow
     assert 'FACEBOOK_PAGE_ACCESS_TOKEN' in workflow and 'FACEBOOK_PAGE_ID' in workflow
     assert 'actions/artifacts?per_page=100&name=$CLAIM_NAME' in workflow
@@ -190,15 +190,6 @@ def test_portrait_fits_long_team_names_without_colliding():
     fb.draw_team(draw, 'Another very long away team name', 922, 300, 'rm')
 
 
-def test_workflow_corrected_retry_is_explicit_and_separate():
-    workflow = Path('.github/workflows/facebook-daily.yml').read_text()
-    assert 'retry_today:' in workflow
-    assert "[ \"$EVENT_NAME\" = 'workflow_dispatch' ] && [ \"$RETRY_TODAY\" = 'true' ]" in workflow
-    assert 'claim="$claim-retry"' in workflow
-    assert 'corrected retry requires an existing claim' in workflow
-    assert 'name: ${{ steps.day.outputs.claim }}' in workflow
-
-
 def test_missing_country_league_or_unknown_kickoff_are_not_invented():
     data = snapshot()
     data['fixtures'][0]['country'] = ''
@@ -208,11 +199,28 @@ def test_missing_country_league_or_unknown_kickoff_are_not_invented():
     assert [p['fixture'] for p in fb.candidates(data, NOW)] == ['4', '5', '6', '7', '8', '9']
 
 
-def test_redesign_has_its_own_manual_claim():
+
+def test_four_slot_workflow_and_old_claims_are_recognized():
     workflow = Path('.github/workflows/facebook-daily.yml').read_text()
-    assert 'redesign_today:' in workflow
-    assert "[ \"$EVENT_NAME\" = 'workflow_dispatch' ] && [ \"$REDESIGN_TODAY\" = 'true' ]" in workflow
-    assert 'claim="$claim-redesign"' in workflow
-    assert 'Select only one corrected-post option' in workflow
-    assert 'original=${original%-redesign}' in workflow
-    assert workflow.index('Record the daily posting claim') < workflow.index('Publish photo and caption')
+    fallback = Path('.github/workflows/scan-30.yml').read_text()
+    assert "0 5,6,10,15 * * *" in workflow
+    assert '07|12|17) claim="facebook-post-$day-$slot"' in workflow
+    assert '08) claim="facebook-results-$day"' in workflow
+    assert '07|08|12|17)' in fallback
+    assert '--exclude-claimed' in workflow
+    assert workflow.index('Record the slot posting claim') < workflow.index('Publish the two-image results')
+    assert fb.facebook_history.claim_names('2026-11-04') == [
+        'facebook-post-2026-11-04', 'facebook-post-2026-11-04-retry', 'facebook-post-2026-11-04-redesign',
+        'facebook-post-2026-11-04-07', 'facebook-post-2026-11-04-12', 'facebook-post-2026-11-04-17']
+
+
+def test_preparation_does_not_reuse_a_previously_claimed_match(tmp_path, monkeypatch):
+    source = tmp_path/'data.json'; source.write_text(json.dumps(snapshot()))
+    im = Image.new('RGBA', (20,20), 'teal')
+    monkeypatch.setattr(fb, 'badge', lambda *args: im)
+    prior = [{'manifest': {'fixtures': [{'home':'Home 0', 'away':'Away 0'}]}}]
+    out = tmp_path/'card.png'
+    assert fb.prepare(source, out, NOW, session=object(), prior_claims=prior)
+    manifest = json.loads(out.with_suffix('.json').read_text())
+    assert not any(p['home'] == 'Home 0' for p in manifest['fixtures'])
+    assert all(p['sel'] == 'O15' and p['selection'] == 'Over 1.5 goals' and p['odds'] == 1.2 for p in manifest['fixtures'])
