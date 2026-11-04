@@ -50,13 +50,12 @@ jobs:
           python - <<'PY'
           import os, tempfile
           from pathlib import Path
-          if os.environ.get('REEL_MUSIC_FILE_ID'):
-              from scripts.selection_reel import download_music
-              with tempfile.TemporaryDirectory() as d:
-                  download_music(Path(d) / 'music.mp3')
-              print('Supplied reel music is accessible and verified.')
-          else:
-              print('Optional reel music is not configured.')
+          if not os.environ.get('REEL_MUSIC_FILE_ID'):
+              raise SystemExit('Reel music is not configured; set the REEL_MUSIC_FILE_ID repository secret.')
+          from scripts.selection_reel import download_music
+          with tempfile.TemporaryDirectory() as d:
+              download_music(Path(d) / 'music.mp3')
+          print('Supplied reel music is accessible and verified.')
           PY
   post:
     if: github.ref == 'refs/heads/main'
