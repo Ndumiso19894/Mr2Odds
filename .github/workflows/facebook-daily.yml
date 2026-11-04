@@ -43,6 +43,21 @@ jobs:
           claims = load_claims(datetime.now(SAST).date().isoformat(), confirmed_only=True)
           print(f'Found {len(claims)} confirmed selection-card records for today.')
           PY
+      - name: Check optional reel music without posting
+        env:
+          REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
+        run: |
+          python - <<'PY'
+          import os, tempfile
+          from pathlib import Path
+          if os.environ.get('REEL_MUSIC_FILE_ID'):
+              from scripts.selection_reel import download_music
+              with tempfile.TemporaryDirectory() as d:
+                  download_music(Path(d) / 'music.mp3')
+              print('Supplied reel music is accessible and verified.')
+          else:
+              print('Optional reel music is not configured.')
+          PY
   post:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
