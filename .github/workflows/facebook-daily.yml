@@ -1,0 +1,87 @@
+name: Facebook daily selections
+
+on:
+  # 07:00 South African time. The scan workflow also dispatches this after each
+  # successful scan as a fallback if GitHub's scheduled event is delayed.
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+# Serialize all triggers. A persisted daily claim prevents reposts across runs.
+concurrency:
+  group: facebook-daily-selections
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Compute South African date
+        id: day
+        run: echo "date=$(TZ=Africa/Johannesburg date +%F)" >> "$GITHUB_OUTPUT"
+      - name: Check whether today's post was already claimed
+        id: claim
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CLAIM_NAME: facebook-post-${{ steps.day.outputs.date }}
+        run: |
+          set -euo pipefail
+          ids=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=$CLAIM_NAME" --jq ".artifacts[] | select(.name == \"$CLAIM_NAME\" and .expired == false) | .id")
+          if [ -n "$ids" ]; then
+            echo "A post was already attempted today; check the Page before any manual recovery."
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Check Facebook secrets are configured
+        if: steps.claim.outputs.available == 'true'
+        env:
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+        run: |
+          if [ -z "$FACEBOOK_PAGE_ACCESS_TOKEN" ] || ! [[ "$FACEBOOK_PAGE_ID" =~ ^[0-9]+$ ]]; then
+            echo "Configure FACEBOOK_PAGE_ACCESS_TOKEN and numeric FACEBOOK_PAGE_ID in Actions secrets." >&2
+            exit 1
+          fi
+      - name: Check out latest published football data
+        if: steps.claim.outputs.available == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: data
+          path: live-data
+      - name: Set up Python
+        if: steps.claim.outputs.available == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install image and policy dependencies
+        if: steps.claim.outputs.available == 'true'
+        run: |
+          pip install --only-binary=:all: --retries 5 --timeout 60 -r requirements.txt 'Pillow>=10,<12'
+      - name: Prepare photo with eligible selections and real crests
+        if: steps.claim.outputs.available == 'true'
+        id: prepare
+        run: python scripts/facebook_post.py prepare --snapshot live-data/data/app/latest.json --output facebook-output/selections.png
+      # Claim before the external API call: if Facebook times out after accepting a photo,
+      # no later run is allowed to risk an accidental duplicate.
+      - name: Record the daily posting claim
+        if: steps.prepare.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: facebook-post-${{ steps.day.outputs.date }}
+          path: facebook-output/
+          retention-days: 35
+          if-no-files-found: error
+      - name: Publish photo and caption to Facebook
+        if: steps.prepare.outputs.ready == 'true'
+        env:
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+        run: python scripts/facebook_post.py publish --image facebook-output/selections.png
