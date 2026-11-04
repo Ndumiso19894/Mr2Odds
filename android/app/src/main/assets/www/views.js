@@ -220,7 +220,7 @@
   // user rule 2026-10-17: Over 2.5 and BTTS START from 55%; team goals, double chance and every under are gone (core.js isDropped)
   const barOf = (sel, g) => (PR.SEL_FLOOR[sel] != null ? PR.SEL_FLOOR[sel] : (HOME_BAR[g] || 0.70));
   const highOf = (sel) => (PR.SEL_FLOOR[sel] != null ? PR.SEL_FLOOR[sel] : HOME_HIGH);
-  const HOME_EV_MIN_ODDS = 1.13;   // positive-EV tab: Sportybet price at least 1.13 (user rule, 2026-10-09)
+  const HOME_EV_MIN_ODDS = 1.16;   // same minimum as all other offered selections
   const evOf = (s) => s.p * s.odds - 1;   // expected return per 1 staked at Sportybet's price, model probability
   const HOME_SORTS = [['p', 'Model probability ↓'], ['ev', 'EV ↓'], ['odds_d', 'Odds ↓'], ['odds_a', 'Odds ↑'], ['ko', 'Kick-off'], ['league', 'League']];
   function homeBets(d) {

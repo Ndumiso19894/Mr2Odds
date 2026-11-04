@@ -1,3 +1,8 @@
+## Recommendation and ticket reliability
+- The scanner's current recommendation families and minimum price now match the app. Earlier records are retained.
+- Background ticket notifications wait for a definitive outcome and use the same football selection codes as the app; existing tennis tickets can check results without resuming tennis scans.
+- The guide now describes the probability model that is actually running; no unverified probability formula has been substituted.
+
 ## Competition pause
 - New analysis and live lists focus on senior men’s domestic leagues; women’s and youth competitions, cups and international tournaments are paused.
 - Tennis scanning and notifications are paused. Historical records and existing tickets are retained.

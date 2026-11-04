@@ -62,7 +62,7 @@ jobs:
           KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           cd android
-          gradle --no-daemon assembleRelease
+          gradle --no-daemon testDebugUnitTest assembleRelease
           ls -la app/build/outputs/apk/release/
           cp app/build/outputs/apk/release/app-release.apk "$RUNNER_TEMP/PlayReport.apk"
 

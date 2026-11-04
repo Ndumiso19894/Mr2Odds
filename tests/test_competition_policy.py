@@ -31,7 +31,7 @@ def test_frozen_fixture_does_not_resurrect_paused_matches():
                 'league': league, 'home': 'A', 'away': 'B'}
     prev = {'fixtures': [fixture('cup', 'FA Cup'), fixture('league', 'Premier League')],
             'tracked': ['cup', 'league'], 'safe': {'bets': [
-                {'id': 'cup-bet', 'fixture': 'cup'}, {'id': 'league-bet', 'fixture': 'league'}]}}
+                {'id': 'cup-bet', 'fixture': 'cup', 'sel': 'O15'}, {'id': 'league-bet', 'fixture': 'league', 'sel': 'O15'}]}}
     index, bets, tracked = [], [], set()
     assert appdata.carry_over(prev, index, bets, tracked, now) == 1
     assert [f['id'] for f in index] == ['league']

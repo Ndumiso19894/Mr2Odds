@@ -100,4 +100,4 @@ def test_visible_signals_not_displaced_by_hidden_markets(monkeypatch):
                                                                 .72 if r.i == 49 else .85, .8, 1.4)])
     result = safe.safest(rows, NOW, NOW + timedelta(hours=4))
     assert result['bets'][0].sel == 'O15'
-    assert len(result['bets']) == safe.MAX_BETS
+    assert len(result['bets']) == 1  # hidden markets are not offered as new signals

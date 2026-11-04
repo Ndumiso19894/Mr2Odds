@@ -20,6 +20,7 @@ from pathlib import Path
 import pandas as pd
 
 import competition_policy
+import recommendation_policy as rec_policy
 
 log = logging.getLogger("scanner")
 
@@ -167,7 +168,8 @@ def _best(sels: list[dict], groups: tuple | None, min_odds: float, min_p: float)
     for d in sels:
         if not d.get("odds") or d["odds"] <= 1 or d.get("p") is None:
             continue
-        if d["odds"] < min_odds or d["p"] < min_p or d["diff"]:
+        if (d["odds"] < min_odds or d["p"] < min_p or d["diff"] or not rec_policy.allowed(d["sel"])
+                or rec_policy.outlier(d.get("p_model"), d.get("p_sb"), d["odds"])):
             continue
         if groups is not None and d["group"] not in groups:
             continue
@@ -196,14 +198,14 @@ def shortlist_payload(index: list[dict], now: datetime) -> dict:
         analysed += 1
         for sel, p, model, market, odds, diff, *rest in f.get("sels", []):
             group = safe.group(sel)
-            if sel not in ("H", "D", "A") and not (sel.startswith("O") and sel != "O05") and not sel.startswith("CO"):
+            if not rec_policy.allowed(sel):
                 continue
             screened += 1
             bar = 0.55 if sel in ("H", "D", "A", "O25") else 0.65 if group == "corners" else 0.70
             if p is None or not 0 < p < 1 or odds is None or odds <= 1 or diff:
                 continue
             # Without a two-way market view, apply the same raw-price outlier check as the app.
-            if market is None and model is not None and model - 1 / odds >= 0.25:
+            if rec_policy.outlier(model, market, odds):
                 continue
             x = {"fixture": f["id"], "home": f["home"], "away": f["away"], "country": f["country"],
                  "league": f["league"], "kickoff": f["kickoff"], "sel": sel, "market": group,
@@ -211,7 +213,7 @@ def shortlist_payload(index: list[dict], now: datetime) -> dict:
                  "odds": odds, "quality": f.get("q") or "N/A", "confidence": "N/A"}
             if group == "result" and p >= 0.60 and 1.20 <= odds <= 3.50:
                 results.append(x)
-            if p >= bar and 1.16 <= odds <= 1.90 and odds * p >= 0.95 and f.get("q") != "Low":
+            if p >= bar and rec_policy.PRICE_FLOOR <= odds <= 1.90 and odds * p >= 0.95 and f.get("q") != "Low":
                 candidates.append(x)
     def unique(items):
         seen, out = set(), []
@@ -223,7 +225,7 @@ def shortlist_payload(index: list[dict], now: datetime) -> dict:
     primary = unique(candidates)
     return {"primary": primary, "x12": unique(results),
             "counts": {"analysed": analysed, "screened": screened},
-            "rules": {"min_odds": 1.16, "max_odds": 1.90}}
+            "rules": {"min_odds": rec_policy.PRICE_FLOOR, "max_odds": 1.90}}
 
 def carry_over(prev: dict | None, index: list, bets: list, tracked: set, now: datetime, hours: float = 3.0) -> int:
     """Fixtures of the previous publication that kicked off in the last `hours` and are no longer in the scan window
@@ -255,6 +257,8 @@ def carry_over(prev: dict | None, index: list, bets: list, tracked: set, now: da
     index.sort(key=lambda f: (f.get("kickoff") or "", f.get("competition") or ""))
     have = {b["id"] for b in bets}
     for b in (prev.get("safe") or {}).get("bets") or []:
+        if not rec_policy.allowed(b.get("sel")):
+            continue
         if b.get("id") in have or b.get("fixture") not in frozen_ids:
             continue
         bets.append(dict(b, live=True))
@@ -318,12 +322,13 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
         ls = ls_map.get(fx.name)
         x12 = r.extra.x12 or {}
         sels = selections(r)
-        top = _best(sels, None, 1.25, 0.0)
+        top = _best(sels, None, rec_policy.PRICE_FLOOR, 0.0)
         hi = sorted([[d["sel"], round(d["p"], 3), round(d["odds"], 2) if d.get("odds") else None] for d in sels
-                     if d.get("p") is not None and d["p"] >= 0.70 and not d["diff"] and d["group"] in ("goals", "btts", "team", "corners", "cards")
-                     and (not d.get("odds") or d["odds"] >= 1.15)], key=lambda x: -x[1])[:12]
+                     if d.get("p") is not None and d["p"] >= 0.70 and not d["diff"] and rec_policy.allowed(d["sel"])
+                     and d.get("odds") and d["odds"] >= rec_policy.PRICE_FLOOR
+                     and not rec_policy.outlier(d.get("p_model"), d.get("p_sb"), d["odds"])], key=lambda x: -x[1])[:12]
         for d in sels:   # biggest model-vs-market edges (already-computed EV, presentation only)
-            if fx["date"].strftime("%Y-%m-%d") == now.strftime("%Y-%m-%d") and r.data_ok and (d["sel"] in ("H", "D", "A") or (d["sel"].startswith("O") and d["sel"] != "O05") or d["sel"].startswith("CO")) and d.get("odds") and d.get("ev") is not None and d["ev"] > 0 and d["p"] is not None and not d.get("diff"):
+            if fx["date"].strftime("%Y-%m-%d") == now.strftime("%Y-%m-%d") and r.data_ok and rec_policy.allowed(d["sel"]) and d.get("odds") and d["odds"] >= rec_policy.PRICE_FLOOR and not rec_policy.outlier(d.get("p_model"), d.get("p_sb"), d["odds"]) and d.get("ev") is not None and d["ev"] > 0 and d["p"] is not None and not d.get("diff"):
                 value_cands.append({"id": fid, "sel": d["sel"], "odds": round(d["odds"], 2),
                                     "ev": round(d["ev"], 3), "p": round(d["p"], 3)})
         safe_best = _best(sels, safe_groups or None, min_odds, min_p) if r.data_ok else None
@@ -504,7 +509,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
                     for f in index if f.get("date") == now.strftime("%Y-%m-%d") and f.get("data_ok")
                     for s in f.get("sels", []) if s[1] is not None and s[1] >= .70 and s[4] is not None
                     and s[4] >= 1.16 and not s[5]
-                    and (s[0] in ("H", "D", "A") or (s[0].startswith("O") and s[0] != "O05") or s[0].startswith("CO"))]
+                    and rec_policy.allowed(s[0]) and not rec_policy.outlier(s[2], s[3], s[4])]
     strong_sorted = sorted(strong_cands, key=lambda x: -x[0])[:5]
     groups = {"value": sorted(value_cands, key=lambda x: -x["ev"])[:5],
               "strong": [{"id": fid, "sel": sel, "p": p, "q": q} for p, sel, fid, q in strong_sorted]}
@@ -527,7 +532,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
                 continue
             if d["p"] is None or d["p"] < STRONG_MIN_P or d.get("diff"):
                 continue
-            if not d.get("odds") or d["odds"] < STRONG_MIN_ODDS:
+            if not d.get("odds") or d["odds"] < STRONG_MIN_ODDS or rec_policy.outlier(d.get("p_model"), d.get("p_sb"), d["odds"]):
                 continue
             strong_by_fam.setdefault(family, []).append(
                 {"id": fid, "sel": sel, "label": d.get("label"), "family": family,

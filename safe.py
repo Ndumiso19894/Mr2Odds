@@ -25,8 +25,9 @@ import pandas as pd
 
 import markets
 import competition_policy
+import recommendation_policy as rec_policy
 
-MIN_ODDS = 1.30      # user decision: a "safe" price must be at least 1.30
+MIN_ODDS = rec_policy.PRICE_FLOOR  # current app-wide minimum for offered selections
 MIN_P = 0.70         # ... and the probability at least 70%
 TREBLES = 3
 LEGS = 3
@@ -38,8 +39,8 @@ GROUPS = {"result": "Match result", "dc": "Double chance", "goals": "Total goals
 
 SAFE_BET_COLS = ["match_date", "kickoff", "country", "div", "league", "home", "away", "sel", "label", "p", "p_model",
                  "p_sb", "odds", "status", "score", "settled_on", "run", "report_date", "botd", "kind"]
-# v4: safest bets specialise in goals, corners and cards (match-result / double-chance stay on the match page only)
-SAFE_GROUPS = ("goals", "btts", "team", "corners", "cards")
+# The latest app policy offers result, total-goals overs and total-corners overs.
+SAFE_GROUPS = ("result", "goals", "corners")
 # v5: overs only — no "under x goals / corners / cards", no "team under", no "no BTTS" (user decision)
 OVERS_ONLY = True
 
@@ -48,21 +49,17 @@ def is_under(sel: str) -> bool:
     return sel == "NBTTS" or bool(re.match(r"^(U\d+|[HA]U\d+|CU\d+|KU\d+)$", sel))
 
 
-# bets-of-the-day card: one section per market family, up to BOTD_PER_GROUP picks each, distinct matches per section
-# (key, title, selection filter, minimum probability, picks per section). The card is strong on Over 1.5 & team goals;
-# 1X2 / BTTS / Over 2.5 only enter with a strong signal (model >= 70%, market view not below 70%, AND recent form backing it —
-# see scanner.strong_signal). One market per match across the whole card.
+# Day card groups in priority order; 1X2 and O2.5 additionally require recent form backing.
+# Historical markets remain in the ledger, but do not occupy new recommendation slots.
 # Blocks of the "Bets of the day" card, in display order. A block shows only the bets that meet its
 # threshold that day (1-2 is fine, never padded); a block that has no qualifying bet is hidden.
 BOTD_GROUPS = [
-    ("o15", "Goals · Over 1.5 & team goals", lambda sel: sel in ("O15", "HO05", "AO05", "HO15", "AO15"), 0.70, 7),
-    ("o25", "Over 2.5 goals", lambda sel: sel in ("O25", "O35"), 0.70, 7),
-    ("btts", "Both teams to score", lambda sel: sel == "BTTS", 0.70, 7),
-    ("result", "1X2", lambda sel: sel in ("H", "A"), 0.70, 7),
+    ("result", "1X2", lambda sel: sel in ("H", "A"), 0.70, 5),
+    ("o25", "Over 2.5 goals", lambda sel: sel == "O25", 0.55, 7),
+    ("o15", "Goals · Over 1.5", lambda sel: sel == "O15", 0.70, 7),
     ("corners", "Corners", lambda sel: sel.startswith("CO"), 0.65, 7),
-    ("cards", "Bookings", lambda sel: sel.startswith("KO"), 0.65, 7),
 ]
-SIGNAL_SECTIONS = ("result", "btts", "o25")
+SIGNAL_SECTIONS = ("result", "o25")
 BOTD_PER_GROUP = 3
 ACCA_COLS = ["acca_id", "created", "run", "window_end", "n_legs", "legs", "odds", "p", "status", "settled_on", "note"]
 
@@ -305,7 +302,7 @@ def safest(rows: list, now: datetime, window_end: datetime, min_odds: float = MI
         for s in selections(r):
             if not s.priced or s.odds < min_odds or s.p < min_p or s.diff or s.group not in groups:
                 continue
-            if OVERS_ONLY and is_under(s.sel):
+            if not rec_policy.allowed(s.sel) or rec_policy.outlier(s.p_model, s.p_sb, s.odds):
                 continue
             bets.append(Bet(key, fx["div"], fx["league"], fx["home"], fx["away"], fx["kickoff"].strftime("%Y-%m-%d %H:%M"),
                             s.sel, s.p, s.p_model, s.p_sb, s.odds))
@@ -313,13 +310,7 @@ def safest(rows: list, now: datetime, window_end: datetime, min_odds: float = MI
     # before considering the date lets far-future matches crowd every one of today's signals out.
     # Keep probability ranking within each partition; do not lower any selection thresholds.
     today = now.strftime("%Y-%m-%d")
-    def app_visible(b):
-        # The Android app hides team goals, BTTS, cards, double chance and Over 0.5.
-        # Keep those markets for reports/ledger where there is room, but don't let
-        # hidden markets occupy every slot in the app's capped signal list.
-        return ((b.sel.startswith("O") and b.sel != "O05") or b.sel.startswith("CO"))
-
-    bets.sort(key=lambda b: (b.key[0] != today, not app_visible(b), -b.p, -b.odds))
+    bets.sort(key=lambda b: (b.key[0] != today, -b.p, -b.odds))
     # one market per match, preferring a visible market where available
     seen_match: set[tuple] = set()
     one = []
@@ -383,7 +374,8 @@ def add_bets(df: pd.DataFrame, bets: list[Bet], now: datetime, run: str, kind: s
     if "kind" not in df.columns:
         df["kind"] = "safe"
     existing = set(zip(df["match_date"], df["home"], df["away"], df["sel"]))
-    matches = set(zip(df["match_date"], df["home"], df["away"]))
+    active = df.loc[df["sel"].map(rec_policy.allowed).astype(bool)]
+    matches = set(zip(active["match_date"], active["home"], active["away"]))
     new, added = [], []
     for b in bets:
         k = (b.key[0], b.home, b.away, b.sel)
@@ -410,7 +402,7 @@ def bet_id(match_date: str, home: str, away: str, sel: str) -> str:
 
 def botd_candidates(rows: list, now: datetime, min_odds: float = MIN_ODDS, signal=None) -> list[Bet]:
     """Selections eligible for the day card: priced, market not contradicting the model (|diff| <= DIFF_FLAG),
-    price >= 1.30, overs only, model probability at or above the section threshold; 1X2 / BTTS / Over 2.5
+    price >= 1.16, allowed markets only, model probability at or above the section threshold; 1X2 / Over 2.5
     additionally need `signal(r, sel)` to be true (form backing) and the market view not below the threshold."""
     start = now + timedelta(minutes=10)
     out: list[Bet] = []
@@ -420,7 +412,8 @@ def botd_candidates(rows: list, now: datetime, min_odds: float = MIN_ODDS, signa
         fx = r.fx
         key = (fx["date"].strftime("%Y-%m-%d"), fx["country"], fx["home"], fx["away"])
         for s in selections(r):
-            if not s.priced or s.odds < min_odds or s.diff or is_under(s.sel):
+            if (not s.priced or s.odds < min_odds or s.diff or not rec_policy.allowed(s.sel)
+                    or rec_policy.outlier(s.p_model, s.p_sb, s.odds)):
                 continue
             for gkey, _title, match, thr, _cap in BOTD_GROUPS:
                 if not match(s.sel) or s.p < thr:
@@ -460,12 +453,15 @@ def pick_bets_of_the_day(df: pd.DataFrame, now: datetime, n: int = BOTD_PER_GROU
     df["botd"] = df["botd"].replace({"1": "o15"})           # v4 cards were goals-only
     # candidates from this run's rows (today only), most probable first
     cands = [b for b in (candidates or []) if b.key[0] == today and
-             competition_policy.allowed(b.key[1], b.league, b.div, b.home, b.away)]
+             competition_policy.allowed(b.key[1], b.league, b.div, b.home, b.away) and rec_policy.allowed(b.sel)]
     cands.sort(key=lambda b: (-b.p, -b.odds))
     df_today = df[df["match_date"] == today]
     # Entries from before the pause remain in the ledger, but do not consume card slots.
     if not df_today.empty:
         df_today = df_today[df_today.apply(competition_policy.allows_record, axis=1)]
+        df_today = df_today.loc[df_today["sel"].map(rec_policy.allowed).astype(bool)]
+        valid_sections = (df_today["botd"] == "") | (df_today["sel"].map(botd_group) == df_today["botd"])
+        df_today = df_today.loc[valid_sections.astype(bool)]
     # one market per match across the whole card
     used = set(zip(df_today.loc[df_today["botd"].astype(str) != "", "home"], df_today.loc[df_today["botd"].astype(str) != "", "away"]))
     for gkey, _title, match, _thr, cap in BOTD_GROUPS:
@@ -477,7 +473,8 @@ def pick_bets_of_the_day(df: pd.DataFrame, now: datetime, n: int = BOTD_PER_GROU
                 break
             if botd_group(b.sel) != gkey or (b.home, b.away) in used:
                 continue
-            same_match = (df["match_date"] == today) & (df["home"] == b.home) & (df["away"] == b.away)
+            same_match = ((df["match_date"] == today) & (df["home"] == b.home) & (df["away"] == b.away)
+                          & df["sel"].map(rec_policy.allowed))
             mask = same_match & (df["sel"] == b.sel)
             if mask.any():
                 idx = df.index[mask][0]
@@ -501,9 +498,12 @@ def bets_of_the_day(df: pd.DataFrame, now: datetime) -> dict:
     out = {"date": today, "groups": [], "bets": []}
     if df.empty or "botd" not in df.columns:
         return out
-    rows = df[(df["match_date"] == today) & (df["botd"].astype(str) != "")]
+    rows = df[(df["match_date"] == today) & (df["botd"].astype(str) != "") & df["sel"].map(rec_policy.allowed)]
     flat = []
     for r in rows.itertuples():
+        section = "o15" if str(r.botd) == "1" else r.botd
+        if botd_group(r.sel) != section:
+            continue
         flat.append({"id": bet_id(r.match_date, r.home, r.away, r.sel), "kickoff": r.kickoff, "country": r.country,
                      "league": r.league, "home": r.home, "away": r.away, "sel": r.sel, "group": group(r.sel),
                      "section": r.botd if r.botd in {g[0] for g in BOTD_GROUPS} else "o15",

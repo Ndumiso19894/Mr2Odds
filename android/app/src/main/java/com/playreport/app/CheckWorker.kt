@@ -277,37 +277,26 @@ class CheckWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx,
         val stillOpen = JSONArray()
         for (t in 0 until tickets.length()) {
             val ticket = tickets.getJSONObject(t)
-            val legs = ticket.optJSONArray("legs") ?: continue
-            var outcome: Boolean? = null
-            var anySettled = false
+            val legs = ticket.optJSONArray("legs")
+            if (legs == null) { stillOpen.put(ticket); continue }
+            val outcomes = mutableListOf<Boolean?>()
             for (i in 0 until legs.length()) {
                 val leg = legs.getJSONObject(i)
                 val eid = leg.optString("eid")
-                if (eid.isEmpty()) continue
-                val legLabel = buildString {
-                    append(leg.optString("home").ifEmpty { leg.optString("p1") })
-                    if (leg.optString("away").isNotEmpty() || leg.optString("p2").isNotEmpty()) {
-                        append(" v ").append(leg.optString("away").ifEmpty { leg.optString("p2") })
-                    }
-                    val sel = leg.optString("sel").ifEmpty { leg.optString("selection") }
-                    if (sel.isNotEmpty()) append(" — $sel")
-                }
-                val soccerEv = soccer[eid]
+                val soccerEv = if (leg.optString("sport") != "tennis") soccer[eid] else null
+                val tEv = if (leg.optString("sport") == "tennis") tennis[eid] else null
                 val result = when {
+                    eid.isEmpty() -> null
                     soccerEv != null && isVoid(soccerEv.status) -> null
                     soccerEv != null && isFinished(soccerEv.status) && soccerEv.hg != null && soccerEv.ag != null ->
-                        settle(leg.optString("sel"), soccerEv.hg, soccerEv.ag)
-                    else -> {
-                        val tEv = tennis[eid]
-                        if (tEv != null && tEv.finished) settleTennis(leg, tEv) else null
-                    }
+                        TicketGrading.soccer(leg.optString("sel"), soccerEv.hg, soccerEv.ag)
+                    tEv != null && tEv.finished -> settleTennis(leg, tEv)
+                    else -> null
                 }
-                if (result != null) {
-                    anySettled = true
-                    outcome = (outcome ?: true) && result
-                }
+                outcomes.add(result)
             }
-            if (anySettled && outcome != null) {
+            val outcome = TicketGrading.ticket(outcomes)
+            if (outcome != null) {
                 settledNow.add(ticket to outcome)
             } else {
                 stillOpen.put(ticket)
@@ -330,57 +319,12 @@ class CheckWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx,
         }
     }
 
-    /** Soccer selection settlement. [sel] codes: H/A/X, HS/AS, BTTS/NB, O2/U2, HO1.5/AU0.5 … */
-    private fun settle(sel: String, hg: Int, ag: Int): Boolean? {
-        return when (sel) {
-            "H" -> hg > ag
-            "A" -> ag > hg
-            "X" -> hg == ag
-            "HS" -> hg >= ag
-            "AS" -> ag >= hg
-            "BTTS" -> hg > 0 && ag > 0
-            in setOf("NB", "NBTTS") -> !(hg > 0 && ag > 0)
-            else -> {
-                if (Regex("^[OU]\\d+(?:\\.\\d+)?$").matches(sel)) {
-                    val line = sel.substring(1).toDouble()
-                    if (sel.startsWith("O")) (hg + ag).toDouble() > line else (hg + ag).toDouble() < line
-                } else if (Regex("^[HA][OU]\\d+(?:\\.\\d+)?$").matches(sel)) {
-                    val goals = if (sel.startsWith("H")) hg.toDouble() else ag.toDouble()
-                    val line = sel.substring(2).toDouble()
-                    if (sel[1] == 'O') goals > line else goals <= line
-                } else null
-            }
-        }
-    }
-
     /** Tennis leg settlement. Leg = {market, selection, line}; void on retirement/walkover. */
     private fun settleTennis(leg: JSONObject, ev: TNev): Boolean? {
-        if (ev.status.startsWith("ret", true) || ev.status.startsWith("w.", true)) return null
-        val market = leg.optString("market")
-        val selection = leg.optString("selection")
         val line = leg.optDouble("line", Double.NaN).let { if (it.isNaN()) null else it }
-        val total = ev.sets.sumOf { it[0] + it[1] }
-        val p1 = ev.sets.sumOf { it[0] }
-        val p2 = ev.sets.sumOf { it[1] }
-        return when (market) {
-            "winner" -> {
-                val w = ev.winner ?: return null
-                (selection == "1" || selection == "P1" || selection == "p1") == (w == 1)
-            }
-            "total_games" -> {
-                if (line == null) return null
-                if (selection.startsWith("O")) total.toDouble() > line else total.toDouble() < line
-            }
-            "p1_games" -> {
-                if (line == null) return null
-                if (selection.startsWith("O")) p1.toDouble() > line else p1.toDouble() < line
-            }
-            "p2_games" -> {
-                if (line == null) return null
-                if (selection.startsWith("O")) p2.toDouble() > line else p2.toDouble() < line
-            }
-            else -> null
-        }
+        val retired = ev.status.startsWith("ret", true) || ev.status.startsWith("w.", true)
+        return TicketGrading.tennis(leg.optString("market"), leg.optString("selection"), line, ev.winner,
+            ev.sets.sumOf { it[0] }, ev.sets.sumOf { it[1] }, retired)
     }
 
     /** Latest goal scorer for the notification ("S. Player · "). Best-effort. */
