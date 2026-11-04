@@ -3,8 +3,8 @@
   {"sel":"O15", "allowed":true}, {"sel":"O25", "allowed":true}, {"sel":"O35", "allowed":true},
   {"sel":"CO95", "allowed":true}, {"sel":"CO105", "allowed":true},
   {"sel":"O05", "allowed":false}, {"sel":"U25", "allowed":false},
-  {"sel":"BTTS", "allowed":false}, {"sel":"NBTTS", "allowed":false},
+  {"sel":"BTTS", "allowed":true}, {"sel":"NBTTS", "allowed":false},
   {"sel":"HO05", "allowed":false}, {"sel":"AO15", "allowed":false},
   {"sel":"1X", "allowed":false}, {"sel":"12", "allowed":false}, {"sel":"X2", "allowed":false},
-  {"sel":"KO35", "allowed":false}, {"sel":"CU95", "allowed":false}
+  {"sel":"KO35", "allowed":false}, {"sel":"CHO35", "allowed":true}, {"sel":"CAO45", "allowed":true}, {"sel":"KHO15", "allowed":false}, {"sel":"KAO25", "allowed":false}, {"sel":"CHU35", "allowed":false}, {"sel":"CU95", "allowed":false}
 ]

@@ -10,11 +10,11 @@ Android app and Telegram — no servers, no API keys, and it runs while your pho
   and never feed the model. Every statistic carries its sample size (Very small 1–4 … Very strong 40+), every match
   has a transparent data-quality assessment, the raw matches used, extreme results flagged and the model's own
   numbers ("why 1.35 goals?") in the app's **Data** tab and in `python audit.py HOME AWAY`. Missing data is N/A, never 0.
-* **Goals shortlists** — Over 1.5 and Over 2.5, from the backtested and calibrated model.
+* **Goals shortlists** — Over 1.5 and Over 2.5, from the statistical model; the newly enabled adjustments are experimental and not yet backtested.
 * **High-probability selections** — singles with model probability ≥ 70 % (the de-margined Sportybet price must not
-  contradict it), price ≥ 1.16, in the 1X2 / total-goals overs / total-corners overs markets. New ones are announced
+  contradict it), price ≥ 1.16, in the 1X2 / BTTS / total-goals overs / total and team corners overs markets. New ones are announced
   immediately (Telegram + app). Nothing is ever labelled "safe" or "guaranteed".
-* **⭐ Bets of the day** — grouped card for 1X2, Over 1.5, Over 2.5 and corners; 1X2 and Over 2.5 require supporting form. One market per match; graded separately.
+* **⭐ Bets of the day** — grouped card for 1X2, Over 1.5, Over 2.5, BTTS and corners; 1X2 and Over 2.5 require supporting form. One market per match; graded separately.
 * **Trends, head-to-head and home/away form** on every match page; live scores, line-ups and match statistics for
   every match in play; squad values (Transfermarkt) for the main leagues.
 * **Bet slip & tickets** in the app — build a multiple from priced selections, lock it, and PlayReport grades it from
@@ -82,3 +82,11 @@ Telegram's hosted Bot API has a 50 MB document limit.
 ### Workbook comparison
 
 The match Sheet tab reproduces the supplied workbook's V1 formulas as a separate comparison. Venue rates use the scanner's unweighted team samples (overall sample when the venue split is empty); scanner league baselines are time-weighted and shrunk and may fall back to global data. The V4/V5 comparison uses the workbook's default V3/V4 weights and dashboard rules, is uncalibrated, and requires six recent results plus at least three current-competition observations for each xG/xGA and shots-on-target input. PPG and other inputs use the available capped sample and inferred season, not necessarily a complete season. Missing inputs leave V4 unavailable. Bookmaker implied probabilities are raw 1/odds, not de-margined. The CSV exports values, not spreadsheet formulas. This comparison never changes the production recommendations or the original workbook.
+
+### Experimental model signals and markets
+
+Provisional xG/xGA, shots-on-target and genuinely reported off-target-shot adjustments are **enabled by default** where data is sufficient, but remain unvalidated until a chronological backtest is completed. Set `EXPERIMENTAL_MODEL_SIGNALS=0` to revert to the baseline. Team/total booking recommendations and grading are withheld because current card-count data is not verified as equivalent to SportyBet bookings. See [model signal and market limitations](docs/MODEL_SIGNALS.md).
+
+### Lineup research pilot
+
+An opt-in, source-neutral pilot compares confirmed starting XIs with recent collected lineups in England's Premier League and Germany's Bundesliga. It does not change model probabilities. No automatic provider is connected; authorized input and explicit permission for public-state storage are required. See [pilot setup and limitations](docs/LINEUP_PILOT.md).

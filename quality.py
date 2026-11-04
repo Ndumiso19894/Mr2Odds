@@ -376,10 +376,11 @@ def explanation(r, ev_h: dict, ev_a: dict, config: dict) -> dict:
         "league": {"div": str(r.fx["div"]), "mu_home": _f(da.mu_h, 3), "mu_away": _f(da.mu_a, 3), "n_eff": _f(da.n_eff, 1),
                    "o25_rate": _f(da.o25_rate, 3), "btts_rate": _f(da.btts_rate, 3)},
         "home": ev_h["ratings"], "away": ev_a["ratings"],
-        "lambda_home": {"formula": "league home average x home attack x away defence",
+        "lambda_home": {"formula": "league home average x home attack x away defence, then any experimental data adjustments",
                         "terms": [_f(da.mu_h, 3), _f(H.att, 3), _f(A.dfc, 3)], "value": _f(r.mod_h, 3)},
-        "lambda_away": {"formula": "league away average x away attack x home defence",
+        "lambda_away": {"formula": "league away average x away attack x home defence, then any experimental data adjustments",
                         "terms": [_f(da.mu_a, 3), _f(A.att, 3), _f(H.dfc, 3)], "value": _f(r.mod_a, 3)},
+        "model_signals": getattr(r, "model_signals", {}),
         "settings": {"half_life_days": config["HALF_LIFE_DAYS"], "max_matches": config["MAX_MATCHES_PER_TEAM"],
                      "shrink_k_tempo": kt, "shrink_k_strength": ks, "venue_k": kv, "dc_rho": config["DC_RHO"],
                      "lambda_clip": [0.15, 4.5]},
@@ -390,9 +391,10 @@ def explanation(r, ev_h: dict, ev_a: dict, config: dict) -> dict:
             f"3. Venue-specific rates are blended in with weight n_venue / (n_venue + {kv}).",
             f"4. Ratings are shrunk towards the league average (1.00): the attack/defence ratio (strength) with K = {ks} and the "
             f"overall tempo with K = {kt} weighted matches — small samples stay close to the average.",
-            "5. Expected goals (lambda) = league venue average x attack x opponent's defence; score matrix = Dixon-Coles "
-            f"bivariate Poisson (rho {config['DC_RHO']}), 0-10 goals per team; every market probability is read off that matrix.",
-            "Bookmaker prices are not used anywhere in steps 1-5.",
+            "5. Baseline expected goals (lambda) = league venue average x attack x opponent's defence.",
+            "6. Experimental xG/xGA and shots-on-target corrections may adjust lambda when data is sufficient; they have not been backtested. See model_signals for the current status.",
+            f"7. The resulting lambdas form a Dixon-Coles score matrix (rho {config['DC_RHO']}), 0-10 goals per team; goal and result probabilities are read from it.",
+            "Bookmaker prices are not used anywhere in these steps.",
         ],
     }
 

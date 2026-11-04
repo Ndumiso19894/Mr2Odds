@@ -122,6 +122,9 @@ jobs:
       MAX_PICKS: "15"
       SPORTY_CC: "za"       # Sportybet country site used for prices (za, ng, gh, ke, ug, tz, zm)
       WORLD: "1"            # every competition on Livescore.com (v4)
+      # Optional manually supplied, rights-cleared pilot snapshots. These are data, never credentials.
+      LINEUP_PILOT_INPUT: ${{ vars.LINEUP_PILOT_INPUT }}
+      LINEUP_PILOT_RIGHTS_CONFIRMED: ${{ vars.LINEUP_PILOT_RIGHTS_CONFIRMED }}
       STATE_DIR: ${{ github.workspace }}/state
       STATE_URL: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}   # optional
@@ -230,3 +233,5 @@ jobs:
           node tests/test_competition_ui.js
           node tests/test_tickets_ui.js
           node tests/test_sheet_ui.js
+          node tests/test_lineup_pilot_ui.js
+          node tests/test_market_settlement_ui.js

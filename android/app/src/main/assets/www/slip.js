@@ -253,10 +253,17 @@
     if (sc.postponed) return 'void';
     if (!sc.ft) return 'pending';
     const g = selGroup(l.sel);
-    if (g === 'corners' || g === 'cards') {
-      const tot = g === 'corners' ? (sc.hc != null && sc.ac != null ? sc.hc + sc.ac : null) : (sc.hcards != null && sc.acards != null ? sc.hcards + sc.acards : null);
-      if (tot == null) return 'pending';
-      return (l.sel[1] === 'O' ? tot > line(l.sel) : tot < line(l.sel)) ? 'won' : 'lost';
+    if (g === 'cards') return 'pending'; // card-count feed does not establish bookmaker booking settlement
+    if (g === 'corners') {
+      const h = g === 'corners' ? sc.hc : sc.hcards;
+      const a = g === 'corners' ? sc.ac : sc.acards;
+      const m = /^([CK])([HA])?([OU])(\d+)$/.exec(l.sel || '');
+      if (!m) return 'pending';
+      const count = m[2] === 'H' ? h : m[2] === 'A' ? a : (h != null && a != null ? Number(h) + Number(a) : null);
+      if (count == null || !Number.isFinite(Number(count))) return 'pending';
+      const threshold = line(l.sel);
+      if (Number(count) === threshold) return 'void';
+      return (m[3] === 'O' ? Number(count) > threshold : Number(count) < threshold) ? 'won' : 'lost';
     }
     const ok = settleSel(l.sel, sc.hg, sc.ag);
     return ok == null ? 'pending' : ok ? 'won' : 'lost';

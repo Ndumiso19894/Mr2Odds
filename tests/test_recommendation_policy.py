@@ -30,9 +30,9 @@ def test_scanner_offers_only_current_markets_at_app_price_floor(monkeypatch):
              safe.Sel('HO05', .9, .85, 1.16), safe.Sel('O15', .75, .76, 1.16)]
     monkeypatch.setattr(safe, 'selections', lambda _: picks)
     result = safe.safest([row('A')], NOW, NOW + timedelta(hours=4))
-    assert [b.sel for b in result['bets']] == ['O15']
+    assert [b.sel for b in result['bets']] == ['BTTS']
     assert result['min_odds'] == 1.16
-    picks[-1] = safe.Sel('O15', .75, .76, 1.159)
+    picks[:] = [safe.Sel('O15', .75, .76, 1.159)]
     assert not safe.safest([row('A')], NOW, NOW + timedelta(hours=4))['bets']
 
 
@@ -78,4 +78,4 @@ def test_day_history_top_selections_respect_recommendation_policy(monkeypatch):
         {'sel': 'O15', 'p': .8, 'p_model': .8, 'p_sb': .8, 'odds': 1.16, 'diff': False, 'label': 'O1.5'},
         {'sel': 'O25', 'p': .9, 'p_model': .9, 'p_sb': None, 'odds': 2.0, 'diff': False, 'label': 'O2.5'},
     ])
-    assert [x['sel'] for x in scanner.top_sels(None)] == ['O15']
+    assert [x['sel'] for x in scanner.top_sels(None)] == ['BTTS', 'O15']

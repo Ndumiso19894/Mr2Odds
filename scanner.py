@@ -4,7 +4,7 @@
 PlayReport scanner (v4)
 ==================
 Automated football scanner, three times a day (07:00 / 12:00 / 17:00 SAST):
-  * goals shortlists  – Over 1.5, Over 2.5, Both Teams To Score (backtested, calibrated model v2)
+  * goals shortlists  – Over 1.5, Over 2.5, Both Teams To Score (experimental signals unvalidated)
   * extra markets     – 1X2 / double chance, team goals, corners and cards (markets.py, backtested)
   * Sportybet prices  – real prices for the user's bookmaker (sporty.py), value check vs fair price
   * parlays           – 3 per run inside the 2.70-3.50 odds band, built from priced legs only (parlays.py),
@@ -50,6 +50,7 @@ import pandas as pd
 import requests
 
 import markets
+import model_signals
 import quality
 import news as news_mod
 import parlays as parlay_mod
@@ -60,6 +61,7 @@ import acache
 import squads as squads_mod
 import worldfeed
 import appdata
+import lineup_pilot
 import competition_policy
 import recommendation_policy as rec_policy
 import verify
@@ -141,7 +143,7 @@ CONFIG = {
         "O25": {"p": _env_float("MIN_P_O25", 0.60), "tiers": (0.64, 0.68)},
         "BTTS": {"p": _env_float("MIN_P_BTTS", 0.60), "tiers": (0.63, 0.66)},
     },
-    # backtest hit-rates (test seasons 2025/26-26/27) shown in the report so expectations stay honest
+    # Historical baseline hit-rates; these do not validate the experimental model.
     "BACKTEST": {
         "O15": "87% of shortlisted matches (⭐⭐ 88%, ⭐⭐⭐ 95%) over 900 picks",
         "O25": "67% of shortlisted matches (⭐⭐ 71%, ⭐⭐⭐ 77%) over 1,675 picks",
@@ -373,7 +375,7 @@ def market_lambdas(odds_h, odds_d, odds_a, odds_over, odds_under):
 
 
 # ----------------------------------------------------------------------------- data loading
-NUM_RESULT_COLS = ("hg", "ag", "hxg", "axg", "hs", "as", "hst", "ast", "hc", "ac", "hy", "ay", "hr", "ar", "hth", "hta")
+NUM_RESULT_COLS = ("hg", "ag", "hxg", "axg", "hs", "as", "hst", "ast", "hsoff", "asoff", "hc", "ac", "hy", "ay", "hr", "ar", "hth", "hta")
 RESULT_COLS = ["country", "div", "league", "date", "home", "away", *NUM_RESULT_COLS, "referee", "home_id", "away_id"]
 
 
@@ -649,6 +651,8 @@ class TeamProfile:
     xg_against: float = float("nan")
     sot_for: float = float("nan")
     sot_against: float = float("nan")
+    signal_values: dict = field(default_factory=dict)
+    signal_counts: dict = field(default_factory=dict)  # valid last-ten observation counts
     last5: list = field(default_factory=list)
     venue_rate_o25: float = float("nan")
     venue_rate_btts: float = float("nan")
@@ -882,6 +886,12 @@ def build_profile(long: pd.DataFrame, country: str, team: str, venue: str, now: 
     p.xg_against = float(last10["xg_against"].mean()) if last10["xg_against"].notna().any() else float("nan")
     p.sot_for = float(last10["sot_for"].mean()) if last10["sot_for"].notna().any() else float("nan")
     p.sot_against = float(last10["sot_against"].mean()) if last10["sot_against"].notna().any() else float("nan")
+    for c in ("xg_for", "xg_against", "sot_for", "sot_against"):
+        values = pd.to_numeric(last10[c], errors="coerce")
+        values = values[(values >= 0) & np.isfinite(values) & (values <= (10 if c.startswith("xg") else 50))]
+        p.signal_counts[c] = len(values)
+        if len(values):
+            p.signal_values[c] = float(values.mean())
     p.last5 = [{"date": r.date, "venue": r.venue, "opp": r.opp, "gf": int(r.gf), "ga": int(r.ga),
                 "league": r.league} for r in rows.head(5).itertuples()]
     PROFILE_CACHE[key] = p
@@ -997,6 +1007,7 @@ class MatchRow:
     mkt_source: str = ""          # where the market xG comes from ("reference odds" / "Sportybet")
     x12_market: dict | None = None  # de-margined bookmaker 1X2 (comparison only)
     audit: dict = field(default_factory=dict)  # evidence / quality / explanation / warnings (quality.py), filled in main()
+    model_signals: dict = field(default_factory=dict)  # provisional adjustment audit
 
     @property
     def basis(self) -> str:
@@ -1024,6 +1035,14 @@ def analyse(fx: pd.Series, long: pd.DataFrame, results: pd.DataFrame,
     # Bookmaker odds play no part here (data-first engine, 2026-09-28).
     mod_h = min(max(da.mu_h * H.att * A.dfc, 0.15), 4.5)
     mod_a = min(max(da.mu_a * A.att * H.dfc, 0.15), 4.5)
+    # User-enabled experimental data-only adjustments; not yet backtested.
+    # Absent inputs always leave the baseline unchanged. Set EXPERIMENTAL_MODEL_SIGNALS=0 to roll back.
+    if EXPERIMENTAL_MODEL_SIGNALS:
+        mod_h, sig_h = model_signals.goal_adjustment(mod_h, H, A, SIGNAL_BASELINES.get(str(fx["div"])))
+        mod_a, sig_a = model_signals.goal_adjustment(mod_a, A, H, SIGNAL_BASELINES.get(str(fx["div"])))
+    else:
+        sig_h = {"baseline": mod_h, "adjusted": mod_h, "xg_applied": False, "sot_applied": False}
+        sig_a = {"baseline": mod_a, "adjusted": mod_a, "xg_applied": False, "sot_applied": False}
     M = score_matrix(mod_h, mod_a, rho)
     p_model = probs_from_matrix(M)
     lam_h, lam_a = mod_h, mod_a
@@ -1058,6 +1077,7 @@ def analyse(fx: pd.Series, long: pd.DataFrame, results: pd.DataFrame,
         mH, mD, mA = markets.power_demargin([oh, od, oa])
         row.x12_market = {"H": mH, "D": mD, "A": mA, "source": "reference odds"}
     ex.tg = markets.team_goals(M)
+    row.model_signals = {"home": sig_h, "away": sig_a, "status": "experimental_unvalidated" if EXPERIMENTAL_MODEL_SIGNALS else "disabled_pending_backtest"}
     # corners / cards: main leagues from football-data; elsewhere from the archived Livescore match statistics once
     # both teams have enough matches with stats
     min_n = 0 if fx["source"] == "main" else CONFIG["WORLD_COUNT_MIN_N"]
@@ -1066,6 +1086,14 @@ def analyse(fx: pd.Series, long: pd.DataFrame, results: pd.DataFrame,
         ex.corners = cm.expect(fx["country"], fx["home"], fx["away"], fx["div"])
         if ex.corners is not None and (ex.corners.h_n < min_n or ex.corners.a_n < min_n):
             ex.corners = None
+        off = MODELS.get("shots_off")
+        if EXPERIMENTAL_MODEL_SIGNALS and ex.corners is not None and off is not None:
+            shot_exp = off.expect(fx["country"], fx["home"], fx["away"], fx["div"])
+            if shot_exp is not None and shot_exp.h_n >= 5 and shot_exp.a_n >= 5 and str(fx["div"]) in off.div_avg:
+                base_h, base_a = off._div(fx["div"])
+                ex.corners.eh, ex.corners.ea, details = model_signals.corner_adjustment(
+                    ex.corners.eh, ex.corners.ea, shot_exp.eh, shot_exp.ea, base_h, base_a)
+                row.model_signals["corners"] = details
         ex.corner_p = markets.count_lines(ex.corners, markets.CORNERS)
     km = MODELS.get("cards")
     if km is not None:
@@ -1078,7 +1106,9 @@ def analyse(fx: pd.Series, long: pd.DataFrame, results: pd.DataFrame,
     return row
 
 
-MODELS: dict = {}   # corners / cards count models, built once per run in main()
+EXPERIMENTAL_MODEL_SIGNALS = os.getenv("EXPERIMENTAL_MODEL_SIGNALS", "1") == "1"
+MODELS: dict = {}   # count models, built once per run in main()
+SIGNAL_BASELINES: dict = {}
 
 
 def build_audits(rows: list[MatchRow], now: datetime) -> None:
@@ -1267,9 +1297,6 @@ def build_run_parlays(rows: list[MatchRow], now: datetime, window_end: datetime,
 def select_picks(rows: list[MatchRow]) -> dict[str, list[MatchRow]]:
     picks: dict[str, list[MatchRow]] = {}
     for mkt, thr in CONFIG["THRESHOLDS"].items():
-        if mkt == "BTTS":  # keep historical tracker entries, but do not issue new BTTS picks
-            picks[mkt] = []
-            continue
         # backtest: team hit-rate floors and model-vs-market filters added nothing once the
         # probabilities were calibrated, so the rule is simply "final probability >= threshold"
         cand = [r for r in rows if r.data_ok and r.p_final[mkt] >= thr["p"]]
@@ -1668,7 +1695,7 @@ def render_parlays(ctx: dict, pr: dict, ids: list[str], psum: dict) -> list[str]
     L.append(f"_Prices: **{src}**{' — Sportybet was unreachable, average market prices used' if src != 'Sportybet' else ''}. "
              f"Window: {win}. {pr['n_matches']} priced matches, {len(pr['legs'])} candidate legs. "
              f"Legs are limited to 1X2, double chance and Over/Under 2.5 — markets with real prices. "
-             f"Each parlay maximises expected return (calibrated probability × price) inside the odds band._")
+             f"Each parlay maximises estimated return (model probability × price) inside the odds band._")
     L.append("")
     if not pr["parlays"]:
         L.append("_No parlay could be built inside the odds band for this window._")
@@ -1794,8 +1821,8 @@ def render_other_markets(rows: list[MatchRow]) -> list[str]:
     L = ["## 🧾 Other markets — 1X2, double chance, team goals, corners, cards", ""]
     if not rows:
         return L + ["_No fixtures._", ""]
-    L.append("_Probabilities use the football-data model (1X2, team goals) or the backtested count models "
-             "(corners / cards, main leagues only). Sportybet column = 1X2 prices where the match was found._")
+    L.append("_Probabilities use the football-data model and count models. The new xG/shot adjustments are experimental and unvalidated; "
+             "card counts do not match verified SportyBet booking rules and are not recommendations. Sportybet column = 1X2 prices._")
     L.append("")
     L.append(f"| Kick-off ({TZL}) | Match | Competition | Home / Draw / Away | 1X / X2 | Home to score / 2+ | "
              f"Away to score / 2+ | Corners exp. (O9.5 · O10.5) | Cards exp. (O3.5 · O4.5) | Sportybet 1X2 |")
@@ -1865,7 +1892,7 @@ def render_report(ctx: dict, rows: list[MatchRow], picks: dict, summary: dict, n
         thr = CONFIG["THRESHOLDS"][mkt]
         L.append(f"### {name} — {len(picks.get(mkt, []))} pick(s)")
         L.append(f"_Rule: final probability ≥ {pct(thr['p'])} (⭐⭐ ≥ {pct(thr['tiers'][0])}, ⭐⭐⭐ ≥ {pct(thr['tiers'][1])}). "
-                 f"Backtest 2025/26–26/27: {CONFIG['BACKTEST'][mkt]}._")
+                 f"Previous baseline backtest 2025/26–26/27 (not the current experimental signals): {CONFIG['BACKTEST'][mkt]}._")
         L.append("")
         L += render_pick_table(picks.get(mkt, []), mkt)
         L.append("")
@@ -1931,7 +1958,7 @@ def render_report(ctx: dict, rows: list[MatchRow], picks: dict, summary: dict, n
         "conceded over the last 40 matches (max 400 days, friendlies excluded when enough competitive matches exist), "
         f"normalised by competition averages, time-weighted (half-life {CONFIG['HALF_LIFE_DAYS']} days), venue-blended and "
         f"shrunk towards the league average (team strength K={CONFIG['SHRINK_K_STRENGTH']:g}, goal tempo K={CONFIG['SHRINK_K']:g} "
-        "weighted matches). Expected goals = league venue average × attack × opponent defence; probabilities for every market "
+        "weighted matches). Expected goals = league venue average × attack × opponent defence, with bounded experimental xG/xGA and shots adjustments when available; probabilities for goal markets "
         f"come from a Dixon-Coles adjusted Poisson score matrix (ρ={CONFIG['DC_RHO']:g}).",
         "* **Market layer (separate):** bookmaker prices are de-margined and shown next to the model as implied probability, "
         "difference in percentage points and EV, and as market-implied expected goals. They never feed the model and the "
@@ -1941,21 +1968,20 @@ def render_report(ctx: dict, rows: list[MatchRow], picks: dict, summary: dict, n
         "consistency, competition, home/away relevance, source) that drives the confidence wording, never the probability. "
         "Missing data is shown as N/A, never as zero. Historical frequency (what happened) is always labelled apart from "
         "model probability and market implied.",
-        "* **Backtest (52,000 matches, 2023-26, no look-ahead):** model probabilities are calibrated to within ±2 points on the "
-        "goals markets and the match result; the model beats league averages but not the market, and model-v-market "
-        "disagreement is not a reliable value signal. Full results: `backtest/RESULTS.md`.",
+        "* **Historical baseline backtest (52,000 matches, 2023-26):** applies to the earlier model, not the newly enabled xG/shot adjustments. "
+        "The current experimental version has not been validated in a time-ordered holdout; do not assume the old calibration applies. `backtest/RESULTS.md`.",
         "* **Extra markets:** 1X2 / double chance and team goals = the same model score matrix. "
         "Corners and cards = team for/against rates, league-normalised and shrunk (K=40 / K=20), negative binomial "
-        "totals; cards include a referee factor where the referee is published (UK leagues). Both are calibrated "
-        "within ~2 points on the standard lines (`backtest/MARKETS_RESULTS.md`). Half-time corners have no free data "
+        "totals; cards include a referee factor where the referee is published (UK leagues). The old count baselines were backtested "
+        "(`backtest/MARKETS_RESULTS.md`); the new off-target adjustment is unvalidated. Card-count probabilities are not SportyBet booking recommendations. Half-time corners have no free data "
         "source and are shown as Sportybet prices only, without a model.",
         "* **World coverage:** senior men's domestic leagues on Livescore.com are analysed with the same "
         "team-form model from Livescore's season results (goals markets only; corners and cards need the richer "
         "football-data feed of the 22 main European leagues). Sportybet's de-margined prices are the market view there.",
-        f"* **High-probability selections** = 1X2, goals and corners selections with model probability ≥70%, "
+        f"* **High-probability selections** = 1X2, goals, BTTS and corners selections with model probability ≥70%, "
         f"priced {safe_mod.MIN_ODDS:.2f} or better, with large model–market disagreements excluded. "
         "**Bets of the day** prioritise 1X2 (≥70%, supporting form), then Over 2.5 (≥55%, supporting form), "
-        "Over 1.5 (≥70%) and corners (≥65%), one market per match. Historical selections remain in the record.",
+        "Over 1.5 (≥70%), corners (≥65%) and BTTS (≥55%), one market per match. Historical selections remain in the record.",
         "* **Sportybet prices** never enter the probability model; they are the market view shown next to it.",
         f"* Data: football-data.co.uk, Livescore.com. All times are {TZL} ({CONFIG['TIMEZONE']}). ⚠️ marks teams with too little history "
         "— they are never shortlisted.",
@@ -2144,7 +2170,7 @@ def weekly_digest(tracker: pd.DataFrame, ledger: pd.DataFrame, now: datetime) ->
     """Monday digest: last 7 days + all time for the shortlists and parlays."""
     L = ["## 📅 Weekly digest", ""]
     cut = (now - timedelta(days=7)).strftime("%Y-%m-%d")
-    L.append("| Market | Last 7 days | Hit rate | All time | Hit rate | Backtest expectation |")
+    L.append("| Market | Last 7 days | Hit rate | All time | Hit rate | Previous baseline backtest (not current) |")
     L.append("|---|---|---|---|---|---|")
     for mkt, name in MARKETS.items():
         s = tracker[(tracker["market"] == mkt) & tracker["status"].isin(["hit", "miss"])] if not tracker.empty else tracker
@@ -2499,7 +2525,7 @@ def main() -> None:
     pool = pd.concat([f for f in (main_all, extra_all, world_all) if f is not None and not f.empty] or [empty_results()],
                      ignore_index=True)
     pool = pool.dropna(subset=["date", "hg", "ag"]).sort_values("date", ascending=False).reset_index(drop=True)
-    results = pool[pool["date"] >= since].reset_index(drop=True)
+    results = pool[(pool["date"] >= since) & (pool["date"] <= pd.Timestamp(now.date()))].reset_index(drop=True)
     log.info("History pool: %d matches for the model (%d incl. older seasons for head-to-head; %d from Livescore)",
              len(results), len(pool), 0 if world_all is None or world_all.empty else len(world_all))
 
@@ -2516,14 +2542,32 @@ def main() -> None:
     RAW_RATINGS.update(compute_raw_ratings(long, now))
     global ACACHE
     ACACHE = acache.AnalysisCache(DATA_DIR / "analysis_cache.bin")
+    SIGNAL_BASELINES.clear()
+    SIGNAL_BASELINES.update(model_signals.sot_baselines(results))
     MODELS["corners"] = markets.CountModel(results, "hc", "ac", now, markets.CORNERS)
+    # Only genuine separately reported off-target counts, never HS minus HST.
+    off = results.dropna(subset=["hsoff", "asoff"]) if {"hsoff", "asoff"} <= set(results) else results.iloc[:0]
+    off = off[off["hsoff"].between(0, 50) & off["asoff"].between(0, 50)] if not off.empty else off
+    if not off.empty:
+        sizes = off.groupby("div")["div"].transform("size")
+        off = off[sizes >= 30]
+    MODELS["shots_off"] = markets.CountModel(off, "hsoff", "asoff", now, markets.CORNERS) if not off.empty and off["hsoff"].mean() > 0 and off["asoff"].mean() > 0 else None
     cards_df = results.assign(hcards=results["hy"].fillna(0) + results["hr"].fillna(0),
                               acards=results["ay"].fillna(0) + results["ar"].fillna(0))
-    cards_df.loc[results["hy"].isna(), ["hcards", "acards"]] = np.nan
+    cards_df.loc[results[["hy", "hr", "ay", "ar"]].isna().any(axis=1), ["hcards", "acards"]] = np.nan
     MODELS["cards"] = markets.CountModel(cards_df, "hcards", "acards", now, markets.CARDS, use_ref=True)
 
     rows = [analyse(fx, long, results, div_avgs, now, pool) for _, fx in todays.iterrows()]
     app_rows = [r for r in rows if r.fx["kickoff"] <= app_end]   # what the app publication carries
+    def _signal_count(key):
+        return sum(any((r.model_signals.get(side) or {}).get(key, False) for side in ("home", "away")) for r in app_rows)
+    ctx["model_signals"] = {
+        "status": "experimental_unvalidated" if EXPERIMENTAL_MODEL_SIGNALS else "disabled",
+        "fixtures": len(app_rows), "xg_xga": _signal_count("xg_applied"),
+        "shots_on_target": _signal_count("sot_applied"),
+        "shots_off_target_corners": sum(bool((r.model_signals.get("corners") or {}).get("applied")) for r in app_rows),
+    }
+    log.info("Experimental model signal coverage: %s", ctx["model_signals"])
 
     # ---- Sportybet prices (their feed lists every event they have priced — currently ~33 days out,
     # so the 60-day coverage window gets priced for as far as the book has opened its lines)
@@ -2730,6 +2774,32 @@ def main() -> None:
         ncache.save()
     except Exception as exc:  # noqa: BLE001
         log.warning("Per-fixture news failed (non-fatal): %s", exc)
+    # ---- optional, source-authorized lineup pilot (context only, never a model input).
+    # A real capture time, not SCAN_NOW or a supplied timestamp, prevents backdating imports.
+    lineup_path = DATA_DIR / "lineup-pilot" / "archive.json"
+    try:
+        lineups = lineup_pilot.load(lineup_path)
+        incoming = os.getenv("LINEUP_PILOT_INPUT", "").strip()
+        if incoming and os.getenv("LINEUP_PILOT_RIGHTS_CONFIRMED", "").lower() == "true":
+            lineups, imported = lineup_pilot.capture(lineups, json.loads(incoming), datetime.now(ZoneInfo("UTC")))
+            if imported:
+                lineup_pilot.save(lineup_path, lineups)
+            log.info("Lineup pilot: %d new authorized snapshots", imported)
+        elif incoming:
+            log.warning("Lineup pilot input ignored: storage/use rights have not been confirmed")
+        ctx["lineup_archive"] = lineups
+        ctx["lineup_as_of"] = datetime.now(tz)
+        research_path = DATA_DIR / "lineup-pilot" / "evaluation.json"
+        eval_rows, n_frozen = lineup_pilot.freeze_evaluations(
+            lineup_pilot.load_evaluations(research_path), app_rows, lineups, ctx["lineup_as_of"], analysis_at=now)
+        if n_frozen:
+            lineup_pilot.save(research_path, eval_rows)
+        log.info("Lineup pilot: %d new pre-match baseline records", n_frozen)
+    except (OSError, ValueError, TypeError, KeyError) as exc:
+        log.warning("Lineup pilot unavailable; model and publication continue: %s", exc)
+        ctx["lineup_archive"] = []
+        ctx["lineup_as_of"] = datetime.now(tz)
+
     # ---- structured export for the Android app: written to a staging directory, checked, then promoted.
     # The publication carries only the APP_WINDOW_HOURS window (the Matches tab is "today"); the rest of
     # the coverage window lives in the day files (browseable per day) and feeds the model / tracker.

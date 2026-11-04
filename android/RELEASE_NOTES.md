@@ -1,3 +1,10 @@
+## Markets and experimental model signals
+- 1X2, BTTS and team corners can be shortlisted when the existing price and screening rules are met. Booking recommendations and ticket grading remain paused until card data matches the bookmaker’s booking rules.
+- Experimental xG/xGA and shots adjustments are enabled where sufficient inputs exist, but are not yet backtested; missing inputs are not guessed. No improved accuracy is claimed.
+
+## Line-up research pilot
+- The Line-ups tab can show regular starters and changes from a rights-cleared, operator-supplied confirmed XI in two pilot leagues. It is context only and does not alter predictions. No automatic lineup source is configured yet.
+
 ## Spreadsheet comparison
 - Compare the supplied workbook's V1 and experimental V4/V5 dashboard with Mr 2 Odds for each match when inputs are available. No recommendation model or spreadsheet file is changed.
 

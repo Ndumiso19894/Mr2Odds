@@ -146,9 +146,10 @@ class Days:
         for k, v in zip(self.STAT_KEYS, vals):
             if v is not None:
                 sc[k] = _int(v)
-        if sc.get("hy") is not None:
-            sc["hcards"] = _int(sc["hy"]) + (_int(sc.get("hr")) or 0)
-            sc["acards"] = _int(sc["ay"]) + (_int(sc.get("ar")) or 0)
+        for side in ("h", "a"):
+            yellow, red = _int(sc.get(side + "y")), _int(sc.get(side + "r"))
+            if yellow is not None and red is not None:
+                sc[side + "cards"] = yellow + red
 
     def _enrich(self, archive) -> None:
         """Half-time scores, match statistics (corners, cards, shots, possession, fouls) and goal / red-card incidents
