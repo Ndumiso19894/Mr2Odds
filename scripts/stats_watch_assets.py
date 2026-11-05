@@ -129,7 +129,7 @@ def render_picture(rows, now, path):
     for i,r in enumerate(rows):
         y = start+i*(height+gap)
         draw.rounded_rectangle((35,y,1045,y+height), radius=16, fill='#f3f7f6', outline='#b3c8c4', width=2)
-        top = f"{r['team']}  ·  #{r['rank']} {r['league']}"
+        top = f"{r['team']}  ·  #{r['rank']} {r['country']} · {r['league']}"
         draw.text((55,y+height*.20), top, font=fb.fit(draw,top,790,25,minimum=17,bold=True), fill='#244c49',anchor='lm')
         stat = f"{r['streak']} unbeaten"
         draw.text((1020,y+height*.20),stat,font=fb.font(22,True),fill='#007f72',anchor='rm')
@@ -138,7 +138,7 @@ def render_picture(rows, now, path):
         fb.draw_team(draw,r['home'],128,y+height*.61,'lm',max_size=25,line_spacing=25)
         fb.draw_team(draw,r['away'],951,y+height*.61,'rm',max_size=25,line_spacing=25)
         draw.text((540,y+height*.61),'v',font=fb.font(22,True),fill='#52716f',anchor='mm')
-        meta = r['competition'] + ' · ' + _kickoff(r)
+        meta = 'NEXT LISTED: ' + r['competition'] + ' · ' + _kickoff(r)
         draw.text((540,y+height*.87),meta,font=fb.fit(draw,meta,850,19,minimum=14),fill='#4b716b',anchor='mm')
     footer = 'Source: ESPN  ·  league records as of ' + now.astimezone(fb.SAST).strftime('%d %b %Y %H:%M SAST')
     draw.text((540,1860),footer,font=fb.fit(draw,footer,1000,22,minimum=16),fill='#52716b',anchor='mm')

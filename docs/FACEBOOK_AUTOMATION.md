@@ -57,8 +57,8 @@ otherwise the complete season results must reconcile with the table before the
 consecutive run is counted. Stale/inconsistent tables, live matches, missing
 crests, uncertain fixtures and paused categories are excluded. The next **listed**
 fixture is clearly labelled; ESPN coverage is not guaranteed to include every
-competition. Stats are timestamped and use South African time. Ten teams are
-required for the specifically requested 5 November 2026 13:00 edition; ordinary
+competition. Stats are timestamped and use South African time. The specifically requested 5 November 2026 13:00 edition is Stats Watch and
+requires ten teams even if betting picks are available; ordinary
 fallbacks can use fewer verified teams. Stats Watch is not a betting selection:
 its posting claim has an empty selection list and is excluded from result grading.
 

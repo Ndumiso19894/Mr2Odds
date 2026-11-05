@@ -111,3 +111,34 @@ def test_visuals_render_without_real_team_logos(tmp_path):
     assets.render_slide([row],1,1,NOW,tmp_path/'slide.png')
     assert Image.open(tmp_path/'picture.png').size == (1080,1920)
     assert Image.open(tmp_path/'slide.png').size == (1080,1920)
+
+
+def test_club_crest_and_earliest_scheduled_match_are_required():
+    c, local, future = feeds()
+    future['events'][0]['competitions'][0]['competitors'][0]['team']['logos'] = []
+    assert sw.next_fixture(c,local,future,NOW) is None
+    c, local, future = feeds()
+    earlier = event(NOW-timedelta(minutes=2),event_id='101')
+    future['events'].insert(0,earlier)
+    assert sw.next_fixture(c,local,future,NOW) is None
+    c, local, future = feeds()
+    later = event(NOW+timedelta(days=10),event_id='102')
+    later['timeValid'] = False
+    future['events'].append(later)
+    assert sw.next_fixture(c,local,future,NOW)['event_id'] == '100'
+
+
+def test_loss_run_proof_is_auditable_and_tampering_rejected():
+    c, local, future = feeds(1)
+    row = sw.next_fixture(c,local,future,NOW)
+    info = {'series':'stats-watch','date':'2026-11-05','as_of':NOW.isoformat(),
+            'generated':'2026-11-05 12:00','fixtures':[],'rows':[row]}
+    assets.validate_manifest(info,NOW)
+    bad = deepcopy(info)
+    bad['rows'][0]['results_proof'][0]['outcome'] = 'L'
+    with pytest.raises(ValueError):
+        assets.validate_manifest(bad,NOW)
+    bad = deepcopy(info)
+    bad['rows'][0]['results_proof'][0]['event_id'] = bad['rows'][0]['results_proof'][1]['event_id']
+    with pytest.raises(ValueError):
+        assets.validate_manifest(bad,NOW)
