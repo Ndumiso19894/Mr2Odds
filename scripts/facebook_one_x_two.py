@@ -96,6 +96,9 @@ def validate(output, now=None):
     picture_info = json.loads((output/'selections.json').read_text(encoding='utf-8'))
     if picture_info != info or not (output/'selections.png').is_file():
         raise ValueError('The 1X2 picture and reel do not have the same recorded selections')
+    if info.get('series') == 'stats-watch':
+        from scripts import stats_watch_assets
+        return stats_watch_assets.validate_manifest(info, now)
     fixtures = info.get('fixtures') or []
     if info.get('series') != '1x2' or not 5 <= len(fixtures) <= 6:
         raise ValueError('The 1X2 publication must contain five or six matches')
@@ -121,7 +124,16 @@ def main():
     args = parser.parse_args()
     if args.cmd == 'prepare':
         claims = history.load_claims(datetime.now(fb.SAST).date().isoformat())
-        ready = prepare(args.snapshot, args.output, prior_claims=claims)
+        day = datetime.now(fb.SAST).date().isoformat()
+        if day == '2026-11-05':
+            # The user specifically requested ten unbeaten top-two teams today.
+            from scripts import stats_watch_assets
+            ready = stats_watch_assets.prepare(args.output, minimum=10)
+        else:
+            ready = prepare(args.snapshot, args.output, prior_claims=claims)
+            if not ready:
+                from scripts import stats_watch_assets
+                ready = stats_watch_assets.prepare(args.output)
         if os.environ.get('GITHUB_OUTPUT'):
             with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
                 out.write(f'ready={str(ready).lower()}\n')

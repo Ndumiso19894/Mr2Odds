@@ -215,6 +215,14 @@ def validate_prepared(output, now=None):
     now = (now or datetime.now(fb.SAST)).astimezone(fb.SAST)
     video = output/'selection-reel.mp4'
     info = json.loads((output/'selection-reel.json').read_text(encoding='utf-8'))
+    if info.get('series') == 'stats-watch':
+        from scripts import stats_watch_assets
+        stats_watch_assets.validate_manifest(info, now)
+        if not video.is_file() or not 0 < video.stat().st_size <= MAX_VIDEO_BYTES:
+            raise ValueError('Reel is missing or exceeds the upload size limit')
+        if len(reel_caption(info, test=True)) > 1024:
+            raise ValueError('The reel caption is too long for Telegram')
+        return video, info
     if info.get('date') != now.date().isoformat():
         raise ValueError('Reel selections are not for today')
     generated = datetime.strptime(info['generated'], '%Y-%m-%d %H:%M').replace(tzinfo=fb.SAST)
@@ -304,6 +312,9 @@ def main():
     args=parser.parse_args()
     if args.cmd == 'prepare':
         ready=prepare(args.snapshot,args.output)
+        if not ready:
+            from scripts import stats_watch_assets
+            ready=stats_watch_assets.prepare(args.output)
         if os.environ.get('GITHUB_OUTPUT'):
             with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as out:
                 out.write(f'ready={str(ready).lower()}\n')

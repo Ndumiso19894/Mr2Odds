@@ -255,6 +255,9 @@ def render(selections, path, logo_path=ROOT / 'android/design/mr-2-odds-logo.png
 
 def caption_for(manifest, *, medium='photo'):
     """Only the teams actually printed on the card become hashtags."""
+    if manifest.get("series") == "stats-watch":
+        from scripts import stats_watch_assets
+        return stats_watch_assets.caption(manifest)
     try:
         date = datetime.strptime(manifest['date'], '%Y-%m-%d')
         fixtures = manifest['fixtures']
@@ -390,11 +393,15 @@ def publish(image_path, now=None, session=None):
     info = json.loads(image_path.with_suffix('.json').read_text(encoding='utf-8'))
     if info['date'] != now.astimezone(SAST).date().isoformat():
         raise ValueError('Prepared card is not for today')
-    generated = datetime.strptime(info['generated'], '%Y-%m-%d %H:%M').replace(tzinfo=SAST)
-    if not timedelta(minutes=-5) <= now - generated <= timedelta(minutes=90):
-        raise ValueError('Prepared card is based on a stale snapshot')
-    if not 5 <= len(info['fixtures']) <= 8 or any(datetime.strptime(x['kickoff'], '%Y-%m-%d %H:%M').replace(tzinfo=SAST) <= now + timedelta(minutes=5) for x in info['fixtures']):
-        raise ValueError('At least one fixture has started or is about to start; not posting')
+    if info.get('series') == 'stats-watch':
+        from scripts import stats_watch_assets
+        stats_watch_assets.validate_manifest(info, now)
+    else:
+        generated = datetime.strptime(info['generated'], '%Y-%m-%d %H:%M').replace(tzinfo=SAST)
+        if not timedelta(minutes=-5) <= now - generated <= timedelta(minutes=90):
+            raise ValueError('Prepared card is based on a stale snapshot')
+        if not 5 <= len(info['fixtures']) <= 8 or any(datetime.strptime(x['kickoff'], '%Y-%m-%d %H:%M').replace(tzinfo=SAST) <= now + timedelta(minutes=5) for x in info['fixtures']):
+            raise ValueError('At least one fixture has started or is about to start; not posting')
     session = session or requests.Session()
     token, _ = resolve_page_token(session, token, page_id)
     try:
@@ -423,6 +430,9 @@ def main():
     if args.cmd == 'prepare':
         prior = facebook_history.load_claims(datetime.now(SAST).date().isoformat()) if args.exclude_claimed else None
         ready = prepare(args.snapshot, args.output, prior_claims=prior)
+        if not ready:
+            from scripts import stats_watch_assets
+            ready = stats_watch_assets.prepare(args.output.parent, include_video=False, image_path=args.output)
         if os.environ.get('GITHUB_OUTPUT'):
             with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
                 out.write(f'ready={str(ready).lower()}\n')
