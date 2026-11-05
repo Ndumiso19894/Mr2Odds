@@ -134,7 +134,7 @@ def next_fixture(candidate, league_schedule, all_schedule, now):
         return None
     return {**candidate, 'kickoff_utc':when.isoformat(), 'competition':competition,
             'home':home, 'away':away, 'home_id':home_id, 'away_id':away_id,
-            'event_id':event_id, 'schedule_url':SCHEDULE.format('all', candidate['team_id'])}
+            'event_id':event_id, 'schedule_url':SCHEDULE.format('all', candidate['team_id']) + '?fixture=true'}
 
 
 def collect(now=None, limit=10, get=_json):
@@ -151,7 +151,7 @@ def collect(now=None, limit=10, get=_json):
     def fixture(candidate):
         try:
             local = get(SCHEDULE.format(candidate['league_code'], candidate['team_id']))
-            all_matches = get(SCHEDULE.format('all', candidate['team_id']))
+            all_matches = get(SCHEDULE.format('all', candidate['team_id']) + '?fixture=true')
             return next_fixture(candidate, local, all_matches, now)
         except (requests.RequestException, ValueError, TypeError, KeyError):
             return None
