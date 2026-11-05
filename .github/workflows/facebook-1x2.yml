@@ -27,6 +27,8 @@ jobs:
           python-version: '3.12'
       - run: |
           pip install --only-binary=:all: -r requirements.txt 'Pillow>=10,<12' 'imageio-ffmpeg>=0.6,<1'
+      - name: Research verified stats-watch candidates (private)
+        run: python scripts/stats_watch.py --output "$RUNNER_TEMP/stats-watch.json"
       - uses: actions/checkout@v4
         with:
           ref: data
