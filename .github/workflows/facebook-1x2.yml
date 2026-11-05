@@ -28,7 +28,17 @@ jobs:
       - run: |
           pip install --only-binary=:all: -r requirements.txt 'Pillow>=10,<12' 'imageio-ffmpeg>=0.6,<1'
       - name: Research verified stats-watch candidates (private)
-        run: python scripts/stats_watch.py --output "$RUNNER_TEMP/stats-watch.json"
+        run: |
+          python - <<'PYTEST'
+          import requests
+          url = 'https://site.api.espn.com/apis/v2/sports/soccer/ger.1/standings'
+          try:
+              response = requests.get(url, timeout=15)
+              print(f"::notice::ESPN HTTP {response.status_code}; response type {response.headers.get('content-type', '')}")
+          except Exception as exc:
+              print(f"::notice::ESPN request error: {type(exc).__name__} {str(exc)[:200]}")
+          PYTEST
+          python scripts/stats_watch.py --output "$RUNNER_TEMP/stats-watch.json"
       - uses: actions/checkout@v4
         with:
           ref: data
