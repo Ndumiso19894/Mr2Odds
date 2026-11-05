@@ -12,6 +12,7 @@ import concurrent.futures
 import json
 import re
 import sys
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -36,12 +37,19 @@ SCHEDULE = 'https://site.api.espn.com/apis/site/v2/sports/soccer/{}/teams/{}/sch
 
 
 def _json(url):
-    response = requests.get(url, timeout=12, headers={'User-Agent':'Mr2OddsStatsWatch/1.0'})
-    response.raise_for_status()
-    data = response.json()
-    if not isinstance(data, dict) or data.get('code') in (400, 404, 500):
-        raise ValueError('Invalid sports feed')
-    return data
+    for attempt in range(3):
+        try:
+            response = requests.get(url, timeout=15, headers={'User-Agent':'Mr2OddsStatsWatch/1.0'})
+            response.raise_for_status()
+            data = response.json()
+            if not isinstance(data, dict) or data.get('code') in (400, 404, 500):
+                raise ValueError('Invalid sports feed')
+            return data
+        except requests.RequestException:
+            if attempt == 2:
+                raise
+            time.sleep(1 + attempt)
+
 
 
 def _utc(value):
@@ -62,7 +70,8 @@ def table_candidates(league_code, data, now):
         return []
     group = groups[0]
     season = group.get('season')
-    if not isinstance(season, int) or season not in (now.year, now.year - 1):
+    if (not isinstance(season, int) or season not in (now.year, now.year - 1)
+            or (season == now.year - 1 and now.month >= 8)):
         return []
     league_name = str(data.get('name') or '').strip()
     if not league_name or not competition_policy.allowed(country=country, league=league_name):
@@ -92,6 +101,16 @@ def next_fixture(candidate, league_schedule, all_schedule, now):
     if str((league_schedule.get('team') or {}).get('id')) != candidate['team_id']:
         return None
     if (league_schedule.get('team') or {}).get('recordSummary') != candidate['record']:
+        return None
+    try:
+        # Reject a season that has stopped updating (e.g. an old final table).
+        recent = [_utc(e['date']) for e in league_schedule.get('events') or []
+                  if (e.get('league') or {}).get('slug') == candidate['league_code']
+                  and (e.get('season') or {}).get('year') == candidate['season']
+                  and (e.get('competitions') or [{}])[0].get('status',{}).get('type',{}).get('completed')]
+        if not recent or not timedelta(0) <= now - max(recent) <= timedelta(days=21):
+            return None
+    except (ValueError, TypeError, KeyError, IndexError):
         return None
     # A zero-loss season record proves the run even without the full history.
     # Otherwise require every season result to match the W/D/L table and then
@@ -145,12 +164,16 @@ def next_fixture(candidate, league_schedule, all_schedule, now):
         try:
             when = _utc(event['date'])
             comps = event['competitions']
-            if len(comps) != 1 or not event.get('timeValid'):
-                continue
+            if len(comps) != 1:
+                return None
             comp = comps[0]
             status = (comp.get('status') or {}).get('type') or {}
+            if status.get('state') == 'in':
+                return None
             if status.get('state') != 'pre' or status.get('name') not in ('STATUS_SCHEDULED',):
                 continue
+            if not event.get('timeValid'):
+                return None
             teams = comp['competitors']
             if len(teams) != 2 or when <= now:
                 continue
@@ -185,7 +208,7 @@ def collect(now=None, limit=10, get=_json):
             return table_candidates(code, get(STANDINGS.format(code)), now)
         except (requests.RequestException, ValueError, TypeError, KeyError):
             return []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         for entries in pool.map(table, LEAGUES):
             candidates.extend(entries)
     def fixture(candidate):
@@ -195,7 +218,7 @@ def collect(now=None, limit=10, get=_json):
             return next_fixture(candidate, local, all_matches, now)
         except (requests.RequestException, ValueError, TypeError, KeyError):
             return None
-    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         values = [x for x in pool.map(fixture, candidates) if x]
     values.sort(key=lambda x: (-x['streak'], x['league_code'], x['team']))
     return values[:limit]

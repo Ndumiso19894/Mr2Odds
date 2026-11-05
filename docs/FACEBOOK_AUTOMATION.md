@@ -45,3 +45,24 @@ These changes are a test, not a guarantee of follower growth. Over the next two 
 At 13:00 SAST the separate `facebook-1x2.yml` workflow uses the latest published football snapshot to prepare one matching picture and reel. It considers exact home-win (1), draw (X) and away-win (2) selection rows whose football-data **model estimate** is between 60% and 95% inclusive. Every selection still needs its own current SportyBet price of at least 1.16 and no more than 1.90, passes the existing quality, probability/price, outlier, competition and fixture checks, has a future kickoff and two real crests, and must be distinct from earlier claimed selection pictures that day. The percentage is an estimate, not a guarantee. If fewer than five qualify, neither picture nor video is posted; the threshold, odds and number of picks are never invented. The reel has the same 5–6 matches and actual music, 10-second slides and rotating logo, and goes to Facebook and the existing Telegram chat. The picture goes to Facebook. Scheduled times are best effort.
 
 The 13:00 picture uses the regular `facebook-post-YYYY-MM-DD-13` claim and is included in next morning's confirmed two-image results and in the exclusions for later pictures. The matching video/source and each delivery use separate `daily-1x2-reel-{source,facebook,telegram}-YYYY-MM-DD` claims. The workflow shares the regular Facebook picture concurrency group; it saves the exact source and claims each destination before writing. A claimed or ambiguous delivery is never automatically resent; check the Page/chat before recovery. If the saved source is missing after a picture claim, it refuses to generate a replacement. Captions use varied natural phrasing, not claims of human authorship or guaranteed results.
+
+### Stats Watch fallback
+
+When a scheduled selections card cannot find five qualifying picks with real club
+crests, the workflow attempts a factual Stats Watch instead. It checks ESPN's
+current, unambiguous senior men's European domestic-league tables and team
+schedules. Each featured team must be first or second and at least six domestic
+league games unbeaten. A zero-loss season table proves the season-to-date run;
+otherwise the complete season results must reconcile with the table before the
+consecutive run is counted. Stale/inconsistent tables, live matches, missing
+crests, uncertain fixtures and paused categories are excluded. The next **listed**
+fixture is clearly labelled; ESPN coverage is not guaranteed to include every
+competition. Stats are timestamped and use South African time. Ten teams are
+required for the specifically requested 5 November 2026 13:00 edition; ordinary
+fallbacks can use fewer verified teams. Stats Watch is not a betting selection:
+its posting claim has an empty selection list and is excluded from result grading.
+
+The service cannot guarantee publication when source data, crests, music or a
+platform are unavailable. In those cases it fails and asks for manual review; it
+does not invent statistics or retry an ambiguous publication. This applies to
+selection-based posts/reels, not the previous-day results recap.
