@@ -89,10 +89,12 @@ def render_slide(item, index, count, day, out):
     draw = ImageDraw.Draw(image)
     # The animated logo is overlaid during encoding; this ring anchors its position.
     draw.ellipse((95, 135, 285, 325), fill='#eff6f4', outline='#c2ddd7', width=3)
-    draw.text((310, 180), 'BET ADVISOR', font=fb.font(45, True), fill='#102c3f')
-    draw.text((312, 250), 'TODAY’S SELECTIONS', font=fb.font(26, True), fill='#35736a')
-    draw.rounded_rectangle((874, 175, 968, 235), radius=18, fill='#ffffff', outline='#8faca8', width=3)
-    draw.text((921, 205), '18+', font=fb.font(27, True), fill='#274c49', anchor='mm')
+    # The first match doubles as the opening hook: no extra slide or lost reading time.
+    heading = 'TODAY’S FOOTBALL' if index == 1 else 'BET ADVISOR'
+    subtitle = 'PICKS · FIXTURES · ODDS' if index == 1 else 'TODAY’S SELECTIONS'
+    draw.text((310, 180), heading, font=fb.fit(draw, heading, 545, 45, minimum=30, bold=True), fill='#102c3f')
+    draw.text((312, 250), subtitle, font=fb.fit(draw, subtitle, 540, 26, minimum=21, bold=True), fill='#35736a')
+    fb.draw_age_badge(draw, (874, 175, 968, 235))
 
     # Gentle shadow and a high-contrast, uncluttered white match card.
     draw.rounded_rectangle((99, 378, 991, 1568), radius=35, fill='#edf3f1')
@@ -118,7 +120,10 @@ def render_slide(item, index, count, day, out):
     draw.text((540, 1305), f"{item['odds']:.2f}", font=fb.font(48, True), fill='white', anchor='mm')
     draw.text((540, 1468), f'{index:02d}  /  {count:02d}', font=fb.font(25, True), fill='#52716b', anchor='mm')
     date = datetime.strptime(day, '%Y-%m-%d')
-    draw.text((540, 1645), f'{date.day} {date.strftime("%B %Y")}', font=fb.font(26, True), fill='#52716b', anchor='mm')
+    draw.text((540, 1625), f'{date.day} {date.strftime("%B %Y")}', font=fb.font(26, True), fill='#52716b', anchor='mm')
+    follow = 'FOLLOW MR 2 ODDS FOR PICKS & RESULTS'
+    draw.text((540, 1690), follow, font=fb.fit(draw, follow, 840, 25, minimum=20, bold=True),
+              fill='#27675e', anchor='mm')
     image.save(out, 'PNG')
 
 

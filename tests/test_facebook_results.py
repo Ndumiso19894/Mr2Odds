@@ -101,7 +101,9 @@ def test_publish_two_unpublished_photos_in_one_feed_post(tmp_path, monkeypatch):
     data = calls[2].kwargs['data']
     assert json.loads(data['attached_media[0]']) == {'media_fbid':'101'}
     assert json.loads(data['attached_media[1]']) == {'media_fbid':'102'}
-    assert data['message'] == "Yesterday's results - 4 November 2026\n\n#HomeFC #AwayUnited"
+    assert data['message'] == ("Yesterday's results - 4 November 2026\n\n"
+        "Which match did you follow?\nFollow Mr 2 Odds for daily picks and results.\n"
+        "18+ | Bet responsibly.\n\n#HomeFC #AwayUnited")
     with pytest.raises(ValueError, match='yesterday'):
         results.publish(tmp_path, NOW.replace(day=6), session)
     assert session.post.call_count == 3

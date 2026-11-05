@@ -21,7 +21,7 @@ def test_live_test_label_keeps_caption_and_only_team_hashtags(tmp_path, monkeypa
     info = make_reel(tmp_path)
     standard = reel.reel_caption(info)
     test = reel.reel_caption(info, test=True)
-    assert test.startswith("Today's safe bets - 4 November 2026\n\nTest reel\n\n")
+    assert test.startswith("Today's football picks - 4 November 2026\n\nTest reel\n\n")
     assert test.splitlines()[-1] == standard.splitlines()[-1]
     assert '#Mr2Odds' not in test
     monkeypatch.setenv('REEL_TEST', 'true')
