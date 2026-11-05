@@ -115,6 +115,7 @@ def next_fixture(candidate, league_schedule, all_schedule, now):
     # A zero-loss season record proves the run even without the full history.
     # Otherwise require every season result to match the W/D/L table and then
     # count backwards, so a partial results feed cannot conceal a recent loss.
+    proof = []
     if candidate['losses'] == 0:
         streak = candidate['played']
     else:
@@ -146,6 +147,8 @@ def next_fixture(candidate, league_schedule, all_schedule, now):
             or sum(x[2] == 'D' for x in results) != candidate['draws']
             or sum(x[2] == 'L' for x in results) != candidate['losses']):
             return None
+        proof = [{'date':dt.isoformat(), 'event_id':eid, 'outcome':outcome}
+                 for dt, eid, outcome in sorted(results, reverse=True)]
         streak = 0
         for _, _, outcome in sorted(results, reverse=True):
             if outcome == 'L':
@@ -174,26 +177,33 @@ def next_fixture(candidate, league_schedule, all_schedule, now):
                 continue
             teams = comp['competitors']
             if len(teams) != 2 or when <= now:
-                continue
+                return None
             home = next(t for t in teams if t.get('homeAway') == 'home')
             away = next(t for t in teams if t.get('homeAway') == 'away')
             home_id, away_id = str(home.get('id') or ''), str(away.get('id') or '')
             if not re.fullmatch(r'\d+', home_id) or not re.fullmatch(r'\d+', away_id) or candidate['team_id'] not in (home_id, away_id):
                 continue
             hname, aname = home['team']['displayName'], away['team']['displayName']
+            # A numeric ID alone is not proof that ESPN has an actual club crest.
+            logo_valid = True
+            for competitor, tid in ((home, home_id), (away, away_id)):
+                logos = (competitor.get('team') or {}).get('logos') or []
+                expected = f'https://a.espncdn.com/i/teamlogos/soccer/500/{tid}.png'
+                if not any(isinstance(logo,dict) and logo.get('href') == expected for logo in logos):
+                    logo_valid = False
             name = str((event.get('season') or {}).get('displayName') or '').strip()
             if not hname or not aname or not name:
                 continue
-            upcoming.append((when, name, hname, aname, home_id, away_id, str(event.get('id') or ''), bool(event.get('timeValid'))))
+            upcoming.append((when, name, hname, aname, home_id, away_id, str(event.get('id') or ''), bool(event.get('timeValid')), logo_valid))
         except (KeyError, TypeError, ValueError, StopIteration):
             continue
     if not upcoming:
         return None
-    when, competition, home, away, home_id, away_id, event_id, timed = min(upcoming)
+    when, competition, home, away, home_id, away_id, event_id, timed, logo_valid = min(upcoming)
     # Do not silently promote a later allowed fixture when the actual next match is paused.
-    if not timed or when <= now + timedelta(minutes=15) or not competition_policy.allowed(country=candidate['country'], league=competition, home=home, away=away):
+    if not timed or not logo_valid or when <= now + timedelta(minutes=15) or not competition_policy.allowed(country=candidate['country'], league=competition, home=home, away=away):
         return None
-    return {**candidate, 'streak':streak, 'kickoff_utc':when.isoformat(), 'competition':competition,
+    return {**candidate, 'streak':streak, 'results_proof':proof, 'kickoff_utc':when.isoformat(), 'competition':competition,
             'home':home, 'away':away, 'home_id':home_id, 'away_id':away_id,
             'event_id':event_id, 'schedule_url':SCHEDULE.format('all', candidate['team_id']) + '?fixture=true'}
 

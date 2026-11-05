@@ -63,6 +63,36 @@ def validate_manifest(info, now=None):
             or stats_watch._utc(r.get('kickoff_utc')) <= now + timedelta(minutes=5)
             or not stats_watch.competition_policy.allowed(country=r['country'], league=r['competition'], home=r['home'], away=r['away'])):
             raise ValueError('Invalid or expired stats-watch evidence')
+        if r.get('season') not in (generated.year, generated.year-1) or (r['season'] == generated.year-1 and generated.month >= 8):
+            raise ValueError('Stats-watch season is stale')
+        if min(r['wins'], r['draws']) < 0:
+            raise ValueError('Negative record counts')
+        proof = r.get('results_proof')
+        if r['losses'] == 0:
+            if r['streak'] != r['played'] or proof != []:
+                raise ValueError('Invalid unbeaten-season evidence')
+        else:
+            if not isinstance(proof,list) or len(proof) != r['played']:
+                raise ValueError('Missing result evidence')
+            ids, last_date, streak = set(), None, 0
+            counting = True
+            counts = {'W':0,'D':0,'L':0}
+            for match in proof:
+                if not isinstance(match,dict) or match.get('outcome') not in counts or not str(match.get('event_id') or '').isdigit():
+                    raise ValueError('Invalid result evidence')
+                when = stats_watch._utc(match.get('date'))
+                if when > generated or (last_date is not None and when > last_date) or match['event_id'] in ids:
+                    raise ValueError('Unordered or duplicate result evidence')
+                last_date = when
+                ids.add(match['event_id'])
+                outcome = match['outcome']
+                counts[outcome] += 1
+                if outcome == 'L':
+                    counting = False
+                elif counting:
+                    streak += 1
+            if (counts != {'W':r['wins'],'D':r['draws'],'L':r['losses']} or streak != r['streak']):
+                raise ValueError('Result evidence does not match the league record')
     if len(caption(info)) > 1024:
         raise ValueError('Stats-watch caption exceeds Telegram limits')
     return info

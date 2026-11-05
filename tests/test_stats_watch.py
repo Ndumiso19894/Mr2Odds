@@ -23,6 +23,8 @@ def table(losses=0, season=2026):
 def event(dt, home='132', away='2950', name='German Bundesliga', slug='ger.1', status='STATUS_SCHEDULED', home_score=0, away_score=0, event_id='100'):
     teams = [ {'id':home, 'homeAway':'home','team':{'displayName':'Bayern Munich' if home=='132' else 'Mainz'}, 'score':{'value':home_score}},
               {'id':away, 'homeAway':'away','team':{'displayName':'Bayern Munich' if away=='132' else 'Mainz'}, 'score':{'value':away_score}} ]
+    for team in teams:
+        team['team']['logos'] = [{'href': f"https://a.espncdn.com/i/teamlogos/soccer/500/{team['id']}.png"}]
     completed = status == 'STATUS_FULL_TIME'
     return {'id':event_id, 'date':dt.isoformat(), 'timeValid':True,
             'season':{'year':2026, 'displayName':name}, 'league':{'slug':slug},

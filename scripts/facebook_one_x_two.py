@@ -124,14 +124,16 @@ def main():
     args = parser.parse_args()
     if args.cmd == 'prepare':
         claims = history.load_claims(datetime.now(fb.SAST).date().isoformat())
-        ready = prepare(args.snapshot, args.output, prior_claims=claims)
-        if not ready:
+        day = datetime.now(fb.SAST).date().isoformat()
+        if day == '2026-11-05':
+            # The user specifically requested ten unbeaten top-two teams today.
             from scripts import stats_watch_assets
-            # Today’s requested edition specifically needs ten teams; ordinary
-            # fallback editions can report fewer verified teams rather than invent.
-            day = datetime.now(fb.SAST).date().isoformat()
-            minimum = 10 if day == '2026-11-05' else 1
-            ready = stats_watch_assets.prepare(args.output, minimum=minimum)
+            ready = stats_watch_assets.prepare(args.output, minimum=10)
+        else:
+            ready = prepare(args.snapshot, args.output, prior_claims=claims)
+            if not ready:
+                from scripts import stats_watch_assets
+                ready = stats_watch_assets.prepare(args.output)
         if os.environ.get('GITHUB_OUTPUT'):
             with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
                 out.write(f'ready={str(ready).lower()}\n')
