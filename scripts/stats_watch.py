@@ -172,8 +172,6 @@ def next_fixture(candidate, league_schedule, all_schedule, now):
                 return None
             if status.get('state') != 'pre' or status.get('name') not in ('STATUS_SCHEDULED',):
                 continue
-            if not event.get('timeValid'):
-                return None
             teams = comp['competitors']
             if len(teams) != 2 or when <= now:
                 continue
@@ -186,14 +184,14 @@ def next_fixture(candidate, league_schedule, all_schedule, now):
             name = str((event.get('season') or {}).get('displayName') or '').strip()
             if not hname or not aname or not name:
                 continue
-            upcoming.append((when, name, hname, aname, home_id, away_id, str(event.get('id') or '')))
+            upcoming.append((when, name, hname, aname, home_id, away_id, str(event.get('id') or ''), bool(event.get('timeValid'))))
         except (KeyError, TypeError, ValueError, StopIteration):
             continue
     if not upcoming:
         return None
-    when, competition, home, away, home_id, away_id, event_id = min(upcoming)
+    when, competition, home, away, home_id, away_id, event_id, timed = min(upcoming)
     # Do not silently promote a later allowed fixture when the actual next match is paused.
-    if when <= now + timedelta(minutes=15) or not competition_policy.allowed(country=candidate['country'], league=competition, home=home, away=away):
+    if not timed or when <= now + timedelta(minutes=15) or not competition_policy.allowed(country=candidate['country'], league=competition, home=home, away=away):
         return None
     return {**candidate, 'streak':streak, 'kickoff_utc':when.isoformat(), 'competition':competition,
             'home':home, 'away':away, 'home_id':home_id, 'away_id':away_id,
