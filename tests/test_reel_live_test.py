@@ -45,7 +45,7 @@ def test_live_test_label_keeps_caption_and_only_team_hashtags(tmp_path, monkeypa
 def test_default_caption_has_no_test_label(tmp_path, monkeypatch):
     info = make_reel(tmp_path)
     monkeypatch.delenv('REEL_TEST', raising=False)
-    assert reel.reel_caption(info) == fb.caption_for(info)
+    assert reel.reel_caption(info) == fb.caption_for(info, medium='reel')
     assert 'Test reel' not in reel.reel_caption(info)
 
 

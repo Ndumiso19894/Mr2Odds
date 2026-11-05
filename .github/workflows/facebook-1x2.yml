@@ -1,0 +1,209 @@
+name: Daily 1X2 picks
+
+on:
+  schedule:
+    - cron: '0 11 * * *' # 13:00 SAST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+# Serialize with the regular picture workflow, which also reads these claims.
+concurrency:
+  group: facebook-daily-selections
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    # Branch dispatch only reads current data and claims; it never publishes.
+    if: github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          pip install --only-binary=:all: -r requirements.txt 'Pillow>=10,<12' 'imageio-ffmpeg>=0.6,<1'
+      - uses: actions/checkout@v4
+        with:
+          ref: data
+          path: live-data
+      - name: Check 1X2 picks and render privately if enough qualify
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
+        run: python scripts/facebook_one_x_two.py prepare --snapshot live-data/data/app/latest.json --output "$RUNNER_TEMP/one-x-two-dry-run"
+  post:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check 13:00 window and existing claims
+        id: claims
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          day=$(TZ=Africa/Johannesburg date +%F)
+          hour=$(TZ=Africa/Johannesburg date +%H)
+          echo "date=$day" >> "$GITHUB_OUTPUT"
+          if [ "$hour" != '13' ]; then
+            echo 'Outside the 13:00 SAST window.'
+            echo 'active=false' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo 'active=true' >> "$GITHUB_OUTPUT"
+          for service in source photo facebook telegram; do
+            case "$service" in
+              photo) name="facebook-post-$day-13" ;;
+              *) name="daily-1x2-reel-$service-$day" ;;
+            esac
+            gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=$name" > "$RUNNER_TEMP/1x2-$service.json"
+            SERVICE="$service" NAME="$name" python3 - <<'PY'
+          import json, os
+          service, name = os.environ['SERVICE'], os.environ['NAME']
+          with open(os.path.join(os.environ['RUNNER_TEMP'], '1x2-' + service + '.json')) as f:
+              data = json.load(f)
+          artifacts = [a for a in data.get('artifacts', []) if a.get('name') == name and not a.get('expired')]
+          if len(artifacts) > 1:
+              raise SystemExit('Duplicate 1X2 records require manual review.')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write(f'{service}_exists={str(bool(artifacts)).lower()}\n')
+              if service == 'source' and artifacts:
+                  out.write(f"source_run={artifacts[0]['workflow_run']['id']}\n")
+          PY
+          done
+      - name: Refuse to recreate a claimed post without its source
+        if: steps.claims.outputs.active == 'true' && steps.claims.outputs.photo_exists == 'true' && steps.claims.outputs.source_exists != 'true'
+        run: |
+          echo 'A photo claim exists without the matching source; check the Page and recover manually.' >&2
+          exit 1
+      - uses: actions/setup-python@v5
+        if: steps.claims.outputs.active == 'true' && (steps.claims.outputs.photo_exists != 'true' || steps.claims.outputs.facebook_exists != 'true' || steps.claims.outputs.telegram_exists != 'true')
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        if: steps.claims.outputs.active == 'true' && (steps.claims.outputs.photo_exists != 'true' || steps.claims.outputs.facebook_exists != 'true' || steps.claims.outputs.telegram_exists != 'true')
+        run: |
+          pip install --only-binary=:all: --retries 5 --timeout 60 -r requirements.txt 'Pillow>=10,<12' 'imageio-ffmpeg>=0.6,<1'
+      - name: Download the same prepared picture and video
+        if: steps.claims.outputs.active == 'true' && steps.claims.outputs.source_exists == 'true' && (steps.claims.outputs.photo_exists != 'true' || steps.claims.outputs.facebook_exists != 'true' || steps.claims.outputs.telegram_exists != 'true')
+        uses: actions/download-artifact@v4
+        with:
+          name: daily-1x2-reel-source-${{ steps.claims.outputs.date }}
+          path: one-x-two-output
+          run-id: ${{ steps.claims.outputs.source_run }}
+          github-token: ${{ github.token }}
+      - name: Check out latest published football data
+        if: steps.claims.outputs.active == 'true' && steps.claims.outputs.source_exists != 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: data
+          path: live-data
+      - name: Prepare matching 1X2 picture and reel
+        id: prepare
+        if: steps.claims.outputs.active == 'true' && steps.claims.outputs.source_exists != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
+        run: python scripts/facebook_one_x_two.py prepare --snapshot live-data/data/app/latest.json --output one-x-two-output
+      - name: Save the prepared picture and video
+        if: steps.prepare.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-1x2-reel-source-${{ steps.claims.outputs.date }}
+          path: one-x-two-output/
+          retention-days: 3
+          if-no-files-found: error
+      - name: Revalidate the 1X2 assets
+        id: valid
+        if: steps.claims.outputs.active == 'true' && (steps.claims.outputs.photo_exists != 'true' || steps.claims.outputs.facebook_exists != 'true' || steps.claims.outputs.telegram_exists != 'true') && (steps.claims.outputs.source_exists == 'true' || steps.prepare.outputs.ready == 'true')
+        run: python scripts/facebook_one_x_two.py validate --output one-x-two-output
+      - name: Verify Facebook Page access
+        id: facebook-check
+        continue-on-error: true
+        if: steps.valid.outcome == 'success' && (steps.claims.outputs.photo_exists != 'true' || steps.claims.outputs.facebook_exists != 'true')
+        env:
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+        run: python scripts/facebook_post.py diagnose
+      - name: Verify Telegram configuration
+        id: telegram-check
+        continue-on-error: true
+        if: steps.valid.outcome == 'success' && steps.claims.outputs.telegram_exists != 'true'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo 'Configure the Telegram bot and chat Actions secrets.' >&2
+            exit 1
+          fi
+      - name: Prepare video claim markers
+        if: steps.valid.outcome == 'success'
+        run: |
+          mkdir -p facebook-claim telegram-claim
+          sha256sum one-x-two-output/selection-reel.mp4 | cut -d' ' -f1 > facebook-claim/sha256.txt
+          cp facebook-claim/sha256.txt telegram-claim/sha256.txt
+      - name: Record the 13:00 picture claim
+        id: photo-claim
+        if: steps.valid.outcome == 'success' && steps.facebook-check.outcome == 'success' && steps.claims.outputs.photo_exists != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: facebook-post-${{ steps.claims.outputs.date }}-13
+          path: |
+            one-x-two-output/selections.png
+            one-x-two-output/selections.json
+          retention-days: 35
+          if-no-files-found: error
+      # This exact step name and its unmasked conclusion are used by the results workflow.
+      - name: Publish photo and caption to Facebook
+        id: photo
+        if: steps.photo-claim.outcome == 'success'
+        env:
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+        run: python scripts/facebook_post.py publish --image one-x-two-output/selections.png
+      - name: Claim Facebook reel delivery
+        id: facebook-claim
+        if: always() && steps.valid.outcome == 'success' && steps.facebook-check.outcome == 'success' && steps.claims.outputs.facebook_exists != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-1x2-reel-facebook-${{ steps.claims.outputs.date }}
+          path: facebook-claim/
+          retention-days: 35
+          if-no-files-found: error
+      - name: Publish Facebook reel
+        id: facebook
+        continue-on-error: true
+        if: always() && steps.facebook-claim.outcome == 'success'
+        env:
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+        run: python scripts/selection_reel.py facebook --output one-x-two-output
+      - name: Claim Telegram reel delivery
+        id: telegram-claim
+        if: always() && steps.valid.outcome == 'success' && steps.telegram-check.outcome == 'success' && steps.claims.outputs.telegram_exists != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-1x2-reel-telegram-${{ steps.claims.outputs.date }}
+          path: telegram-claim/
+          retention-days: 35
+          if-no-files-found: error
+      - name: Send the same reel to Telegram
+        id: telegram
+        continue-on-error: true
+        if: always() && steps.telegram-claim.outcome == 'success'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scripts/selection_reel.py telegram --output one-x-two-output
+      - name: Report failed or unconfirmed delivery
+        if: always() && (steps.facebook-check.outcome == 'failure' || steps.telegram-check.outcome == 'failure' || steps.photo-claim.outcome == 'failure' || steps.photo.outcome == 'failure' || steps.facebook-claim.outcome == 'failure' || steps.telegram-claim.outcome == 'failure' || steps.facebook.outcome == 'failure' || steps.telegram.outcome == 'failure')
+        run: |
+          echo 'At least one delivery failed or is unconfirmed. Check the relevant Page/chat before recovery.' >&2
+          exit 1

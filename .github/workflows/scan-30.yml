@@ -218,6 +218,7 @@ jobs:
               gh workflow run facebook-reel.yml --repo "$GITHUB_REPOSITORY" --ref main
               ;;
             08|12|17) gh workflow run facebook-daily.yml --repo "$GITHUB_REPOSITORY" --ref main ;;
+            13) gh workflow run facebook-1x2.yml --repo "$GITHUB_REPOSITORY" --ref main ;;
             *) echo "Outside a Facebook posting window." ;;
           esac
 

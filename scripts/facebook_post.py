@@ -45,8 +45,12 @@ def number(value):
         return None
 
 
-def candidates(data, now):
-    """Revalidate the exact selection and current quote, matching the app's strict shortlist."""
+def candidates(data, now, picks=None):
+    """Revalidate selections and current quotes against the app's strict policy.
+
+    The default source is the primary shortlist. A caller may provide market-specific
+    fixture/selection references, but every reference passes the same checks below.
+    """
     now = now.astimezone(SAST)
     try:
         generated = datetime.strptime(data['meta']['generated'], '%Y-%m-%d %H:%M').replace(tzinfo=SAST)
@@ -56,7 +60,9 @@ def candidates(data, now):
         raise ValueError('Snapshot is stale or dated in the future')
     fixtures = {f.get('id'): f for f in data.get('fixtures', []) if isinstance(f, dict)}
     result, seen = [], set()
-    for pick in (data.get('shortlist') or {}).get('primary', []):
+    if picks is None:
+        picks = (data.get('shortlist') or {}).get('primary', [])
+    for pick in picks:
         f = fixtures.get(pick.get('fixture'))
         if not f or f.get('id') in seen or not competition_policy.allows_record(f) or not f.get('data_ok') or f.get('q') == 'Low':
             continue
@@ -90,7 +96,7 @@ def candidates(data, now):
             continue
         seen.add(f['id'])
         result.append({'fixture': f['id'], 'home': home, 'away': away, 'selection': safe.label(code, home, away), 'sel': code,
-                       'country': country, 'league': league, 'odds': odds, 'kickoff': f['kickoff'],
+                       'country': country, 'league': league, 'odds': odds, 'probability': p, 'kickoff': f['kickoff'],
                        'livescore_id': f.get('livescore_id'), 'badges': f.get('badges') or {}})
     return result
 
@@ -209,8 +215,9 @@ def render(selections, path, logo_path=ROOT / 'android/design/mr-2-odds-logo.png
     logo = Image.open(logo_path).convert('RGBA')
     logo.thumbnail((210, 210), Image.Resampling.LANCZOS)
     image.paste(logo, (35, 12), logo)
-    draw.text((260, 72), 'TODAY’S FOOTBALL PICKS',
-              font=fit(draw, 'TODAY’S FOOTBALL PICKS', 640, 42, minimum=30, bold=True), fill='#122b3d')
+    heading = 'TODAY’S 1X2 PICKS' if selections[0].get('series') == '1x2' else 'TODAY’S FOOTBALL PICKS'
+    draw.text((260, 72), heading,
+              font=fit(draw, heading, 640, 42, minimum=30, bold=True), fill='#122b3d')
     draw.rounded_rectangle((260, 138, 532, 144), radius=3, fill='#008f80')
     draw_age_badge(draw, (930, 70, 1030, 130))
     gap, start, bottom = 18, 230, 1855
@@ -235,15 +242,18 @@ def render(selections, path, logo_path=ROOT / 'android/design/mr-2-odds-logo.png
         separator_y = y + round(height * .67)
         draw.line((157, separator_y, 923, separator_y), fill='#c7d8d5', width=2)
         lower_y = y + round(height * .83)
-        sf = fit(draw, item['selection'], 610, 30, minimum=22)
+        prob = number(item.get('probability')) if item.get('series') == '1x2' else None
+        sf = fit(draw, item['selection'], 440 if prob is not None else 610, 30, minimum=20)
         draw.text((157, lower_y), item['selection'], font=sf, fill='#183b42', anchor='lm')
+        if prob is not None:
+            draw.text((790, lower_y), f'Model {prob * 100:.1f}%', font=font(21, True), fill='#285b56', anchor='rm')
         draw.rounded_rectangle((802, lower_y - 24, 922, lower_y + 24), radius=10, fill='#007f72')
         draw.text((862, lower_y), f"{item['odds']:.2f}", font=font(28, True), fill='#ffffff', anchor='mm')
     path.parent.mkdir(parents=True, exist_ok=True)
     image.save(path, 'PNG', optimize=True)
 
 
-def caption_for(manifest):
+def caption_for(manifest, *, medium='photo'):
     """Only the teams actually printed on the card become hashtags."""
     try:
         date = datetime.strptime(manifest['date'], '%Y-%m-%d')
@@ -265,9 +275,14 @@ def caption_for(manifest):
                 seen.add(tag.casefold())
                 tags.append('#' + tag)
     day = f'{date.day} {date.strftime("%B %Y")}'
-    return (f"Today's football picks - {day}\n\n"
-            'Which fixture interests you most?\n'
-            'Follow Mr 2 Odds for daily picks and results.\n'
+    intro = f"Today's {'1X2' if manifest.get('series') == '1x2' else 'football'} picks - {day}"
+    questions = ('Which match are you watching?', 'Which fixture stands out to you?',
+                 'Any of these matches on your radar?', 'Which game are you looking forward to?')
+    follows = ('Follow Mr 2 Odds for more picks and results.', 'More picks and results here at Mr 2 Odds.',
+               'Follow Mr 2 Odds for the next update.', 'Keep up with picks and results at Mr 2 Odds.')
+    choice = (date.toordinal() + sum(ord(c) for c in fixtures[0]['home'] + fixtures[0]['away'])
+              + (1 if medium == 'reel' else 0)) % len(questions)
+    return (f'{intro}\n\n{questions[choice]}\n{follows[choice]}\n'
             '18+ | Bet responsibly. Odds can change.\n\n' + ' '.join(tags))
 
 

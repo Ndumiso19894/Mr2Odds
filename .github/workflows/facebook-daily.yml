@@ -72,6 +72,11 @@ jobs:
           else
             echo '::notice::Reel dry run skipped because too few eligible matches have verified crests.'
           fi
+      - name: Check 1X2 selections without publishing
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
+        run: python scripts/facebook_one_x_two.py prepare --snapshot live-data/data/app/latest.json --output "$RUNNER_TEMP/one-x-two-dry-run"
   post:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest

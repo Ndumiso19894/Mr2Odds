@@ -90,8 +90,9 @@ def render_slide(item, index, count, day, out):
     # The animated logo is overlaid during encoding; this ring anchors its position.
     draw.ellipse((95, 135, 285, 325), fill='#eff6f4', outline='#c2ddd7', width=3)
     # The first match doubles as the opening hook: no extra slide or lost reading time.
-    heading = 'TODAY’S FOOTBALL' if index == 1 else 'BET ADVISOR'
-    subtitle = 'PICKS · FIXTURES · ODDS' if index == 1 else 'TODAY’S SELECTIONS'
+    is_one_x_two = item.get('series') == '1x2'
+    heading = ('TODAY’S 1X2 PICKS' if is_one_x_two else 'TODAY’S FOOTBALL') if index == 1 else 'BET ADVISOR'
+    subtitle = ('WIN · DRAW · WIN' if is_one_x_two else 'PICKS · FIXTURES · ODDS') if index == 1 else 'TODAY’S SELECTIONS'
     draw.text((310, 180), heading, font=fb.fit(draw, heading, 545, 45, minimum=30, bold=True), fill='#102c3f')
     draw.text((312, 250), subtitle, font=fb.fit(draw, subtitle, 540, 26, minimum=21, bold=True), fill='#35736a')
     fb.draw_age_badge(draw, (874, 175, 968, 235))
@@ -118,12 +119,16 @@ def render_slide(item, index, count, day, out):
     draw.text((540, 1170), item['selection'], font=sf, fill='#102c3f', anchor='mm')
     draw.rounded_rectangle((395, 1255, 685, 1355), radius=22, fill='#008878')
     draw.text((540, 1305), f"{item['odds']:.2f}", font=fb.font(48, True), fill='white', anchor='mm')
+    prob = fb.number(item.get('probability')) if is_one_x_two else None
+    if prob is not None:
+        draw.text((540, 1400), f'MODEL ESTIMATE {prob * 100:.1f}%', font=fb.font(24, True), fill='#285b56', anchor='mm')
     draw.text((540, 1468), f'{index:02d}  /  {count:02d}', font=fb.font(25, True), fill='#52716b', anchor='mm')
     date = datetime.strptime(day, '%Y-%m-%d')
     draw.text((540, 1625), f'{date.day} {date.strftime("%B %Y")}', font=fb.font(26, True), fill='#52716b', anchor='mm')
-    follow = 'FOLLOW MR 2 ODDS FOR PICKS & RESULTS'
-    draw.text((540, 1690), follow, font=fb.fit(draw, follow, 840, 25, minimum=20, bold=True),
-              fill='#27675e', anchor='mm')
+    if index == count:
+        follow = 'FOLLOW MR 2 ODDS FOR PICKS & RESULTS'
+        draw.text((540, 1690), follow, font=fb.fit(draw, follow, 840, 25, minimum=20, bold=True),
+                  fill='#27675e', anchor='mm')
     image.save(out, 'PNG')
 
 
@@ -200,7 +205,7 @@ def prepare(snapshot, output, now=None, session=None, music=None):
 
 
 def reel_caption(info, test=False):
-    caption = fb.caption_for(info)
+    caption = fb.caption_for(info, medium='reel')
     if test:
         caption = caption.replace('\n\n', '\n\nTest reel\n\n', 1)
     return caption
