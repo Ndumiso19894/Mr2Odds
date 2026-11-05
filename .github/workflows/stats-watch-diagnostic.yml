@@ -1,0 +1,16 @@
+name: Stats watch feed diagnostic
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install --only-binary=:all: -r requirements.txt 'Pillow>=10,<12'
+      - run: python scripts/stats_watch.py --output /tmp/stats-watch.json
