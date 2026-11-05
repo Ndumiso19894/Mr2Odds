@@ -32,10 +32,10 @@ def snapshot(n=9):
 
 def test_1x2_checks_probability_price_freshness_and_existing_policy():
     data = snapshot()
-    data['fixtures'][0]['sels'][1][1:5] = [.70,.70,.70,1.36]
+    data['fixtures'][0]['sels'][1][1:5] = [.60,.60,.60,1.60]
     data['fixtures'][1]['sels'][1][1:5] = [.95,.95,.95,1.16]
-    data['fixtures'][2]['sels'][1][1] = .6999
-    data['fixtures'][3]['sels'][1][1] = .9501
+    data['fixtures'][2]['sels'][1][1:5] = [.5999,.5999,.5999,1.65]
+    data['fixtures'][3]['sels'][1][1:5] = [.9501,.9501,.9501,1.16]
     data['fixtures'][4]['sels'][1][4] = 1.159
     data['fixtures'][5]['sels'][1][4] = None
     data['fixtures'][6]['sels'][1][5] = 1
@@ -43,7 +43,7 @@ def test_1x2_checks_probability_price_freshness_and_existing_policy():
     data['fixtures'][8]['league'] = 'FA Cup'
     picks = x12.one_x_two_candidates(data, NOW)
     assert [p['fixture'] for p in picks] == ['1', '0']
-    assert [p['probability'] for p in picks] == [.95, .70]
+    assert [p['probability'] for p in picks] == [.95, .60]
     assert all(p['sel'] == 'H' and p['selection'] == 'Home win (1)' for p in picks)
     with pytest.raises(ValueError, match='stale'):
         x12.one_x_two_candidates(data, NOW + timedelta(hours=2))
@@ -72,11 +72,11 @@ def test_matching_post_and_reel_use_five_to_six_real_crest_inputs(tmp_path, monk
     assert x12.prepare(source, out, NOW, object(), music)
     info = x12.validate(out, NOW)
     assert len(info['fixtures']) == 6
-    assert all(p['sel'] in ('H','D','A') and .70 <= p['probability'] <= .95 and p['odds'] >= 1.16 for p in info['fixtures'])
+    assert all(p['sel'] in ('H','D','A') and .60 <= p['probability'] <= .95 and p['odds'] >= 1.16 for p in info['fixtures'])
     assert all(not p['home'].endswith('0') for p in info['fixtures'])
     assert json.loads((out/'selections.json').read_text()) == json.loads((out/'selection-reel.json').read_text())
     assert '1X2 picks' in fb.caption_for(info) and 'Model' not in fb.caption_for(info)  # displayed on artwork
-    bad = json.loads((out/'selection-reel.json').read_text()); bad['fixtures'][0]['probability'] = .69
+    bad = json.loads((out/'selection-reel.json').read_text()); bad['fixtures'][0]['probability'] = .59
     (out/'selection-reel.json').write_text(json.dumps(bad)); (out/'selections.json').write_text(json.dumps(bad))
     with pytest.raises(ValueError, match='invalid'):
         x12.validate(out, NOW)

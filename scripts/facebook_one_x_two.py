@@ -17,7 +17,7 @@ from scripts import facebook_history as history
 from scripts import facebook_post as fb
 from scripts import selection_reel as reel
 
-MIN_PROBABILITY = .70
+MIN_PROBABILITY = .60
 MAX_PROBABILITY = .95
 
 
