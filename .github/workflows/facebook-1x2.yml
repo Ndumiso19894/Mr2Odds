@@ -38,6 +38,19 @@ jobs:
           except Exception as exc:
               print(f"::notice::ESPN request error: {type(exc).__name__} {str(exc)[:200]}")
           PYTEST
+          python - <<'PYTEST'
+          from scripts import stats_watch as sw
+          from datetime import datetime, timezone
+          now = datetime.now(timezone.utc)
+          data = sw._json(sw.STANDINGS.format('ger.1'))
+          rows = sw.table_candidates('ger.1',data,now)
+          print(f"::notice::German table: {len(rows)} candidates; groups {len(data.get('children', []))}")
+          for row in rows:
+              local = sw._json(sw.SCHEDULE.format('ger.1',row['team_id']))
+              future = sw._json(sw.SCHEDULE.format('all',row['team_id']) + '?fixture=true')
+              fixture = sw.next_fixture(row,local,future,now)
+              print(f"::notice::German {row['team']} local-record={local.get('team',{}).get('recordSummary')} expected={row['record']} future-events={len(future.get('events',[]))} valid={bool(fixture)}")
+          PYTEST
           python scripts/stats_watch.py --output "$RUNNER_TEMP/stats-watch.json"
       - uses: actions/checkout@v4
         with:
