@@ -28,9 +28,8 @@ LEAGUES = {
     'esp.1':'Spain', 'esp.2':'Spain', 'fra.1':'France', 'fra.2':'France',
     'ned.1':'Netherlands', 'por.1':'Portugal', 'bel.1':'Belgium', 'aut.1':'Austria',
     'den.1':'Denmark', 'sco.1':'Scotland', 'gre.1':'Greece', 'tur.1':'Turkey',
-    'nor.1':'Norway', 'swe.1':'Sweden', 'bra.1':'Brazil', 'mex.1':'Mexico',
-    'usa.1':'United States', 'arg.1':'Argentina', 'jpn.1':'Japan', 'kor.1':'South Korea',
-    'aus.1':'Australia', 'rsa.1':'South Africa', 'irl.1':'Ireland', 'pol.1':'Poland',
+    'nor.1':'Norway', 'swe.1':'Sweden',
+    'irl.1':'Ireland', 'pol.1':'Poland',
 }
 STANDINGS = 'https://site.api.espn.com/apis/v2/sports/soccer/{}/standings'
 SCHEDULE = 'https://site.api.espn.com/apis/site/v2/sports/soccer/{}/teams/{}/schedule'
@@ -74,7 +73,7 @@ def table_candidates(league_code, data, now):
         rank, played, losses = stats.get('rank'), stats.get('gamesPlayed'), stats.get('losses')
         wins, draws = stats.get('wins'), stats.get('ties')
         if (rank not in (1, 2) or not all(isinstance(v, (int, float)) and not isinstance(v, bool) and v == int(v) for v in (played, losses, wins, draws))
-                or played < 6 or played > 60 or losses != 0 or wins + draws != played):
+                or played < 6 or played > 60 or min(losses, wins, draws) < 0 or wins + draws + losses != played):
             continue
         team = entry.get('team') or {}
         tid, name = str(team.get('id') or ''), str(team.get('displayName') or '').strip()
@@ -82,7 +81,7 @@ def table_candidates(league_code, data, now):
             continue
         found.append({'team_id':tid, 'team':name, 'league_code':league_code, 'league':league_name,
                       'country':country, 'rank':int(rank), 'played':int(played), 'wins':int(wins),
-                      'draws':int(draws), 'record':f'{int(wins)}-{int(draws)}-0',
+                      'draws':int(draws), 'losses':int(losses), 'record':f'{int(wins)}-{int(draws)}-{int(losses)}',
                       'table_url':STANDINGS.format(league_code), 'season':season})
     return found
 
@@ -94,6 +93,47 @@ def next_fixture(candidate, league_schedule, all_schedule, now):
         return None
     if (league_schedule.get('team') or {}).get('recordSummary') != candidate['record']:
         return None
+    # A zero-loss season record proves the run even without the full history.
+    # Otherwise require every season result to match the W/D/L table and then
+    # count backwards, so a partial results feed cannot conceal a recent loss.
+    if candidate['losses'] == 0:
+        streak = candidate['played']
+    else:
+        results = []
+        for event in league_schedule.get('events') or []:
+            try:
+                if (event.get('league') or {}).get('slug') != candidate['league_code'] or (event.get('season') or {}).get('year') != candidate['season']:
+                    continue
+                comp = event['competitions'][0]
+                status = comp['status']['type']
+                if status.get('state') == 'in':
+                    return None
+                if status.get('state') != 'post' or not status.get('completed'):
+                    continue
+                teams = comp['competitors']
+                if len(teams) != 2:
+                    return None
+                team = next(t for t in teams if str(t.get('id')) == candidate['team_id'])
+                other = next(t for t in teams if str(t.get('id')) != candidate['team_id'])
+                own, opp = team['score']['value'], other['score']['value']
+                if not all(isinstance(x,(int,float)) and x >= 0 and x == int(x) for x in (own,opp)):
+                    return None
+                outcome = 'W' if own > opp else 'D' if own == opp else 'L'
+                results.append((_utc(event['date']), str(event['id']), outcome))
+            except (KeyError, TypeError, ValueError, StopIteration, IndexError):
+                return None
+        if (len(results) != candidate['played'] or len({x[1] for x in results}) != len(results)
+            or sum(x[2] == 'W' for x in results) != candidate['wins']
+            or sum(x[2] == 'D' for x in results) != candidate['draws']
+            or sum(x[2] == 'L' for x in results) != candidate['losses']):
+            return None
+        streak = 0
+        for _, _, outcome in sorted(results, reverse=True):
+            if outcome == 'L':
+                break
+            streak += 1
+        if streak < 6:
+            return None
     try:
         stamp = _utc(all_schedule['timestamp'])
         if not timedelta(minutes=-5) <= now - stamp <= timedelta(hours=6):
@@ -112,7 +152,7 @@ def next_fixture(candidate, league_schedule, all_schedule, now):
             if status.get('state') != 'pre' or status.get('name') not in ('STATUS_SCHEDULED',):
                 continue
             teams = comp['competitors']
-            if len(teams) != 2 or when <= now + timedelta(minutes=15):
+            if len(teams) != 2 or when <= now:
                 continue
             home = next(t for t in teams if t.get('homeAway') == 'home')
             away = next(t for t in teams if t.get('homeAway') == 'away')
@@ -130,9 +170,9 @@ def next_fixture(candidate, league_schedule, all_schedule, now):
         return None
     when, competition, home, away, home_id, away_id, event_id = min(upcoming)
     # Do not silently promote a later allowed fixture when the actual next match is paused.
-    if not competition_policy.allowed(country=candidate['country'], league=competition, home=home, away=away):
+    if when <= now + timedelta(minutes=15) or not competition_policy.allowed(country=candidate['country'], league=competition, home=home, away=away):
         return None
-    return {**candidate, 'kickoff_utc':when.isoformat(), 'competition':competition,
+    return {**candidate, 'streak':streak, 'kickoff_utc':when.isoformat(), 'competition':competition,
             'home':home, 'away':away, 'home_id':home_id, 'away_id':away_id,
             'event_id':event_id, 'schedule_url':SCHEDULE.format('all', candidate['team_id']) + '?fixture=true'}
 
@@ -157,7 +197,7 @@ def collect(now=None, limit=10, get=_json):
             return None
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
         values = [x for x in pool.map(fixture, candidates) if x]
-    values.sort(key=lambda x: (-x['played'], x['league_code'], x['team']))
+    values.sort(key=lambda x: (-x['streak'], x['league_code'], x['team']))
     return values[:limit]
 
 
@@ -169,7 +209,7 @@ def main():
     rows = collect(now)
     print(f'Found {len(rows)} verified unbeaten league leaders with upcoming fixtures.')
     for row in rows:
-        print(f"::notice::{row['team']} | {row['league']} #{row['rank']} | {row['played']} league matches unbeaten | {row['home']} v {row['away']} | {row['kickoff_utc']}")
+        print(f"::notice::{row['team']} | {row['league']} #{row['rank']} | {row['streak']} league matches unbeaten | {row['home']} v {row['away']} | {row['kickoff_utc']}")
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps({'as_of':now.isoformat(), 'rows':rows}, ensure_ascii=False), encoding='utf-8')
