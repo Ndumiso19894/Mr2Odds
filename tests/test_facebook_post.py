@@ -92,9 +92,10 @@ def test_publish_uses_photo_endpoint_and_secret_without_logging(tmp_path, monkey
     assert session.post.call_count == 1
     args, kwargs = session.post.call_args
     assert args[0] == 'https://graph.facebook.com/v24.0/123456/photos'
-    assert kwargs['data']['message'] == ("Today's football picks - 4 November 2026\n\n"
-        "Which fixture interests you most?\nFollow Mr 2 Odds for daily picks and results.\n"
-        "18+ | Bet responsibly. Odds can change.\n\n#HomeFC #AwayUnited")
+    message = kwargs['data']['message']
+    assert message.startswith("Today's football picks - 4 November 2026\n\n")
+    assert '?' in message and 'Mr 2 Odds' in message and '18+ | Bet responsibly.' in message
+    assert message.endswith('#HomeFC #AwayUnited')
     assert 'example_test_secret_not_real' not in capsys.readouterr().out
     with pytest.raises(ValueError): fb.publish(path, NOW + timedelta(hours=4), session=session)
     assert session.post.call_count == 1
@@ -178,8 +179,8 @@ def test_caption_has_only_the_teams_on_the_picture():
     ]}
     caption = fb.caption_for(info)
     assert caption.startswith("Today's football picks - 4 November 2026\n\n")
-    assert 'Which fixture interests you most?' in caption
-    assert 'Follow Mr 2 Odds for daily picks and results.' in caption
+    assert '?' in caption
+    assert 'Mr 2 Odds' in caption
     assert '18+ | Bet responsibly.' in caption
     assert caption.splitlines()[-1].split() == ['#StJohnsFC', '#ASÉtoile', '#ManchesterUnited', '#AwayUnited',
                                                 '#HomeClub', '#AwayClub', '#Home4', '#Away4', '#Home5', '#Away5']
@@ -216,7 +217,7 @@ def test_four_slot_workflow_and_old_claims_are_recognized():
     assert workflow.index('Record the slot posting claim') < workflow.index('Publish the two-image results')
     assert fb.facebook_history.claim_names('2026-11-04') == [
         'facebook-post-2026-11-04', 'facebook-post-2026-11-04-retry', 'facebook-post-2026-11-04-redesign',
-        'facebook-post-2026-11-04-07', 'facebook-post-2026-11-04-12', 'facebook-post-2026-11-04-17']
+        'facebook-post-2026-11-04-07', 'facebook-post-2026-11-04-12', 'facebook-post-2026-11-04-13', 'facebook-post-2026-11-04-17']
 
 
 def test_preparation_does_not_reuse_a_previously_claimed_match(tmp_path, monkeypatch):

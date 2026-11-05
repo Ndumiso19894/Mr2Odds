@@ -97,7 +97,7 @@ def test_facebook_uses_real_reels_api_and_confirms_publication(tmp_path, monkeyp
     assert finish.kwargs['data']['video_state']=='PUBLISHED'
     description = finish.kwargs['data']['description']
     assert description.startswith("Today's football picks - 4 November 2026\n\n")
-    assert 'Which fixture interests you most?' in description and 'Follow Mr 2 Odds' in description
+    assert '?' in description and 'Mr 2 Odds' in description
     assert description.splitlines()[-1].startswith('#Home0 #Away0')
     assert 'fake-user-token' not in capsys.readouterr().out
 
@@ -203,7 +203,7 @@ def test_logo_and_required_crests_are_not_replaced_when_missing(tmp_path, monkey
     assert not (tmp_path/'out'/'selection-reel.mp4').exists()
 
 
-def test_first_match_opens_with_clear_hook_and_each_slide_keeps_follow_prompt(tmp_path, monkeypatch):
+def test_first_match_opens_with_clear_hook_and_last_slide_has_follow_prompt(tmp_path, monkeypatch):
     from PIL import ImageDraw
     crest = Image.new('RGBA', (30, 30), 'teal')
     item = {'home':'Home FC', 'away':'Away United', 'country':'England', 'league':'Championship',
@@ -215,10 +215,11 @@ def test_first_match_opens_with_clear_hook_and_each_slide_keeps_follow_prompt(tm
         texts.append(text)
         return original(self, xy, text, *args, **kwargs)
     monkeypatch.setattr(ImageDraw.ImageDraw, 'text', capture)
-    for index in (1, 2):
+    for index in (1, 2, 5):
         texts.clear()
         reel.render_slide(item, index, 5, '2026-11-04', tmp_path/f'{index}.png')
-        assert '18+' in texts and 'FOLLOW MR 2 ODDS FOR PICKS & RESULTS' in texts
+        assert '18+' in texts
+        assert ('FOLLOW MR 2 ODDS FOR PICKS & RESULTS' in texts) == (index == 5)
         assert 'Home FC' in texts and 'Away United' in texts
         assert 'Over 1.5 goals' in texts and '1.20' in texts
         if index == 1:

@@ -12,7 +12,7 @@ import zipfile
 
 import requests
 
-SLOTS = ('07', '12', '17')
+SLOTS = ('07', '12', '13', '17')
 
 
 def claim_names(day):

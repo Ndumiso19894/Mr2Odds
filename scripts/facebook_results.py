@@ -187,9 +187,11 @@ def publish(output, now=None, session=None):
             if tag.casefold() not in seen:
                 seen.add(tag.casefold()); tags.append('#' + tag)
     day = datetime.strptime(info['date'], '%Y-%m-%d')
+    questions = ('Which match did you follow?', 'Did you catch any of these games?',
+                 'Which result caught your eye?', 'What did you make of these matches?')
     caption = (f"Yesterday's results - {day.day} {day.strftime('%B %Y')}\n\n"
-               'Which match did you follow?\n'
-               'Follow Mr 2 Odds for daily picks and results.\n'
+               f"{questions[day.toordinal() % len(questions)]}\n"
+               'Follow Mr 2 Odds for more picks and results.\n'
                '18+ | Bet responsibly.\n\n' + ' '.join(tags))
     token, page_id = fb.credentials()
     session = session or requests.Session()
