@@ -92,7 +92,9 @@ def test_publish_uses_photo_endpoint_and_secret_without_logging(tmp_path, monkey
     assert session.post.call_count == 1
     args, kwargs = session.post.call_args
     assert args[0] == 'https://graph.facebook.com/v24.0/123456/photos'
-    assert kwargs['data']['message'] == "Today's safe bets - 4 November 2026\n\n#HomeFC #AwayUnited"
+    assert kwargs['data']['message'] == ("Today's football picks - 4 November 2026\n\n"
+        "Which fixture interests you most?\nFollow Mr 2 Odds for daily picks and results.\n"
+        "18+ | Bet responsibly. Odds can change.\n\n#HomeFC #AwayUnited")
     assert 'example_test_secret_not_real' not in capsys.readouterr().out
     with pytest.raises(ValueError): fb.publish(path, NOW + timedelta(hours=4), session=session)
     assert session.post.call_count == 1
@@ -175,8 +177,11 @@ def test_caption_has_only_the_teams_on_the_picture():
         {'home': 'Home 5', 'away': 'Away 5'},
     ]}
     caption = fb.caption_for(info)
-    assert caption.startswith("Today's safe bets - 4 November 2026\n\n")
-    assert caption.splitlines()[2].split() == ['#StJohnsFC', '#ASÉtoile', '#ManchesterUnited', '#AwayUnited',
+    assert caption.startswith("Today's football picks - 4 November 2026\n\n")
+    assert 'Which fixture interests you most?' in caption
+    assert 'Follow Mr 2 Odds for daily picks and results.' in caption
+    assert '18+ | Bet responsibly.' in caption
+    assert caption.splitlines()[-1].split() == ['#StJohnsFC', '#ASÉtoile', '#ManchesterUnited', '#AwayUnited',
                                                 '#HomeClub', '#AwayClub', '#Home4', '#Away4', '#Home5', '#Away5']
     assert '#Mr2Odds' not in caption and '#BettingTips' not in caption
     info['fixtures'][4]['away'] = 'Away United'  # repeated clubs appear only once
@@ -224,3 +229,18 @@ def test_preparation_does_not_reuse_a_previously_claimed_match(tmp_path, monkeyp
     manifest = json.loads(out.with_suffix('.json').read_text())
     assert not any(p['home'] == 'Home 0' for p in manifest['fixtures'])
     assert all(p['sel'] == 'O15' and p['selection'] == 'Over 1.5 goals' and p['odds'] == 1.2 for p in manifest['fixtures'])
+
+
+def test_selection_image_uses_football_hook_and_age_badge(tmp_path, monkeypatch):
+    from PIL import ImageDraw
+    image = Image.new('RGBA', (20, 20), 'teal')
+    data = [{**p, 'home_image':image, 'away_image':image} for p in fb.candidates(snapshot(), NOW)[:5]]
+    texts = []
+    original = ImageDraw.ImageDraw.text
+    def capture(self, xy, text, *args, **kwargs):
+        texts.append(text)
+        return original(self, xy, text, *args, **kwargs)
+    monkeypatch.setattr(ImageDraw.ImageDraw, 'text', capture)
+    fb.render(data, tmp_path/'selection.png')
+    assert 'TODAY’S FOOTBALL PICKS' in texts and '18+' in texts
+    assert 'TODAY’S SAFE BETS' not in texts

@@ -192,6 +192,14 @@ def draw_team(draw, name, x, center_y, anchor, max_size=32, line_spacing=33):
     raise ValueError('A team name is too long to display safely')
 
 
+def draw_age_badge(draw, box):
+    """Small, unobtrusive age reminder that fits in a card's header."""
+    x1, y1, x2, y2 = box
+    draw.rounded_rectangle(box, radius=16, fill='#ffffff', outline='#8faca8', width=3)
+    draw.text(((x1 + x2) // 2, (y1 + y2) // 2), '18+',
+              font=font(25, True), fill='#274c49', anchor='mm')
+
+
 def render(selections, path, logo_path=ROOT / 'android/design/mr-2-odds-logo.png'):
     if not 5 <= len(selections) <= 8:
         raise ValueError('An image requires 5 to 8 complete selections')
@@ -201,8 +209,10 @@ def render(selections, path, logo_path=ROOT / 'android/design/mr-2-odds-logo.png
     logo = Image.open(logo_path).convert('RGBA')
     logo.thumbnail((210, 210), Image.Resampling.LANCZOS)
     image.paste(logo, (35, 12), logo)
-    draw.text((260, 72), 'TODAY’S SAFE BETS', font=font(42, True), fill='#122b3d')
+    draw.text((260, 72), 'TODAY’S FOOTBALL PICKS',
+              font=fit(draw, 'TODAY’S FOOTBALL PICKS', 640, 42, minimum=30, bold=True), fill='#122b3d')
     draw.rounded_rectangle((260, 138, 532, 144), radius=3, fill='#008f80')
+    draw_age_badge(draw, (930, 70, 1030, 130))
     gap, start, bottom = 18, 230, 1855
     height = (bottom - start - gap * (len(selections) - 1)) // len(selections)
     for i, item in enumerate(selections):
@@ -255,7 +265,10 @@ def caption_for(manifest):
                 seen.add(tag.casefold())
                 tags.append('#' + tag)
     day = f'{date.day} {date.strftime("%B %Y")}'
-    return f"Today's safe bets - {day}\n\n" + ' '.join(tags)
+    return (f"Today's football picks - {day}\n\n"
+            'Which fixture interests you most?\n'
+            'Follow Mr 2 Odds for daily picks and results.\n'
+            '18+ | Bet responsibly. Odds can change.\n\n' + ' '.join(tags))
 
 
 def prepare(snapshot, output, now=None, session=None, prior_claims=None):

@@ -105,6 +105,7 @@ def render_results(items, date, outputs, badge_index, session=None):
         draw.text((245, 48), 'YESTERDAY’S RESULTS', font=fb.font(38, True), fill='#122b3d')
         date_text = datetime.strptime(date, '%Y-%m-%d').strftime('%d %B %Y')
         draw.text((245, 113), f'{date_text}  ·  {part} / 2', font=fb.font(25, True), fill='#285b56')
+        fb.draw_age_badge(draw, (930, 55, 1030, 115))
         if not group:
             draw.text((540, 400), 'No additional matches', font=fb.font(34, True), fill='#122b3d', anchor='mm')
         else:
@@ -186,7 +187,10 @@ def publish(output, now=None, session=None):
             if tag.casefold() not in seen:
                 seen.add(tag.casefold()); tags.append('#' + tag)
     day = datetime.strptime(info['date'], '%Y-%m-%d')
-    caption = f"Yesterday's results - {day.day} {day.strftime('%B %Y')}\n\n" + ' '.join(tags)
+    caption = (f"Yesterday's results - {day.day} {day.strftime('%B %Y')}\n\n"
+               'Which match did you follow?\n'
+               'Follow Mr 2 Odds for daily picks and results.\n'
+               '18+ | Bet responsibly.\n\n' + ' '.join(tags))
     token, page_id = fb.credentials()
     session = session or requests.Session()
     token, _ = fb.resolve_page_token(session, token, page_id)

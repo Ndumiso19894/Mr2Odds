@@ -95,7 +95,10 @@ def test_facebook_uses_real_reels_api_and_confirms_publication(tmp_path, monkeyp
     assert upload.args[0]=='https://rupload.facebook.com/video-upload/v24.0/9988'
     assert upload.kwargs['headers']['Authorization']=='OAuth fake-user-token'
     assert finish.kwargs['data']['video_state']=='PUBLISHED'
-    assert finish.kwargs['data']['description'].startswith("Today's safe bets - 4 November 2026\n\n#Home0 #Away0")
+    description = finish.kwargs['data']['description']
+    assert description.startswith("Today's football picks - 4 November 2026\n\n")
+    assert 'Which fixture interests you most?' in description and 'Follow Mr 2 Odds' in description
+    assert description.splitlines()[-1].startswith('#Home0 #Away0')
     assert 'fake-user-token' not in capsys.readouterr().out
 
 
@@ -198,3 +201,38 @@ def test_logo_and_required_crests_are_not_replaced_when_missing(tmp_path, monkey
     monkeypatch.setattr(fb, 'badge', lambda session, team, path: None if team.startswith('Away') else im)
     assert not reel.prepare(source, tmp_path/'out', NOW, object(), music)
     assert not (tmp_path/'out'/'selection-reel.mp4').exists()
+
+
+def test_first_match_opens_with_clear_hook_and_each_slide_keeps_follow_prompt(tmp_path, monkeypatch):
+    from PIL import ImageDraw
+    crest = Image.new('RGBA', (30, 30), 'teal')
+    item = {'home':'Home FC', 'away':'Away United', 'country':'England', 'league':'Championship',
+            'kickoff':'2026-11-04 15:00','selection':'Over 1.5 goals','odds':1.2,
+            'home_image':crest,'away_image':crest}
+    texts = []
+    original = ImageDraw.ImageDraw.text
+    def capture(self, xy, text, *args, **kwargs):
+        texts.append(text)
+        return original(self, xy, text, *args, **kwargs)
+    monkeypatch.setattr(ImageDraw.ImageDraw, 'text', capture)
+    for index in (1, 2):
+        texts.clear()
+        reel.render_slide(item, index, 5, '2026-11-04', tmp_path/f'{index}.png')
+        assert '18+' in texts and 'FOLLOW MR 2 ODDS FOR PICKS & RESULTS' in texts
+        assert 'Home FC' in texts and 'Away United' in texts
+        assert 'Over 1.5 goals' in texts and '1.20' in texts
+        if index == 1:
+            assert 'TODAY’S FOOTBALL' in texts and 'PICKS · FIXTURES · ODDS' in texts
+        else:
+            assert 'BET ADVISOR' in texts
+
+
+def test_caption_for_eight_teams_fits_telegram_and_stays_team_only():
+    info = {'date': '2026-11-04', 'fixtures': [
+        {'home': f'Home United {i}', 'away': f'Away Football Club {i}'} for i in range(8)]}
+    text = reel.reel_caption(info, test=True)
+    assert len(text) <= 1024
+    tags = [word for word in text.split() if word.startswith('#')]
+    assert len(tags) == 16
+    assert all(tag.startswith(('#HomeUnited', '#AwayFootballClub')) for tag in tags)
+    assert 'Test reel' in text and '18+ | Bet responsibly.' in text
