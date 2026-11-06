@@ -66,3 +66,19 @@ The service cannot guarantee publication when source data, crests, music or a
 platform are unavailable. In those cases it fails and asks for manual review; it
 does not invent statistics or retry an ambiguous publication. This applies to
 selection-based posts/reels, not the previous-day results recap.
+
+### Selection-card layout and picture-only repost
+
+Selection pictures use a bet-slip-inspired layout showing the selection and its
+quoted price above the fixture, with both club crests, country, league and SAST
+kickoff. Selection captions credit SportyBet as the odds source and warn that
+odds can change. Stats Watch has no odds and is not labelled as a betting card.
+
+An explicitly requested morning picture repost can be dispatched manually with
+`repost_morning=true`. The workflow reads the confirmed 07:00 picture claim,
+revalidates the same matches and markets against the latest fresh snapshot,
+uses the current eligible quotes, and fails closed if any fixture, selection or
+crest cannot be verified. Branch dispatches are private previews; only a main
+branch dispatch may publish. A separate pre-upload claim prevents automatic
+reposting after an ambiguous upload. This path publishes one photo only, does
+not send a reel, and does not create a second selection record for the recap.
