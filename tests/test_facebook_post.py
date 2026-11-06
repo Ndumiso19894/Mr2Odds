@@ -245,3 +245,41 @@ def test_selection_image_uses_football_hook_and_age_badge(tmp_path, monkeypatch)
     fb.render(data, tmp_path/'selection.png')
     assert 'TODAY’S FOOTBALL PICKS' in texts and '18+' in texts
     assert 'TODAY’S SAFE BETS' not in texts
+
+
+def test_repost_uses_original_morning_picks_but_current_quotes(tmp_path, monkeypatch):
+    from scripts import facebook_morning_repost as repost
+    data = snapshot()
+    picks = fb.candidates(data, NOW)[:5]
+    original = {'date': NOW.date().isoformat(), 'fixtures': picks}
+    claims = [{'name': f'facebook-post-{NOW.date().isoformat()}-07', 'manifest': original}]
+    data['fixtures'][0]['sels'][0][4] = 1.21
+    source = tmp_path/'latest.json'; source.write_text(json.dumps(data))
+    monkeypatch.setattr(fb, 'badge', lambda *args: Image.new('RGBA', (20,20), 'teal'))
+    result = repost.prepare(source, tmp_path/'repost.png', claims, NOW, session=object())
+    assert result['fixtures'][0]['odds'] == 1.21
+    assert [x['fixture'] for x in result['fixtures']] == [x['fixture'] for x in picks]
+    assert 'Odds from SportyBet' in fb.caption_for(result)
+    assert Image.open(tmp_path/'repost.png').size == (1080,1920)
+    data['fixtures'][0]['sels'][0][4] = 1.01
+    source.write_text(json.dumps(data))
+    with pytest.raises(ValueError, match='no longer eligible'):
+        repost.prepare(source, tmp_path/'unsafe.png', claims, NOW, session=object())
+    assert not (tmp_path/'unsafe.png').exists()
+
+
+def test_repost_requires_confirmed_matching_morning_bet_picture(tmp_path):
+    from scripts import facebook_morning_repost as repost
+    with pytest.raises(ValueError, match='single confirmed'):
+        repost.prepare(tmp_path/'not_read.json', tmp_path/'no.png', [], NOW)
+    with pytest.raises(ValueError, match='Stats Watch'):
+        repost.prepare(tmp_path/'not_read.json', tmp_path/'no.png', [{'name': 'facebook-post-2026-11-04-07', 'manifest': {'series':'stats-watch'}}], NOW)
+
+
+def test_repost_workflow_is_explicit_and_picture_only():
+    text = Path('.github/workflows/facebook-daily.yml').read_text()
+    section = text.split('  repost-morning:',1)[1]
+    assert "github.event_name == 'workflow_dispatch' && inputs.repost_morning == true" in section
+    assert section.index('Record the separate repost claim') < section.index('Publish the picture only')
+    assert "if: github.ref == 'refs/heads/main'" in section
+    assert 'selection_reel.py' not in section

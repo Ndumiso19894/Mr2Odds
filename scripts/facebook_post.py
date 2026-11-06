@@ -220,35 +220,28 @@ def render(selections, path, logo_path=ROOT / 'android/design/mr-2-odds-logo.png
               font=fit(draw, heading, 640, 42, minimum=30, bold=True), fill='#122b3d')
     draw.rounded_rectangle((260, 138, 532, 144), radius=3, fill='#008f80')
     draw_age_badge(draw, (930, 70, 1030, 130))
-    gap, start, bottom = 18, 230, 1855
+    # A clean bet-slip layout: selection and quoted price first, then the
+    # complete fixture, followed by league and kickoff. No sportsbook UI is copied.
+    gap, start, bottom = 12, 230, 1855
     height = (bottom - start - gap * (len(selections) - 1)) // len(selections)
     for i, item in enumerate(selections):
         y = start + i * (height + gap)
-        draw.rounded_rectangle((35, y, 1045, y + height), radius=20, fill='#f3f7f6', outline='#b3c8c4', width=2)
-        # Kickoff timestamps in the published snapshot are in South African time.
-        competition = f"{item['country']}  ·  {item['league']}"
-        cf = fit(draw, competition, 725, 25, minimum=19, bold=True)
-        metadata_y = y + max(24, round(height * .13))
-        draw.text((60, metadata_y), competition, font=cf, fill='#335a58', anchor='lm')
-        kickoff = datetime.strptime(item['kickoff'], '%Y-%m-%d %H:%M').strftime('%H:%M')
-        draw.text((1018, metadata_y), f'{kickoff} SAST', font=font(24, True), fill='#174b48', anchor='rm')
-        top_y = y + round(height * .43)
-        for side, x in (('home_image', 58), ('away_image', 946)):
-            crest = ImageOps.contain(item[side], (70, 70), Image.Resampling.LANCZOS)
-            image.paste(crest, (x + (70 - crest.width)//2, top_y - crest.height//2), crest)
-        draw_team(draw, item['home'], 158, top_y, 'lm')
-        draw.text((540, top_y), 'v', font=font(27, True), fill='#52716f', anchor='mm')
-        draw_team(draw, item['away'], 922, top_y, 'rm')
-        separator_y = y + round(height * .67)
-        draw.line((157, separator_y, 923, separator_y), fill='#c7d8d5', width=2)
-        lower_y = y + round(height * .83)
-        prob = number(item.get('probability')) if item.get('series') == '1x2' else None
-        sf = fit(draw, item['selection'], 440 if prob is not None else 610, 30, minimum=20)
-        draw.text((157, lower_y), item['selection'], font=sf, fill='#183b42', anchor='lm')
-        if prob is not None:
-            draw.text((790, lower_y), f'Model {prob * 100:.1f}%', font=font(21, True), fill='#285b56', anchor='rm')
-        draw.rounded_rectangle((802, lower_y - 24, 922, lower_y + 24), radius=10, fill='#007f72')
-        draw.text((862, lower_y), f"{item['odds']:.2f}", font=font(28, True), fill='#ffffff', anchor='mm')
+        draw.rounded_rectangle((35, y, 1045, y + height), radius=18, fill='#f3f7f6', outline='#b3c8c4', width=2)
+        pick = f"{item['selection']}  @ {item['odds']:.2f}"
+        draw.text((75, y + height*.19), pick, font=fit(draw,pick,900,34,minimum=21,bold=True), fill='#122b3d', anchor='lm')
+        if item.get('series') == '1x2' and number(item.get('probability')) is not None:
+            prob = f"Model {number(item['probability']) * 100:.1f}%"
+            draw.text((1005, y + height*.38), prob, font=font(19,True), fill='#285b56', anchor='rm')
+        match_y = y + height*.54
+        for side, x in (('home_image', 78), ('away_image', 1002)):
+            crest = ImageOps.contain(item[side], (58,58), Image.Resampling.LANCZOS)
+            image.paste(crest, (x - crest.width//2, round(match_y - crest.height//2)), crest)
+        match = f"{item['home']}  vs  {item['away']}"
+        draw.text((540,match_y),match,font=fit(draw,match,790,29,minimum=18,bold=True),fill='#122b3d',anchor='mm')
+        kickoff = datetime.strptime(item['kickoff'], '%Y-%m-%d %H:%M').strftime('%d/%m %H:%M SAST')
+        competition = f"{item['country']} · {item['league']}"
+        draw.text((75,y + height*.82),competition,font=fit(draw,competition,610,22,minimum=16),fill='#486a66',anchor='lm')
+        draw.text((1005,y + height*.82),kickoff,font=font(22,True),fill='#008f70',anchor='rm')
     path.parent.mkdir(parents=True, exist_ok=True)
     image.save(path, 'PNG', optimize=True)
 
@@ -286,7 +279,7 @@ def caption_for(manifest, *, medium='photo'):
     choice = (date.toordinal() + sum(ord(c) for c in fixtures[0]['home'] + fixtures[0]['away'])
               + (1 if medium == 'reel' else 0)) % len(questions)
     return (f'{intro}\n\n{questions[choice]}\n{follows[choice]}\n'
-            '18+ | Bet responsibly. Odds can change.\n\n' + ' '.join(tags))
+            '18+ | Bet responsibly. Odds from SportyBet; odds can change.\n\n' + ' '.join(tags))
 
 
 def prepare(snapshot, output, now=None, session=None, prior_claims=None):
