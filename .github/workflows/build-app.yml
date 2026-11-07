@@ -73,6 +73,7 @@ jobs:
           path: ${{ runner.temp }}/PlayReport.apk
 
       - name: Publish release
+        if: github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -82,6 +83,7 @@ jobs:
           gh release create "$TAG" "$RUNNER_TEMP/PlayReport.apk" --repo "$GITHUB_REPOSITORY" --title "Mr 2 Odds v${APP_VERSION_NAME}" --notes-file "$RUNNER_TEMP/notes.md" --latest
 
   telegram:
+    if: github.ref == 'refs/heads/main'
     name: Send APK to Telegram
     needs: apk
     runs-on: ubuntu-latest

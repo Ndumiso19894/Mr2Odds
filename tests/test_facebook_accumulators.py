@@ -76,3 +76,25 @@ def test_picture_and_reel_share_prediction_manifest(tmp_path):
     assert Image.open(tmp_path/'photo.png').size==(1080,1920)
     acc._slide(tmp_path/'photo.png',1,tmp_path/'slide.png')
     assert Image.open(tmp_path/'slide.png').size==(1080,1920)
+
+
+def test_end_to_end_prepares_three_cards_and_one_shared_reel(tmp_path, monkeypatch):
+    fixtures=[]
+    for i in range(16):
+        x=pick(i)
+        fixtures.append({'id':x['fixture'],'home':x['home'],'away':x['away'],'country':x['country'],'league':x['league'],
+                         'date':'2026-11-07','kickoff':x['kickoff'],'time_known':True,'data_ok':True,'q':'High',
+                         'badges':x['badges'],'sels':[['O15',.85,.85,.85,1.30,0]]})
+    source=tmp_path/'data.json';source.write_text(json.dumps({'meta':{'generated':'2026-11-07 06:55'},'fixtures':fixtures}))
+    monkeypatch.setattr(fb,'badge',lambda *args:Image.new('RGBA',(30,30),'teal'))
+    def encode(slides,music,output):
+        assert len(slides)==3
+        assert all(Image.open(x).size == (1080,1920) for x in slides)
+        output.write_bytes(b'video')
+    monkeypatch.setattr(selection_reel,'encode',encode)
+    track=tmp_path/'music.mp3';track.write_bytes(b'music')
+    output=tmp_path/'output';assert acc.prepare(source,output,NOW,music=track)
+    info=json.loads((output/'selections.json').read_text());assert info==json.loads((output/'selection-reel.json').read_text())
+    assert len(info['accumulators'])==3 and len(info['fixtures'])==12
+    assert all((output/f'accumulator-{i}.png').is_file() for i in (1,2,3))
+    selection_reel.validate_prepared(output,NOW)

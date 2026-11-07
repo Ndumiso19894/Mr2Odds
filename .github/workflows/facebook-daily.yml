@@ -36,6 +36,28 @@ jobs:
           python scripts/facebook_accumulators.py prepare --snapshot live-data/data/app/latest.json --output "$RUNNER_TEMP/morning-preview"
           python scripts/facebook_accumulators.py validate --output "$RUNNER_TEMP/morning-preview"
           echo '::notice::Private preview passed; nothing was published.'
+      - name: Check yesterday's result refresh privately
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json
+          from collections import Counter
+          from datetime import datetime, timedelta
+          from pathlib import Path
+          from scripts import facebook_history as history, facebook_post as fb, facebook_results as results
+          day = (datetime.now(fb.SAST).date() - timedelta(days=1)).isoformat()
+          claims = history.load_claims(day, confirmed_only=True)
+          path = Path('live-data/data/app/days') / (day + '.json')
+          if claims and path.is_file():
+              data = json.loads(path.read_text())
+              before = Counter(x['verdict'] for x in results.recap_items(claims,data,day))
+              results.refresh_pending_results(claims,data,day)
+              after = Counter(x['verdict'] for x in results.recap_items(claims,data,day))
+              print(f"::notice::Private result check: {before.get('PENDING',0)} pending before refresh, {after.get('PENDING',0)} after; no post was made.")
+          else:
+              print('::notice::No confirmed prior selection data to check.')
+          PY
   post:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest

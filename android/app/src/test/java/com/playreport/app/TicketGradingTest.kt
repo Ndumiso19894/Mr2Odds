@@ -11,6 +11,10 @@ class TicketGradingTest {
         assertEquals(true, TicketGrading.soccer("1X", 1, 1))
         assertEquals(true, TicketGrading.soccer("HO05", 1, 0))
         assertNull(TicketGrading.soccer("CO95", 2, 1))
+        assertEquals(true, TicketGrading.soccer("CO95", 2, 1, 6, 4))
+        assertEquals(false, TicketGrading.soccer("CHO35", 2, 1, 3, null))
+        assertNull(TicketGrading.soccer("CO95", 2, 1, 6, null))
+        assertNull(TicketGrading.soccer("CHO40", 2, 1, 4, 0))
     }
     @Test fun openLegPreventsWinningNotification() {
         assertNull(TicketGrading.ticket(listOf(true, null)))

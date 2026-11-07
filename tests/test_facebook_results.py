@@ -148,3 +148,29 @@ def test_claim_loader_fails_closed_and_checks_success(monkeypatch):
     session.get.side_effect=failed
     with pytest.raises(RuntimeError,match='unconfirmed'):
         history.load_claims(DAY,confirmed_only=True,session=session)
+
+
+def test_pending_results_refresh_by_verified_event_id_and_regulation(monkeypatch):
+    picks=[item(1,'CO85'),item(2)]
+    for i,p in enumerate(picks,1):p['livescore_id']=str(i)
+    data=archive(picks)
+    data['fixtures'][0]['score'].pop('hc');data['fixtures'][0]['score'].pop('ac')
+    data['fixtures'][1]['country']='Champions League';picks[1]['country']='Champions League'
+    events=[{'eid':str(i),'home':f'Home {i}','away':f'Away {i}','status':'FT','hg':2,'ag':1,
+             'kickoff':datetime(2026,11,4,21,0)} for i in (1,2)]
+    monkeypatch.setattr(results.livescore,'fetch_day',lambda *args:events)
+    monkeypatch.setattr(results.worldfeed,'fetch_stats',lambda *args:[6,4])
+    results.refresh_pending_results([claim(picks)],data,DAY)
+    assert [r['verdict'] for r in results.recap_items([claim(picks)],data,DAY)]==['WON','WON']
+
+
+def test_pending_refresh_rejects_ambiguous_or_conflicting_results(monkeypatch):
+    p=item(1,'CO85');p['livescore_id']='1';data=archive([p]);data['fixtures'][0]['score'].pop('hc')
+    event={'eid':'1','home':'Home 1','away':'Away 1','status':'AET','hg':2,'ag':1,'kickoff':datetime(2026,11,4,21,0)}
+    monkeypatch.setattr(results.livescore,'fetch_day',lambda *args:[event])
+    monkeypatch.setattr(results.worldfeed,'fetch_stats',lambda *args:[6,4])
+    results.refresh_pending_results([claim([p])],data,DAY)
+    assert results.recap_items([claim([p])],data,DAY)[0]['verdict']=='PENDING'
+    event.update(status='FT',hg=3)
+    results.refresh_pending_results([claim([p])],data,DAY)
+    assert results.recap_items([claim([p])],data,DAY)[0]['verdict']=='PENDING'

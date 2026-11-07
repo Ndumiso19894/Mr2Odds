@@ -15,7 +15,7 @@ internal object TicketGrading {
         return if (raw.contains('.')) n else n / 10.0
     }
 
-    fun soccer(sel: String, hg: Int, ag: Int): Boolean? {
+    fun soccer(sel: String, hg: Int, ag: Int, hc: Int? = null, ac: Int? = null): Boolean? {
         return when (sel) {
         "H" -> hg > ag
         "D", "X" -> hg == ag
@@ -28,7 +28,18 @@ internal object TicketGrading {
         else -> {
             val total = Regex("^([OU])(\\d+(?:\\.\\d+)?)$").matchEntire(sel)
             val team = Regex("^([HA])([OU])(\\d+(?:\\.\\d+)?)$").matchEntire(sel)
+            val corners = Regex("^C([HA])?([OU])(\\d+(?:\\.\\d+)?)$").matchEntire(sel)
             when {
+                corners != null -> {
+                    val n = line(corners.groupValues[3]) ?: return null
+                    val count = when (corners.groupValues[1]) {
+                        "H" -> hc
+                        "A" -> ac
+                        else -> if (hc != null && ac != null) hc + ac else null
+                    } ?: return null
+                    if (count < 0 || count.toDouble() == n) null
+                    else if (corners.groupValues[2] == "O") count > n else count < n
+                }
                 total != null -> {
                     val n = line(total.groupValues[2]) ?: return null
                     val goals = (hg + ag).toDouble()

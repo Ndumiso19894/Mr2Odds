@@ -13,7 +13,7 @@
   function saveTickets() {
     try { localStorage.setItem('pr_tickets', JSON.stringify(tickets)); } catch (e) { /* quota: the full copy below is the durable one */ }
     PR.persist('pr_tickets_full', JSON.stringify(tickets));
-    if (PR.native && PR.native.setString) { try { PR.native.setString('tickets', JSON.stringify(tickets.filter((t) => t.status === 'pending').map((t) => ({ id: t.id, odds: t.odds, stake: t.stake, legs: t.legs.map((l) => ({ eid: l.eid, sel: l.sel, sport: l.sport || 'football', market: l.market || '', selection: l.selection || '', line: l.line == null ? null : l.line, home: l.home, away: l.away, kickoff: l.kickoff, label: l.label })) })))); } catch (e) { /* ignore */ } }
+    if (PR.native && PR.native.setString) { try { PR.native.setString('tickets', JSON.stringify(tickets.filter((t) => t.status === 'pending').map((t) => ({ id: t.id, odds: t.odds, stake: t.stake, legs: t.legs.map((l) => ({ fixture: l.fixture, eid: l.eid, country: l.country, league: l.league, sel: l.sel, sport: l.sport || 'football', market: l.market || '', selection: l.selection || '', line: l.line == null ? null : l.line, home: l.home, away: l.away, kickoff: l.kickoff, label: l.label })) })))); } catch (e) { /* ignore */ } }
   }
   const totalOdds = (legs) => legs.reduce((a, l) => a * (l.status === 'void' ? 1 : (l.odds || 1)), 1);
   // Do not lock a stale slip against a newer snapshot where its selection disappeared,
@@ -257,8 +257,14 @@
     const df = day && day.fixtures ? day.fixtures.find((x) => x.id === l.fixture) : null;
     const sc = df && df.score;
     if (s && s.hg != null && isLive(s)) return { hg: s.hg, ag: s.ag, status: s.status, live: true, ft: false };
-    if (sc) return { hg: sc.hg, ag: sc.ag, status: sc.status, live: false, ft: isFT(sc) && sc.hg != null && sc.ag != null, hc: sc.hc, ac: sc.ac, hcards: sc.hcards, acards: sc.acards, postponed: ['Postp.', 'Canc.', 'Aband.'].includes(sc.status) };
-    if (s && s.hg != null) return { hg: s.hg, ag: s.ag, status: s.status, live: false, ft: isFT(s) };
+    if (sc) {
+      const scope = [df && df.country, df && df.league, df && df.div].join(' ');
+      const ambiguous = /uefa|europe|champions league|europa league|conference league|\bcup\b/i.test(scope);
+      const liveRegulation = s && s.status === 'FT' && s.hg === sc.hg && s.ag === sc.ag;
+      const final = sc.status === 'FT' && sc.hg != null && sc.ag != null && (!ambiguous || sc.regulation_confirmed === true || liveRegulation);
+      return { hg: sc.hg, ag: sc.ag, status: sc.status, live: false, ft: final, hc: sc.hc, ac: sc.ac, hcards: sc.hcards, acards: sc.acards, postponed: ['Postp.', 'Canc.', 'Aband.'].includes(sc.status) };
+    }
+    if (s && s.hg != null) return { hg: s.hg, ag: s.ag, status: s.status, live: false, ft: s.status === 'FT' && s.ag != null };
     return null;
   }
   function settleLeg(l, sc) {

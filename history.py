@@ -97,7 +97,10 @@ class Days:
         today = self.now.date()
         for date, day in self.days.items():
             for f in day["fixtures"]:
-                if f.get("score") or not f.get("livescore_id"):
+                if not f.get("livescore_id"):
+                    continue
+                score = f.get("score")
+                if score and score.get("regulation_confirmed") is not None:
                     continue
                 ko = datetime.strptime(f["kickoff"], "%Y-%m-%d %H:%M").date()
                 if 0 <= (today - ko).days <= LIVESCORE_BACK_DAYS:
@@ -113,6 +116,10 @@ class Days:
         for date, day in self.days.items():
             for f in day["fixtures"]:
                 if f.get("score"):
+                    score = f["score"]
+                    e = ls_by_eid.get(str(f.get("livescore_id")))
+                    if score.get("regulation_confirmed") is None and e and e.get("status") == "FT" and (score.get("hg"),score.get("ag")) == (e.get("hg"),e.get("ag")) and score.get("hg") is not None:
+                        score["regulation_confirmed"] = True
                     continue
                 ko = datetime.strptime(f["kickoff"], "%Y-%m-%d %H:%M")
                 if ko > now_naive - timedelta(hours=1, minutes=45):
@@ -127,10 +134,11 @@ class Days:
                 if e and e.get("hg") is not None and e.get("ag") is not None:
                     st = e.get("status", "")
                     if livescore.is_finished(st) and st in ("FT", "AET", "AP", "Awarded"):
-                        f["score"] = {"hg": int(e["hg"]), "ag": int(e["ag"]), "status": "FT", "src": "livescore"}
-                        extra.append({"country": f["country"], "div": f["div"], "league": f["league"],
-                                      "date": pd.Timestamp(date), "home": f["home"], "away": f["away"],
-                                      "hg": float(e["hg"]), "ag": float(e["ag"])})
+                        f["score"] = {"hg": int(e["hg"]), "ag": int(e["ag"]), "status": st, "src": "livescore", "regulation_confirmed": st == "FT"}
+                        if st == "FT":
+                            extra.append({"country": f["country"], "div": f["div"], "league": f["league"],
+                                          "date": pd.Timestamp(date), "home": f["home"], "away": f["away"],
+                                          "hg": float(e["hg"]), "ag": float(e["ag"])})
                     elif st in ("Postp.", "Canc.", "Aband."):
                         f["score"] = {"hg": None, "ag": None, "status": st, "src": "livescore"}
         if archive is not None:
@@ -185,7 +193,7 @@ class Days:
                     ev = archive.event_for(str(eid))
                     if ev and ev.get("hth") is not None:
                         sc["hth"], sc["hta"] = _int(ev["hth"]), _int(ev["hta"])
-                # -- statistics: archive first, then a direct probe (at most STATS_PROBES runs per match)
+                # -- statistics: archive first, then a rate-limited direct probe
                 if sc.get("hc") is None or sc.get("ac") is None or sc.get("hs") is None:
                     st = archive.stats_for(str(eid))
                     if st:
