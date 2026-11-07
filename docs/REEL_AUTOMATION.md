@@ -1,22 +1,14 @@
-# Daily Bet Advisor selection reel
+# Morning reel
 
-A separate automation creates one vertical 1080 × 1920 reel per day at **07:00 SAST**. It uses the same strict upcoming shortlist as the app's Bet Advisor, revalidates the snapshot and actual SportyBet odds, and includes 5–8 different matches with the Mr 2 Odds logo, actual club crests, country, league, kickoff, selection and odds. Each match gets a readable ten-second slide with both club crests visible throughout, a small 18+ badge, and the Mr 2 Odds logo rotating like a disc. The first match doubles as an opening hook; the final slide includes a follow prompt without adding or shortening slides. The supplied music plays throughout with no voiceover. Captions say `Today's football picks - <date>`, ask which fixture interests viewers, invite them to follow, include a responsible-betting reminder, and use hashtags only for the pictured teams.
+The 07:00 Facebook picture post and one Facebook/Telegram reel are prepared from
+the same saved manifest. Three 9:16 accumulator pictures become three slides,
+each displayed for ten seconds. The user's logo rotates as a CD, a small 18+
+mark is visible, and the existing verified music is used without voiceover.
+The separate daily reel and the 13:00 1X2 reel are disabled, so they cannot
+create additional videos. Branch-dispatched diagnostics render privately and
+never post. Source and delivery claims are independent and are saved before
+external writes; an ambiguous response is never automatically retried.
 
-This adds a reel without replacing the existing selection pictures or 08:00 results post. It sends the same MP4 to the configured Facebook Page via the Reels API and to the existing Telegram chat as a video. Each channel is independently claimed before upload, so an ambiguous Facebook or Telegram response is never automatically resent. Facebook must confirm its publishing phase, not just accept the upload. The reel is not made if fewer than five qualifying matches with both real crests are available; it never manufactures prices or substitutes a badge. GitHub's schedule and scan fallback are best-effort, not exact-minute guarantees.
-
-## One-time setup
-
-The Facebook and Telegram credentials are the existing `FACEBOOK_PAGE_ACCESS_TOKEN`, `FACEBOOK_PAGE_ID`, `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` Actions secrets. On the Page, the token/app must also be allowed to publish Reels. The Telegram bot must be able to send video to the configured chat.
-
-Add one more GitHub Actions repository secret named **`REEL_MUSIC_FILE_ID`**. Its value is the ID between `/d/` and `/view` in the supplied Google Drive music link. The file must remain accessible to anyone with its link so a GitHub runner can download it; this workflow does not change its sharing permissions. The file ID is kept out of the public repository. Only a SHA-256 hash of the selected track is in the code; the downloaded bytes must match, so an inaccessible link, an HTML error page, or a changed file cannot silently replace the music. If the track is intentionally changed, update the expected digest and verify you have the rights to use it on Facebook and Telegram. The provided audio itself is not committed to this repository.
-
-## Recovery and monitoring
-
-The `Daily selection reel` workflow is scheduled for 07:00 SAST and can also be dispatched by the scan fallback during the 07:00 hour. A normal manual run outside that hour is a no-op. Only when a live test is explicitly requested, a manual dispatch with `live_test=true` can run at another time. An explicitly authorized revised test uses `revised_test=true` and separate `test-reel-10s-*` claims; the two inputs are mutually exclusive. Each test adds `Test reel` to the caption and has its own source and platform claims, limited to one attempt per platform per day; it does not consume or bypass the normal daily claims. Before any publication, the exact MP4 and manifest are saved as the short-lived `daily-reel-source-YYYY-MM-DD` artifact; independently named Facebook and Telegram claim artifacts are kept for 35 days. A later run reuses the same MP4 for a missing destination rather than generating a different video. Snapshot age and kickoffs are rechecked before either upload.
-
-A failure before a platform claim is safe to retry during the morning window. After a platform is claimed, check the actual Facebook Page or Telegram chat before manual recovery: a timeout can mean the video was accepted. Never remove a claim or resend without confirming it did not arrive. A Facebook publishing status that remains processing is reported as unconfirmed, not as a verified live reel. A lack of matches, a missing music secret, failed download, or missing permissions is visible in the Actions run and does not alter existing image or results posting.
-
-Stats Watch fallback reels use the same supplied music, rotating logo and 18+
-mark. Two teams share each ten-second portrait slide, so a ten-team reel lasts
-50 seconds and remains below Meta's 90-second limit. Stats Watch and betting
-reels keep the same independent source and delivery preclaims.
+When there are too few qualifying accumulator picks, a verified Stats Watch
+picture and matching reel can be used instead, with no invented odds. If no
+reliable data, crests or music are available, the workflow fails closed.

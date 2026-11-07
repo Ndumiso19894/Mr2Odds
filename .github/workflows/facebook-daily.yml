@@ -1,30 +1,23 @@
 name: Facebook daily selections
 
 on:
-  # UTC = SAST minus two hours: selection cards at 07, 12, 17 and results at 08.
   schedule:
-    - cron: '0 5,6,10,15 * * *'
+    - cron: '0 5,6 * * *' # 07:00 predictions and 08:00 results, SAST
   workflow_dispatch:
-    inputs:
-      repost_morning:
-        description: 'Repost the confirmed morning selections as a single picture (branch runs are private previews)'
-        type: boolean
-        default: false
 
 permissions:
   contents: read
   actions: read
 
-# Serialize triggers so two runs cannot claim the same slot or reuse a fixture.
 concurrency:
   group: facebook-daily-selections
   cancel-in-progress: false
 
 jobs:
   diagnose:
-    if: github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/main' && inputs.repost_morning != true
+    if: github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -32,214 +25,225 @@ jobs:
           python-version: '3.12'
       - run: |
           pip install --only-binary=:all: -r requirements.txt 'Pillow>=10,<12' 'imageio-ffmpeg>=0.6,<1'
-      - name: Check Page token without posting
-        env:
-          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
-          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-        run: python scripts/facebook_post.py diagnose
-      - name: Check prior post records without posting
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          python - <<'PY'
-          from datetime import datetime
-          from scripts.facebook_history import load_claims
-          from scripts.facebook_post import SAST
-          claims = load_claims(datetime.now(SAST).date().isoformat(), confirmed_only=True)
-          print(f'Found {len(claims)} confirmed selection-card records for today.')
-          PY
-      - name: Check optional reel music without posting
-        env:
-          REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
-        run: |
-          python - <<'PY'
-          import os, tempfile
-          from pathlib import Path
-          if not os.environ.get('REEL_MUSIC_FILE_ID'):
-              raise SystemExit('Reel music is not configured; set the REEL_MUSIC_FILE_ID repository secret.')
-          from scripts.selection_reel import download_music
-          with tempfile.TemporaryDirectory() as d:
-              download_music(Path(d) / 'music.mp3')
-          print('Supplied reel music is accessible and verified.')
-          PY
-      - name: Check out data for a private reel dry run
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: data
           path: live-data
-      - name: Render a reel without publishing
+      - name: Render and validate morning content privately
         env:
           REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
         run: |
-          python scripts/selection_reel.py prepare --snapshot live-data/data/app/latest.json --output "$RUNNER_TEMP/reel-dry-run"
-          if [ -s "$RUNNER_TEMP/reel-dry-run/selection-reel.mp4" ]; then
-            echo '::notice::Reel dry run rendered successfully; nothing was published.'
-          else
-            echo '::notice::Reel dry run skipped because too few eligible matches have verified crests.'
-          fi
-      - name: Check 1X2 selections without publishing
+          python scripts/facebook_accumulators.py prepare --snapshot live-data/data/app/latest.json --output "$RUNNER_TEMP/morning-preview"
+          python scripts/facebook_accumulators.py validate --output "$RUNNER_TEMP/morning-preview"
+          echo '::notice::Private preview passed; nothing was published.'
+      - name: Check yesterday's result refresh privately
         env:
           GH_TOKEN: ${{ github.token }}
-          REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
-        run: python scripts/facebook_one_x_two.py prepare --snapshot live-data/data/app/latest.json --output "$RUNNER_TEMP/one-x-two-dry-run"
+        run: |
+          python - <<'PY'
+          import json
+          from collections import Counter
+          from datetime import datetime, timedelta
+          from pathlib import Path
+          from scripts import facebook_history as history, facebook_post as fb, facebook_results as results
+          day = (datetime.now(fb.SAST).date() - timedelta(days=1)).isoformat()
+          claims = history.load_claims(day, confirmed_only=True)
+          path = Path('live-data/data/app/days') / (day + '.json')
+          if claims and path.is_file():
+              data = json.loads(path.read_text())
+              before = Counter(x['verdict'] for x in results.recap_items(claims,data,day))
+              results.refresh_pending_results(claims,data,day)
+              after = Counter(x['verdict'] for x in results.recap_items(claims,data,day))
+              print(f"::notice::Private result check: {before.get('PENDING',0)} pending before refresh, {after.get('PENDING',0)} after; no post was made.")
+          else:
+              print('::notice::No confirmed prior selection data to check.')
+          PY
   post:
-    if: github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.repost_morning != true)
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Select current South African posting window
-        id: day
+      - uses: actions/checkout@v4
+      - name: Select morning window and look up existing claims
+        id: claims
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           day=$(TZ=Africa/Johannesburg date +%F)
           yesterday=$(TZ=Africa/Johannesburg date -d yesterday +%F)
           slot=$(TZ=Africa/Johannesburg date +%H)
-          case "$slot" in
-            07|12|17) claim="facebook-post-$day-$slot" ;;
-            08) claim="facebook-results-$day" ;;
-            *) slot=none; claim=none ;;
-          esac
           echo "date=$day" >> "$GITHUB_OUTPUT"
           echo "yesterday=$yesterday" >> "$GITHUB_OUTPUT"
+          case "$slot" in 07|08) ;; *) slot=none ;; esac
           echo "slot=$slot" >> "$GITHUB_OUTPUT"
-          echo "claim=$claim" >> "$GITHUB_OUTPUT"
-          echo "Current posting window: $slot SAST"
-      - name: Check whether this slot was already claimed
-        id: claim
-        if: steps.day.outputs.slot != 'none'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          CLAIM_NAME: ${{ steps.day.outputs.claim }}
-        run: |
-          set -euo pipefail
-          ids=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=$CLAIM_NAME" --jq ".artifacts[] | select(.name == \"$CLAIM_NAME\" and .expired == false) | .id")
-          if [ -n "$ids" ]; then
-            echo "This slot was already attempted; check the Page before manual recovery."
-            echo "available=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "available=true" >> "$GITHUB_OUTPUT"
-          fi
-      - name: Check Facebook secrets are configured
-        if: steps.claim.outputs.available == 'true'
-        env:
-          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
-          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-        run: |
-          if [ -z "$FACEBOOK_PAGE_ACCESS_TOKEN" ] || ! [[ "$FACEBOOK_PAGE_ID" =~ ^[0-9]+$ ]]; then
-            echo "Configure FACEBOOK_PAGE_ACCESS_TOKEN and numeric FACEBOOK_PAGE_ID in Actions secrets." >&2
+          if [ "$slot" = none ]; then exit 0; fi
+          for service in source photo facebook telegram results; do
+            case "$service" in
+              source) name="morning-accumulators-source-$day" ;;
+              photo) name="facebook-post-$day-07" ;;
+              facebook) name="morning-accumulators-facebook-$day" ;;
+              telegram) name="morning-accumulators-telegram-$day" ;;
+              results) name="facebook-results-$day" ;;
+            esac
+            values=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=$name" --jq ".artifacts[] | select(.name == \"$name\" and .expired == false) | .workflow_run.id")
+            count=$(printf '%s\n' "$values" | grep -c . || true)
+            if [ "$count" -gt 1 ]; then echo "Duplicate $service claims require manual review." >&2; exit 1; fi
+            if [ "$count" -eq 1 ]; then
+              echo "${service}_exists=true" >> "$GITHUB_OUTPUT"
+              [ "$service" != source ] || echo "source_run=$values" >> "$GITHUB_OUTPUT"
+            else
+              echo "${service}_exists=false" >> "$GITHUB_OUTPUT"
+            fi
+          done
+          if [ "$slot" = '07' ] && [ "$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=facebook-post-$day-07" --jq ".artifacts[] | select(.name == \"facebook-post-$day-07\" and .expired == false) | .id" | wc -l)" -gt 0 ] && [ "$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=morning-accumulators-source-$day" --jq ".artifacts[] | select(.name == \"morning-accumulators-source-$day\" and .expired == false) | .id" | wc -l)" -eq 0 ]; then
+            echo 'An earlier morning picture exists without the new matching source; do not create another post or video.' >&2
             exit 1
           fi
-      - name: Check out latest published football data
-        if: steps.claim.outputs.available == 'true'
+      - uses: actions/setup-python@v5
+        if: steps.claims.outputs.slot != 'none'
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        if: steps.claims.outputs.slot != 'none'
+        run: |
+          pip install --only-binary=:all: --retries 5 --timeout 60 -r requirements.txt 'Pillow>=10,<12' 'imageio-ffmpeg>=0.6,<1'
+      - name: Check out football data
+        if: (steps.claims.outputs.slot == '07' && steps.claims.outputs.source_exists != 'true') || (steps.claims.outputs.slot == '08' && steps.claims.outputs.results_exists != 'true')
         uses: actions/checkout@v4
         with:
           ref: data
           path: live-data
-      - name: Set up Python
-        if: steps.claim.outputs.available == 'true'
-        uses: actions/setup-python@v5
+      - name: Restore the matching prepared source
+        if: steps.claims.outputs.slot == '07' && steps.claims.outputs.source_exists == 'true'
+        uses: actions/download-artifact@v4
         with:
-          python-version: '3.12'
-      - name: Install image and policy dependencies
-        if: steps.claim.outputs.available == 'true'
+          name: morning-accumulators-source-${{ steps.claims.outputs.date }}
+          path: morning-output
+          run-id: ${{ steps.claims.outputs.source_run }}
+          github-token: ${{ github.token }}
+      - name: Prepare the three pictures and matching reel
+        id: prepare
+        if: steps.claims.outputs.slot == '07' && steps.claims.outputs.source_exists != 'true'
+        env:
+          REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
+        run: python scripts/facebook_accumulators.py prepare --snapshot live-data/data/app/latest.json --output morning-output
+      - name: Save the matched source before any publication
+        if: steps.prepare.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: morning-accumulators-source-${{ steps.claims.outputs.date }}
+          path: morning-output/
+          retention-days: 3
+          if-no-files-found: error
+      - name: Revalidate pictures and matching reel
+        id: valid
+        if: steps.claims.outputs.slot == '07' && (steps.prepare.outputs.ready == 'true' || steps.claims.outputs.source_exists == 'true')
+        run: python scripts/facebook_accumulators.py validate --output morning-output
+      - name: Confirm an earlier morning photo succeeded
+        id: confirm-photo
+        if: steps.valid.outcome == 'success' && steps.claims.outputs.photo_exists == 'true' && (steps.claims.outputs.facebook_exists != 'true' || steps.claims.outputs.telegram_exists != 'true')
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          pip install --only-binary=:all: --retries 5 --timeout 60 -r requirements.txt 'Pillow>=10,<12'
-      - name: Verify Page access before claiming a post
-        if: steps.claim.outputs.available == 'true'
+          python - <<'PY'
+          from datetime import datetime
+          from scripts import facebook_history as history, facebook_post as fb
+          day = datetime.now(fb.SAST).date().isoformat()
+          claims = history.load_claims(day, confirmed_only=True)
+          if not any(c['name'] == f'facebook-post-{day}-07' for c in claims):
+              raise SystemExit('Morning photo is unconfirmed; check the Page before recovery.')
+          PY
+      - name: Verify Facebook Page access
+        id: facebook-check
+        if: (steps.valid.outcome == 'success' && (steps.claims.outputs.photo_exists != 'true' || steps.claims.outputs.facebook_exists != 'true')) || (steps.claims.outputs.slot == '08' && steps.claims.outputs.results_exists != 'true')
         env:
           FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
         run: python scripts/facebook_post.py diagnose
-      - name: Prepare different eligible selections with real crests
-        if: steps.claim.outputs.available == 'true' && steps.day.outputs.slot != '08'
-        id: prepare-picks
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: python scripts/facebook_post.py prepare --exclude-claimed --snapshot live-data/data/app/latest.json --output facebook-output/selections.png
-      - name: Prepare two images of yesterday's recorded results
-        if: steps.claim.outputs.available == 'true' && steps.day.outputs.slot == '08'
-        id: prepare-results
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          python scripts/facebook_results.py prepare --day-file "live-data/data/app/days/${{ steps.day.outputs.yesterday }}.json" --badges live-data/data/app/badges.json --output facebook-output
-      # Claim before the first external write: even ambiguous Facebook outcomes are never retried automatically.
-      - name: Record the slot posting claim
-        if: steps.prepare-picks.outputs.ready == 'true' || steps.prepare-results.outputs.ready == 'true'
+      - name: Record the morning photo claim
+        id: photo-claim
+        if: steps.valid.outcome == 'success' && steps.claims.outputs.photo_exists != 'true' && steps.facebook-check.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.day.outputs.claim }}
-          path: facebook-output/
+          name: facebook-post-${{ steps.claims.outputs.date }}-07
+          path: |
+            morning-output/selections.json
+            morning-output/accumulator-*.png
+            morning-output/selections.png
           retention-days: 35
           if-no-files-found: error
+      # Exact step name is used by results history to confirm publication.
       - name: Publish photo and caption to Facebook
-        if: steps.prepare-picks.outputs.ready == 'true'
+        id: photo
+        if: steps.photo-claim.outcome == 'success'
         env:
           FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-        run: python scripts/facebook_post.py publish --image facebook-output/selections.png
-      - name: Publish the two-image results post to Facebook
-        if: steps.prepare-results.outputs.ready == 'true'
+        run: python scripts/facebook_accumulators.py publish --output morning-output
+      - name: Check Telegram configuration
+        id: telegram-check
+        if: always() && steps.valid.outcome == 'success' && steps.claims.outputs.telegram_exists != 'true' && (steps.photo.outcome == 'success' || (steps.claims.outputs.photo_exists == 'true' && steps.confirm-photo.outcome == 'success'))
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ] || { echo 'Telegram configuration missing.' >&2; exit 1; }
+      - name: Prepare independent reel claim markers
+        if: always() && steps.valid.outcome == 'success' && (steps.photo.outcome == 'success' || (steps.claims.outputs.photo_exists == 'true' && steps.confirm-photo.outcome == 'success'))
+        run: |
+          mkdir -p facebook-claim telegram-claim
+          sha256sum morning-output/selection-reel.mp4 | cut -d' ' -f1 > facebook-claim/sha256.txt
+          cp facebook-claim/sha256.txt telegram-claim/sha256.txt
+      - name: Claim Facebook reel delivery
+        id: facebook-claim
+        if: steps.valid.outcome == 'success' && steps.claims.outputs.facebook_exists != 'true' && steps.facebook-check.outcome == 'success' && (steps.photo.outcome == 'success' || (steps.claims.outputs.photo_exists == 'true' && steps.confirm-photo.outcome == 'success'))
+        uses: actions/upload-artifact@v4
+        with:
+          name: morning-accumulators-facebook-${{ steps.claims.outputs.date }}
+          path: facebook-claim/
+          retention-days: 35
+          if-no-files-found: error
+      - name: Publish the matching Facebook reel
+        if: steps.facebook-claim.outcome == 'success'
         env:
           FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-        run: python scripts/facebook_results.py publish --output facebook-output
-
-  repost-morning:
-    # Explicit manual request only. Branch runs prepare a private preview; only
-    # the merged main workflow may publish. This never sends a reel.
-    if: github.event_name == 'workflow_dispatch' && inputs.repost_morning == true
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - name: Check for a previous repost claim
-        if: github.ref == 'refs/heads/main'
-        id: claim
+        run: python scripts/selection_reel.py facebook --output morning-output
+      - name: Claim Telegram reel delivery
+        id: telegram-claim
+        if: always() && steps.valid.outcome == 'success' && steps.claims.outputs.telegram_exists != 'true' && steps.telegram-check.outcome == 'success' && (steps.photo.outcome == 'success' || (steps.claims.outputs.photo_exists == 'true' && steps.confirm-photo.outcome == 'success'))
+        uses: actions/upload-artifact@v4
+        with:
+          name: morning-accumulators-telegram-${{ steps.claims.outputs.date }}
+          path: telegram-claim/
+          retention-days: 35
+          if-no-files-found: error
+      - name: Send the matching reel to Telegram
+        if: always() && steps.telegram-claim.outcome == 'success'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scripts/selection_reel.py telegram --output morning-output
+      - name: Prepare yesterday's verified results
+        id: prepare-results
+        if: steps.claims.outputs.slot == '08' && steps.claims.outputs.results_exists != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          set -euo pipefail
-          day=$(TZ=Africa/Johannesburg date +%F)
-          name="facebook-morning-repost-$day"
-          echo "name=$name" >> "$GITHUB_OUTPUT"
-          ids=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=$name" --jq ".artifacts[] | select(.name == \"$name\" and .expired == false) | .id")
-          if [ -n "$ids" ]; then
-            echo 'A repost was already attempted; check the Page before any recovery.' >&2
-            exit 1
-          fi
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - run: |
-          pip install --only-binary=:all: --retries 5 --timeout 60 -r requirements.txt 'Pillow>=10,<12'
-      - uses: actions/checkout@v4
-        with:
-          ref: data
-          path: live-data
-      - name: Rebuild the confirmed morning picture with current verified prices
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: python scripts/facebook_morning_repost.py --snapshot live-data/data/app/latest.json --output repost-output/selections.png
-      - name: Verify Page access before claiming the repost
-        if: github.ref == 'refs/heads/main'
-        env:
-          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
-          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-        run: python scripts/facebook_post.py diagnose
-      - name: Record the separate repost claim
-        if: github.ref == 'refs/heads/main'
+          python scripts/facebook_results.py prepare --day-file "live-data/data/app/days/${{ steps.claims.outputs.yesterday }}.json" --badges live-data/data/app/badges.json --output results-output
+      - name: Record the results claim
+        id: results-claim
+        if: steps.prepare-results.outputs.ready == 'true' && steps.facebook-check.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.claim.outputs.name }}
-          path: repost-output/
+          name: facebook-results-${{ steps.claims.outputs.date }}
+          path: results-output/
           retention-days: 35
           if-no-files-found: error
-      - name: Publish the picture only
-        if: github.ref == 'refs/heads/main'
+      - name: Publish the results post
+        if: steps.results-claim.outcome == 'success'
         env:
           FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-        run: python scripts/facebook_post.py publish --image repost-output/selections.png
+        run: python scripts/facebook_results.py publish --output results-output

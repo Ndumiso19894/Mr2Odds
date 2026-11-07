@@ -103,10 +103,10 @@ def test_publish_uses_photo_endpoint_and_secret_without_logging(tmp_path, monkey
 
 def test_workflow_claim_precedes_publish_and_never_retries():
     workflow = Path('.github/workflows/facebook-daily.yml').read_text()
-    assert workflow.index('Record the slot posting claim') < workflow.index('Publish photo and caption')
+    assert workflow.index('Record the morning photo claim') < workflow.index('Publish photo and caption')
     assert "group: facebook-daily-selections" in workflow
     assert 'FACEBOOK_PAGE_ACCESS_TOKEN' in workflow and 'FACEBOOK_PAGE_ID' in workflow
-    assert 'actions/artifacts?per_page=100&name=$CLAIM_NAME' in workflow
+    assert 'actions/artifacts?per_page=100&name=$name' in workflow
     assert 'cron:' in workflow
 
 
@@ -209,12 +209,10 @@ def test_missing_country_league_or_unknown_kickoff_are_not_invented():
 def test_four_slot_workflow_and_old_claims_are_recognized():
     workflow = Path('.github/workflows/facebook-daily.yml').read_text()
     fallback = Path('.github/workflows/scan-30.yml').read_text()
-    assert "0 5,6,10,15 * * *" in workflow
-    assert '07|12|17) claim="facebook-post-$day-$slot"' in workflow
-    assert '08) claim="facebook-results-$day"' in workflow
-    assert '07)' in fallback and '08|12|17)' in fallback
-    assert '--exclude-claimed' in workflow
-    assert workflow.index('Record the slot posting claim') < workflow.index('Publish the two-image results')
+    assert "0 5,6 * * *" in workflow
+    assert '07|08) gh workflow run facebook-daily.yml' in fallback
+    assert 'facebook-1x2.yml' not in fallback and 'facebook-reel.yml' not in fallback
+    assert workflow.index('Record the results claim') < workflow.index('Publish the results post')
     assert fb.facebook_history.claim_names('2026-11-04') == [
         'facebook-post-2026-11-04', 'facebook-post-2026-11-04-retry', 'facebook-post-2026-11-04-redesign',
         'facebook-post-2026-11-04-07', 'facebook-post-2026-11-04-12', 'facebook-post-2026-11-04-13', 'facebook-post-2026-11-04-17']
@@ -276,10 +274,10 @@ def test_repost_requires_confirmed_matching_morning_bet_picture(tmp_path):
         repost.prepare(tmp_path/'not_read.json', tmp_path/'no.png', [{'name': 'facebook-post-2026-11-04-07', 'manifest': {'series':'stats-watch'}}], NOW)
 
 
-def test_repost_workflow_is_explicit_and_picture_only():
+def test_morning_album_and_reel_use_same_source_with_separate_claims():
     text = Path('.github/workflows/facebook-daily.yml').read_text()
-    section = text.split('  repost-morning:',1)[1]
-    assert "github.event_name == 'workflow_dispatch' && inputs.repost_morning == true" in section
-    assert section.index('Record the separate repost claim') < section.index('Publish the picture only')
-    assert "if: github.ref == 'refs/heads/main'" in section
-    assert 'selection_reel.py' not in section
+    assert 'repost-morning:' not in text
+    assert text.index('Save the matched source before any publication') < text.index('Record the morning photo claim')
+    assert text.index('Record the morning photo claim') < text.index('Publish photo and caption to Facebook')
+    assert text.index('Claim Facebook reel delivery') < text.index('Publish the matching Facebook reel')
+    assert text.index('Claim Telegram reel delivery') < text.index('Send the matching reel to Telegram')

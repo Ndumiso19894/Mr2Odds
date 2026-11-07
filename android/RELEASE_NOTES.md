@@ -1,3 +1,8 @@
+## Pending ticket results
+- Pending football tickets now refresh their match-day records when the app is open and recheck when updated scores or corner statistics arrive.
+- Background checks also look up recent archived match days and can grade corner selections when the required statistics are available. Missing or ambiguous information remains pending.
+- Existing tickets and historical records are retained.
+
 ## 80% markets and the 1.16 price floor
 - The 80%+ view now requires each selection to have its own SportyBet price of at least 1.16, as well as a published model probability of at least 80%. Multiple markets per match can appear; the board remains analysis only, not a shortlist.
 - Current markets priced below 1.16 are hidden throughout the app and current exports. Saved slip selections with an unavailable or changed price must be removed and re-added; existing locked tickets and historical results are retained. Prices are from the latest analysis and can change.

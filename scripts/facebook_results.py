@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from concurrent.futures import ThreadPoolExecutor
 import os
 import sys
 from datetime import datetime, timedelta
@@ -14,6 +15,9 @@ from PIL import Image, ImageDraw, ImageOps
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import competition_policy
+import livescore
+import sporty
+import worldfeed
 import safe
 from scripts import facebook_history as records
 from scripts import facebook_post as fb
@@ -62,7 +66,7 @@ def recap_items(claims, day_data, day):
             elif valid_score:
                 # UEFA matches may finish after extra time: the archived FT label does
                 # not always distinguish 90 minutes, so never guess bookmaker settlement.
-                if not competition_policy._UEFA_NAMED.search(' '.join(competition_policy._text(x) for x in (country, league, (found or {}).get('div')))) and competition_policy._text(country) not in {'europe', 'champions league', 'europa league', 'conference league', 'europa conference league'}:
+                if score.get('regulation_confirmed') is True or (not competition_policy._UEFA_NAMED.search(' '.join(competition_policy._text(x) for x in (country, league, (found or {}).get('div')))) and competition_policy._text(country) not in {'europe', 'champions league', 'europa league', 'conference league', 'europa conference league'}):
                     outcome = safe.settle(sel, hg, ag, score.get('hc'), score.get('ac'))
                     if outcome is not None:
                         verdict = 'WON' if outcome else 'LOST'
@@ -75,6 +79,59 @@ def recap_items(claims, day_data, day):
         raise ValueError('More than 24 distinct prior picks do not fit clearly on two result images')
     return items
 
+
+
+def refresh_pending_results(claims, day_data, day):
+    """Refresh only unresolved posted fixtures using the exact Livescore event ID.
+
+    The persisted archive is never rewritten here. Feed failures and uncertain
+    regulation-time results remain pending rather than becoming guessed outcomes.
+    """
+    pending = [row for row in recap_items(claims, day_data, day) if row['verdict'] == 'PENDING' and row.get('livescore_id')]
+    if not pending:
+        return day_data
+    events = livescore.fetch_day(datetime.strptime(day, '%Y-%m-%d'), 2)
+    event_map = {str(e['eid']):e for e in events if e.get('eid')}
+    by_id = {str(f.get('id')):f for f in day_data['fixtures'] if f.get('id')}
+    stat_work = []
+    for original in pending:
+        found = by_id.get(str(original.get('fixture')))
+        if not found or records.match_key(found) != records.match_key(original):
+            continue
+        eid = str(original['livescore_id'])
+        if str(found.get('livescore_id') or '') != eid:
+            continue
+        event = event_map.get(eid)
+        if not event or event.get('status') != 'FT':
+            continue
+        try:
+            ko = datetime.strptime(original['kickoff'], '%Y-%m-%d %H:%M')
+            if abs((event['kickoff']-ko).total_seconds()) > 1200:
+                continue
+            if min(sporty.similarity(original['home'],event['home']),sporty.similarity(original['away'],event['away'])) < .75:
+                continue
+        except (KeyError, TypeError, ValueError):
+            continue
+        hg, ag = event.get('hg'), event.get('ag')
+        if any(not isinstance(v,int) or isinstance(v,bool) or v < 0 for v in (hg,ag)):
+            continue
+        score = found.get('score') or {}
+        if score.get('hg') is not None and (score.get('hg'),score.get('ag')) != (hg,ag):
+            continue
+        score.update({'status':'FT','hg':hg,'ag':ag,'regulation_confirmed':True})
+        found['score'] = score
+        if str(original.get('sel') or '').startswith('C') and (score.get('hc') is None or score.get('ac') is None):
+            stat_work.append((eid,score))
+    def fetch(entry):
+        eid, score = entry
+        stats = worldfeed.fetch_stats(eid)
+        if isinstance(stats,list) and len(stats)>=2:
+            for key, value in zip(('hc','ac'),stats[:2]):
+                if isinstance(value,int) and not isinstance(value,bool) and value >= 0:
+                    score[key]=value
+    with ThreadPoolExecutor(max_workers=6) as executor:
+        list(executor.map(fetch,stat_work))
+    return day_data
 
 def render_results(items, date, outputs, badge_index, session=None):
     """Render all matches across exactly two portrait images; never substitute crests."""
@@ -153,6 +210,7 @@ def prepare(day_file, badge_file, output, now=None, claims=None, session=None):
         print('No verified selection pictures from yesterday; skipping the recap.')
         return False
     data = json.loads(day_file.read_text(encoding='utf-8'))
+    data = refresh_pending_results(claims, data, day)
     items = recap_items(claims, data, day)
     if not items:
         print('No selections recorded for yesterday; skipping the recap.')

@@ -213,12 +213,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           case "$(TZ=Africa/Johannesburg date +%H)" in
-            07)
-              gh workflow run facebook-daily.yml --repo "$GITHUB_REPOSITORY" --ref main
-              gh workflow run facebook-reel.yml --repo "$GITHUB_REPOSITORY" --ref main
-              ;;
-            08|12|17) gh workflow run facebook-daily.yml --repo "$GITHUB_REPOSITORY" --ref main ;;
-            13) gh workflow run facebook-1x2.yml --repo "$GITHUB_REPOSITORY" --ref main ;;
+            07|08) gh workflow run facebook-daily.yml --repo "$GITHUB_REPOSITORY" --ref main ;;
             *) echo "Outside a Facebook posting window." ;;
           esac
 
@@ -248,6 +243,8 @@ jobs:
           node tests/test_home_ui.js
           node tests/test_competition_ui.js
           node tests/test_tickets_ui.js
+          node tests/test_pending_refresh_ui.js
+          node tests/test_price_floor_ui.js
           node tests/test_sheet_ui.js
           node tests/test_lineup_pilot_ui.js
           node tests/test_market_settlement_ui.js

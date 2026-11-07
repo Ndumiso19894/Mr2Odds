@@ -13,7 +13,7 @@
   function saveTickets() {
     try { localStorage.setItem('pr_tickets', JSON.stringify(tickets)); } catch (e) { /* quota: the full copy below is the durable one */ }
     PR.persist('pr_tickets_full', JSON.stringify(tickets));
-    if (PR.native && PR.native.setString) { try { PR.native.setString('tickets', JSON.stringify(tickets.filter((t) => t.status === 'pending').map((t) => ({ id: t.id, odds: t.odds, stake: t.stake, legs: t.legs.map((l) => ({ eid: l.eid, sel: l.sel, sport: l.sport || 'football', market: l.market || '', selection: l.selection || '', line: l.line == null ? null : l.line, home: l.home, away: l.away, kickoff: l.kickoff, label: l.label })) })))); } catch (e) { /* ignore */ } }
+    if (PR.native && PR.native.setString) { try { PR.native.setString('tickets', JSON.stringify(tickets.filter((t) => t.status === 'pending').map((t) => ({ id: t.id, odds: t.odds, stake: t.stake, legs: t.legs.map((l) => ({ fixture: l.fixture, eid: l.eid, country: l.country, league: l.league, sel: l.sel, sport: l.sport || 'football', market: l.market || '', selection: l.selection || '', line: l.line == null ? null : l.line, home: l.home, away: l.away, kickoff: l.kickoff, label: l.label })) })))); } catch (e) { /* ignore */ } }
   }
   const totalOdds = (legs) => legs.reduce((a, l) => a * (l.status === 'void' ? 1 : (l.odds || 1)), 1);
   // Do not lock a stale slip against a newer snapshot where its selection disappeared,
@@ -257,8 +257,14 @@
     const df = day && day.fixtures ? day.fixtures.find((x) => x.id === l.fixture) : null;
     const sc = df && df.score;
     if (s && s.hg != null && isLive(s)) return { hg: s.hg, ag: s.ag, status: s.status, live: true, ft: false };
-    if (sc) return { hg: sc.hg, ag: sc.ag, status: sc.status, live: false, ft: sc.hg != null, hc: sc.hc, ac: sc.ac, hcards: sc.hcards, acards: sc.acards, postponed: sc.hg == null };
-    if (s && s.hg != null) return { hg: s.hg, ag: s.ag, status: s.status, live: false, ft: isFT(s) };
+    if (sc) {
+      const scope = [df && df.country, df && df.league, df && df.div].join(' ');
+      const ambiguous = /uefa|europe|champions league|europa league|conference league|\bcup\b/i.test(scope);
+      const liveRegulation = s && s.status === 'FT' && s.hg === sc.hg && s.ag === sc.ag;
+      const final = sc.status === 'FT' && sc.hg != null && sc.ag != null && (!ambiguous || sc.regulation_confirmed === true || liveRegulation);
+      return { hg: sc.hg, ag: sc.ag, status: sc.status, live: false, ft: final, hc: sc.hc, ac: sc.ac, hcards: sc.hcards, acards: sc.acards, postponed: ['Postp.', 'Canc.', 'Aband.'].includes(sc.status) };
+    }
+    if (s && s.hg != null) return { hg: s.hg, ag: s.ag, status: s.status, live: false, ft: s.status === 'FT' && s.ag != null };
     return null;
   }
   function settleLeg(l, sc) {
@@ -318,19 +324,21 @@
     return changed;
   };
   /** make sure the day files needed to grade pending legs are loaded, then settle */
+  let lastFootballRefresh = {};
   PR.reconcileTickets = async function () {
     const need = new Set(); const tennisNeed = new Set(); const today = ymd(tzNow());
     tickets.forEach((t) => { if (t.status === 'pending') t.legs.forEach((l) => {
       const date = String(l.kickoff || '').slice(0, 10);
       if (l.status !== 'pending' || !/^\d{4}-\d{2}-\d{2}$/.test(date) || date > today) return;
       if (l.sport === 'tennis') tennisNeed.add(date);
-      else if (!(state.days[date] && state.days[date].fixtures)) need.add(date);
+      else if (!lastFootballRefresh[date] || Date.now() - lastFootballRefresh[date] >= 5 * 60000) need.add(date);
     }); });
-    for (const d of need) { try { await PR.loadDay(d); } catch (e) { /* not published yet */ } }
+    for (const d of need) { lastFootballRefresh[d] = Date.now(); try { await PR.loadDay(d, true); } catch (e) { /* retain cached results until retry */ } }
     await Promise.all([...tennisNeed].map(loadTicketTennisDay));
     // refresh stale day files (stats arrive a few hours after full time)
     if (PR.settleTickets(true)) { const top = state.stack[state.stack.length - 1]; if (top && (top.type === 'tickets' || top.type === 'ticket')) PR.render(); }
   };
+  if (typeof setInterval === 'function') setInterval(() => { if (tickets.some((t) => t.status === 'pending')) PR.reconcileTickets().catch(() => {}); }, 5 * 60000);
   PR.ticketFixtures = () => { const out = new Set(); tickets.forEach((t) => { if (t.status === 'pending') t.legs.forEach((l) => out.add(l.fixture)); }); return out; };
 
   // ------------------------------------------------------------------ tickets pages

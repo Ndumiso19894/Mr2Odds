@@ -206,19 +206,22 @@ def draw_age_badge(draw, box):
               font=font(25, True), fill='#274c49', anchor='mm')
 
 
-def render(selections, path, logo_path=ROOT / 'android/design/mr-2-odds-logo.png'):
-    if not 5 <= len(selections) <= 8:
-        raise ValueError('An image requires 5 to 8 complete selections')
+def render(selections, path, logo_path=ROOT / 'android/design/mr-2-odds-logo.png', *, minimum=5, heading=None, subheading=None):
+    if not minimum <= len(selections) <= 8:
+        raise ValueError(f'An image requires {minimum} to 8 complete selections')
     # 1080 x 1920 is exactly 9:16. Each match owns a separate spacious card.
     image = Image.new('RGB', (1080, 1920), '#ffffff')
     draw = ImageDraw.Draw(image)
     logo = Image.open(logo_path).convert('RGBA')
     logo.thumbnail((210, 210), Image.Resampling.LANCZOS)
     image.paste(logo, (35, 12), logo)
-    heading = 'TODAY’S 1X2 PICKS' if selections[0].get('series') == '1x2' else 'TODAY’S FOOTBALL PICKS'
+    heading = heading or ('TODAY’S PREDICTIONS' if selections[0].get('series') == '1x2' else 'TODAY’S FOOTBALL PICKS')
     draw.text((260, 72), heading,
               font=fit(draw, heading, 640, 42, minimum=30, bold=True), fill='#122b3d')
-    draw.rounded_rectangle((260, 138, 532, 144), radius=3, fill='#008f80')
+    if subheading:
+        draw.text((260, 142), subheading, font=font(25, True), fill='#007f72')
+    else:
+        draw.rounded_rectangle((260, 138, 532, 144), radius=3, fill='#008f80')
     draw_age_badge(draw, (930, 70, 1030, 130))
     # A clean bet-slip layout: selection and quoted price first, then the
     # complete fixture, followed by league and kickoff. No sportsbook UI is copied.
@@ -229,9 +232,6 @@ def render(selections, path, logo_path=ROOT / 'android/design/mr-2-odds-logo.png
         draw.rounded_rectangle((35, y, 1045, y + height), radius=18, fill='#f3f7f6', outline='#b3c8c4', width=2)
         pick = f"{item['selection']}  @ {item['odds']:.2f}"
         draw.text((75, y + height*.19), pick, font=fit(draw,pick,900,34,minimum=21,bold=True), fill='#122b3d', anchor='lm')
-        if item.get('series') == '1x2' and number(item.get('probability')) is not None:
-            prob = f"Model {number(item['probability']) * 100:.1f}%"
-            draw.text((1005, y + height*.38), prob, font=font(19,True), fill='#285b56', anchor='rm')
         match_y = y + height*.54
         for side, x in (('home_image', 78), ('away_image', 1002)):
             crest = ImageOps.contain(item[side], (58,58), Image.Resampling.LANCZOS)
@@ -248,6 +248,9 @@ def render(selections, path, logo_path=ROOT / 'android/design/mr-2-odds-logo.png
 
 def caption_for(manifest, *, medium='photo'):
     """Only the teams actually printed on the card become hashtags."""
+    if manifest.get("series") == "accumulators":
+        from scripts import facebook_accumulators
+        return facebook_accumulators.caption(manifest)
     if manifest.get("series") == "stats-watch":
         from scripts import stats_watch_assets
         return stats_watch_assets.caption(manifest)

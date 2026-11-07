@@ -1,8 +1,6 @@
 name: Daily 1X2 picks
 
 on:
-  schedule:
-    - cron: '0 11 * * *' # 13:00 SAST
   workflow_dispatch:
 
 permissions:
@@ -37,7 +35,7 @@ jobs:
           REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
         run: python scripts/facebook_one_x_two.py prepare --snapshot live-data/data/app/latest.json --output "$RUNNER_TEMP/one-x-two-dry-run"
   post:
-    if: github.ref == 'refs/heads/main'
+    if: ${{ false }} # 1X2 page posting paused at the user's request
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:

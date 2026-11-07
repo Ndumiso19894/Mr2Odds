@@ -89,7 +89,7 @@ def test_fewer_than_five_never_invents_picks_or_publishes(tmp_path, monkeypatch)
     assert not (tmp_path/'out'/'selection-reel.mp4').exists()
 
 
-def test_artwork_labels_probability_as_an_estimate(tmp_path, monkeypatch):
+def test_artwork_does_not_mention_model(tmp_path, monkeypatch):
     crest=Image.new('RGBA',(20,20),'teal')
     picks=x12.one_x_two_candidates(snapshot(), NOW)[:5]
     items=[{**p,'home_image':crest,'away_image':crest} for p in picks]
@@ -99,21 +99,18 @@ def test_artwork_labels_probability_as_an_estimate(tmp_path, monkeypatch):
         return original(self, xy, text, *args, **kwargs)
     monkeypatch.setattr(ImageDraw.ImageDraw, 'text', capture)
     fb.render(items, tmp_path/'post.png')
-    assert 'TODAY’S 1X2 PICKS' in texts and 'Model 80.0%' in texts
+    assert 'TODAY’S PREDICTIONS' in texts and not any('model' in t.lower() for t in texts)
     texts.clear(); reel.render_slide(items[0], 1, 5, '2026-11-05', tmp_path/'slide.png')
-    assert 'TODAY’S 1X2 PICKS' in texts and 'MODEL ESTIMATE 80.0%' in texts
+    assert not any('model' in t.lower() for t in texts)
     assert '18+' in texts and 'Home win (1)' in texts
 
 
 def test_13_post_is_included_in_verified_daily_results():
     assert 'facebook-post-2026-11-05-13' in history.claim_names('2026-11-05')
     workflow = Path('.github/workflows/facebook-1x2.yml').read_text()
-    assert "cron: '0 11 * * *'" in workflow and 'group: facebook-daily-selections' in workflow
-    assert workflow.index('Record the 13:00 picture claim') < workflow.index('Publish photo and caption to Facebook')
-    assert workflow.index('Claim Facebook reel delivery') < workflow.index('Publish Facebook reel')
-    assert workflow.index('Claim Telegram reel delivery') < workflow.index('Send the same reel to Telegram')
-    assert 'if: github.ref == \'refs/heads/main\'' in workflow
-    assert 'facebook-1x2.yml' in Path('.github/workflows/scan-30.yml').read_text()
+    assert "cron:" not in workflow
+    assert 'if: ${{ false }}' in workflow
+    assert 'facebook-1x2.yml' not in Path('.github/workflows/scan-30.yml').read_text()
 
 
 def test_natural_caption_varies_without_nonteam_hashtags():

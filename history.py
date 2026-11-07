@@ -97,7 +97,10 @@ class Days:
         today = self.now.date()
         for date, day in self.days.items():
             for f in day["fixtures"]:
-                if f.get("score") or not f.get("livescore_id"):
+                if not f.get("livescore_id"):
+                    continue
+                score = f.get("score")
+                if score and score.get("regulation_confirmed") is not None:
                     continue
                 ko = datetime.strptime(f["kickoff"], "%Y-%m-%d %H:%M").date()
                 if 0 <= (today - ko).days <= LIVESCORE_BACK_DAYS:
@@ -113,6 +116,10 @@ class Days:
         for date, day in self.days.items():
             for f in day["fixtures"]:
                 if f.get("score"):
+                    score = f["score"]
+                    e = ls_by_eid.get(str(f.get("livescore_id")))
+                    if score.get("regulation_confirmed") is None and e and e.get("status") == "FT" and (score.get("hg"),score.get("ag")) == (e.get("hg"),e.get("ag")) and score.get("hg") is not None:
+                        score["regulation_confirmed"] = True
                     continue
                 ko = datetime.strptime(f["kickoff"], "%Y-%m-%d %H:%M")
                 if ko > now_naive - timedelta(hours=1, minutes=45):
@@ -124,21 +131,22 @@ class Days:
                                   "hcards": _int(safe._cards(row, "h")), "acards": _int(safe._cards(row, "a"))}
                     continue
                 e = ls_by_eid.get(str(f.get("livescore_id")))
-                if e and e.get("hg") is not None and e.get("ag") is not None:
+                if e:
                     st = e.get("status", "")
-                    if livescore.is_finished(st) and st in ("FT", "AET", "AP", "Awarded"):
-                        f["score"] = {"hg": int(e["hg"]), "ag": int(e["ag"]), "status": "FT", "src": "livescore"}
-                        extra.append({"country": f["country"], "div": f["div"], "league": f["league"],
-                                      "date": pd.Timestamp(date), "home": f["home"], "away": f["away"],
-                                      "hg": float(e["hg"]), "ag": float(e["ag"])})
-                    elif st in ("Postp.", "Canc.", "Aband."):
+                    if st in ("Postp.", "Canc.", "Aband."):
                         f["score"] = {"hg": None, "ag": None, "status": st, "src": "livescore"}
+                    elif e.get("hg") is not None and e.get("ag") is not None and st in ("FT", "AET", "AP", "Awarded"):
+                        f["score"] = {"hg": int(e["hg"]), "ag": int(e["ag"]), "status": st, "src": "livescore", "regulation_confirmed": st == "FT"}
+                        if st == "FT":
+                            extra.append({"country": f["country"], "div": f["div"], "league": f["league"],
+                                          "date": pd.Timestamp(date), "home": f["home"], "away": f["away"],
+                                          "hg": float(e["hg"]), "ag": float(e["ag"])})
         if archive is not None:
             self._enrich(archive)
         return pd.DataFrame(extra) if extra else pd.DataFrame()
 
     STAT_KEYS = ("hc", "ac", "hy", "ay", "hr", "ar", "hs", "as", "hst", "ast", "hposs", "aposs", "hf", "af")
-    STATS_PROBES = 3          # a finished match is asked for statistics at most this many runs (many leagues never publish any)
+    STATS_RETRY_HOURS = 6      # late statistics can arrive after the original three early attempts
     ENRICH_BUDGET_S = 70.0    # Livescore requests per run for the archive (statistics + goal incidents)
 
     def _apply_stats(self, sc: dict, st: list) -> None:
@@ -185,23 +193,31 @@ class Days:
                     ev = archive.event_for(str(eid))
                     if ev and ev.get("hth") is not None:
                         sc["hth"], sc["hta"] = _int(ev["hth"]), _int(ev["hta"])
-                # -- statistics: archive first, then a direct probe (at most STATS_PROBES runs per match)
-                if sc.get("hc") is None or sc.get("hs") is None:
+                # -- statistics: archive first, then a rate-limited direct probe
+                if sc.get("hc") is None or sc.get("ac") is None or sc.get("hs") is None:
                     st = archive.stats_for(str(eid))
                     if st:
                         self._apply_stats(sc, st)
                         n += 1
-                    elif st is None and sc.get("stp", 0) < self.STATS_PROBES and budget_left():
+                    # Existing archives may have exhausted three early probes before
+                    # match statistics became available. Recheck missing data at a
+                    # bounded interval instead of leaving those matches pending forever.
+                    next_probe = sc.get("st_next") or ""
+                    try:
+                        due = not next_probe or datetime.fromisoformat(next_probe) <= self.now.replace(tzinfo=None)
+                    except (ValueError, TypeError):
+                        due = True
+                    if (sc.get("hc") is None or sc.get("ac") is None or sc.get("hs") is None) and due and budget_left():
                         st = worldfeed.fetch_stats(str(eid))
-                        if st is None:
-                            continue                       # network error: try again next run, no probe counted
-                        sc["stp"] = sc.get("stp", 0) + 1
-                        if st:
-                            self._apply_stats(sc, st)
-                            n += 1
-                            n_fetch += 1
-                        else:
-                            n_empty += 1
+                        if st is not None:
+                            sc["stp"] = sc.get("stp", 0) + 1
+                            sc["st_next"] = (self.now.replace(tzinfo=None) + timedelta(hours=self.STATS_RETRY_HOURS)).isoformat()
+                            if st:
+                                self._apply_stats(sc, st)
+                                n += 1
+                                n_fetch += 1
+                            else:
+                                n_empty += 1
                 # -- goal / red-card incidents (scorers and minutes), fetched once per finished match
                 if "inc" not in sc and sc.get("inp", 0) < 2 and budget_left():
                     try:

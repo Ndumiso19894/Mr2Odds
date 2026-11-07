@@ -1,84 +1,40 @@
-# Facebook selections and results
+# Facebook automation
 
-The separate daily Bet Advisor reel and Telegram video are documented in [REEL_AUTOMATION.md](REEL_AUTOMATION.md).
+The page has two morning windows (South African time): a 07:00 prediction post
+and matching reel, followed by an 08:00 results post. There are no scheduled
+12:00, 13:00 or 17:00 page posts; the separate 1X2 and independent reel
+workflows are disabled for publication. Scan fallback dispatches only the
+07:00/08:00 workflow. GitHub schedules and scans may be delayed.
 
-All times are South African time (SAST, UTC+2):
+At 07:00, three portrait accumulator pictures are attached to **one Facebook
+post**. Each uses only over 1.5 goals and/or corner overs, with over 1.5 goals
+in the majority. Each accumulator's exact combined SportyBet odds must be
+between 2.50 and 3.00 inclusive; fixtures are not duplicated across tickets.
+The existing strict selection checks, 1.16 individual price floor, competition
+restrictions, current snapshot and real club-crest requirements still apply.
+The pictures retain the brand, 18+ reminder, country, league and SAST kickoff.
+The caption says odds are from SportyBet and can change. Each picture is a
+10-second slide in one matching reel, with the supplied music and rotating
+logo, shared to Facebook and the existing Telegram destination. No social
+picture or video displays a model estimate.
 
-| Time | Post |
-| --- | --- |
-| 07:00 | Five different eligible selections |
-| 08:00 | One post with two images covering the previous day's published selection cards |
-| 12:00 | Five different eligible selections |
-| 13:00 | A 1X2 picture and reel with 5–6 qualifying matches, if available |
-| 17:00 | Five different eligible selections |
+If three complete verified accumulators are not available, the earlier approved
+Stats Watch fallback is attempted instead; it is labelled as statistics, not
+as betting advice or manufactured odds. If sources, crests, music, or platform
+access cannot be verified, the workflow fails closed rather than inventing
+content. There is no absolute guarantee of a post on a data or platform outage.
 
-The selection and results images are white-background 1080 × 1920 (9:16) cards using the Mr 2 Odds logo, a small 18+ badge, and both verified club crests. Selection cards show country, league, kickoff (SAST), selection and the quoted SportyBet price. The caption says `Today's football picks - <date>`, asks about a fixture, invites viewers to follow and includes a responsible-betting reminder; hashtags are solely for teams actually pictured. Results captions invite discussion without suggesting a result was won, and the settlement logic still shows losses and pending results honestly. Five matches per selection card helps reserve distinct matches for the later slots and keeps the two-image recap legible. If fewer than five new, eligible fixtures with two real crests exist, that slot is skipped. Never fabricate fixtures, odds or crests to fill a slot. The current snapshot must be no more than 90 minutes old. Fixtures without known kickoff, country or league are skipped.
+The 08:00 result post uses only confirmed picture manifests, including the
+historical slots, and grades the exact recorded selections. Before rendering,
+it checks the current result feed for unresolved posted fixtures and missing
+corner statistics when the fixture, teams and kickoff can be verified. It shows
+pending where a result or required statistic remains unavailable, or when a
+UEFA match's regulation-time outcome cannot be established. Already-published
+result images are not silently edited or reposted when later data arrives.
 
-Senior men's UEFA competitions are in scope when the source explicitly identifies UEFA or the European Champions, Europa or Conference League. Other cups, non-UEFA international competitions, women's and youth competitions, and tennis remain paused. Selections still must pass the existing shortlist, probability, price-floor, quality and disagreement checks.
-
-## Results
-
-The recap is based on the exact selection-card manifests recorded before each Facebook upload and includes only claims whose upload step was confirmed successful. Results show every distinct recorded selection, final scores when available, and won/lost only when the required statistics are available. Missing scores or corner statistics stay pending. UEFA market outcomes remain pending when the archive cannot establish the regulation-time score, rather than guessing about extra time. Results also identify the originating posting slot. Older card manifests did not save selections or odds: those entries show the final score only and explicitly say the selection was not recorded. Where multiple older corrected pictures repeated the same unrecorded fixture, it appears once.
-
-Both images are attached to a single Page post. If a previous upload is unconfirmed, an archive or crest is unavailable, or the results cannot fit clearly on two images, the results post fails safely instead of omitting or inventing entries. A day with no previous posts has no results post. The recap can contain pending or postponed matches; check the original bookmaker for official settlement.
-
-## Setup
-
-Create GitHub Actions repository secrets `FACEBOOK_PAGE_ACCESS_TOKEN` and `FACEBOOK_PAGE_ID` (numeric Page ID). Use a Page access token, or an authorized user access token that can retrieve a token for that specific Page. The user token must have the required Facebook Page listing and posting permissions. Derived Page tokens are kept only in memory. Tokens can be revoked, so monitor the workflow even if a token has no scheduled expiry.
-
-GitHub's scheduled events may be delayed. After successful scans, the scan workflow also dispatches the Facebook workflow during the four posting hours as a fallback. A manual run within a posting hour can trigger that hour's slot. Runs outside those hours do not post. The schedule is best effort, not a guarantee of exact minute delivery.
-
-Club badge references already published in the app are tried first. If a badge is missing or fails to load, the workflow searches Wikipedia for an unambiguous exact club name and uses a page thumbnail only if its filename identifies it as a crest or logo. It never substitutes initials, photographs or a guessed club. The operator must ensure they have the necessary rights to use and publish the selected club crests; club trademarks and image rights may apply.
-
-## Duplicate protection and recovery
-
-All triggers share a concurrency group. Before the Facebook upload, the workflow stores an Actions artifact containing the exact image(s) and manifest. A claim is unique to each date and slot (`facebook-post-YYYY-MM-DD-07`, `-12` or `-17`, or `facebook-results-YYYY-MM-DD`). Every previous selection claim for that day—including claims from the earlier single-post automation—is read before a new selection card is prepared; its fixtures are excluded even if the upload later failed. The claims are deliberately created **before** any Facebook write: an accepted post with a network timeout must not be automatically repeated. The previous 35 days of claims are retained.
-
-If an upload job fails after claiming, first inspect the Page to establish whether the post appeared; the following morning's results will not silently treat an unconfirmed upload as successful. If it did not and a retry is wanted, remove the specific slot's claim from the Actions run only after checking the Page, then manually run during that slot's posting hour. Never remove a claim after an ambiguous result without verifying the Page. Failures before the claim, including missing secrets or too few eligible matches, are safe to retry. The image uses prices from the latest scan, which can change before a bet is placed.
-
-## Measuring growth
-
-These changes are a test, not a guarantee of follower growth. Over the next two weeks, use Meta Business Suite's Insights to compare each post's reach, engagement and follows, and each reel's watch time or retention where available. Compare the 07:00, 12:00 and 17:00 selection slots separately and note which fixtures and formats prompt real discussion. Record the period and posting dates so they can be compared fairly; reporting and available metrics may vary by Page. Nothing in this automation reads Page Insights or changes the schedule automatically. Any posting-frequency experiment should be approved by the Page owner first.
-
-## Daily 1X2 picture and reel
-
-At 13:00 SAST the separate `facebook-1x2.yml` workflow uses the latest published football snapshot to prepare one matching picture and reel. It considers exact home-win (1), draw (X) and away-win (2) selection rows whose football-data **model estimate** is between 60% and 95% inclusive. Every selection still needs its own current SportyBet price of at least 1.16 and no more than 1.90, passes the existing quality, probability/price, outlier, competition and fixture checks, has a future kickoff and two real crests, and must be distinct from earlier claimed selection pictures that day. The percentage is an estimate, not a guarantee. If fewer than five qualify, neither picture nor video is posted; the threshold, odds and number of picks are never invented. The reel has the same 5–6 matches and actual music, 10-second slides and rotating logo, and goes to Facebook and the existing Telegram chat. The picture goes to Facebook. Scheduled times are best effort.
-
-The 13:00 picture uses the regular `facebook-post-YYYY-MM-DD-13` claim and is included in next morning's confirmed two-image results and in the exclusions for later pictures. The matching video/source and each delivery use separate `daily-1x2-reel-{source,facebook,telegram}-YYYY-MM-DD` claims. The workflow shares the regular Facebook picture concurrency group; it saves the exact source and claims each destination before writing. A claimed or ambiguous delivery is never automatically resent; check the Page/chat before recovery. If the saved source is missing after a picture claim, it refuses to generate a replacement. Captions use varied natural phrasing, not claims of human authorship or guaranteed results.
-
-### Stats Watch fallback
-
-When a scheduled selections card cannot find five qualifying picks with real club
-crests, the workflow attempts a factual Stats Watch instead. It checks ESPN's
-current, unambiguous senior men's European domestic-league tables and team
-schedules. Each featured team must be first or second and at least six domestic
-league games unbeaten. A zero-loss season table proves the season-to-date run;
-otherwise the complete season results must reconcile with the table before the
-consecutive run is counted. Stale/inconsistent tables, live matches, missing
-crests, uncertain fixtures and paused categories are excluded. The next **listed**
-fixture is clearly labelled; ESPN coverage is not guaranteed to include every
-competition. Stats are timestamped and use South African time. The specifically requested 5 November 2026 13:00 edition is Stats Watch and
-requires ten teams even if betting picks are available; ordinary
-fallbacks can use fewer verified teams. Stats Watch is not a betting selection:
-its posting claim has an empty selection list and is excluded from result grading.
-
-The service cannot guarantee publication when source data, crests, music or a
-platform are unavailable. In those cases it fails and asks for manual review; it
-does not invent statistics or retry an ambiguous publication. This applies to
-selection-based posts/reels, not the previous-day results recap.
-
-### Selection-card layout and picture-only repost
-
-Selection pictures use a bet-slip-inspired layout showing the selection and its
-quoted price above the fixture, with both club crests, country, league and SAST
-kickoff. Selection captions credit SportyBet as the odds source and warn that
-odds can change. Stats Watch has no odds and is not labelled as a betting card.
-
-An explicitly requested morning picture repost can be dispatched manually with
-`repost_morning=true`. The workflow reads the confirmed 07:00 picture claim,
-revalidates the same matches and markets against the latest fresh snapshot,
-uses the current eligible quotes, and fails closed if any fixture, selection or
-crest cannot be verified. Branch dispatches are private previews; only a main
-branch dispatch may publish. A separate pre-upload claim prevents automatic
-reposting after an ambiguous upload. This path publishes one photo only, does
-not send a reel, and does not create a second selection record for the recap.
+The morning source is stored before publication and shared by the album and
+reel. Independent photo, Facebook reel, Telegram reel and results claims are
+recorded before irreversible requests. Ambiguous uploads are not automatically
+retried; an operator must check the Page or chat before recovery. A photo
+claim's manifest retains the original per-leg selections and prices for the
+results recap. The stats fallback has no selection fixtures and is not graded.
