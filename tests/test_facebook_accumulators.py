@@ -74,7 +74,7 @@ def test_picture_and_reel_share_prediction_manifest(tmp_path):
     rows=[{**p,'home_image':crest,'away_image':crest} for p in info['accumulators'][0]['fixtures']]
     acc.render_accumulator(rows,tmp_path/'photo.png',1)
     assert Image.open(tmp_path/'photo.png').size==(1080,1920)
-    acc._slide(tmp_path/'photo.png',1,tmp_path/'slide.png')
+    acc._slide(tmp_path/'photo.png',1,tmp_path/'slide.png','2.85')
     assert Image.open(tmp_path/'slide.png').size==(1080,1920)
 
 

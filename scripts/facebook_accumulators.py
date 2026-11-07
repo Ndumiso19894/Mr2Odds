@@ -71,16 +71,20 @@ def _picture_path(output, index):
     return Path(output) / f'accumulator-{index}.png'
 
 
-def _slide(picture, index, output):
-    # Leave space for the rotating brand disc and social overlays.
+def _slide(picture, index, output, total_odds):
+    # Only the card body is reused: the reel gets one header, one 18+ mark,
+    # and the logo is overlaid in motion by the encoder.
     im = Image.new('RGB', (1080, 1920), 'white')
     draw = ImageDraw.Draw(im)
     draw.ellipse((95,135,285,325),fill='#eff6f4',outline='#c2ddd7',width=3)
     draw.text((320,180),f'ACCUMULATOR {index}',font=fb.font(37,True),fill='#102c3f')
-    draw.text((320,245),'TODAY’S PREDICTIONS',font=fb.font(24,True),fill='#35736a')
+    draw.text((320,245),f'TOTAL ODDS {total_odds}',font=fb.font(25,True),fill='#35736a')
     fb.draw_age_badge(draw,(874,175,968,235))
-    card = Image.open(picture).convert('RGB').resize((864,1536), Image.Resampling.LANCZOS)
-    im.paste(card,(108,330))
+    card = Image.open(picture).convert('RGB').crop((0,210,1080,1860))
+    card = card.resize((900,1375), Image.Resampling.LANCZOS)
+    im.paste(card,(90,350))
+    draw.text((540,1800),'PREDICTIONS · SAST · ODDS FROM SPORTYBET',
+              font=fb.font(21,True),fill='#52716b',anchor='mm')
     im.save(output,'PNG')
 
 
@@ -183,7 +187,7 @@ def prepare(snapshot, output, now=None, music=None):
         temp = Path(td); slides=[]
         for i, group in enumerate(groups,1):
             picture = _picture_path(output,i); render_accumulator(group,picture,i)
-            slide = temp/f'slide-{i}.png'; _slide(picture,i,slide); slides.append(slide)
+            slide = temp/f'slide-{i}.png'; _slide(picture,i,slide,f'{total(group):.2f}'); slides.append(slide)
         if music is None:
             music=temp/'music.mp3'; reel.download_music(music)
         reel.encode(slides,music,output/'selection-reel.mp4')
