@@ -327,7 +327,7 @@ class CheckWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx,
                 val soccerEv = if (leg.optString("sport") != "tennis") soccer[eid] else null
                 val tEv = if (leg.optString("sport") == "tennis") tennis[eid] else null
                 val archived = archiveById[leg.optString("fixture")] ?: if (eid !in ambiguousEids) archiveByEid[eid] else null
-                val matching = archived != null && archived.optString("home").equals(leg.optString("home"), true) &&
+                val matching = leg.optString("sport") != "tennis" && archived != null && archived.optString("home").equals(leg.optString("home"), true) &&
                     archived.optString("away").equals(leg.optString("away"), true) &&
                     (eid.isEmpty() || archived.optString("livescore_id") == eid) &&
                     (leg.optString("fixture").isEmpty() || archived.optString("id") == leg.optString("fixture"))
@@ -340,7 +340,8 @@ class CheckWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx,
                 val scope = listOf(archived?.optString("country"), archived?.optString("league"), archived?.optString("div")).joinToString(" ")
                 val ambiguousCompetition = Regex("(?i)uefa|europe|champions league|europa league|conference league|\\bcup\\b").containsMatchIn(scope)
                 val liveRegulation = soccerEv?.status == "FT" && soccerEv.hg == hg && soccerEv.ag == ag
-                val safeArchive = sc?.optString("status") == "FT" && hg != null && ag != null &&
+                val competitionKnown = !archived?.optString("country").isNullOrBlank() && !archived?.optString("league").isNullOrBlank()
+                val safeArchive = sc?.optString("status") == "FT" && hg != null && ag != null && competitionKnown &&
                     (!ambiguousCompetition || sc.optBoolean("regulation_confirmed") || liveRegulation)
                 val result = when {
                     tEv != null && tEv.finished -> settleTennis(leg, tEv)

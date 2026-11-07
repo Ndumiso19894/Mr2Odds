@@ -33,9 +33,9 @@ internal object TicketGrading {
                 corners != null -> {
                     val n = line(corners.groupValues[3]) ?: return null
                     val count = when (corners.groupValues[1]) {
-                        "H" -> hc
-                        "A" -> ac
-                        else -> if (hc != null && ac != null) hc + ac else null
+                        "H" -> hc?.takeIf { it >= 0 }
+                        "A" -> ac?.takeIf { it >= 0 }
+                        else -> if (hc != null && ac != null && hc >= 0 && ac >= 0) hc + ac else null
                     } ?: return null
                     if (count < 0 || count.toDouble() == n) null
                     else if (corners.groupValues[2] == "O") count > n else count < n
