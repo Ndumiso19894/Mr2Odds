@@ -131,16 +131,16 @@ class Days:
                                   "hcards": _int(safe._cards(row, "h")), "acards": _int(safe._cards(row, "a"))}
                     continue
                 e = ls_by_eid.get(str(f.get("livescore_id")))
-                if e and e.get("hg") is not None and e.get("ag") is not None:
+                if e:
                     st = e.get("status", "")
-                    if livescore.is_finished(st) and st in ("FT", "AET", "AP", "Awarded"):
+                    if st in ("Postp.", "Canc.", "Aband."):
+                        f["score"] = {"hg": None, "ag": None, "status": st, "src": "livescore"}
+                    elif e.get("hg") is not None and e.get("ag") is not None and st in ("FT", "AET", "AP", "Awarded"):
                         f["score"] = {"hg": int(e["hg"]), "ag": int(e["ag"]), "status": st, "src": "livescore", "regulation_confirmed": st == "FT"}
                         if st == "FT":
                             extra.append({"country": f["country"], "div": f["div"], "league": f["league"],
                                           "date": pd.Timestamp(date), "home": f["home"], "away": f["away"],
                                           "hg": float(e["hg"]), "ag": float(e["ag"])})
-                    elif st in ("Postp.", "Canc.", "Aband."):
-                        f["score"] = {"hg": None, "ag": None, "status": st, "src": "livescore"}
         if archive is not None:
             self._enrich(archive)
         return pd.DataFrame(extra) if extra else pd.DataFrame()

@@ -42,12 +42,13 @@ def test_scores_preserve_extra_time_and_verify_regulation(monkeypatch,tmp_path):
     def fixture(eid):
         return {'kickoff':'2026-11-06 20:00','livescore_id':eid,'country':'England','league':'Example',
                 'div':'X','home':f'H{eid}','away':f'A{eid}','score':None}
-    d.days={'2026-11-06':{'fixtures':[fixture('1'),fixture('2'),{**fixture('3'),'score':{'hg':2,'ag':1,'status':'FT'}}]}}
+    d.days={'2026-11-06':{'fixtures':[fixture('1'),fixture('2'),{**fixture('3'),'score':{'hg':2,'ag':1,'status':'FT'}},fixture('4')]}}
     events=[{'eid':'1','status':'FT','hg':2,'ag':1}, {'eid':'2','status':'AET','hg':2,'ag':1},
-            {'eid':'3','status':'FT','hg':2,'ag':1}]
+            {'eid':'3','status':'FT','hg':2,'ag':1}, {'eid':'4','status':'Postp.','hg':None,'ag':None}]
     monkeypatch.setattr(livescore,'fetch_day',lambda *args:events)
     extra=d.fill_scores(pd.DataFrame())
-    a,b,c=d.days['2026-11-06']['fixtures']
+    a,b,c,postponed=d.days['2026-11-06']['fixtures']
     assert a['score']['regulation_confirmed'] is True and b['score']['status']=='AET'
     assert b['score']['regulation_confirmed'] is False and c['score']['regulation_confirmed'] is True
+    assert postponed['score']['status']=='Postp.' and postponed['score']['hg'] is None
     assert set(extra['home'])=={'H1'}

@@ -243,6 +243,8 @@ jobs:
           node tests/test_home_ui.js
           node tests/test_competition_ui.js
           node tests/test_tickets_ui.js
+          node tests/test_pending_refresh_ui.js
+          node tests/test_price_floor_ui.js
           node tests/test_sheet_ui.js
           node tests/test_lineup_pilot_ui.js
           node tests/test_market_settlement_ui.js
