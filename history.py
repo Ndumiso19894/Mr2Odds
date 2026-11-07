@@ -138,7 +138,7 @@ class Days:
         return pd.DataFrame(extra) if extra else pd.DataFrame()
 
     STAT_KEYS = ("hc", "ac", "hy", "ay", "hr", "ar", "hs", "as", "hst", "ast", "hposs", "aposs", "hf", "af")
-    STATS_PROBES = 3          # a finished match is asked for statistics at most this many runs (many leagues never publish any)
+    STATS_RETRY_HOURS = 6      # late statistics can arrive after the original three early attempts
     ENRICH_BUDGET_S = 70.0    # Livescore requests per run for the archive (statistics + goal incidents)
 
     def _apply_stats(self, sc: dict, st: list) -> None:
@@ -186,22 +186,30 @@ class Days:
                     if ev and ev.get("hth") is not None:
                         sc["hth"], sc["hta"] = _int(ev["hth"]), _int(ev["hta"])
                 # -- statistics: archive first, then a direct probe (at most STATS_PROBES runs per match)
-                if sc.get("hc") is None or sc.get("hs") is None:
+                if sc.get("hc") is None or sc.get("ac") is None or sc.get("hs") is None:
                     st = archive.stats_for(str(eid))
                     if st:
                         self._apply_stats(sc, st)
                         n += 1
-                    elif st is None and sc.get("stp", 0) < self.STATS_PROBES and budget_left():
+                    # Existing archives may have exhausted three early probes before
+                    # match statistics became available. Recheck missing data at a
+                    # bounded interval instead of leaving those matches pending forever.
+                    next_probe = sc.get("st_next") or ""
+                    try:
+                        due = not next_probe or datetime.fromisoformat(next_probe) <= self.now.replace(tzinfo=None)
+                    except (ValueError, TypeError):
+                        due = True
+                    if (sc.get("hc") is None or sc.get("ac") is None or sc.get("hs") is None) and due and budget_left():
                         st = worldfeed.fetch_stats(str(eid))
-                        if st is None:
-                            continue                       # network error: try again next run, no probe counted
-                        sc["stp"] = sc.get("stp", 0) + 1
-                        if st:
-                            self._apply_stats(sc, st)
-                            n += 1
-                            n_fetch += 1
-                        else:
-                            n_empty += 1
+                        if st is not None:
+                            sc["stp"] = sc.get("stp", 0) + 1
+                            sc["st_next"] = (self.now.replace(tzinfo=None) + timedelta(hours=self.STATS_RETRY_HOURS)).isoformat()
+                            if st:
+                                self._apply_stats(sc, st)
+                                n += 1
+                                n_fetch += 1
+                            else:
+                                n_empty += 1
                 # -- goal / red-card incidents (scorers and minutes), fetched once per finished match
                 if "inc" not in sc and sc.get("inp", 0) < 2 and budget_left():
                     try:

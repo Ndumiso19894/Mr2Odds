@@ -1,9 +1,6 @@
 name: Daily selection reel
 
 on:
-  # 07:00 South African time (UTC+2). Scan fallback can dispatch within this hour.
-  schedule:
-    - cron: '0 5 * * *'
   workflow_dispatch:
     inputs:
       live_test:
@@ -64,7 +61,7 @@ jobs:
           fi
           echo 'Telegram delivery secrets are configured.'
   reel:
-    if: github.ref == 'refs/heads/main'
+    if: ${{ false }} # replaced by the shared-source morning reel in facebook-daily.yml
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:

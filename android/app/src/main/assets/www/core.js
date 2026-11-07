@@ -629,11 +629,12 @@ window.PR = (function () {
     if ((state.tab === 'live' && (info.stale || info.offline || info.error)) || state.liveStale && (state.tab === 'live' || state.tab === 'home' || (state.stack[state.stack.length - 1] || {}).type === 'match')) text += ' · scores are not confirmed current';
     if (el.textContent !== text) el.textContent = text;
   }
-  async function loadDay(date) {
-    if (resources) { await migrateResource(rawUrl(`data/app/days/${date}.json`), 'days/' + date); const j = await getJson(rawUrl(`data/app/days/${date}.json`)); state.days[date] = j; trimModels(state.days, date, 14); return j; }
-    if (state.days[date] && state.days[date].fixtures) return state.days[date];
+  async function loadDay(date, force = false) {
+    if (resources) { await migrateResource(rawUrl(`data/app/days/${date}.json`), 'days/' + date); const j = await getJson(rawUrl(`data/app/days/${date}.json`), null, { force: !!force }); state.days[date] = j; trimModels(state.days, date, 14); return j; }
+    if (!force && state.days[date] && state.days[date].fixtures) return state.days[date];
     const c = cache.get('days/' + date); const today = ymd(tzNow());
     const fetchIt = async () => { const j = await getJson(rawUrl(`data/app/days/${date}.json`) + '?t=' + Math.floor(Date.now() / 300000)); state.days[date] = j; cache.put('days/' + date, j, date < today ? 'final' : pubStamp()); return j; };
+    if (force) return fetchIt();
     if (c && c.d) {
       state.days[date] = c.d;
       // past days settle over a few hours (results, statistics); refresh them in the background until they are a day old
@@ -1093,7 +1094,7 @@ window.PR = (function () {
     } else if (part.startsWith('fx/')) {
       const k = part.slice(3, -5), row = fx(j.id);
       if (!row || row.home === j.home && row.away === j.away) state.details[k] = prepDetail(j);
-    } else if (part.startsWith('days/')) { state.days[part.slice(5, -5)] = j; }
+    } else if (part.startsWith('days/')) { state.days[part.slice(5, -5)] = j; if (window.PR && PR.settleTickets) PR.settleTickets(true); }
     else if (part === 'teams/teams-index.json') state.teamIdx = j;
     else if (part.startsWith('teams/')) state.teams[part.slice(6, -5)] = j;
     else if (part === 'badges.json') state.badges = j;

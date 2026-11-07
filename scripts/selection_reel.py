@@ -119,9 +119,6 @@ def render_slide(item, index, count, day, out):
     draw.text((540, 1170), item['selection'], font=sf, fill='#102c3f', anchor='mm')
     draw.rounded_rectangle((395, 1255, 685, 1355), radius=22, fill='#008878')
     draw.text((540, 1305), f"{item['odds']:.2f}", font=fb.font(48, True), fill='white', anchor='mm')
-    prob = fb.number(item.get('probability')) if is_one_x_two else None
-    if prob is not None:
-        draw.text((540, 1400), f'MODEL ESTIMATE {prob * 100:.1f}%', font=fb.font(24, True), fill='#285b56', anchor='mm')
     draw.text((540, 1468), f'{index:02d}  /  {count:02d}', font=fb.font(25, True), fill='#52716b', anchor='mm')
     date = datetime.strptime(day, '%Y-%m-%d')
     draw.text((540, 1625), f'{date.day} {date.strftime("%B %Y")}', font=fb.font(26, True), fill='#52716b', anchor='mm')
@@ -215,6 +212,14 @@ def validate_prepared(output, now=None):
     now = (now or datetime.now(fb.SAST)).astimezone(fb.SAST)
     video = output/'selection-reel.mp4'
     info = json.loads((output/'selection-reel.json').read_text(encoding='utf-8'))
+    if info.get('series') == 'accumulators':
+        from scripts import facebook_accumulators
+        facebook_accumulators.validate(info, now)
+        if not video.is_file() or not 0 < video.stat().st_size <= MAX_VIDEO_BYTES:
+            raise ValueError('Reel is missing or exceeds the upload size limit')
+        if len(reel_caption(info, test=True)) > 1024:
+            raise ValueError('The reel caption is too long for Telegram')
+        return video, info
     if info.get('series') == 'stats-watch':
         from scripts import stats_watch_assets
         stats_watch_assets.validate_manifest(info, now)
