@@ -68,6 +68,7 @@ import verify
 import safe as safe_mod
 import history as history_mod
 import teamstats
+import daily_accumulator
 
 try:
     import pdfgen
@@ -2810,12 +2811,27 @@ def main() -> None:
     # ---- structured export for the Android app: written to a staging directory, checked, then promoted.
     # The publication carries only the APP_WINDOW_HOURS window (the Matches tab is "today"); the rest of
     # the coverage window lives in the day files (browseable per day) and feeds the model / tracker.
+    # ---- daily accumulator selection (additive, nothing existing is changed)
+    daily = None
+    try:
+        daily = daily_accumulator.daily_selection(rows, now)
+        da_file = DATA_DIR / "app" / "daily-accumulators.json"
+        da_file.parent.mkdir(parents=True, exist_ok=True)
+        da_file.write_text(json.dumps(daily, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        log.info("Daily accumulator: %d acca(s), %d alternative(s) written to %s",
+                 daily["summary"]["n_accumulators"], daily["summary"]["n_alternatives"], da_file)
+        ctx["daily_accumulators"] = daily
+    except Exception as exc:  # noqa: BLE001 — accumulators must never break the scan
+        log.warning("Daily accumulator build failed: %s", exc)
+        ctx["daily_accumulators"] = {"error": str(exc)}
+
     staging = APP_FILE.parent / "_staging"
     try:
         if staging.exists():
             shutil.rmtree(staging)
         staging.mkdir(parents=True, exist_ok=True)
         appdata.export(staging / APP_FILE.name, ctx=ctx, rows=app_rows, all_rows=rows, picks=picks, tracker_summary=summary, notes=notes, ls_map=ls_map,
+                       daily_accumulators=daily,
                        helpers={"render_details": render_details, "stars": stars, "comp": comp, "sb_price": sb_price,
                                 "selections": all_sels},
                        reports_dir=REPORTS_DIR, tz_label=TZL, thresholds=CONFIG["THRESHOLDS"],

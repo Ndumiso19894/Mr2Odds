@@ -102,7 +102,7 @@ h2.section { margin: 16px 4px 6px; font-size: 15px; font-weight: 600; }
 .section-head h2 { flex: 1; margin: 0; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; letter-spacing: .1px; }
 .section-head .ico, .card h2 .ico { width: 26px; height: 26px; border-radius: 7px; background: var(--brand-soft); color: var(--brand-text); display: inline-flex; align-items: center; justify-content: center; }
 .ico .ic { width: 15px; height: 15px; }
-.ico.green { background: var(--accent-soft); color: var(--good); } .ico.amber { background: var(--warn-soft); color: var(--warn); } .ico.red { background: var(--bad-soft); color: var(--bad); }
+.ico.green { background: var(--accent-soft); color: var(--good); } .ico.amber { background: var(--warn-soft); color: var(--warn); } .ico.red { background: var(--bad-soft); color: var(--bad); } .ico.blue { background: var(--brand-soft); color: var(--brand-text); }
 .link { border: 0; background: transparent; color: var(--brand-text); font-weight: 600; padding: 4px 0; font-size: 13px; display: inline-flex; align-items: center; gap: 2px; }
 .link .ic { width: 16px; height: 16px; }
 .muted { color: var(--muted); }
