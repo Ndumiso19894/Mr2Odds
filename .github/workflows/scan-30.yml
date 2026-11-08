@@ -242,6 +242,7 @@ jobs:
         run: |
           node tests/test_home_ui.js
           node tests/test_final_picks_ui.js
+          node tests/test_daily_accumulator_ui.js
           node tests/test_competition_ui.js
           node tests/test_tickets_ui.js
           node tests/test_pending_refresh_ui.js

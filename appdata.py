@@ -23,6 +23,7 @@ import competition_policy
 import recommendation_policy as rec_policy
 import sheet_model
 import lineup_pilot
+from mr2odds import daily_accumulator
 
 log = logging.getLogger("scanner")
 
@@ -512,6 +513,9 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
     advisor["shown_today"] = shown_today
 
     shortlist = shortlist_payload(index, now)
+    # Use the exact same shortlist and indexed SportyBet prices as Final Picks.
+    # Build inside staging so an incomplete run cannot publish accumulator data.
+    daily_accumulators = daily_accumulator.daily_selection(index, shortlist, now, fx_dir)
     # The existing tracker records global goals picks, not these screened selections.
     # Do not present its historical classes as this shortlist's performance.
     shortlist["track"] = {}

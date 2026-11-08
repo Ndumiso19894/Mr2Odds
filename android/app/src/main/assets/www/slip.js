@@ -167,8 +167,13 @@
     const i = slip.items.findIndex((l) => l.fixture === fid && l.sel === sel);
     if (i >= 0) { slip.items.splice(i, 1); saveSlip(); bar(); PR.render(); return; }
     if (PR.isDropped(sel)) { toast('This market is not offered for new selections'); return; }
-    if (state.tab === 'finalpicks' && !state.stack.length && !PR.finalPicksInfo(state.data).picks.some((x) => x.fixture === fid && x.sel === sel)) {
-      toast('This Final Pick no longer qualifies — refresh the list'); PR.render(); return;
+    if (!state.stack.length && (state.tab === 'finalpicks' || state.tab === 'dailyaccumulators')) {
+      const valid = state.tab === 'finalpicks' ? PR.finalPicksInfo(state.data).picks : (() => {
+        const current = PR.dailyPicksInfo(state.data); return current.groups.flatMap((g) => g.picks).concat(current.alternatives);
+      })();
+      if (!valid.some((x) => x.fixture === fid && x.sel === sel)) {
+        toast('This selection no longer qualifies — refresh the list'); PR.render(); return;
+      }
     }
     // The index is the currently displayed snapshot; cached detail may have older prices.
     let s = (f.sels || []).find((x) => x.sel === sel);

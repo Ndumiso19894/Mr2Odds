@@ -11,9 +11,9 @@
   $$('#menu [data-page]').forEach((b) => { b.onclick = () => { PR.closeMenu(); const t = b.dataset.page; state.stack = []; PR.push({ type: t }); }; });
   $('#menu [data-csv]').onclick = () => { PR.closeMenu(); PR.downloadDayCsv(); };
   $('#menu [data-contact]').onclick = () => { PR.closeMenu(); if (PR.native && PR.native.openUrl) PR.native.openUrl(`https://wa.me/${PR.CONTACT.whatsapp}`); else window.open(`https://wa.me/${PR.CONTACT.whatsapp}`); };
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) { if (state.tab === 'live' || state.tab === 'home') PR.live.refresh(false); if (state.tab === 'finalpicks' && !state.stack.length) PR.quietRender(); updateCheck(); } });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) { if (state.tab === 'live' || state.tab === 'home') PR.live.refresh(false); if (['finalpicks', 'dailyaccumulators'].includes(state.tab) && !state.stack.length) PR.quietRender(); updateCheck(); } });
   // Recheck time-sensitive Final Picks even while the screen remains open.
-  setInterval(() => { if (!document.hidden && state.data && state.tab === 'finalpicks' && !state.stack.length) PR.quietRender(); }, 30000);
+  setInterval(() => { if (!document.hidden && state.data && ['finalpicks', 'dailyaccumulators'].includes(state.tab) && !state.stack.length) PR.quietRender(); }, 30000);
 
   // updates — instant check (launch, foreground, worker); no banner/popup: the Android notification
   // reports a new version and tapping it starts the install immediately.
