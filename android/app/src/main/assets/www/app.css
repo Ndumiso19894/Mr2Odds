@@ -1042,10 +1042,11 @@ body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-even
 .data-status.stale { color: #ffb020; font-weight: 600; }
 
 /* Home 1.6.87 — original, lightweight football graphics; no remote artwork or animation. */
-.home-launchpad { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; margin:0 0 15px; }
+.home-launchpad { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; margin:0 0 15px; }
 .home-quick { position:relative; display:flex; flex-direction:column; align-items:flex-start; gap:8px; min-width:0; padding:14px 11px 12px; border:1px solid var(--line); border-radius:18px; background:var(--card); color:var(--text); text-align:left; box-shadow:var(--shadow); }
 .home-quick strong { font-size:13px; line-height:1.3; min-height:34px; }
 .quick-icon { display:grid; place-items:center; width:36px; height:36px; border-radius:12px; background:var(--brand-soft); color:var(--brand-text); }
+.home-quick.final .quick-icon { background:var(--brand-soft); color:var(--brand-text); }
 .home-quick.daily .quick-icon { background:var(--warn-soft); color:var(--warn); }
 .home-quick.eighty .quick-icon { background:var(--accent-soft); color:var(--good); }
 .quick-caption { font-size:10px; line-height:1.4; color:var(--muted); }

@@ -167,8 +167,12 @@
     const i = slip.items.findIndex((l) => l.fixture === fid && l.sel === sel);
     if (i >= 0) { slip.items.splice(i, 1); saveSlip(); bar(); PR.render(); return; }
     if (PR.isDropped(sel)) { toast('This market is not offered for new selections'); return; }
-    let s = null;
-    const det = PR.detailCached(fid); if (det && det.sels) s = det.sels.find((x) => x.sel === sel);
+    if (state.tab === 'finalpicks' && !state.stack.length && !PR.finalPicksInfo(state.data).picks.some((x) => x.fixture === fid && x.sel === sel)) {
+      toast('This Final Pick no longer qualifies — refresh the list'); PR.render(); return;
+    }
+    // The index is the currently displayed snapshot; cached detail may have older prices.
+    let s = (f.sels || []).find((x) => x.sel === sel);
+    const det = PR.detailCached(fid); if (!s && det && det.sels) s = det.sels.find((x) => x.sel === sel);
     if (!s) { const b = ((state.data.safe || {}).bets || []).find((x) => x.fixture === fid && x.sel === sel); if (b) s = { sel: b.sel, odds: b.odds, p: b.p }; }
     if (!s) { const h = (f.hi || []).find((x) => x[0] === sel); if (h) s = { sel: h[0], p: h[1], odds: h[2] }; }
     if (!s && f.top && f.top[0] === sel) s = { sel: f.top[0], p: f.top[1], odds: f.top[2] };

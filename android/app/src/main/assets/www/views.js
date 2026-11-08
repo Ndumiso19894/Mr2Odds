@@ -308,6 +308,25 @@
   };
 
 
+  // Final Picks only re-screen the existing shortlist. They can change on each
+  // publication and disappear at kickoff; no selection is forced into the list.
+  PR.views.finalpicks = function () {
+    const info = PR.finalPicksInfo(state.data), picks = info.picks;
+    const parts = [`<div class="hero-row"><div><div class="kicker">A stricter daily shortlist</div><h1>Final Picks</h1></div><span class="quality">today · SAST</span></div>`];
+    parts.push(`<div class="card compact"><div class="row"><div class="grow"><div class="b">${picks.length} qualifying pick${picks.length === 1 ? '' : 's'}</div><div class="tiny muted">Upcoming matches only · ${info.published ? `published ${esc(info.published)} SAST` : 'publication time unavailable'}</div></div><span class="pill hi">1.18+</span></div></div>`);
+    if (info.status === 'stale') parts.push(`<div class="card empty">Final Picks are temporarily hidden because the last publication is too old or its timestamp is in the future. Refresh and try again.</div>`);
+    else if (info.status === 'unavailable') parts.push(`<div class="card empty">Final Picks need a valid SAST publication timestamp. Refresh and try again.</div>`);
+    else if (!picks.length) parts.push(`<div class="card empty"><b>No qualifying Final Picks right now.</b> The rules are never relaxed to fill the list. Check again after the next update.</div>`);
+    else picks.forEach((x, i) => {
+      const f = fx(x.fixture);
+      parts.push(`<div class="card compact tap final-pick" data-fx="${esc(x.fixture)}"><div class="row"><span class="pill hi">#${i + 1}</span>${fxBadge(f, 'home')}${fxBadge(f, 'away')}<div class="grow"><div class="b">${esc(x.home)} v ${esc(x.away)}</div><div class="tiny muted">${flag(x.country)} ${esc(x.country)} · ${esc(x.league)} · ${esc(koShort(x.kickoff))} SAST</div></div></div>
+        <div class="row" style="margin-top:9px"><div class="grow"><div class="b">${esc(x.label)}</div><div class="tiny muted">High data quality · estimate ${pct(x.p)} · market ${pct(x.p_sb)}</div></div><div class="right"><b>${f2(x.odds)}</b><div class="tiny muted">SportyBet</div></div>${PR.addBtn ? PR.addBtn(x.fixture, x.sel, x.odds) : ''}</div></div>`);
+    });
+    parts.push(`<div class="card small"><b>How Final Picks are chosen</b><div class="muted" style="margin-top:5px">A subset of the existing Shortlist: today’s upcoming, eligible matches with High data quality, an estimated probability of at least 80%, the selection’s own SportyBet price of 1.18–1.90, probability × price of at least 0.98, and a verified market probability within 8 percentage points of the estimate. One selection per match. The publication must be no more than 90 minutes old. Picks are re-screened at each update and removed at kick-off; this is not a frozen daily ticket.</div></div>`);
+    parts.push(`<div class="note">Stricter filters do not guarantee a win or improved accuracy. These rules have not been separately backtested. Prices can change; check SportyBet before deciding. 18+.</div>`);
+    view().innerHTML = parts.join('');
+  };
+
   PR.views.x12 = function () {
     const d = state.data; const sl = d.shortlist || {}; const rows = (sl.x12 || []).filter((x) => String(x.kickoff || '').slice(0, 10) === ymd(tzNow()) && parseLocal(x.kickoff) > tzNow());
     const R = sl.rules || {};
@@ -402,6 +421,7 @@
     const tile = (cls, ico, title, sub, attrs) => `<button class="home-quick ${cls}" ${attrs}>
       <span class="quick-icon">${icon(ico)}</span><strong>${title}</strong><span class="quick-caption">${sub}</span><span class="quick-arrow" aria-hidden="true">${icon('next', 'sm')}</span></button>`;
     return `<nav class="home-launchpad" aria-label="Home collections">
+      ${tile('final', 'check', 'Final Picks', 'Stricter picks · 1.18+', 'data-tab-go="finalpicks"')}
       ${tile('advisor', 'shield', 'Bet Advisor', 'Analysis &amp; record', 'data-page-go="advisor"')}
       ${tile('daily', 'star', 'Bets of the Day', `${collections.all.length} selections today`, `data-home-open="all" aria-pressed="${!state.homeTab || state.homeTab === 'all'}"`)}
       ${tile('eighty', 'trend', '80%+ Markets', `${collections.eighty.length} modelled markets today`, `data-home-open="eighty" aria-pressed="${state.homeTab === 'eighty'}"`)}
@@ -965,6 +985,7 @@
       row('calendar', 'Days', 'Analysed fixtures · day by day', 'data-tab-go="days"'),
       row('trophy', 'Leagues', 'Worldwide competitions', 'data-tab-go="leagues"'),
       row('tag', 'Low odds', 'Sportybet prices from 1.19 to 1.45', 'data-tab-go="lowodds"'),
+      row('check', 'Final Picks', 'Stricter daily selections · 1.18+', 'data-tab-go="finalpicks"'),
       row('target', 'Shortlist', 'Today’s high-conviction picks · grouped by market', 'data-tab-go="shortlist"'),
       row('star', '1X2', 'Match result · home, draw or away · today', 'data-tab-go="x12"'),
       row('clock', 'Sequences', 'Your betting windows · today’s matches', 'data-tab-go="sequences"'),
