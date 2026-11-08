@@ -668,8 +668,8 @@ window.PR = (function () {
   };
   // Validate published shortlist rows again against the same fixture's exact current selection.
   // This also protects the Advisor and briefing from old cached, less restrictive payloads.
-  function strictShortlist(d) {
-    const now = tzNow(), today = ymd(now), seen = new Set();
+  function strictShortlist(d, now = tzNow()) {
+    const today = ymd(now), seen = new Set();
     return (((d || {}).shortlist || {}).primary || []).flatMap((x) => {
       const f = (d._byId || {})[x.fixture];
       if (!f || !competitionAllowed(f) || !f.data_ok || f.q === 'Low' || f.date !== today || !(parseLocal(f.kickoff) > now) || seen.has(f.id)) return [];
@@ -680,6 +680,32 @@ window.PR = (function () {
       seen.add(f.id);
       return [{ ...x, p: s.p, odds: s.odds, p_sb: s.p_sb, quality: f.q || 'N/A', kickoff: f.kickoff }];
     });
+  }
+  // Final Picks are deliberately a subset of the current Shortlist, never a new
+  // source of odds or probabilities. Publications and kickoffs are in SAST.
+  function finalPicksInfo(d) {
+    const meta = (d || {}).meta || {}, stamp = meta.generated;
+    const now = new Date(Date.now() + (120 + new Date().getTimezoneOffset()) * 60000);
+    const validStamp = typeof stamp === 'string' && /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(stamp);
+    const published = validStamp ? Date.parse(stamp.replace(' ', 'T') + ':00+02:00') : NaN;
+    const roundtrip = Number.isFinite(published) ? new Date(published + 2 * 3600000).toISOString().slice(0, 16).replace('T', ' ') : '';
+    if (meta.tz !== 'SAST' || roundtrip !== stamp) return { status: 'unavailable', picks: [] };
+    const age = Date.now() - published;
+    if (age < -5 * 60000 || age > 90 * 60000) return { status: 'stale', picks: [] };
+    const picks = strictShortlist(d, now).flatMap((x) => {
+      const f = d._byId[x.fixture], s = f.sels.find((v) => v.sel === x.sel);
+      const liveStatus = f.livescore_id && (state.live[f.livescore_id] || {}).status;
+      const kickoff = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(f.kickoff || '') ? Date.parse(f.kickoff.replace(' ', 'T') + ':00+02:00') : NaN;
+      if (!Number.isFinite(kickoff) || kickoff <= Date.now() || (liveStatus && liveStatus !== 'NS')) return [];
+      if (f.q !== 'High' || !Number.isFinite(s.p) || s.p < 0.80 ||
+          !Number.isFinite(s.p_model) || s.p_model <= 0 || s.p_model >= 1 ||
+          !Number.isFinite(s.p_sb) || s.p_sb <= 0 || s.p_sb >= 1 ||
+          Math.abs(s.p_model - s.p_sb) > 0.08 + 1e-12 || s.odds < 1.18 || s.p * s.odds < 0.98) return [];
+      return [{ ...x, home: f.home, away: f.away, country: f.country, league: f.league,
+        label: selLabel(s.sel, f.home, f.away), market: selGroup(s.sel), p_sb: s.p_sb }];
+    });
+    picks.sort((a, b) => b.p - a.p || b.odds - a.odds || String(a.fixture).localeCompare(String(b.fixture)));
+    return { status: 'ready', picks, published: stamp };
   }
   const slug = (div) => String(div || '').replace(/[^A-Za-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
   async function loadTeams(div) {
@@ -743,9 +769,9 @@ window.PR = (function () {
 
   // ------------------------------------------------------------------ navigation (primary shell: Home / Scan / Live / Matches / More —
   // Low odds, Shortlist, Sequences, Days and Leagues remain valid secondary destinations under More)
-  const TABS = ['home', 'bets', 'live', 'matches', 'lowodds', 'shortlist', 'x12', 'sequences', 'days', 'leagues', 'more'];
-  const TAB_TITLE = { home: 'Mr 2 Odds', bets: 'Scan', live: 'Live', matches: 'Matches', lowodds: 'Low odds 1.19 – 1.45', more: 'More', days: 'Days', leagues: 'Leagues', shortlist: 'Shortlist', x12: '1X2', sequences: 'Sequences' };
-  const MORE_TABS = ['lowodds', 'shortlist', 'x12', 'sequences', 'days', 'leagues'];
+  const TABS = ['home', 'bets', 'live', 'matches', 'lowodds', 'shortlist', 'finalpicks', 'x12', 'sequences', 'days', 'leagues', 'more'];
+  const TAB_TITLE = { home: 'Mr 2 Odds', bets: 'Scan', live: 'Live', matches: 'Matches', lowodds: 'Low odds 1.19 – 1.45', more: 'More', days: 'Days', leagues: 'Leagues', shortlist: 'Shortlist', finalpicks: 'Final Picks', x12: '1X2', sequences: 'Sequences' };
+  const MORE_TABS = ['lowodds', 'shortlist', 'finalpicks', 'x12', 'sequences', 'days', 'leagues'];
   const NAV_PREF_KEYS = ['sort', 'matchFilter', 'matchesView', 'homeTab', 'homeSort', 'homeMk', 'homeShow', 'slMk', 'betsView', 'liveView', 'lgSort', 'lgTableSort', 'betGroup', 'board'];
   function navKey() {
     const top = state.stack[state.stack.length - 1];
@@ -979,7 +1005,7 @@ window.PR = (function () {
   const PLACES = [
     { label: 'Bets of the day', icn: 'star', go: { tab: 'bets' } }, { label: 'Live scores', icn: 'live', go: { tab: 'live' } },
     { label: 'Matches', icn: 'calendar', go: { tab: 'matches' } }, { label: 'Low odds 1.19 – 1.45', icn: 'tag', go: { tab: 'lowodds' } },
-    { label: 'Shortlist', icn: 'target', go: { tab: 'shortlist' } }, { label: '1X2', icn: 'star', go: { tab: 'x12' } }, { label: 'Days', icn: 'history', go: { tab: 'days' } },
+    { label: 'Shortlist', icn: 'target', go: { tab: 'shortlist' } }, { label: 'Final Picks', icn: 'shield', go: { tab: 'finalpicks' } }, { label: '1X2', icn: 'star', go: { tab: 'x12' } }, { label: 'Days', icn: 'history', go: { tab: 'days' } },
     { label: 'Leagues', icn: 'trophy', go: { tab: 'leagues' } },
     { label: 'Tickets', icn: 'ticket', go: { page: 'tickets' } }, { label: 'Teams', icn: 'users', go: { page: 'teams' } },
     { label: 'Performance', icn: 'chart', go: { page: 'performance' } }, { label: 'Bet advisor', icn: 'shield', go: { page: 'advisor' } },
@@ -1141,7 +1167,7 @@ window.PR = (function () {
 
   return { native, settings, state, $, $$, saveSettings, nfetch, getJson, resources, migrateResource, validResource, refreshVisible, connectionChanged, clearDataCache, rawUrl, esc, pct, f1, f2, signed, DAYS, MONTHS, parseLocal, tzNow, ymd, stored, persist, cache, prefetchDetails, pubStamp,
     dayName, niceDate, koTime, koShort, toast, pill, competitionAllowed, bar, wdl, formBadges, md, GROUPS, GROUP_ICON, selGroup, isUnder, isDropped, SEL_FLOOR, selLabel, selShort, settleSel,
-    liveVerdict, isLive, isFT, indexData, fx, loadDetail, detailCached, detailKey, loadData, saveLatest, saveAux, statusLine, isOutlier, strictShortlist, MIN_MARKET_ODDS, offeredPrice, marketVisible, visiblePrice, visibleSportyPrices, loadDay, dayRecord, finalFor, storedIncidents, loadTeams, teamsCached, loadTeamIndex, realTable, slug, TABS, render, setTab, push, replace,
+    liveVerdict, isLive, isFT, indexData, fx, loadDetail, detailCached, detailKey, loadData, saveLatest, saveAux, statusLine, isOutlier, strictShortlist, finalPicksInfo, MIN_MARKET_ODDS, offeredPrice, marketVisible, visiblePrice, visibleSportyPrices, loadDay, dayRecord, finalFor, storedIncidents, loadTeams, teamsCached, loadTeamIndex, realTable, slug, TABS, render, quietRender, setTab, push, replace,
     sbEventUrl, sbShareUrl, openSportybet, openBookingCode, openExternal, copyText, namesAgree, displayName, fittedSbEvent,
     back, openMatch, openTeam, toggleMenu, closeMenu, contactCard, editorCard, teamLink, teamSpan, matchLine, matchRow, segmented, select, scoreBox, statusIcon, CONTACT, APP_VERSION,
     confirmBox, isFav, toggleFav, favList: () => favs, saveFavs,

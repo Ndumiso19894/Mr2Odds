@@ -1,3 +1,7 @@
+## Final Picks
+- A new Final Picks view on Home and More narrows today’s Shortlist using High data quality, an 80% probability threshold, SportyBet prices of 1.18–1.90, tighter price and market-agreement checks, and a recent publication.
+- Picks update and leave the list at kick-off; none are manufactured to fill the page. The stricter rules have not been separately backtested and do not guarantee results.
+
 ## Pending ticket results
 - Pending football tickets now refresh their match-day records when the app is open and recheck when updated scores or corner statistics arrive.
 - Background checks also look up recent archived match days and can grade corner selections when the required statistics are available. Missing or ambiguous information remains pending.
