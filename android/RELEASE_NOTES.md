@@ -1,3 +1,7 @@
+## Recent form in predictions
+- Recent last-5/10 and home/away form now have extra weight alongside longer history and league averages. A small head-to-head adjustment applies only to qualifying same-competition matches with exact IDs; ambiguous recent histories fall back to the baseline.
+- Squad availability remains context only. The change has mixed exploratory results and has not been prospectively validated; it does not establish better accuracy or profitability.
+
 ## Model history and price safeguards
 - Prediction inputs now exclude same-day results and reconcile repeated Livescore event IDs to reduce look-ahead and duplicate counting. Results used to settle tickets remain separate; unmatched cross-provider records are not automatically merged.
 - Experimental xG and shots adjustments are disabled by default while point-in-time validation is outstanding. Probabilities and qualifying selections can change; these safeguards do not establish improved accuracy or profitability.

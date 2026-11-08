@@ -53,6 +53,7 @@ import requests
 
 import markets
 import model_signals
+import recent_form
 import quality
 import news as news_mod
 import parlays as parlay_mod
@@ -724,6 +725,8 @@ TEAM_HIST_CACHE: dict = {}   # (id(long), country, team, team_id) -> slice; pure
 H2H_CACHE: dict = {}         # (id(results), country, home, away, limit, home_id, away_id) -> list; cleared per run
 PROFILE_CACHE: dict = {}     # (id(long), country, team, venue, id(now), team_id) -> TeamProfile; cleared per run
 LONG_INDEX: dict = {}        # rating_key -> a team's perspective rows (date desc); built once per run, read-only
+H2H_INDEX_SOURCE = None       # identity of indexed pool, never used for a different frame
+RECENT_TEAM_CACHE: dict = {}  # per-scan team window evidence, cleared before and after analysis
 H2H_INDEX: dict = {}         # (home_id, away_id) / ("n", country, home, away) -> past meetings; built once per run
 ACACHE: "acache.AnalysisCache | None" = None   # the cross-run incremental cache (set in main)
 
@@ -748,7 +751,9 @@ def build_long_index(long: pd.DataFrame) -> None:
 
 def build_h2h_index(results: pd.DataFrame) -> None:
     """Index past meetings by team pair once per run (both orderings, id-based and name-based)."""
+    global H2H_INDEX_SOURCE
     H2H_INDEX.clear()
+    H2H_INDEX_SOURCE = id(results)
     if results.empty:
         return
     if "home_id" in results.columns and "away_id" in results.columns:
@@ -1046,6 +1051,7 @@ class MatchRow:
     x12_market: dict | None = None  # de-margined bookmaker 1X2 (comparison only)
     audit: dict = field(default_factory=dict)  # evidence / quality / explanation / warnings (quality.py), filled in main()
     model_signals: dict = field(default_factory=dict)  # provisional adjustment audit
+    recent_form: dict = field(default_factory=dict)  # per-fixture applied/fallback evidence
     scores: list = field(default_factory=list)  # most likely cells of the same DC matrix
 
     @property
@@ -1061,8 +1067,32 @@ class MatchRow:
         return f"{self.fx['home']} v {self.fx['away']}"
 
 
+def _recent_team(long, country, team, venue, team_id, profile, now):
+    key = (id(long), country, team, venue, team_id, now.date())
+    if key not in RECENT_TEAM_CACHE:
+        sample = _profile_sample_rows(team_history(long, country, team, team_id))
+        RECENT_TEAM_CACHE[key] = recent_form.prepare_team(profile, sample, venue, now)
+    return RECENT_TEAM_CACHE[key]
+
+
+def _recent_meetings(pool, fx, now):
+    hid, aid = fx.get("home_id"), fx.get("away_id")
+    if pool is None or not recent_form.valid_id(hid) or not recent_form.valid_id(aid) or hid == aid:
+        return []
+    if H2H_INDEX_SOURCE == id(pool):
+        subset = pool.iloc[H2H_INDEX.get((hid, aid), [])]
+    elif {"home_id", "away_id"}.issubset(pool.columns):
+        subset = pool.loc[((pool["home_id"] == hid) & (pool["away_id"] == aid)) |
+                          ((pool["home_id"] == aid) & (pool["away_id"] == hid))]
+    else:
+        return []
+    return recent_form.meetings(subset, fx, now)
+
+
 def analyse(fx: pd.Series, long: pd.DataFrame, results: pd.DataFrame,
             div_avgs: dict[str, DivAvg], now: datetime, h2h_pool: pd.DataFrame | None = None) -> MatchRow:
+    if RECENT_FORM_ENABLED and EXPERIMENTAL_MODEL_SIGNALS:
+        raise ValueError("Recent form and experimental model signals cannot be combined; disable one explicitly")
     g = div_avgs.get("__global__", DivAvg(1.45, 1.2, 0, float("nan"), float("nan")))
     da = div_avgs.get(fx["div"], g)
     hid, aid = fx.get("home_id"), fx.get("away_id")
@@ -1074,6 +1104,15 @@ def analyse(fx: pd.Series, long: pd.DataFrame, results: pd.DataFrame,
     # Bookmaker odds play no part here (data-first engine, 2026-09-28).
     mod_h = min(max(da.mu_h * H.att * A.dfc, 0.15), 4.5)
     mod_a = min(max(da.mu_a * A.att * H.dfc, 0.15), 4.5)
+    recent = {"status": "disabled", "reason": "RECENT_FORM_ENABLED=0", "squad_availability": "not_used"}
+    if RECENT_FORM_ENABLED:
+        try:
+            home_recent = _recent_team(long, fx["country"], fx["home"], "H", hid, H, now)
+            away_recent = _recent_team(long, fx["country"], fx["away"], "A", aid, A, now)
+            meetings = _recent_meetings(h2h_pool if h2h_pool is not None else results, fx, now)
+            mod_h, mod_a, recent = recent_form.adjust(home_recent, away_recent, da, meetings)
+        except ValueError as exc:
+            recent = {"status": "baseline_fallback", "reason": str(exc), "squad_availability": "not_used"}
     # User-enabled experimental data-only adjustments; not yet backtested.
     # Unvalidated signals are disabled by default. Explicit research opt-in only.
     if EXPERIMENTAL_MODEL_SIGNALS:
@@ -1106,6 +1145,7 @@ def analyse(fx: pd.Series, long: pd.DataFrame, results: pd.DataFrame,
     row = MatchRow(fx, H, A, lam_h, lam_a, mod_h, mod_a, mkt_h, mkt_a, p_model, p_mkt, p_final, hist,
                    head_to_head(h2h_pool if h2h_pool is not None else results, fx["country"], fx["home"], fx["away"],
                                 home_id=hid, away_id=aid), da)
+    row.recent_form = recent
     if mk is not None:
         row.mkt_source = "reference odds (football-data.co.uk)"
     # ---- extra markets (v3): 1X2 / DC and team goals from the same model score matrix; corners, cards own models
@@ -1147,6 +1187,7 @@ def analyse(fx: pd.Series, long: pd.DataFrame, results: pd.DataFrame,
     return row
 
 
+RECENT_FORM_ENABLED = os.getenv("RECENT_FORM_ENABLED", "1") == "1"
 EXPERIMENTAL_MODEL_SIGNALS = os.getenv("EXPERIMENTAL_MODEL_SIGNALS", "0") == "1"
 MODELS: dict = {}   # count models, built once per run in main()
 SIGNAL_BASELINES: dict = {}
@@ -1161,7 +1202,7 @@ def build_audits(rows: list[MatchRow], now: datetime) -> None:
             own_div = str(r.fx["div"])
             ev_h = quality.team_evidence(r.home, own_div, now)
             ev_a = quality.team_evidence(r.away, own_div, now)
-            h2h = quality.h2h_evidence(r.h2h, now)
+            h2h = quality.h2h_evidence(r.h2h, now, r.recent_form)
             q = quality.data_quality(r, ev_h, ev_a, h2h, now)
             mkt = quality.market_layer(r)
             n_min = min(r.home.n, r.away.n)
@@ -2430,6 +2471,8 @@ def require_publication(ctx: dict) -> None:
 
 
 def main() -> None:
+    if RECENT_FORM_ENABLED and EXPERIMENTAL_MODEL_SIGNALS:
+        raise ValueError("Recent form and experimental model signals cannot be combined; disable one explicitly")
     tz = ZoneInfo(CONFIG["TIMEZONE"])
     override = os.getenv("SCAN_NOW")  # e.g. "2026-09-26 07:00" for testing
     now = datetime.strptime(override, "%Y-%m-%d %H:%M").replace(tzinfo=tz) if override else datetime.now(tz)
@@ -2638,10 +2681,16 @@ def main() -> None:
     if override:
         todays = without_unverified_replay_prices(todays)
         log.warning("SCAN_NOW: current prices withheld; historical quote availability is not established")
+    RECENT_TEAM_CACHE.clear()
     rows = [analyse(fx, long, results, div_avgs, now, pool) for _, fx in todays.iterrows()]
     app_rows = [r for r in rows if r.fx["kickoff"] <= app_end]   # what the app publication carries
     def _signal_count(key):
         return sum(any((r.model_signals.get(side) or {}).get(key, False) for side in ("home", "away")) for r in app_rows)
+    ctx["recent_form"] = {"enabled": RECENT_FORM_ENABLED, "fixtures": len(app_rows),
+                          "applied": sum(r.recent_form.get("status") == "applied" for r in app_rows),
+                          "baseline_fallback": sum(r.recent_form.get("status") == "baseline_fallback" for r in app_rows),
+                          "h2h_applied": sum(bool(r.recent_form.get("h2h", {}).get("weight")) for r in app_rows)}
+    log.info("Recent form coverage: %s", ctx["recent_form"])
     ctx["model_signals"] = {
         "status": "experimental_unvalidated" if EXPERIMENTAL_MODEL_SIGNALS else "disabled",
         "fixtures": len(app_rows), "xg_xga": _signal_count("xg_applied"),
@@ -2674,6 +2723,7 @@ def main() -> None:
     # (trends works from its own frame); keeps the 60-day run inside a small runner's memory budget
     TEAM_HIST_CACHE.clear()
     PROFILE_CACHE.clear()
+    RECENT_TEAM_CACHE.clear()
     H2H_CACHE.clear()
     del long
 

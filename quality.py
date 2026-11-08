@@ -188,8 +188,10 @@ def outliers(ms: list[dict]) -> list[dict]:
 
 
 def recent_signal(ms: list[dict], baseline_gf: float | None, baseline_ga: float | None) -> dict:
-    """Last-5 / last-10 scoring versus the long-term (time-weighted) baseline. Information only: the model's
-    exponential time-weighting already includes recent matches; recent form never overrides the baseline."""
+    """Descriptive last-5/10 scoring versus the time-weighted baseline.
+
+    This summary is separate from any applied recent-form overlay.
+    """
     def block(k):
         s = ms[:k]
         if not s:
@@ -248,11 +250,22 @@ def expand_matches(obj) -> list[dict]:
 
 
 # ----------------------------------------------------------------------------- head-to-head
-def h2h_evidence(h2h: list[dict], now: datetime) -> dict:
+def h2h_evidence(h2h: list[dict], now: datetime, recent: dict | None = None) -> dict:
     n = len(h2h or [])
-    out = {"n": n, "label": evidence_label(n), "used_by_model": False,
-           "note": "Head-to-head is shown for context only; it is not a model input. Sample of this size cannot support "
-                   "conclusions on its own." if n < 5 else "Head-to-head is shown for context only; it is not a model input."}
+    model_h2h = (recent or {}).get("h2h") or {}
+    used = (recent or {}).get("status") == "applied" and bool(model_h2h.get("weight"))
+    if used:
+        note = (f"The model uses {model_h2h['n']} same-competition meetings with exact Livescore IDs "
+                f"from the last 1,095 days, with a small {100 * model_h2h['weight']:.1f}% weight. "
+                "The displayed sample may differ and is historical context.")
+    else:
+        note = "The displayed meetings are context only; no H2H adjustment was applied for this fixture."
+        if (recent or {}).get("status") == "applied":
+            note += f" Only {model_h2h.get('n', 0)} eligible exact-ID same-competition meetings; at least 3 are required."
+        if n < 5:
+            note += " A small sample cannot support conclusions on its own."
+    out = {"n": n, "label": evidence_label(n), "used_by_model": used,
+           "model_n": model_h2h.get("n", 0), "model_weight": model_h2h.get("weight", 0), "note": note}
     if n:
         tot = [m["hg"] + m["ag"] for m in h2h]
         out.update({"avg_goals": round(float(np.mean(tot)), 2), "o25": sum(t >= 3 for t in tot), "o15": sum(t >= 2 for t in tot),
@@ -379,11 +392,12 @@ def explanation(r, ev_h: dict, ev_a: dict, config: dict) -> dict:
         "league": {"div": str(r.fx["div"]), "mu_home": _f(da.mu_h, 3), "mu_away": _f(da.mu_a, 3), "n_eff": _f(da.n_eff, 1),
                    "o25_rate": _f(da.o25_rate, 3), "btts_rate": _f(da.btts_rate, 3)},
         "home": ev_h["ratings"], "away": ev_a["ratings"],
-        "lambda_home": {"formula": "league home average x home attack x away defence, then any experimental data adjustments",
+        "lambda_home": {"formula": "league home average x home attack x away defence; see recent-form or experimental adjustments below",
                         "terms": [_f(da.mu_h, 3), _f(H.att, 3), _f(A.dfc, 3)], "value": _f(r.mod_h, 3)},
-        "lambda_away": {"formula": "league away average x away attack x home defence, then any experimental data adjustments",
+        "lambda_away": {"formula": "league away average x away attack x home defence; see recent-form or experimental adjustments below",
                         "terms": [_f(da.mu_a, 3), _f(A.att, 3), _f(H.dfc, 3)], "value": _f(r.mod_a, 3)},
         "model_signals": getattr(r, "model_signals", {}),
+        "recent_form": getattr(r, "recent_form", {}),
         "settings": {"half_life_days": config["HALF_LIFE_DAYS"], "max_matches": config["MAX_MATCHES_PER_TEAM"],
                      "shrink_k_tempo": kt, "shrink_k_strength": ks, "venue_k": kv, "dc_rho": config["DC_RHO"],
                      "lambda_clip": [0.15, 4.5]},
@@ -395,7 +409,8 @@ def explanation(r, ev_h: dict, ev_a: dict, config: dict) -> dict:
             f"4. Ratings are shrunk towards the league average (1.00): the attack/defence ratio (strength) with K = {ks} and the "
             f"overall tempo with K = {kt} weighted matches — small samples stay close to the average.",
             "5. Baseline expected goals (lambda) = league venue average x attack x opponent's defence.",
-            "6. Experimental xG/xGA and shots-on-target corrections may adjust lambda when data is sufficient; they have not been backtested. See model_signals for the current status.",
+            "6. When applied, recent 5/10 and venue form are shrunk to the longer-history ratings; eligible exact-ID same-competition H2H and scoring frequencies make small adjustments. See recent_form for this fixture. If unavailable or ambiguous, the baseline is retained. Squad availability is not used.",
+            "Experimental xG/xGA and shots-on-target corrections are separate and cannot be combined with recent form; see model_signals for status.",
             f"7. The resulting lambdas form a Dixon-Coles score matrix (rho {config['DC_RHO']}), 0-10 goals per team; goal and result probabilities are read from it.",
             "Bookmaker prices are not used anywhere in these steps.",
         ],
@@ -464,7 +479,7 @@ def warnings_for(r, ev_h: dict, ev_a: dict, h2h: dict, quality: dict, market: di
             if st and st["n"] <= 3 and st["n"] and (st["o25"] == st["n"] or st["btts"] == st["n"] or st["cs"] == st["n"]):
                 add("perfect_small", "warn", f"{ev['team']}: 100% rates in {nm} matches come from only {st['n']} match{'es' if st['n'] > 1 else ''} — not meaningful")
     if h2h["n"] and h2h["n"] < 5:
-        add("h2h_small", "info", f"Head-to-head sample: {h2h['n']} match{'es' if h2h['n'] > 1 else ''} — evidence strength {h2h['label']}; context only")
+        add("h2h_small", "info", f"Head-to-head sample: {h2h['n']} match{'es' if h2h['n'] > 1 else ''} — evidence strength {h2h['label']}; displayed frequencies are historical context")
     xg = market["xg"]
     if xg["gap_total"] is not None and abs(xg["gap_total"]) >= 0.5:
         add("model_v_market_xg", "info", f"Model total xG {xg['model_total']:.2f} v market {xg['market_total']:.2f} ({xg['gap_total']:+.2f}) — "
@@ -603,7 +618,7 @@ def audit_markdown(d: dict) -> str:
         L += ["", "</details>", ""]
     # 3. H2H
     L += ["## 3. Head-to-head", "", f"* Sample: **{h2h.get('n', 0)} match{'es' if h2h.get('n', 0) != 1 else ''}** — evidence strength **{h2h.get('label', 'No data')}**; "
-                                      f"used by the model: **no** (context only)"]
+                                      f"model H2H adjustment: **{'yes, eligible subset' if h2h.get('used_by_model') else 'no'}**"]
     if h2h.get("n"):
         L.append(f"* {h2h.get('first_date')} → {h2h.get('last_date')} · avg {h2h.get('avg_goals')} goals · O2.5 in {h2h.get('o25')}/{h2h['n']} · BTTS in {h2h.get('btts')}/{h2h['n']} · "
                  f"{', '.join(h2h.get('competitions') or [])}")
@@ -616,8 +631,8 @@ def audit_markdown(d: dict) -> str:
     L += ["## 4. Model (football data only)", "",
           f"* League baseline ({lg.get('div')}): {lg.get('mu_home')} home + {lg.get('mu_away')} away goals per match (weighted n {lg.get('n_eff')}); "
           f"O2.5 in {_pct(lg.get('o25_rate'))}, BTTS in {_pct(lg.get('btts_rate'))} of league matches",
-          f"* **Model xG home {xg.get('model_home')}** = {lh.get('formula')} = {' × '.join(str(t) for t in lh.get('terms') or [])}",
-          f"* **Model xG away {xg.get('model_away')}** = {la.get('formula')} = {' × '.join(str(t) for t in la.get('terms') or [])}",
+          f"* **Model xG home {xg.get('model_home')}**; baseline terms {' × '.join(str(t) for t in lh.get('terms') or [])}; {lh.get('formula')}",
+          f"* **Model xG away {xg.get('model_away')}**; baseline terms {' × '.join(str(t) for t in la.get('terms') or [])}; {la.get('formula')}",
           f"* Model total {xg.get('model_total')}", "",
           "| Market | Model probability | Confidence |", "|---|---|---|"]
     conf = d.get("confidence") or {}
@@ -629,6 +644,11 @@ def audit_markdown(d: dict) -> str:
     tg = d.get("tg") or {}
     if tg:
         L.append(_row("Team to score (home / away)", f"{_pct(tg.get('H_o05'))} / {_pct(tg.get('A_o05'))}", conf.get("TG", "N/A")))
+    recent = ex.get("recent_form") or {}
+    if recent.get("status"):
+        L += ["", f"Recent form status: **{recent['status']}**" +
+              (f" — {recent['reason']}" if recent.get("reason") else "") +
+              ". Squad availability is not used. The recent-form version is not prospectively validated."]
     L += ["", "Steps:"] + [f"* {s}" for s in ex.get("steps") or []] + [""]
     # 4b. independent recomputation from the published inputs (pure Python, no scanner import)
     rc = recompute(d)

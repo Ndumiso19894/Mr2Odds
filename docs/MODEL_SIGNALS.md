@@ -1,7 +1,7 @@
 # Provisional model signals and restored markets
 
 **Disabled by default pending point-in-time chronological validation.** Set
-`EXPERIMENTAL_MODEL_SIGNALS=1` only for explicitly labelled research. The additions below are
+`RECENT_FORM_ENABLED=0 EXPERIMENTAL_MODEL_SIGNALS=1` only for explicitly labelled research. The recent-form and experimental signals cannot run together. The additions below are
 small, heuristic experimental adjustments; their weights are not fitted. The retrospective
 comparison in `research/model_diagnostics/REPORT.md` does not establish point-in-time feature
 availability, includes multiple comparisons, and is not an untouched holdout. Previous
