@@ -288,7 +288,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
            helpers: dict, reports_dir: Path, tz_label: str, thresholds: dict, backtest: dict, repo: str | None,
            days_index: list | None = None, safe_summary: dict | None = None, botd: list | None = None, botd_groups: list | None = None,
            alerts: list | None = None, coverage: dict | None = None, safe_groups: tuple = (), extra_badges: dict | None = None,
-           report_run: bool = True, live_dir: Path | None = None) -> Path:
+           report_run: bool = True, live_dir: Path | None = None, daily_accumulators: dict | None = None) -> Path:
     render_details, stars, comp = helpers["render_details"], helpers["stars"], helpers["comp"]
     selections = helpers.get("selections") or (lambda r: [])
     now: datetime = ctx["now"]
@@ -563,6 +563,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
         "fixtures": index, "picks": picks_out, "safe": safe_out, "tracker": tracker_out,
         "advisor": advisor, "shortlist": shortlist, "groups": groups,
         "strong_markets": strong_markets,
+        "daily_accumulators": daily_accumulators,
         "tracked": sorted(tracked), "history": {"reports": reports, "days": days_index or []},
     }
     path.parent.mkdir(parents=True, exist_ok=True)

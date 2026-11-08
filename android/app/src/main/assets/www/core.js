@@ -35,7 +35,7 @@ window.PR = (function () {
   try { savedSettings = JSON.parse(stored('pr_settings') || '{}'); } catch (e) { savedSettings = {}; }
   const settings = Object.assign({ liveEvery: 60, tzOffset: 2, goalAlerts: true, htAlerts: false, ftAlerts: true, betAlerts: true, reportAlerts: true, minP: 0.70, hiP: 0.70, theme: 'dark', seenVersion: '', leagues: 'all', sport: 'football' },
     savedSettings, { sport: 'football', tennisAlerts: false });
-  const state = { data: null, tab: 'home', stack: [], live: {}, incidents: {}, liveTimer: null, lastLive: 0, loading: false, q: '',
+  const state = { data: null, tab: 'dailyaccumulators', stack: [], live: {}, incidents: {}, liveTimer: null, lastLive: 0, loading: false, q: '',
     update: null, updateStage: null, days: {}, teams: {}, reports: {}, details: {}, betsView: 'today', search: '', sort: 'ko', matchFilter: 'all',
     liveView: 'tracked', liveAll: null, lastLiveAll: 0, dayView: 'results', matchView: 'overview', teamView: 'overview', menuOpen: false, expanded: {}, badges: {}, dark: false,
     teamIdx: null, teamIdxLoading: false, lgSort: 'country', lgTableSort: 'pts', scrolls: {}, tabHist: [] };
@@ -769,7 +769,7 @@ window.PR = (function () {
 
   // ------------------------------------------------------------------ navigation (primary shell: Home / Scan / Live / Matches / More —
   // Low odds, Shortlist, Sequences, Days and Leagues remain valid secondary destinations under More)
-  const TABS = ['home', 'bets', 'live', 'matches', 'lowodds', 'shortlist', 'finalpicks', 'x12', 'sequences', 'days', 'leagues', 'more'];
+  const TABS = ['home', 'dailyaccumulators', 'bets', 'live', 'matches', 'lowodds', 'shortlist', 'finalpicks', 'x12', 'sequences', 'days', 'leagues', 'more'];
   const TAB_TITLE = { home: 'Mr 2 Odds', bets: 'Scan', live: 'Live', matches: 'Matches', lowodds: 'Low odds 1.19 – 1.45', more: 'More', days: 'Days', leagues: 'Leagues', shortlist: 'Shortlist', finalpicks: 'Final Picks', x12: '1X2', sequences: 'Sequences' };
   const MORE_TABS = ['lowodds', 'shortlist', 'finalpicks', 'x12', 'sequences', 'days', 'leagues'];
   const NAV_PREF_KEYS = ['sort', 'matchFilter', 'matchesView', 'homeTab', 'homeSort', 'homeMk', 'homeShow', 'slMk', 'betsView', 'liveView', 'lgSort', 'lgTableSort', 'betGroup', 'board'];
@@ -835,7 +835,7 @@ window.PR = (function () {
   }
   function setTab(tab, opts) {
     opts = opts || {};
-    if (tab === 'today') tab = 'home';
+    if (tab === 'today') tab = 'dailyaccumulators';
     if (!TABS.includes(tab)) tab = 'home';
     // already on this destination: tapping the tab again pops a match/team page back to the list
     if (!opts.boot && !opts.fromBack && tab === state.tab) {
