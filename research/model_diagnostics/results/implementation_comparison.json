@@ -1,0 +1,78 @@
+{
+  "as_of": "2026-11-04 00:00 SAST",
+  "input": "postdated pinned world archive only, target IDs deduplicated, no odds or prices",
+  "caveat": "retrospective; targets and features may have been backfilled; old model includes same-day scores; one day, not accuracy proof",
+  "coverage": {
+    "target_events": 51,
+    "old_eligible": 50,
+    "new_eligible": 50,
+    "matched": 50,
+    "old_history": 70410,
+    "new_history": 70298,
+    "same_day_old": 52,
+    "integrity": {
+      "duplicate_groups": 60,
+      "rows_removed": 60,
+      "quarantined_groups": 0,
+      "stat_conflicts": 0,
+      "unmerged_cross_provider": true
+    }
+  },
+  "recommendation_counts": "not available: no verified historical SportyBet prices or published eligible selection data",
+  "markets": {
+    "O15": {
+      "n": 50,
+      "mean_old": 0.7946065385416482,
+      "mean_new": 0.7907753611418881,
+      "mean_abs_change_pp": 1.497932100675054,
+      "max_abs_change_pp": 7.584113570122786,
+      "old_brier": 0.16899588233006888,
+      "new_brier": 0.17760622874252824
+    },
+    "O25": {
+      "n": 50,
+      "mean_old": 0.5717205038669939,
+      "mean_new": 0.5652951899116335,
+      "mean_abs_change_pp": 2.2593052618312788,
+      "max_abs_change_pp": 8.962868893975385,
+      "old_brier": 0.19322022457324428,
+      "new_brier": 0.20835981652993912
+    },
+    "BTTS": {
+      "n": 50,
+      "mean_old": 0.552044651814628,
+      "mean_new": 0.5527768990036717,
+      "mean_abs_change_pp": 1.8133394934346716,
+      "max_abs_change_pp": 5.9701298187264,
+      "old_brier": 0.2278632290783321,
+      "new_brier": 0.23952061328329521
+    },
+    "H": {
+      "n": 50,
+      "mean_old": 0.45908952251668056,
+      "mean_new": 0.4621551149567245,
+      "mean_abs_change_pp": 5.320224561090143,
+      "max_abs_change_pp": 30.443964138227063,
+      "old_brier": 0.17730062019882348,
+      "new_brier": 0.22678149993500796
+    },
+    "D": {
+      "n": 50,
+      "mean_old": 0.23056919278102517,
+      "mean_new": 0.23473760383434436,
+      "mean_abs_change_pp": 1.2144015856647488,
+      "max_abs_change_pp": 6.78938909271079,
+      "old_brier": 0.11311672393259144,
+      "new_brier": 0.1155054883071474
+    },
+    "A": {
+      "n": 50,
+      "mean_old": 0.31034128470229433,
+      "mean_new": 0.30310728120893116,
+      "mean_abs_change_pp": 4.8385335293662575,
+      "max_abs_change_pp": 23.654575045516275,
+      "old_brier": 0.19242153981959428,
+      "new_brier": 0.2361829785850011
+    }
+  }
+}

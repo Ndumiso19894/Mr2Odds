@@ -1,0 +1,153 @@
+{
+  "simulated_scan_time": "2026-11-04 00:00 SAST",
+  "later_snapshot_only": true,
+  "future_fixture_example": {
+    "eid": "1836762",
+    "home": "KF Tirana",
+    "away": "Teuta Durres",
+    "date": "2026-11-07",
+    "score": [
+      1,
+      0
+    ],
+    "h2h_returned": [
+      {
+        "date": "2026-11-07",
+        "home": "KF Tirana",
+        "away": "Teuta Durres",
+        "score": [
+          1,
+          0
+        ]
+      },
+      {
+        "date": "2026-08-30",
+        "home": "Teuta Durres",
+        "away": "KF Tirana",
+        "score": [
+          3,
+          1
+        ]
+      },
+      {
+        "date": "2026-05-02",
+        "home": "Teuta Durres",
+        "away": "KF Tirana",
+        "score": [
+          0,
+          1
+        ]
+      },
+      {
+        "date": "2026-02-22",
+        "home": "KF Tirana",
+        "away": "Teuta Durres",
+        "score": [
+          0,
+          1
+        ]
+      }
+    ]
+  },
+  "psg_rennes_h2h": [
+    {
+      "date": "2027-03-06",
+      "home": "Paris Saint-Germain",
+      "away": "Rennes",
+      "score": [
+        2,
+        2
+      ]
+    },
+    {
+      "date": "2026-08-23",
+      "home": "Rennes",
+      "away": "Paris Saint-Germain",
+      "score": [
+        2,
+        2
+      ]
+    },
+    {
+      "date": "2026-02-13",
+      "home": "Rennes",
+      "away": "Paris Saint-Germain",
+      "score": [
+        3,
+        1
+      ]
+    }
+  ],
+  "rennes_trend_input": [
+    {
+      "date": "2027-03-06",
+      "team": "Rennes",
+      "opponent": "Paris Saint-Germain",
+      "score": [
+        2,
+        2
+      ]
+    },
+    {
+      "date": "2026-10-30",
+      "team": "Rennes",
+      "opponent": "Nice",
+      "score": [
+        2,
+        5
+      ]
+    },
+    {
+      "date": "2026-10-25",
+      "team": "Rennes",
+      "opponent": "Strasbourg",
+      "score": [
+        3,
+        0
+      ]
+    },
+    {
+      "date": "2026-10-18",
+      "team": "Rennes",
+      "opponent": "Paris FC",
+      "score": [
+        3,
+        4
+      ]
+    }
+  ],
+  "archive_records_dated_2027": [
+    {
+      "date": "2027-05-02",
+      "home": "Arminia Bielefeld II",
+      "away": "SC Verl II",
+      "score": [
+        3,
+        2
+      ],
+      "eid": "1842608"
+    },
+    {
+      "date": "2027-04-03",
+      "home": "Nerashte Ballerup",
+      "away": "Alleroed FK",
+      "score": [
+        1,
+        1
+      ],
+      "eid": "1810303"
+    },
+    {
+      "date": "2027-03-06",
+      "home": "Paris Saint-Germain",
+      "away": "Rennes",
+      "score": [
+        2,
+        2
+      ],
+      "eid": "1794670"
+    }
+  ],
+  "model_result_filter": "scanner.main filters goal-model rows to date <= scan date; H2H and trends receive unbounded older pool",
+  "note": "Archived future-dated scores may be erroneous records; their truth has not been verified."
+}

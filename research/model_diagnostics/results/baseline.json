@@ -1,0 +1,61 @@
+{
+  "code_commit": "c5f36454a039aeec454252f3d0c97d81095e1f83",
+  "code_sha256": {
+    "scanner.py": "74aa9c483742a008097d972ccaca7b2e52ea5398df42116c9f97a3612f3655fa",
+    "worldfeed.py": "7f37f6c32b8d3c29bf49d7835850e6dc14b79a8e2ad68a79059e3fb14d11ee03",
+    "model_signals.py": "e956f0b9b0432470f7260c087e57062159a161e1fc033537220e4c19912ab904",
+    "markets.py": "257540938bd708dade331292626f14791a4ee55c0c2f5f5d7309011d18c140a4",
+    "quality.py": "58ef989f44d714dc0408fa444055da256b06faa049529619a68d6e976f4347e7",
+    "trends.py": "14a5e1a20d57d3972635ae9527e17bcc6af6f58080dbf567f061b53ff75c5928",
+    "competition_policy.py": "a719fa831569e2a710f43b6f5fe06ec2acb45c2fd31c4a2e4a1881dd51893dc2",
+    "backtest/backtest.py": "aa90aa3b5e15b35b34afc99d15c8bb8410003a7d0121c2072f81848f9850e7a0",
+    "backtest/model_variants.py": "7604de663614eee1abadc7986098d3f3d3a9509781746846d2bf6c8bdac68374"
+  },
+  "data_commit": "6c63d69397aedc461150db8ddc7351082792ee1c",
+  "data_archive_sha256": "b0a10d9c238b5301856931432c651572dfe966f87b13e7faac3573121cd1a23e",
+  "data_commit_time": "2026-11-08T11:34:46Z",
+  "audit_simulated_as_of": "2026-11-04 00:00 SAST",
+  "environment": {
+    "python": "3.11.2",
+    "numpy": "2.4.6",
+    "pandas": "3.1.1",
+    "scipy": "1.17.1",
+    "pytest": "9.2.0",
+    "requests": "2.34.2"
+  },
+  "production_defaults": {
+    "half_life_days": 120,
+    "max_history_days": 400,
+    "max_matches": 40,
+    "shrink_tempo": 40.0,
+    "shrink_strength": 5.0,
+    "venue_k": 20.0,
+    "rho": -0.05,
+    "goal_min_effective_matches": 4.0,
+    "experimental_signals_default_enabled": true,
+    "world_count_min_n": 5,
+    "corners_model": {
+      "K": 40.0,
+      "KV": 20.0,
+      "HL": 120.0,
+      "r_total": 80.0,
+      "r_team": 10.0,
+      "div_K": 30.0,
+      "lines_total": [
+        8.5,
+        9.5,
+        10.5,
+        11.5
+      ],
+      "lines_team": [
+        3.5,
+        4.5,
+        5.5
+      ]
+    }
+  },
+  "test_commands": [
+    "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. python -m pytest -q -p no:cacheprovider tests/test_model_signals.py tests/test_scanner.py tests/test_worldfeed.py research/model_diagnostics/test_research.py"
+  ],
+  "test_result": "19 passed"
+}

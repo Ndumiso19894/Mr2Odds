@@ -1,0 +1,81 @@
+{
+  "warning": "HYPOTHETICAL UNREVIEWED MERGES. Never use this experiment as an approval or proof of identity or predictive improvement.",
+  "scope": "World targets on 2026-11-04; cached historical main leagues plus world; same prior-day cutoff and signals off; no verified prices; postdated archive",
+  "coverage": {
+    "actual_approval_count": 0,
+    "actual_rows_removed": 0,
+    "actual_input_identical_to_before": true,
+    "hypothetical_candidate_count": 5,
+    "targets": 51,
+    "old_eligible": 50,
+    "hypothetical_eligible": 50,
+    "matched": 50,
+    "old_rows": 76503,
+    "hypothetical_rows": 76498,
+    "audit": {
+      "blocked": 441,
+      "competition_alias_unverified": 395,
+      "groups_with_stat_conflicts": 1121,
+      "needs_review": 1380,
+      "merged": 5,
+      "identity_alias_unverified": 46,
+      "unmatched_or_ineligible_approvals": 0,
+      "rows_removed": 5
+    },
+    "h2h_changed": 0,
+    "goal_team_sample_changed": 0,
+    "corner_team_sample_count_changed": 0,
+    "corner_team_sample_content_changed": 0
+  },
+  "markets": {
+    "O15": {
+      "n": 50,
+      "old_mean": 0.7905485090356809,
+      "new_mean": 0.7905426226777084,
+      "mean_absolute_change_pp": 0.0005891479410333744,
+      "max_absolute_change_pp": 0.016473860228161108
+    },
+    "O25": {
+      "n": 50,
+      "old_mean": 0.5649701411723842,
+      "new_mean": 0.5649594890640256,
+      "mean_absolute_change_pp": 0.0010660101855700654,
+      "max_absolute_change_pp": 0.03232053336931218
+    },
+    "BTTS": {
+      "n": 50,
+      "old_mean": 0.5525066861466509,
+      "new_mean": 0.5524989460583929,
+      "mean_absolute_change_pp": 0.0007743055163486057,
+      "max_absolute_change_pp": 0.019025428452768
+    },
+    "H": {
+      "n": 50,
+      "old_mean": 0.46220672941847446,
+      "new_mean": 0.46220235982397534,
+      "mean_absolute_change_pp": 0.0009709362172792834,
+      "max_absolute_change_pp": 0.035197391679731016
+    },
+    "D": {
+      "n": 50,
+      "old_mean": 0.23481013689858227,
+      "new_mean": 0.2348128401913942,
+      "mean_absolute_change_pp": 0.0002814864963254504,
+      "max_absolute_change_pp": 0.010952989654988698
+    },
+    "A": {
+      "n": 50,
+      "old_mean": 0.3029831336829432,
+      "new_mean": 0.3029847999846304,
+      "mean_absolute_change_pp": 0.0008031459122689251,
+      "max_absolute_change_pp": 0.024244402024742318
+    },
+    "corner_o95": {
+      "n": 16,
+      "old_mean": 0.5180254444574401,
+      "new_mean": 0.5180264645654197,
+      "mean_absolute_change_pp": 0.00010489914417863289,
+      "max_absolute_change_pp": 0.00042839381860781955
+    }
+  }
+}

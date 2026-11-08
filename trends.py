@@ -26,8 +26,9 @@ def _long(results: pd.DataFrame) -> pd.DataFrame:
     r = results
     get = lambda c: r[c] if c in r.columns else pd.Series(np.nan, index=r.index)
     hy, ay, hr, ar = get("hy"), get("ay"), get("hr"), get("ar")
-    hk = hy + hr.fillna(0)
-    ak = ay + ar.fillna(0)
+    # Incomplete or conflicting card components are unknown, not zero.
+    hk = hy + hr
+    ak = ay + ar
     hth, hta = get("hth"), get("hta")
     hid, aid = get("home_id"), get("away_id")
     base = {"country": r["country"], "date": r["date"], "league": r["league"]}

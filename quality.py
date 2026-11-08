@@ -103,6 +103,9 @@ def match_record(r, season_start: pd.Timestamp | None) -> dict:
     return {
         "date": r.date.strftime("%Y-%m-%d"), "venue": r.venue, "opp": r.opp, "gf": int(r.gf), "ga": int(r.ga),
         "league": r.league, "div": r.div,
+        "div_aliases": list(g("div_aliases")) if isinstance(g("div_aliases"), (tuple, list)) else [],
+        "history_sources": list(g("history_sources")) if isinstance(g("history_sources"), (tuple, list)) else [],
+        "history_conflicts": list(g("history_conflicts")) if isinstance(g("history_conflicts"), (tuple, list)) else [],
         "friendly": is_friendly(r.league),
         "season": "current" if season_start is not None and r.date >= season_start else "previous",
         "outlier": kinds or None,
@@ -132,11 +135,11 @@ def split_stats(ms: list[dict]) -> dict | None:
         "l": sum(a < b for a, b in zip(gf, ga)),
     }
     for key in ("xg", "shots", "sot", "corners", "cards"):
-        f_vals = [m.get(f"{key}_for") for m in ms]; a_vals = [m.get(f"{key}_against") for m in ms]
-        k = _count(f_vals)
-        out[f"{key}_n"] = k
-        out[f"{key}_for"] = _mean(f_vals) if k else None
-        out[f"{key}_against"] = _mean(a_vals) if k else None
+        pairs = [(m.get(f"{key}_for"), m.get(f"{key}_against")) for m in ms]
+        pairs = [(f, a) for f, a in pairs if not _nan(f) and not _nan(a)]
+        out[f"{key}_n"] = len(pairs)
+        out[f"{key}_for"] = _mean([f for f, _ in pairs]) if pairs else None
+        out[f"{key}_against"] = _mean([a for _, a in pairs]) if pairs else None
     return out
 
 
@@ -145,7 +148,7 @@ def composition(ms: list[dict], excluded_friendlies: int, own_div: str | None, n
     comps: dict[str, int] = {}
     for m in ms:
         comps[m["league"]] = comps.get(m["league"], 0) + 1
-    own_n = sum(1 for m in ms if own_div and m["div"] == own_div)
+    own_n = sum(1 for m in ms if own_div and (m["div"] == own_div or own_div in (m.get("div_aliases") or [])))
     dates = sorted(m["date"] for m in ms)
     last = datetime.strptime(dates[-1], "%Y-%m-%d") if dates else None
     return {
@@ -230,7 +233,7 @@ def team_evidence(p, own_div: str | None, now: datetime) -> dict:
 
 
 MATCH_COLS = ("date", "venue", "opp", "gf", "ga", "league", "div", "friendly", "season", "outlier", "xg_for", "xg_against",
-              "shots_for", "shots_against", "sot_for", "sot_against", "corners_for", "corners_against", "cards_for", "cards_against", "eid")
+              "shots_for", "shots_against", "sot_for", "sot_against", "corners_for", "corners_against", "cards_for", "cards_against", "eid", "div_aliases", "history_sources", "history_conflicts")
 
 
 def compact_matches(ms: list[dict]) -> dict:
@@ -473,7 +476,11 @@ def warnings_for(r, ev_h: dict, ev_a: dict, h2h: dict, quality: dict, market: di
                                       f"{int(round(100 * worst['p_market']))}% ({worst['diff_pp']:+.0f} pp)")
     miss = [k for k in quality["missing_fields"] if k in ("shots on target", "xG")]
     if miss:
-        add("missing_fields", "info", f"No {' / '.join(miss)} data for these teams — the model uses goals only (shown as N/A, never as 0)")
+        add("missing_fields", "info", f"No {' / '.join(miss)} data for these teams — missing values are shown as N/A, never as 0")
+    if any(m.get("history_conflicts") for ev in (ev_h, ev_a) for m in ev.get("matches", [])):
+        add("history_stat_conflict", "info", "Conflicting provider statistics in the sample are excluded for the affected fields; source references remain in the evidence.")
+    add("history_availability", "info", "Prediction history excludes same-day and future-dated results. Historical statistics may have been backfilled; their original availability is not verified.")
+    add("history_overlap", "info", "Duplicate Livescore event IDs are checked, but cross-provider overlaps may remain and inflate evidence counts.")
     return W
 
 
@@ -589,9 +596,9 @@ def audit_markdown(d: dict) -> str:
         for m in expand_matches(e.get("matches")):
             L.append(_row(m["date"], "H" if m["venue"] == "H" else "A", m["opp"], f"{m['gf']}-{m['ga']}", m["league"], m["season"],
                           None if m.get("xg_for") is None else f"{m['xg_for']} / {m['xg_against']}",
-                          None if m.get("sot_for") is None else f"{int(m['sot_for'])} / {int(m['sot_against'])}",
-                          None if m.get("corners_for") is None else f"{int(m['corners_for'])} / {int(m['corners_against'])}",
-                          None if m.get("cards_for") is None else f"{int(m['cards_for'])} / {int(m['cards_against'])}",
+                          None if m.get("sot_for") is None or m.get("sot_against") is None else f"{int(m['sot_for'])} / {int(m['sot_against'])}",
+                          None if m.get("corners_for") is None or m.get("corners_against") is None else f"{int(m['corners_for'])} / {int(m['corners_against'])}",
+                          None if m.get("cards_for") is None or m.get("cards_against") is None else f"{int(m['cards_for'])} / {int(m['cards_against'])}",
                           ("friendly " if m.get("friendly") else "") + (", ".join(m["outlier"]) if m.get("outlier") else "")))
         L += ["", "</details>", ""]
     # 3. H2H

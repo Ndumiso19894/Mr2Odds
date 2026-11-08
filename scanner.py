@@ -32,6 +32,8 @@ Everything tunable lives in CONFIG below (most values can also be overridden wit
 from __future__ import annotations
 
 import html
+import history_integrity
+import cross_provider
 import io
 import json
 import logging
@@ -385,6 +387,30 @@ def empty_results() -> pd.DataFrame:
                          for c in RESULT_COLS})
 
 
+def without_unverified_replay_prices(fixtures: pd.DataFrame) -> pd.DataFrame:
+    """A SCAN_NOW override is not evidence that current prices existed then."""
+    result = fixtures.copy()
+    for col in result.columns:
+        if col.startswith(("odds_", "b365_", "bfe_", "max_")):
+            result[col] = np.nan
+    return result
+
+
+def prediction_history_as_of(results: pd.DataFrame, cutoff: datetime) -> pd.DataFrame:
+    """Conservative prediction history, shared by every model and evidence path.
+
+    Historical result feeds do not record when a final score/statistic was first
+    available, and their dates are day-only. Exclude the cutoff day as well as
+    the future: a same-day kickoff is not proof that its result was available.
+    This is not a point-in-time reconstruction of later backfilled statistics.
+    Settlement uses a separate, unfiltered-by-this-function result frame.
+    """
+    if results.empty:
+        return results.copy()
+    dates = pd.to_datetime(results["date"], errors="coerce")
+    return results.loc[dates < pd.Timestamp(cutoff.date())].copy()
+
+
 def fetch_cached(url: str, name: str) -> bytes | None:
     """Immutable downloads (finished seasons) are kept under data/cache so the half-hourly runs stay light."""
     p = CACHE_DIR / name
@@ -426,6 +452,8 @@ def load_main_results(divs: set[str], seasons: list[str], live_seasons: tuple[st
                 "hth": num(df, "HTHG"), "hta": num(df, "HTAG"),
                 "referee": df["Referee"].astype(str).str.strip() if "Referee" in df.columns else "",
                 "home_id": None, "away_id": None,
+                "_source_ref": f"football-data:mmz4281/{season}/{div}.csv",
+                "_history_kickoff": df["Time"].astype(str).str.strip().where(df["Time"].notna(), None) if "Time" in df else None,
             }))
             log.info("Loaded %s %s: %d matches", div, season, len(df))
     return pd.concat(frames, ignore_index=True) if frames else empty_results()
@@ -450,6 +478,8 @@ def load_extra_results(codes: set[str], since: datetime) -> pd.DataFrame:
             "hxg": np.nan, "axg": np.nan, "hs": np.nan, "as": np.nan, "hst": np.nan, "ast": np.nan,
             "hc": np.nan, "ac": np.nan, "hy": np.nan, "ay": np.nan, "hr": np.nan, "ar": np.nan, "hth": np.nan, "hta": np.nan,
             "referee": "", "home_id": None, "away_id": None,
+            "_source_ref": f"football-data:new/{code}.csv",
+            "_history_kickoff": df["Time"].astype(str).str.strip().where(df["Time"].notna(), None) if "Time" in df else None,
         })
         out = out[out["date"] >= since]
         frames.append(out)
@@ -565,7 +595,9 @@ def compute_div_avgs(results: pd.DataFrame, now: datetime) -> dict[str, DivAvg]:
     prior_h = 1.45 if math.isnan(prior_h) else prior_h
     prior_a = 1.20 if math.isnan(prior_a) else prior_a
     K = 30.0
-    for div, g in results.groupby("div"):
+    # A reviewed event contributes once to the global prior but is visible in
+    # each provider's division-specific prior, without duplicating team samples.
+    for div, g in cross_provider.division_view(results).groupby("div"):
         w = decay_weights(g["date"], now)
         n = float(w.sum())
         mu_h = wmean(g["hg"], w)
@@ -589,13 +621,19 @@ def make_long(results: pd.DataFrame, div_avgs: dict[str, DivAvg]) -> pd.DataFram
     mu_a = results["div"].map(lambda d: div_avgs.get(d, g).mu_a).astype(float)
     common = {"country": results["country"], "date": results["date"], "div": results["div"],
               "league": results["league"]}
+    if "_history_divs" in results:
+        common["div_aliases"] = results["_history_divs"]
+    if "_history_records" in results:
+        common["history_sources"] = results["_history_records"].map(
+            lambda recs: [r.get("_source_ref") for r in recs if isinstance(r, dict) and r.get("_source_ref")]
+            if isinstance(recs, (tuple, list)) else [])
+        common["history_conflicts"] = results["_history_conflicts"] if "_history_conflicts" in results else None
     hid = results["home_id"] if "home_id" in results.columns else pd.Series(None, index=results.index, dtype="object")
     aid = results["away_id"] if "away_id" in results.columns else pd.Series(None, index=results.index, dtype="object")
     col = lambda c: results[c] if c in results.columns else pd.Series(np.nan, index=results.index)  # noqa: E731
-    cards_h = col("hy").fillna(0) + col("hr").fillna(0)
-    cards_a = col("ay").fillna(0) + col("ar").fillna(0)
-    cards_h = cards_h.where(col("hy").notna() | col("hr").notna())      # N/A stays N/A (never zero-filled)
-    cards_a = cards_a.where(col("ay").notna() | col("ar").notna())
+    # A missing or conflicted yellow/red count is not zero; both are required.
+    cards_h = col("hy") + col("hr")
+    cards_a = col("ay") + col("ar")
     eid = col("eid").astype(object).where(col("eid").notna(), None)
     common["eid"] = eid
     common["friendly"] = results["league"].astype(str).str.lower().str.contains("friendl")
@@ -1008,6 +1046,7 @@ class MatchRow:
     x12_market: dict | None = None  # de-margined bookmaker 1X2 (comparison only)
     audit: dict = field(default_factory=dict)  # evidence / quality / explanation / warnings (quality.py), filled in main()
     model_signals: dict = field(default_factory=dict)  # provisional adjustment audit
+    scores: list = field(default_factory=list)  # most likely cells of the same DC matrix
 
     @property
     def basis(self) -> str:
@@ -1036,7 +1075,7 @@ def analyse(fx: pd.Series, long: pd.DataFrame, results: pd.DataFrame,
     mod_h = min(max(da.mu_h * H.att * A.dfc, 0.15), 4.5)
     mod_a = min(max(da.mu_a * A.att * H.dfc, 0.15), 4.5)
     # User-enabled experimental data-only adjustments; not yet backtested.
-    # Absent inputs always leave the baseline unchanged. Set EXPERIMENTAL_MODEL_SIGNALS=0 to roll back.
+    # Unvalidated signals are disabled by default. Explicit research opt-in only.
     if EXPERIMENTAL_MODEL_SIGNALS:
         mod_h, sig_h = model_signals.goal_adjustment(mod_h, H, A, SIGNAL_BASELINES.get(str(fx["div"])))
         mod_a, sig_a = model_signals.goal_adjustment(mod_a, A, H, SIGNAL_BASELINES.get(str(fx["div"])))
@@ -1071,6 +1110,8 @@ def analyse(fx: pd.Series, long: pd.DataFrame, results: pd.DataFrame,
         row.mkt_source = "reference odds (football-data.co.uk)"
     # ---- extra markets (v3): 1X2 / DC and team goals from the same model score matrix; corners, cards own models
     ex = row.extra
+    row.scores = [[int(h), int(a), float(M[h, a])] for h, a in
+                  sorted(np.ndindex(M.shape), key=lambda pos: (-M[pos], pos))[:5]]
     ex.x12 = markets.one_x_two(M)
     oh, od, oa = sharp_1x2(fx)
     if all(_ok(v) for v in (oh, od, oa)):
@@ -1106,7 +1147,7 @@ def analyse(fx: pd.Series, long: pd.DataFrame, results: pd.DataFrame,
     return row
 
 
-EXPERIMENTAL_MODEL_SIGNALS = os.getenv("EXPERIMENTAL_MODEL_SIGNALS", "1") == "1"
+EXPERIMENTAL_MODEL_SIGNALS = os.getenv("EXPERIMENTAL_MODEL_SIGNALS", "0") == "1"
 MODELS: dict = {}   # count models, built once per run in main()
 SIGNAL_BASELINES: dict = {}
 
@@ -1192,7 +1233,10 @@ def attach_prices(rows: list[MatchRow], sbmap: dict, todays: pd.DataFrame) -> No
 
 
 def avg_prices(fx: pd.Series) -> dict | None:
-    """Fallback price set from the feed averages (used when Sportybet is unavailable)."""
+    """Illustrative reference prices only; derived DC values are not bookmaker quotes.
+
+    Never use this for recommendation eligibility or parlay construction.
+    """
     h, d, a = fx.get("odds_h"), fx.get("odds_d"), fx.get("odds_a")
     if not all(_ok(v) for v in (h, d, a)):
         return None
@@ -1269,15 +1313,17 @@ def mark_report_run(now: datetime, label: str) -> None:
 def build_run_parlays(rows: list[MatchRow], now: datetime, window_end: datetime, sb_ok: bool) -> dict:
     """Legs from priced matches kicking off before the next run; whole window if too thin."""
     start = now + timedelta(minutes=10)
-    source = "Sportybet" if sb_ok else "avg market"
+    # Feed-average odds (and synthetic double-chance prices derived from them)
+    # are not actual SportyBet quotes and must not become recommended legs.
+    source = "Sportybet"
 
     def legs_for(rs):
         legs = []
         for r in rs:
             if not r.data_ok:
                 continue
-            prices = r.sb if sb_ok else avg_prices(r.fx)
-            if not prices and sb_ok:
+            prices = r.sb if sb_ok else None
+            if not prices:
                 continue
             legs += [leg for leg in parlay_mod.candidate_legs(r.fx, r.extra.x12, r.p_model["O25"], prices, source)
                      if math.isfinite(leg.odds) and leg.odds >= safe_mod.MIN_ODDS]
@@ -1959,7 +2005,8 @@ def render_report(ctx: dict, rows: list[MatchRow], picks: dict, summary: dict, n
         "conceded over the last 40 matches (max 400 days, friendlies excluded when enough competitive matches exist), "
         f"normalised by competition averages, time-weighted (half-life {CONFIG['HALF_LIFE_DAYS']} days), venue-blended and "
         f"shrunk towards the league average (team strength K={CONFIG['SHRINK_K_STRENGTH']:g}, goal tempo K={CONFIG['SHRINK_K']:g} "
-        "weighted matches). Expected goals = league venue average × attack × opponent defence, with bounded experimental xG/xGA and shots adjustments when available; probabilities for goal markets "
+        "weighted matches). Expected goals = league venue average × attack × opponent defence; bounded experimental xG/xGA and shots adjustments are "
+        + ("enabled by explicit opt-in and unvalidated" if EXPERIMENTAL_MODEL_SIGNALS else "disabled pending point-in-time validation") + "; probabilities for goal markets "
         f"come from a Dixon-Coles adjusted Poisson score matrix (ρ={CONFIG['DC_RHO']:g}).",
         "* **Market layer (separate):** bookmaker prices are de-margined and shown next to the model as implied probability, "
         "difference in percentage points and EV, and as market-implied expected goals. They never feed the model and the "
@@ -1969,8 +2016,8 @@ def render_report(ctx: dict, rows: list[MatchRow], picks: dict, summary: dict, n
         "consistency, competition, home/away relevance, source) that drives the confidence wording, never the probability. "
         "Missing data is shown as N/A, never as zero. Historical frequency (what happened) is always labelled apart from "
         "model probability and market implied.",
-        "* **Historical baseline backtest (52,000 matches, 2023-26):** applies to the earlier model, not the newly enabled xG/shot adjustments. "
-        "The current experimental version has not been validated in a time-ordered holdout; do not assume the old calibration applies. `backtest/RESULTS.md`.",
+        "* **Historical baseline backtest (52,000 matches, 2023-26):** describes an earlier configuration, not a point-in-time validation of this version. "
+        "Experimental signals and recent history-integrity changes need an untouched, availability-verified holdout; do not assume the old calibration applies. `backtest/RESULTS.md`.",
         "* **Extra markets:** 1X2 / double chance and team goals = the same model score matrix. "
         "Corners and cards = team for/against rates, league-normalised and shrunk (K=40 / K=20), negative binomial "
         "totals; cards include a referee factor where the referee is published (UK leagues). The old count baselines were backtested "
@@ -2531,10 +2578,27 @@ def main() -> None:
     world_all = archive.results_frame(since - timedelta(days=365 * 3)) if archive is not None else pd.DataFrame()
     pool = pd.concat([f for f in (main_all, extra_all, world_all) if f is not None and not f.empty] or [empty_results()],
                      ignore_index=True)
-    pool = pool.dropna(subset=["date", "hg", "ag"]).sort_values("date", ascending=False).reset_index(drop=True)
-    results = pool[(pool["date"] >= since) & (pool["date"] <= pd.Timestamp(now.date()))].reset_index(drop=True)
-    log.info("History pool: %d matches for the model (%d incl. older seasons for head-to-head; %d from Livescore)",
-             len(results), len(pool), 0 if world_all is None or world_all.empty else len(world_all))
+    raw_pool = pool.dropna(subset=["date", "hg", "ag"]).sort_values("date", ascending=False).reset_index(drop=True)
+    # Settlement must continue to see same-day results. Prediction/evidence inputs
+    # have a separate conservative as-of cutoff because result availability times
+    # are not recorded in the historical feeds.
+    settlement_results = raw_pool[(raw_pool["date"] >= since) & (raw_pool["date"] <= pd.Timestamp(now.date()))].reset_index(drop=True)
+    pool = prediction_history_as_of(raw_pool, now).reset_index(drop=True)
+    pre_reconciliation = len(pool)
+    pool, integrity = history_integrity.reconcile_livescore_ids(pool)
+    log.info("Livescore prediction history reconciliation: %s", integrity)
+    try:
+        reviewed = cross_provider.load_approvals()
+    except ValueError as exc:
+        log.warning("%s; cross-provider merging disabled", exc)
+        reviewed = {}
+    pool, cross_audit, _ = cross_provider.reconcile(pool, reviewed)
+    log.info("Cross-provider reconciliation (unreviewed and blocked candidates remain separate): %s", cross_audit)
+    results = pool[pool["date"] >= since].reset_index(drop=True)
+    log.info("History pool: %d matches for the model (%d incl. older seasons for head-to-head; %d from Livescore); "
+             "%d same-day/future records excluded from predictions",
+             len(results), len(pool), 0 if world_all is None or world_all.empty else len(world_all), len(raw_pool) - pre_reconciliation)
+    del raw_pool
 
     div_avgs = compute_div_avgs(results, now)
     long = make_long(results, div_avgs)
@@ -2544,26 +2608,36 @@ def main() -> None:
     H2H_CACHE.clear()
     PROFILE_CACHE.clear()
     SEASON_STARTS.clear()
-    SEASON_STARTS.update(quality.season_starts(results, now))
+    SEASON_STARTS.update(quality.season_starts(cross_provider.division_view(results), now))
     RAW_RATINGS.clear()
     RAW_RATINGS.update(compute_raw_ratings(long, now))
     global ACACHE
     ACACHE = acache.AnalysisCache(DATA_DIR / "analysis_cache.bin")
     SIGNAL_BASELINES.clear()
-    SIGNAL_BASELINES.update(model_signals.sot_baselines(results))
+    SIGNAL_BASELINES.update(model_signals.sot_baselines(cross_provider.division_view(results)))
     MODELS["corners"] = markets.CountModel(results, "hc", "ac", now, markets.CORNERS)
     # Only genuine separately reported off-target counts, never HS minus HST.
     off = results.dropna(subset=["hsoff", "asoff"]) if {"hsoff", "asoff"} <= set(results) else results.iloc[:0]
     off = off[off["hsoff"].between(0, 50) & off["asoff"].between(0, 50)] if not off.empty else off
     if not off.empty:
-        sizes = off.groupby("div")["div"].transform("size")
-        off = off[sizes >= 30]
+        off_divisions = cross_provider.division_view(off)
+        eligible_divs = set(off_divisions.groupby("div").size().loc[lambda n: n >= 30].index)
+        if "_history_divs" in off:
+            eligible = [r["div"] in eligible_divs or (isinstance(r["_history_divs"], (tuple, list)) and
+                        any(d in eligible_divs for d in r["_history_divs"])) for _, r in off.iterrows()]
+            off = off.loc[eligible]
+        else:
+            off = off[off["div"].isin(eligible_divs)]
     MODELS["shots_off"] = markets.CountModel(off, "hsoff", "asoff", now, markets.CORNERS) if not off.empty and off["hsoff"].mean() > 0 and off["asoff"].mean() > 0 else None
     cards_df = results.assign(hcards=results["hy"].fillna(0) + results["hr"].fillna(0),
                               acards=results["ay"].fillna(0) + results["ar"].fillna(0))
     cards_df.loc[results[["hy", "hr", "ay", "ar"]].isna().any(axis=1), ["hcards", "acards"]] = np.nan
     MODELS["cards"] = markets.CountModel(cards_df, "hcards", "acards", now, markets.CARDS, use_ref=True)
 
+    # A wall-clock override does not make current feed prices historical quotes.
+    if override:
+        todays = without_unverified_replay_prices(todays)
+        log.warning("SCAN_NOW: current prices withheld; historical quote availability is not established")
     rows = [analyse(fx, long, results, div_avgs, now, pool) for _, fx in todays.iterrows()]
     app_rows = [r for r in rows if r.fx["kickoff"] <= app_end]   # what the app publication carries
     def _signal_count(key):
@@ -2579,7 +2653,7 @@ def main() -> None:
     # ---- Sportybet prices (their feed lists every event they have priced — currently ~33 days out,
     # so the 60-day coverage window gets priced for as far as the book has opened its lines)
     sbmap, sb_ok = {}, False
-    if CONFIG["SPORTYBET"] and rows:
+    if CONFIG["SPORTYBET"] and rows and not override:
         events = sporty.fetch_upcoming(CONFIG["COVER_DAYS"] * 24 + 6)
         sb_ok = bool(events)
         sbmap = sporty.match_fixtures(todays, events) if events else {}
@@ -2635,13 +2709,13 @@ def main() -> None:
 
     # ---- day history with late scores
     days = None
-    results_s = results
+    results_s = settlement_results
     try:
         days = history_mod.Days(DAYS_DIR, now)
         days.upsert(rows, comp, ls_map, top_sels)
-        extra = days.fill_scores(results, archive)
+        extra = days.fill_scores(settlement_results, archive)
         if not extra.empty:
-            results_s = pd.concat([results, extra], ignore_index=True)
+            results_s = pd.concat([settlement_results, extra], ignore_index=True)
             log.info("History: %d late score(s) from Livescore added for settlement", len(extra))
     except Exception as exc:  # noqa: BLE001
         log.warning("Day history failed: %s", exc)

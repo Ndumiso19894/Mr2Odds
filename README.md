@@ -10,7 +10,7 @@ Android app and Telegram — no servers, no API keys, and it runs while your pho
   and never feed the model. Every statistic carries its sample size (Very small 1–4 … Very strong 40+), every match
   has a transparent data-quality assessment, the raw matches used, extreme results flagged and the model's own
   numbers ("why 1.35 goals?") in the app's **Data** tab and in `python audit.py HOME AWAY`. Missing data is N/A, never 0.
-* **Goals shortlists** — Over 1.5 and Over 2.5, from the statistical model; the newly enabled adjustments are experimental and not yet backtested.
+* **Goals shortlists** — Over 1.5 and Over 2.5, from the statistical model; experimental adjustments are disabled by default pending point-in-time validation.
 * **High-probability selections** — singles with model probability ≥ 70 % (the de-margined Sportybet price must not
   contradict it), price ≥ 1.16, in the 1X2 / BTTS / total-goals overs / total and team corners overs markets. New ones are announced
   immediately (Telegram + app). Nothing is ever labelled "safe" or "guaranteed".
@@ -85,7 +85,7 @@ The match Sheet tab reproduces the supplied workbook's V1 formulas as a separate
 
 ### Experimental model signals and markets
 
-Provisional xG/xGA, shots-on-target and genuinely reported off-target-shot adjustments are **enabled by default** where data is sufficient, but remain unvalidated until a chronological backtest is completed. Set `EXPERIMENTAL_MODEL_SIGNALS=0` to revert to the baseline. Team/total booking recommendations and grading are withheld because current card-count data is not verified as equivalent to SportyBet bookings. See [model signal and market limitations](docs/MODEL_SIGNALS.md).
+Provisional xG/xGA, shots-on-target and genuinely reported off-target-shot adjustments are **disabled by default** pending point-in-time chronological validation. `EXPERIMENTAL_MODEL_SIGNALS=1` explicitly enables them for labelled research only. Team/total booking recommendations and grading are withheld because current card-count data is not verified as equivalent to SportyBet bookings. See [model signal and market limitations](docs/MODEL_SIGNALS.md).
 
 ### Lineup research pilot
 

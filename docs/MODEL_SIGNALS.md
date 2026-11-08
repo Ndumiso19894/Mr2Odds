@@ -1,11 +1,12 @@
 # Provisional model signals and restored markets
 
-**Enabled by default at the user’s request; not yet validated.** Set `EXPERIMENTAL_MODEL_SIGNALS=0` to restore the baseline. The additions below are small, heuristic experimental
-adjustments; their weights are not fitted, and there is no chronological holdout result for
-them. Previous backtest accuracy and ROI figures describe earlier model configurations and
-must not be attributed to this version. A comparison with the unchanged baseline on strictly
-past-only, appropriately licensed historical data is still needed.
-Unit tests verify behavior, not predictive skill.
+**Disabled by default pending point-in-time chronological validation.** Set
+`EXPERIMENTAL_MODEL_SIGNALS=1` only for explicitly labelled research. The additions below are
+small, heuristic experimental adjustments; their weights are not fitted. The retrospective
+comparison in `research/model_diagnostics/REPORT.md` does not establish point-in-time feature
+availability, includes multiple comparisons, and is not an untouched holdout. Previous
+backtest accuracy and ROI figures describe earlier configurations and must not be attributed
+to these signals. Unit tests verify behavior, not predictive skill.
 
 The existing goals baseline uses league rates and team attack/defence. For each team, if both
 its last-ten xG-for and its opponent's xG-against have at least five valid observations, the

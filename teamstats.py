@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 
 import acache
+import cross_provider
 
 CALENDAR_YEAR = {"USA", "Brazil", "Argentina", "Japan", "China", "Norway", "Sweden", "Finland", "Ireland", "Canada",
                  "Chile", "Colombia", "Uruguay", "Paraguay", "Peru", "Ecuador", "Bolivia", "Venezuela", "Iceland",
@@ -50,19 +51,16 @@ def _rate(mask: pd.Series):
 
 def _long(df: pd.DataFrame) -> pd.DataFrame:
     """One row per team per match."""
+    home_cards = df["hy"] + df["hr"] if {"hy", "hr"} <= set(df.columns) else None
+    away_cards = df["ay"] + df["ar"] if {"ay", "ar"} <= set(df.columns) else None
     h = pd.DataFrame({"date": df["date"], "league": df["league"], "div": df["div"], "team": df["home"], "opp": df["away"],
                       "venue": "H", "gf": df["hg"], "ga": df["ag"], "xgf": df.get("hxg"), "xga": df.get("axg"),
                       "sotf": df.get("hst"), "sota": df.get("ast"), "cf": df.get("hc"), "ca": df.get("ac"),
-                      "kf": df.get("hy", 0).fillna(0) + df.get("hr", 0).fillna(0) if "hy" in df else None,
-                      "ka": df.get("ay", 0).fillna(0) + df.get("ar", 0).fillna(0) if "ay" in df else None})
+                      "kf": home_cards, "ka": away_cards})
     a = pd.DataFrame({"date": df["date"], "league": df["league"], "div": df["div"], "team": df["away"], "opp": df["home"],
                       "venue": "A", "gf": df["ag"], "ga": df["hg"], "xgf": df.get("axg"), "xga": df.get("hxg"),
                       "sotf": df.get("ast"), "sota": df.get("hst"), "cf": df.get("ac"), "ca": df.get("hc"),
-                      "kf": df.get("ay", 0).fillna(0) + df.get("ar", 0).fillna(0) if "ay" in df else None,
-                      "ka": df.get("hy", 0).fillna(0) + df.get("hr", 0).fillna(0) if "hy" in df else None})
-    if "hy" in df:   # cards unknown where yellow cards are not published
-        h.loc[df["hy"].isna().to_numpy(), ["kf", "ka"]] = float("nan")
-        a.loc[df["ay"].isna().to_numpy(), ["kf", "ka"]] = float("nan")
+                      "kf": away_cards, "ka": home_cards})
     lg = pd.concat([h, a], ignore_index=True)
     lg["res"] = np.where(lg["gf"] > lg["ga"], "W", np.where(lg["gf"] < lg["ga"], "L", "D"))
     lg["pts"] = lg["res"].map({"W": 3, "D": 1, "L": 0})
@@ -180,7 +178,7 @@ def export(results: pd.DataFrame, now: datetime, out_dir: Path, squad_lookup=Non
         tm = lg_all["team"].to_numpy()
         for i, t in enumerate(tm):
             lg_all_pos.setdefault(t, []).append(i)
-    for (country, div), df in results.groupby(["country", "div"]):
+    for (country, div), df in cross_provider.division_view(results).groupby(["country", "div"]):
         league = str(df["league"].iloc[0])
         since = season_start(country, now)
         season_df = df[df["date"] >= since]
@@ -197,6 +195,9 @@ def export(results: pd.DataFrame, now: datetime, out_dir: Path, squad_lookup=Non
                 # same as the original isin() build) — digest exactly that input set
                 union = sorted({i for t in teams for i in lg_all_pos.get(t, ())})
                 cross_digest = acache.digest_rows(lg_all.iloc[union]) if union else ""
+                # Division aliases can change the season view even when the
+                # unique global team history itself has not changed.
+                cross_digest += ":" + acache.digest_rows(df)
                 key = _page_key(country, div, league, since, cross_digest, teams, squad_lookup, now)
                 hit = page_cache.page_get(key)
             except Exception:  # noqa: BLE001

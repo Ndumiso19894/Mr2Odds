@@ -113,6 +113,10 @@ def test_analysis_uses_adjusted_lambdas_for_all_goal_markets(monkeypatch):
     assert row.p_final['O25'] == pytest.approx(expected['O25'])
     assert row.p_final['BTTS'] == pytest.approx(expected['BTTS'])
     assert sum(row.extra.x12[k] for k in ('H', 'D', 'A')) == pytest.approx(1.)
+    matrix = scanner.score_matrix(row.lam_h, row.lam_a, scanner.CONFIG['DC_RHO'])
+    assert len(row.scores) == 5
+    assert all(p == pytest.approx(matrix[h, a]) for h, a, p in row.scores)
+    assert [p for _, _, p in row.scores] == sorted((p for _, _, p in row.scores), reverse=True)
     assert row.p_final == row.p_model
     monkeypatch.setattr(scanner, 'EXPERIMENTAL_MODEL_SIGNALS', False)
     baseline = scanner.analyse(fx, pd.DataFrame(), pd.DataFrame(), {'E0':avg}, datetime(2026,11,4))
@@ -127,16 +131,16 @@ def test_booking_ledger_stays_pending_without_valid_settlement_rules():
     assert settled.iloc[0]['status'] == 'pending'
 
 
-def test_signal_configuration_defaults_to_enabled_and_can_be_rolled_back():
+def test_signal_configuration_defaults_to_disabled_and_requires_explicit_opt_in():
     import os
     import subprocess
     import sys
     env = dict(os.environ)
     env.pop('EXPERIMENTAL_MODEL_SIGNALS', None)
     cmd = [sys.executable, '-c', 'import scanner; print(scanner.EXPERIMENTAL_MODEL_SIGNALS)']
-    assert subprocess.check_output(cmd, env=env, text=True).strip() == 'True'
-    env['EXPERIMENTAL_MODEL_SIGNALS'] = '0'
     assert subprocess.check_output(cmd, env=env, text=True).strip() == 'False'
+    env['EXPERIMENTAL_MODEL_SIGNALS'] = '1'
+    assert subprocess.check_output(cmd, env=env, text=True).strip() == 'True'
 
 
 def test_analyse_corner_signal_applies_only_with_sufficient_real_data(monkeypatch):

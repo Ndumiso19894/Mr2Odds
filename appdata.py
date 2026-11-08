@@ -369,6 +369,8 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
         index.append(slim)
         detail = dict(slim)
         detail.update({
+            # Exact probabilities from the same Dixon–Coles matrix, not prices or picks.
+            "scores": [[int(h), int(a), _f(p, 6)] for h, a, p in getattr(r, "scores", [])],
             "home_long": (r.sb_event or {}).get("home") or (ls or {}).get("home") or fx["home"],
             "away_long": (r.sb_event or {}).get("away") or (ls or {}).get("away") or fx["away"],
             "referee": (fx.get("referee") or None) or None,
