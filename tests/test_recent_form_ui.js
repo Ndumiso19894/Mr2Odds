@@ -16,7 +16,10 @@ const f={home:'H',away:'A',div:'LS:test/league',country:'Test',league:'League',x
   explain:{league:{},home:{},away:{},lambda_home:{value:1,terms:[1,1,1]},lambda_away:{value:1,terms:[1,1,1]},steps:[],
     recent_form:{status:'applied'},model_signals:{status:'disabled_pending_backtest'}},
   h2h_meta:{n:0,label:'No data',used_by_model:true,note:'Eligible subset used.'}};
+f.h2h_gate={eligible:true,meetings:7,last_meeting:'2026-01-01'};
 let parts=[];PR.testMatchData(parts,f);let html=parts.join('');
+assert.match(html, /Prediction eligibility:.*7 available non-friendly meetings/);
+assert.match(html, /not proof of predictability/);
 assert.match(html,/Recent form applied/);
 assert.match(html,/not prospectively validated/);
 assert.match(html,/used by the model: <b>yes, eligible subset<\/b>/);

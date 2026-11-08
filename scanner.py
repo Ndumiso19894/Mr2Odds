@@ -54,6 +54,7 @@ import requests
 import markets
 import model_signals
 import recent_form
+import h2h_gate
 import quality
 import news as news_mod
 import parlays as parlay_mod
@@ -1052,6 +1053,7 @@ class MatchRow:
     audit: dict = field(default_factory=dict)  # evidence / quality / explanation / warnings (quality.py), filled in main()
     model_signals: dict = field(default_factory=dict)  # provisional adjustment audit
     recent_form: dict = field(default_factory=dict)  # per-fixture applied/fallback evidence
+    h2h_gate: dict = field(default_factory=dict)  # independent eligibility evidence
     scores: list = field(default_factory=list)  # most likely cells of the same DC matrix
 
     @property
@@ -2470,6 +2472,47 @@ def require_publication(ctx: dict) -> None:
         raise RuntimeError("App publication failed; refusing to publish incomplete state")
 
 
+def analyse_eligible(fixtures, evidence, long, results, div_avgs, now, pool):
+    """Never call the prediction engine for a fixture without positive gate evidence."""
+    rows = []
+    for i, fx in fixtures.iterrows():
+        proof = evidence.get(i) or {}
+        if not h2h_gate.valid_proof(proof, fx.get("kickoff")):
+            continue
+        row = analyse(fx, long, results, div_avgs, now, pool)
+        row.h2h_gate = proof
+        rows.append(row)
+    return rows
+
+
+def filter_botd_by_eligible_rows(card, rows):
+    """Do not republish an old sticky day-card pick excluded by the current gate."""
+    eligible_keys = {(r.fx["date"].strftime("%Y-%m-%d"), r.fx["country"], r.fx["home"], r.fx["away"]) for r in rows}
+    def eligible(b):
+        return (competition_policy.allows_record(b) and
+                (str(b.get("kickoff") or "")[:10], b.get("country"), b.get("home"), b.get("away")) in eligible_keys)
+    card["bets"] = [b for b in card.get("bets", []) if eligible(b)]
+    for group in card.get("groups", []):
+        group["bets"] = [b for b in group.get("bets", []) if eligible(b)]
+    return card
+
+
+def filter_pending_alerts(alerts, rows, now):
+    """Do not re-announce old upcoming alerts for fixtures that now fail the gate."""
+    allowed = {appdata.fixture_id(r.fx["date"].strftime("%Y-%m-%d"), r.fx["country"],
+                                  r.fx["home"], r.fx["away"]) for r in rows}
+    cutoff = now.replace(tzinfo=None)
+    kept = []
+    for alert in alerts:
+        try:
+            kickoff = datetime.strptime(str(alert.get("kickoff") or ""), "%Y-%m-%d %H:%M")
+        except (ValueError, TypeError):
+            continue
+        if kickoff <= cutoff or alert.get("fixture") in allowed:
+            kept.append(alert)
+    return kept
+
+
 def main() -> None:
     if RECENT_FORM_ENABLED and EXPERIMENTAL_MODEL_SIGNALS:
         raise ValueError("Recent form and experimental model signals cannot be combined; disable one explicitly")
@@ -2617,8 +2660,10 @@ def main() -> None:
         older.append(f"{(y - k) % 100:02d}{(y - k + 1) % 100:02d}")
     since = datetime(now.year, now.month, now.day) - timedelta(days=CONFIG["MAX_HISTORY_DAYS"])
     main_all = load_main_results(main_divs, seasons + older, live_seasons=(seasons[0],))
-    extra_all = load_extra_results(extra_codes, since - timedelta(days=365 * 3))
-    world_all = archive.results_frame(since - timedelta(days=365 * 3)) if archive is not None else pd.DataFrame()
+    # The eligibility threshold uses every available archived meeting, including
+    # older ones. This does not extend the 400-day model history or fetch new sources.
+    extra_all = load_extra_results(extra_codes, datetime(1900, 1, 1))
+    world_all = archive.results_frame(datetime(1900, 1, 1)) if archive is not None else pd.DataFrame()
     pool = pd.concat([f for f in (main_all, extra_all, world_all) if f is not None and not f.empty] or [empty_results()],
                      ignore_index=True)
     raw_pool = pool.dropna(subset=["date", "hg", "ag"]).sort_values("date", ascending=False).reset_index(drop=True)
@@ -2647,6 +2692,12 @@ def main() -> None:
     long = make_long(results, div_avgs)
     build_long_index(long)
     build_h2h_index(pool)
+    gate_index = h2h_gate.build_index(pool, now)
+    todays, gate_evidence, gate_counts = h2h_gate.filter_fixtures(todays, gate_index)
+    ctx["h2h_gate"] = {"minimum_meetings": h2h_gate.MIN_MEETINGS, "max_years_exclusive": h2h_gate.MAX_YEARS,
+                       "counts": gate_counts, "considered": sum(gate_counts.values()), "eligible": len(todays)}
+    log.info("H2H eligibility (available archive, no friendlies): %s", ctx["h2h_gate"])
+    del gate_index
     TEAM_HIST_CACHE.clear()
     H2H_CACHE.clear()
     PROFILE_CACHE.clear()
@@ -2682,7 +2733,7 @@ def main() -> None:
         todays = without_unverified_replay_prices(todays)
         log.warning("SCAN_NOW: current prices withheld; historical quote availability is not established")
     RECENT_TEAM_CACHE.clear()
-    rows = [analyse(fx, long, results, div_avgs, now, pool) for _, fx in todays.iterrows()]
+    rows = analyse_eligible(todays, gate_evidence, long, results, div_avgs, now, pool)
     app_rows = [r for r in rows if r.fx["kickoff"] <= app_end]   # what the app publication carries
     def _signal_count(key):
         return sum(any((r.model_signals.get(side) or {}).get(key, False) for side in ("home", "away")) for r in app_rows)
@@ -2797,9 +2848,7 @@ def main() -> None:
     ctx["safe_summary"] = safe_mod.summary(bets_df, accas_df, now)
     botd_card = safe_mod.bets_of_the_day(bets_df, now)
     # Sticky historical card entries can predate the pause; retain the ledger but do not republish them.
-    botd_card["bets"] = [b for b in botd_card["bets"] if competition_policy.allows_record(b)]
-    for g in botd_card["groups"]:
-        g["bets"] = [b for b in g["bets"] if competition_policy.allows_record(b)]
+    filter_botd_by_eligible_rows(botd_card, rows)
     ctx["botd"], ctx["botd_groups"] = botd_card["bets"], botd_card["groups"]
     log.info("Safest: %d bets (%d new), bets of the day: %d", len(safe_res["bets"]), len(new_bets), len(ctx["botd"]))
 
@@ -2809,6 +2858,7 @@ def main() -> None:
         alerts = json.loads(alerts_file.read_text(encoding="utf-8")) if alerts_file.exists() else []
     except (OSError, ValueError):
         alerts = []
+    alerts = filter_pending_alerts(alerts, rows, now)
     for b in new_bets:
         alerts.append({"id": safe_mod.bet_id(b.key[0], b.home, b.away, b.sel), "ts": now.strftime("%Y-%m-%d %H:%M"),
                        "title": f"New high-probability selection · {b.label}", "kickoff": b.kickoff,
@@ -2816,7 +2866,8 @@ def main() -> None:
                        "fixture": appdata.fixture_id(b.key[0], b.key[1], b.home, b.away)})
     alerts = alerts[-50:]
 
-    notes = []
+    notes = [f"H2H eligibility: {ctx['h2h_gate']['eligible']} of {ctx['h2h_gate']['considered']} fixtures passed; "
+             "at least six available non-friendly meetings and a last meeting less than three calendar years old are required."]
     lowdata = sum(1 for r in rows if not r.data_ok)
     if lowdata:
         notes.append(f"{lowdata} fixture(s) flagged ⚠️ low data and excluded from shortlists.")

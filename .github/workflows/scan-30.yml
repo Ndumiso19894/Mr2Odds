@@ -250,5 +250,6 @@ jobs:
           node tests/test_price_floor_ui.js
           node tests/test_sheet_ui.js
           node tests/test_recent_form_ui.js
+          node tests/test_h2h_gate_ui.js
           node tests/test_lineup_pilot_ui.js
           node tests/test_market_settlement_ui.js
