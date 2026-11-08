@@ -1,3 +1,7 @@
+## Daily Accumulators from Final Picks
+- Generate up to three distinct daily accumulators at combined odds 2.50–3.50 using the stricter Final Picks rules and a minimum 1.18 price on each selection. Longer tickets may be needed and have more ways to lose.
+- The app rechecks prices, qualification and kickoff before showing a ticket; fewer tickets or alternatives are shown when there are not enough qualifying matches. Existing tickets and Facebook posting schedules are unchanged.
+
 ## Final Picks
 - A new Final Picks view on Home and More narrows today’s Shortlist using High data quality, an 80% probability threshold, SportyBet prices of 1.18–1.90, tighter price and market-agreement checks, and a recent publication.
 - Picks update and leave the list at kick-off; none are manufactured to fill the page. The stricter rules have not been separately backtested and do not guarantee results.

@@ -1014,131 +1014,36 @@
     const ct = $('#more-contact'); if (ct) ct.onclick = () => { if (PR.native && PR.native.openUrl) PR.native.openUrl(`https://wa.me/${PR.CONTACT.whatsapp}`); else window.open(`https://wa.me/${PR.CONTACT.whatsapp}`); };
   };
 
-// ------------------------------------------------------------------ DAILY ACCUMULATOR (the focused daily view)
-// Three accumulators at 2.50-3.50 combined odds, at least 6 alternative matches,
-// and deep research on every selected match — data + live research, not AI analysis.
+// ------------------------------------------------------------------ DAILY ACCUMULATORS
 PR.views.dailyaccumulators = function () {
-  const d = state.data; const da = d && d.daily_accumulators; const now = tzNow(); const today = ymd(now);
-  const parts = [];
-
-  if (!da || da.error) {
-    parts.push('<div class="hero-row"><div><div class="kicker">Daily accumulator</div><h1>Today\'s Selections</h1></div></div>');
-    parts.push('<div class="card empty">The daily accumulator is built at the first analysis of the day (07:00 SAST).<br>' +
-      'Pull down on Home to refresh, or check back shortly after the next run.</div>');
-    view().innerHTML = parts.join(''); return;
-  }
-
-  const accas = (da.accumulators || []); const alts = (da.alternatives || []);
-  const gen = da.generated || '';
-  const bandLo = da.summary && da.summary.odds_band ? da.summary.odds_band[0] : 2.50;
-  const bandHi = da.summary && da.summary.odds_band ? da.summary.odds_band[1] : 3.50;
-
-  parts.push('<div class="hero-row"><div><div class="kicker">Daily accumulator · ' + esc(dayName(today)) + '</div><h1>Today\'s Selections</h1></div>' +
-    '<span class="quality updated-pill">Built ' + esc(gen) + ' SAST</span></div>');
-
-  // intro
-  parts.push('<div class="card small">' +
-    '<div class="b">How to use this</div>' +
-    '<div class="tiny muted" style="margin-top:4px">' +
-    'Three accumulators, each priced between ' + f2(bandLo) + ' and ' + f2(bandHi) + ' combined. Below them are at least ' +
-    (alts.length >= 6 ? '6' : alts.length) + ' alternative matches you can swap in. Every selection is researched with our data ' +
-    'plus live headlines and odds — nothing is AI-generated.' +
-    '</div></div>');
-
-  // ACCUMULATORS section
-  parts.push('<div class="section-head"><h2><span class="ico green">' + icon('target') + '</span>Accumulators — 3 tickets, 2.50–3.50 odds</h2></div>');
-  if (!accas.length) {
-    parts.push('<div class="card empty small">No accumulator could be built inside the 2.50–3.50 band today. Prices may not have firmed up yet — check back after the next run.</div>');
-  } else {
-    accas.forEach(function (a, i) {
-      var legsHtml = a.legs.map(function (l) {
-        return '<tr>' +
-          '<td class="tiny muted nowrap">' + esc(koShort(l.kickoff)) + '</td>' +
-          '<td><div class="b">' + esc(l.match) + '</div><div class="tiny muted">' + flag(l.country) + ' ' + esc(l.league) + '</div></td>' +
-          '<td class="right nowrap"><b>' + esc(l.label) + '</b></td>' +
-          '<td class="right nowrap">' + f2(l.odds) + '</td>' +
-          '<td class="right">' + pct(l.p_model) + '<div class="tiny muted">model</div></td>' +
-          '</tr>';
-      }).join('');
-      parts.push('<div class="card compact acca-card">' +
-        '<div class="row" style="margin-bottom:6px">' +
-        '<span class="pill hi">Acca ' + (i + 1) + '</span>' +
-        '<div class="grow"><div class="b">' + a.n_legs + ' legs · combined ' + f2(a.odds) + '</div>' +
-        '<div class="tiny muted">Model win ' + pct(a.p_win) + ' · expected return ' + (a.ev > 0 ? '+' : '') + f1(100 * a.ev) + '%</div></div>' +
-        '<span class="tiny good b">2.50–3.50 band</span>' +
-        '</div>' +
-        '<table class="tbl head" style="margin-top:4px">' +
-        '<tr><th>Time</th><th>Match · competition</th><th>Selection</th><th class="right">Price</th><th class="right">Model</th></tr>' +
-        legsHtml +
-        '</table>' +
-        '<div class="tiny muted" style="margin-top:4px">' + esc(a.note) + '</div>' +
-        '</div>');
-    });
-  }
-
-  // ALTERNATIVES section
-  parts.push('<div class="section-head"><h2><span class="ico amber">' + icon('star') + '</span>Alternative matches — ' + alts.length + ' more options</h2></div>');
-  if (!alts.length) {
-    parts.push('<div class="card empty small">No alternative matches cleared the selection gates today.</div>');
-  } else {
-    var altHtml = alts.map(function (a) {
-      return '<tr class="tap" data-fx="' + esc(a.match_id || '') + '">' +
-        '<td class="tiny muted nowrap">' + esc(koShort(a.kickoff)) + '</td>' +
-        '<td><div class="b">' + esc(a.match) + '</div><div class="tiny muted">' + flag(a.country) + ' ' + esc(a.league) + '</div></td>' +
-        '<td class="right nowrap"><b>' + esc(a.best_label) + '</b></td>' +
-        '<td class="right nowrap">' + f2(a.best_odds) + '</td>' +
-        '<td class="right">' + pct(a.best_p_model) + '<div class="tiny muted">model</div></td>' +
-        '</tr>';
-    }).join('');
-    parts.push('<div class="card compact">' +
-      '<table class="tbl head"><tr><th>Time</th><th>Match · competition</th><th>Best selection</th><th class="right">Price</th><th class="right">Model</th></tr>' +
-      altHtml +
-      '</table>' +
-      '<div class="tiny muted" style="margin-top:4px">One market per match, strongest priced selection shown. These are not in today\'s accumulators — use them to build your own ticket or swap a leg.</div>' +
-      '</div>');
-  }
-
-  // DEEP RESEARCH section
-  var res = da.research || {}; var accaResearch = (res.accumulators || []); var altResearch = (res.alternatives || []);
-  var allResearch = accaResearch.concat(altResearch);
-  if (allResearch.length) {
-    parts.push('<div class="section-head"><h2><span class="ico blue">' + icon('doc') + '</span>Deep research — selected matches</h2></div>');
-    allResearch.forEach(function (r) {
-      var newsHtml = (r.news || []).map(function (n) {
-        return '<li><b>' + esc(n.team) + ':</b> ' + esc(n.title) + ' <span class="tiny muted">(' + esc(n.source) + ', ' + (n.when || '') + ')</span></li>';
-      }).join('');
-      var bulletsHtml = (r.bullets || []).map(function (b) {
-        return '<li>' + b + '</li>';
-      }).join('');
-      parts.push('<div class="card compact research-card" data-fx="' + esc(r.match_id || '') + '">' +
-        '<div class="row">' +
-        '<div class="grow"><div class="b">' + esc(r.match) + '</div><div class="tiny muted">' + flag(r.country || '') + ' ' + esc(r.league) + ' · ' + esc(koShort(r.kickoff)) + '</div></div>' +
-        '<span class="tiny ' + (r.data_quality === 'High' ? 'good' : r.data_quality === 'Low' ? 'warn' : '') + '">' + (r.data_quality || 'N/A') + ' data</span>' +
-        '</div>' +
-        '<table class="tbl" style="margin-top:4px">' +
-        '<tr><td>Model xG</td><td class="right b">' + r.xg_home + ' – ' + r.xg_away + ' (' + r.xg_total + ' total)</td></tr>' +
-        '<tr><td>Over 2.5 — model</td><td class="right">' + (r.p_o25_model != null ? pct(r.p_o25_model) : 'N/A') + '</td></tr>' +
-        '<tr><td>Over 2.5 — Sportybet implied</td><td class="right">' + (r.p_o25_market != null ? pct(r.p_o25_market) : 'N/A') + '</td></tr>' +
-        '<tr><td>Sportybet 1X2</td><td class="right">' + (r.sporty_1x2 ? r.sporty_1x2.join(' / ') : 'N/A') + '</td></tr>' +
-        '<tr><td>Samples</td><td class="right">' + r.sample_home + ' home · ' + r.sample_away + ' away matches</td></tr>' +
-        '</table>' +
-        (bulletsHtml ? '<div style="margin-top:6px"><div class="b">Research notes</div><ul class="tiny" style="margin-top:3px">' + bulletsHtml + '</ul></div>' : '') +
-        (newsHtml ? '<div style="margin-top:6px"><div class="b">Live headlines (context only — not used by the model)</div><ul class="tiny" style="margin-top:3px">' + newsHtml + '</ul></div>' : '') +
-        '</div>');
-    });
-  }
-
-  parts.push('<div class="card tiny muted" style="margin-top:10px">' +
-    '<b>Professional standard.</b> Every selection is checked against our football-data model, Sportybet prices, and live headlines.' +
-    ' Nothing here is AI-generated — it is our data plus live research and reality. Probabilities are estimates, not guarantees.' +
-    ' 18+ · Please bet responsibly.</div>');
-
-  view().innerHTML = parts.join('');
-
-  // wire taps on alternative and research cards to open match detail
-  $$('[data-fx]').forEach(function (el) {
-    el.onclick = function (e) { e.stopPropagation(); var id = el.dataset.fx; if (id) { PR.openMatch(id); PR.render(); } };
+  const info = PR.dailyPicksInfo(state.data), groups = info.groups, alternatives = info.alternatives;
+  const parts = [`<div class="hero-row"><div><div class="kicker">Stricter Final Picks · SAST</div><h1>Daily Accumulators</h1></div><span class="quality">${info.published ? `Updated ${esc(info.published)}` : 'awaiting update'}</span></div>`];
+  parts.push(`<div class="card small"><b>From Final Picks</b><div class="tiny muted" style="margin-top:4px">Up to three separate tickets, each at combined odds 2.50–3.50. Each leg uses its own SportyBet price of at least 1.18 and the stricter Final Picks checks. More legs are used when needed; no match is repeated across tickets.</div></div>`);
+  if (info.status !== 'ready') parts.push(`<div class="card empty">The latest accumulator data is unavailable or too old. Refresh and check again after the next analysis.</div>`);
+  else if (!groups.length) parts.push(`<div class="card empty"><b>No qualifying accumulators right now.</b> No picks or prices are invented to fill the list. Try again after the next analysis.</div>`);
+  else groups.forEach((group, i) => {
+    parts.push(`<div class="card compact acca-card"><div class="row"><span class="pill hi">Acca ${i + 1}</span><div class="grow b">${group.picks.length} legs · combined ${f2(group.odds)}</div><span class="tiny muted">SportyBet</span></div>${group.picks.map((x) => `<div class="list-item tap" data-fx="${esc(x.fixture)}"><div class="grow"><div class="b">${esc(x.home)} v ${esc(x.away)}</div><div class="tiny muted">${flag(x.country)} ${esc(x.country)} · ${esc(x.league)} · ${esc(koShort(x.kickoff))} SAST</div><div class="small"><b>${esc(x.label)}</b> · ${pct(x.p)} estimate</div></div><b>${f2(x.odds)}</b>${PR.addBtn ? PR.addBtn(x.fixture, x.sel, x.odds) : ''}</div>`).join('')}</div>`);
   });
+  if (info.status === 'ready') {
+    parts.push(`<div class="section-head"><h2>${icon('star', 'sm')} Alternatives · ${alternatives.length}</h2></div>`);
+    if (!alternatives.length) parts.push(`<div class="card empty small">No unused Final Picks currently qualify as alternatives.</div>`);
+    else parts.push(`<div class="card compact">${alternatives.map((x) => `<div class="list-item tap" data-fx="${esc(x.fixture)}"><div class="grow"><div class="b">${esc(x.home)} v ${esc(x.away)}</div><div class="tiny muted">${flag(x.country)} ${esc(x.country)} · ${esc(x.league)} · ${esc(koShort(x.kickoff))} SAST</div><div class="small">${esc(x.label)}</div></div><b>${f2(x.odds)}</b>${PR.addBtn ? PR.addBtn(x.fixture, x.sel, x.odds) : ''}</div>`).join('')}<div class="tiny muted">Swapping a leg changes the ticket’s combined odds; check them again.</div></div>`);
+  }
+  const selected = new Set(groups.flatMap((g) => g.picks.map((x) => x.fixture)).concat(alternatives.map((x) => x.fixture)));
+  const research = [].concat(info.research && info.research.accumulators || [], info.research && info.research.alternatives || []).filter((r) => selected.has(r.match_id));
+  if (research.length) {
+    parts.push(`<div class="section-head"><h2>${icon('doc', 'sm')} Match research</h2></div>`);
+    research.forEach((r) => {
+      const pick = PR.finalPicksInfo(state.data).picks.find((x) => x.fixture === r.match_id); if (!pick) return;
+      const headlines = (Array.isArray(r.news) ? r.news : []).map((n) => `<li>${esc(n.team)}: ${esc(n.title)} <span class="muted">${esc(n.source)} · ${esc(n.when)}</span></li>`).join('');
+      const form = (matches) => (Array.isArray(matches) ? matches.slice(0, 5) : []).map((m) => `${esc(m.date)} ${esc(m.venue)} v ${esc(m.opp)} ${esc(m.gf)}–${esc(m.ga)}`).join(' · ') || 'N/A';
+      const h2h = (Array.isArray(r.h2h) ? r.h2h.slice(0, 5) : []).map((m) => `${esc(m.date)} ${esc(m.home)} ${esc(m.hg)}–${esc(m.ag)} ${esc(m.away)}`).join(' · ') || 'N/A';
+      const prices = Array.isArray(r.sporty_1x2) ? r.sporty_1x2.map((v) => Number.isFinite(v) && v >= 1.18 ? f2(v) : '–').join(' / ') : 'N/A';
+      parts.push(`<div class="card compact tap" data-fx="${esc(pick.fixture)}"><div class="b">${esc(pick.home)} v ${esc(pick.away)}</div><div class="tiny muted">${esc(pick.league)} · ${esc(koShort(pick.kickoff))} SAST</div><div class="small">Expected goals: ${f2(r.xg_home)} v ${f2(r.xg_away)} · samples: ${r.sample_home == null ? 'N/A' : esc(r.sample_home)} home, ${r.sample_away == null ? 'N/A' : esc(r.sample_away)} away</div><div class="tiny muted">Over 2.5 estimate ${pct(r.p_o25_model)} · market ${pct(r.p_o25_market)} · SportyBet 1X2 ${prices}</div><div class="tiny muted">${esc(pick.home)} form: ${form(r.form_home)}<br>${esc(pick.away)} form: ${form(r.form_away)}<br>Head-to-head: ${h2h}</div>${headlines ? `<div class="tiny muted">Recent headlines, context only:<ul>${headlines}</ul></div>` : '<div class="tiny muted">No recent headlines available.</div>'}</div>`);
+    });
+  }
+  parts.push(`<div class="note">Longer accumulators have more ways to lose. Estimates and stricter filters do not guarantee a win. Prices can change; check SportyBet. 18+.</div>`);
+  view().innerHTML = parts.join('');
 };
 
 })(window.PR);

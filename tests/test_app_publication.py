@@ -73,6 +73,8 @@ def test_export_includes_home_selections_and_shortlist(tmp_path, monkeypatch):
     assert detail['sheet_model']['ok'] is False  # empty samples are never fabricated
     assert detail['sheet_model']['v4']['ok'] is False
     assert data['fixtures'][0]['sels'] == detail['sels']
+    assert data['daily_accumulators']['generated'] == data['meta']['generated']
+    assert data['daily_accumulators']['summary']['n_accumulators'] == 0  # one fixture cannot fill a ticket
     assert data['shortlist']['primary'][0]['sel'] == 'O15'
     assert data['shortlist']['primary'][0]['fixture'] == data['fixtures'][0]['id']
     errors, _ = verify.check_publication(stage, stage, tmp_path / 'ledger.csv', NOW, 1)

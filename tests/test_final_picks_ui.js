@@ -89,5 +89,5 @@ PR.views.finalpicks(); assert.match(view.innerHTML, /valid SAST publication time
 d.meta = {generated, tz:'SAST'}; d.shortlist.primary = []; PR.views.finalpicks();
 assert.match(view.innerHTML, /No qualifying Final Picks/);
 assert.match(view.innerHTML, /not been separately backtested/);
-assert.match(fs.readFileSync(base + 'app.js','utf8'), /state\.tab === 'finalpicks'/);
+assert.match(fs.readFileSync(base + 'app.js','utf8'), /'finalpicks', 'dailyaccumulators'/);
 console.log('Final Picks policy, freshness, UI and navigation tests passed');
