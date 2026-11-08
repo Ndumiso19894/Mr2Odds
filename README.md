@@ -67,7 +67,7 @@ the football model code; the only shared piece is the generic Markdown → PDF h
   `data/app/tennis/days/<day>.json` keep every analysed match with its result and settlement; `days/index.json` lists them.
 * **App** — sport switch (⚽ Football | 🎾 Tennis) at the top of every tab in `tennis.js`; the football views are
   wrapped, not modified. Tennis Home / Bets / Live / Matches / Days and a match page with Overview / Markets /
-  Stats / Data (sample labels, last 10 matches with raw scores, H2H context only, quality checks, identity, inputs).
+  Stats / Data (sample labels, last 10 matches with raw scores, H2H context and eligible model subset, quality checks, identity, inputs).
   Smoke test: `android/tennis_ui_test.py`.
 
 ### Android releases to Telegram
@@ -83,9 +83,15 @@ Telegram's hosted Bot API has a 50 MB document limit.
 
 The match Sheet tab reproduces the supplied workbook's V1 formulas as a separate comparison. Venue rates use the scanner's unweighted team samples (overall sample when the venue split is empty); scanner league baselines are time-weighted and shrunk and may fall back to global data. The V4/V5 comparison uses the workbook's default V3/V4 weights and dashboard rules, is uncalibrated, and requires six recent results plus at least three current-competition observations for each xG/xGA and shots-on-target input. PPG and other inputs use the available capped sample and inferred season, not necessarily a complete season. Missing inputs leave V4 unavailable. Bookmaker implied probabilities are raw 1/odds, not de-margined. The CSV exports values, not spreadsheet formulas. This comparison never changes the production recommendations or the original workbook.
 
+### Recent-form goal model
+
+The live model adds shrunk last-5, previous-5 and venue-5 form and scoring frequencies to longer-history, league-normalised ratings. Eligible same-competition meetings with exact Livescore IDs can have a small H2H effect; ambiguous team history falls back to the baseline. Squad availability is not used. The exploratory retrospective was mixed and is not prospective validation or evidence of profitability. Details: [recent-form study](research/recent_form/README.md).
+
+Set the GitHub Actions repository variable `RECENT_FORM_ENABLED` to `0` (or set `RECENT_FORM_ENABLED=0` in a local scanner environment) to restore the baseline on the next scan. Remove it or set it to `1` to re-enable the overlay. Per-fixture method details report applied, fallback or disabled status, and app metadata reports aggregate coverage. The recent-form and experimental xG/shots modes cannot be enabled together; a conflicting configuration stops the scan before publication.
+
 ### Experimental model signals and markets
 
-Provisional xG/xGA, shots-on-target and genuinely reported off-target-shot adjustments are **disabled by default** pending point-in-time chronological validation. `EXPERIMENTAL_MODEL_SIGNALS=1` explicitly enables them for labelled research only. Team/total booking recommendations and grading are withheld because current card-count data is not verified as equivalent to SportyBet bookings. See [model signal and market limitations](docs/MODEL_SIGNALS.md).
+Provisional xG/xGA, shots-on-target and genuinely reported off-target-shot adjustments are **disabled by default** pending point-in-time chronological validation. `RECENT_FORM_ENABLED=0 EXPERIMENTAL_MODEL_SIGNALS=1` explicitly enables them for labelled research only. Team/total booking recommendations and grading are withheld because current card-count data is not verified as equivalent to SportyBet bookings. See [model signal and market limitations](docs/MODEL_SIGNALS.md).
 
 ### Lineup research pilot
 

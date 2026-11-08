@@ -1,0 +1,665 @@
+{
+  "classification": "retrospective_sensitivity_not_point_in_time_validation",
+  "method": {
+    "input": "pinned postdated Livescore archive, world-only; no verified quote or availability times",
+    "start": "2026-10-01",
+    "end_exclusive": "2026-10-15",
+    "history": "strictly before prediction calendar day; same-ID duplicate reconciliation",
+    "matched": "same target, same history, same baseline model; excluded if either team lacks history or recent order is ambiguous",
+    "uncertainty": "paired bootstrap resamples dates, conditional on this retrospective and non-independent sample",
+    "limitations": [
+      "pinned snapshot postdates replay; features and outcomes may be backfilled",
+      "no football-data or extra league feeds; production priors differ",
+      "cross-provider identity and archived kickoff timezones remain unresolved",
+      "no squad availability, no actual prices, no recommendations, no profitability",
+      "exploratory fixed formula; not tuned or validated on untouched prospective data"
+    ]
+  },
+  "coverage": {
+    "days": 14,
+    "targets": 3043,
+    "matched": 2770,
+    "excluded": {
+      "invalid target score": 0,
+      "insufficient existing baseline team history": 271,
+      "ambiguous same-day team history in recent windows": 2
+    },
+    "recent_feature_coverage": {
+      "h2h_applied": 783,
+      "both_last5_full": 2770,
+      "both_last10_full": 2238,
+      "both_venue5_full": 2240
+    }
+  },
+  "per_day": [
+    {
+      "day": "2026-10-01",
+      "targets": 29,
+      "matched": 21,
+      "target_duplicate_rows_removed": 0,
+      "history_rows": 67755,
+      "same_id_rows_removed": 380
+    },
+    {
+      "day": "2026-10-02",
+      "targets": 80,
+      "matched": 65,
+      "target_duplicate_rows_removed": 0,
+      "history_rows": 67717,
+      "same_id_rows_removed": 380
+    },
+    {
+      "day": "2026-10-03",
+      "targets": 495,
+      "matched": 448,
+      "target_duplicate_rows_removed": 0,
+      "history_rows": 67781,
+      "same_id_rows_removed": 380
+    },
+    {
+      "day": "2026-10-04",
+      "targets": 308,
+      "matched": 254,
+      "target_duplicate_rows_removed": 0,
+      "history_rows": 68123,
+      "same_id_rows_removed": 380
+    },
+    {
+      "day": "2026-10-05",
+      "targets": 47,
+      "matched": 36,
+      "target_duplicate_rows_removed": 0,
+      "history_rows": 67891,
+      "same_id_rows_removed": 380
+    },
+    {
+      "day": "2026-10-06",
+      "targets": 71,
+      "matched": 61,
+      "target_duplicate_rows_removed": 0,
+      "history_rows": 67521,
+      "same_id_rows_removed": 380
+    },
+    {
+      "day": "2026-10-07",
+      "targets": 23,
+      "matched": 19,
+      "target_duplicate_rows_removed": 0,
+      "history_rows": 67561,
+      "same_id_rows_removed": 380
+    },
+    {
+      "day": "2026-10-08",
+      "targets": 47,
+      "matched": 43,
+      "target_duplicate_rows_removed": 0,
+      "history_rows": 67525,
+      "same_id_rows_removed": 380
+    },
+    {
+      "day": "2026-10-09",
+      "targets": 208,
+      "matched": 200,
+      "target_duplicate_rows_removed": 0,
+      "history_rows": 67530,
+      "same_id_rows_removed": 380
+    },
+    {
+      "day": "2026-10-10",
+      "targets": 800,
+      "matched": 754,
+      "target_duplicate_rows_removed": 0,
+      "history_rows": 67738,
+      "same_id_rows_removed": 380
+    },
+    {
+      "day": "2026-10-11",
+      "targets": 611,
+      "matched": 570,
+      "target_duplicate_rows_removed": 0,
+      "history_rows": 68509,
+      "same_id_rows_removed": 380
+    },
+    {
+      "day": "2026-10-12",
+      "targets": 120,
+      "matched": 111,
+      "target_duplicate_rows_removed": 0,
+      "history_rows": 68729,
+      "same_id_rows_removed": 380
+    },
+    {
+      "day": "2026-10-13",
+      "targets": 135,
+      "matched": 126,
+      "target_duplicate_rows_removed": 0,
+      "history_rows": 68554,
+      "same_id_rows_removed": 380
+    },
+    {
+      "day": "2026-10-14",
+      "targets": 69,
+      "matched": 62,
+      "target_duplicate_rows_removed": 0,
+      "history_rows": 68725,
+      "same_id_rows_removed": 380
+    }
+  ],
+  "markets": {
+    "O15": {
+      "n": 2770,
+      "actual_frequency": 0.7826714801444044,
+      "baseline_mean_probability": 0.7848594672557695,
+      "variant_mean_probability": 0.7804118184229962,
+      "mean_signed_change_pp": -0.44476488327732455,
+      "mean_absolute_change_pp": 2.13338188683087,
+      "max_absolute_change_pp": 12.179943545236405,
+      "brier": {
+        "baseline": 0.16607928679195552,
+        "variant": 0.1670337196182652,
+        "paired_delta": 0.0009544328263096454,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          3.9461574925371654e-05,
+          0.0017105751527663761
+        ]
+      },
+      "log_loss": {
+        "baseline": 0.5111673547750961,
+        "variant": 0.5135051348277353,
+        "paired_delta": 0.002337780052639218,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          -0.00048202506614559163,
+          0.004421597061216791
+        ]
+      }
+    },
+    "O25": {
+      "n": 2770,
+      "actual_frequency": 0.5736462093862816,
+      "baseline_mean_probability": 0.5550320263470041,
+      "variant_mean_probability": 0.5516892147604868,
+      "mean_signed_change_pp": -0.3342811586517266,
+      "mean_absolute_change_pp": 3.0276627546621233,
+      "max_absolute_change_pp": 13.64010828363531,
+      "brier": {
+        "baseline": 0.2349376186920872,
+        "variant": 0.23598660047557968,
+        "paired_delta": 0.0010489817834924892,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          0.000496819397432894,
+          0.0018320935751163245
+        ]
+      },
+      "log_loss": {
+        "baseline": 0.661885802409873,
+        "variant": 0.6643209712732175,
+        "paired_delta": 0.0024351688633444312,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          0.0011245710367254467,
+          0.004389132040099818
+        ]
+      }
+    },
+    "O35": {
+      "n": 2770,
+      "actual_frequency": 0.36137184115523463,
+      "baseline_mean_probability": 0.34063182648619444,
+      "variant_mean_probability": 0.3401271436542474,
+      "mean_signed_change_pp": -0.05046828319470371,
+      "mean_absolute_change_pp": 2.9475387820473653,
+      "max_absolute_change_pp": 12.985421322133261,
+      "brier": {
+        "baseline": 0.21899994950449203,
+        "variant": 0.21916059360131623,
+        "paired_delta": 0.00016064409682425447,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          -0.0005520564546112578,
+          0.0010318109127532616
+        ]
+      },
+      "log_loss": {
+        "baseline": 0.6285676458152416,
+        "variant": 0.6291793075964969,
+        "paired_delta": 0.0006116617812552337,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          -0.0006344729552938883,
+          0.0027806395509385965
+        ]
+      }
+    },
+    "BTTS": {
+      "n": 2770,
+      "actual_frequency": 0.5664259927797833,
+      "baseline_mean_probability": 0.5605234241064619,
+      "variant_mean_probability": 0.5552429990339209,
+      "mean_signed_change_pp": -0.5280425072540945,
+      "mean_absolute_change_pp": 2.3654395885178046,
+      "max_absolute_change_pp": 11.302122949270094,
+      "brier": {
+        "baseline": 0.2435448694549587,
+        "variant": 0.24447742118255356,
+        "paired_delta": 0.0009325517275948094,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          8.581964029206201e-06,
+          0.0019635106294975816
+        ]
+      },
+      "log_loss": {
+        "baseline": 0.68013054415432,
+        "variant": 0.6822577549512211,
+        "paired_delta": 0.002127210796901046,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          -1.268196774553969e-05,
+          0.004475772432737687
+        ]
+      }
+    },
+    "H": {
+      "n": 2770,
+      "actual_frequency": 0.43971119133574005,
+      "baseline_mean_probability": 0.4394521963312042,
+      "variant_mean_probability": 0.4318599872223208,
+      "mean_signed_change_pp": -0.7592209108883459,
+      "mean_absolute_change_pp": 2.381863962921425,
+      "max_absolute_change_pp": 13.159618730018474,
+      "brier": {
+        "baseline": 0.2273524977541576,
+        "variant": 0.2274320494259485,
+        "paired_delta": 7.955167179086931e-05,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          -0.0006900645666621575,
+          0.001256320349908808
+        ]
+      },
+      "log_loss": {
+        "baseline": 0.6462175831145771,
+        "variant": 0.6466269862849742,
+        "paired_delta": 0.00040940317039716407,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          -0.001494825853353566,
+          0.003194177348500784
+        ]
+      }
+    },
+    "D": {
+      "n": 2770,
+      "actual_frequency": 0.2296028880866426,
+      "baseline_mean_probability": 0.24328774185769753,
+      "variant_mean_probability": 0.24330027907900698,
+      "mean_signed_change_pp": 0.0012537221309450613,
+      "mean_absolute_change_pp": 0.9430464710354438,
+      "max_absolute_change_pp": 5.268648820298594,
+      "brier": {
+        "baseline": 0.17531044652274674,
+        "variant": 0.1752315564134369,
+        "paired_delta": -7.889010930983789e-05,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          -0.00025342381990781614,
+          8.448897509483611e-05
+        ]
+      },
+      "log_loss": {
+        "baseline": 0.534087643317762,
+        "variant": 0.5338159920342881,
+        "paired_delta": -0.0002716512834739987,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          -0.0007721609183775408,
+          0.00024288368494712837
+        ]
+      }
+    },
+    "A": {
+      "n": 2770,
+      "actual_frequency": 0.3306859205776173,
+      "baseline_mean_probability": 0.3172600618110983,
+      "variant_mean_probability": 0.3248397336986723,
+      "mean_signed_change_pp": 0.757967188757401,
+      "mean_absolute_change_pp": 2.1573353486614133,
+      "max_absolute_change_pp": 10.778305141976762,
+      "brier": {
+        "baseline": 0.200088338002796,
+        "variant": 0.19954968668643738,
+        "paired_delta": -0.0005386513163585905,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          -0.0014291492374590928,
+          0.00046053593868477475
+        ]
+      },
+      "log_loss": {
+        "baseline": 0.5856765493810014,
+        "variant": 0.5848337283172571,
+        "paired_delta": -0.0008428210637444616,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          -0.0030353425999500136,
+          0.0016308174273304092
+        ]
+      }
+    },
+    "H_zero_goal": {
+      "n": 2770,
+      "actual_frequency": 0.21696750902527076,
+      "baseline_mean_probability": 0.21778367142803232,
+      "variant_mean_probability": 0.22546506712978995,
+      "mean_signed_change_pp": 0.7681395701757622,
+      "mean_absolute_change_pp": 1.9638417143266251,
+      "max_absolute_change_pp": 10.822161858802357,
+      "brier": {
+        "baseline": 0.16211110466869022,
+        "variant": 0.16184555933334827,
+        "paired_delta": -0.00026554533534194926,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          -0.0010998476688931509,
+          0.0008096126002180653
+        ]
+      },
+      "log_loss": {
+        "baseline": 0.4991887739542829,
+        "variant": 0.4983712631610054,
+        "paired_delta": -0.0008175107932775576,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          -0.0026888896069143233,
+          0.0015628923281706807
+        ]
+      }
+    },
+    "A_zero_goal": {
+      "n": 2770,
+      "actual_frequency": 0.27075812274368233,
+      "baseline_mean_probability": 0.2863396743882225,
+      "variant_mean_probability": 0.2862402254700983,
+      "mean_signed_change_pp": -0.009944891812422252,
+      "mean_absolute_change_pp": 2.04402972075923,
+      "max_absolute_change_pp": 12.060487078169157,
+      "brier": {
+        "baseline": 0.1895210462473691,
+        "variant": 0.19059996336675422,
+        "paired_delta": 0.0010789171193851632,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          0.0003397359174403682,
+          0.0017853834065185092
+        ]
+      },
+      "log_loss": {
+        "baseline": 0.563799563912603,
+        "variant": 0.5663141693696154,
+        "paired_delta": 0.0025146054570125416,
+        "resampled_days": 14,
+        "day_bootstrap_95": [
+          0.0004053314237715726,
+          0.004505139122535716
+        ]
+      }
+    }
+  },
+  "leagues_with_at_least_30_matched": [
+    {
+      "country": "Argentina",
+      "division": "LS:argentina/primera-nacional",
+      "n": 36,
+      "O25": {
+        "n": 36,
+        "actual_frequency": 0.3611111111111111,
+        "baseline_mean_probability": 0.32106423518457644,
+        "variant_mean_probability": 0.31446666575609195,
+        "mean_signed_change_pp": -0.659756942848452,
+        "mean_absolute_change_pp": 2.879224721487898,
+        "max_absolute_change_pp": 8.559142976295753,
+        "brier": {
+          "baseline": 0.22392656064555794,
+          "variant": 0.22194558474832232,
+          "paired_delta": -0.0019809758972356138,
+          "resampled_days": 7,
+          "day_bootstrap_95": [
+            -0.014574468442834334,
+            0.005430184870511819
+          ]
+        },
+        "log_loss": {
+          "baseline": 0.6393728219356422,
+          "variant": 0.6365314967127168,
+          "paired_delta": -0.0028413252229253882,
+          "resampled_days": 7,
+          "day_bootstrap_95": [
+            -0.033101765487332464,
+            0.016655371787508488
+          ]
+        }
+      },
+      "BTTS": {
+        "n": 36,
+        "actual_frequency": 0.4166666666666667,
+        "baseline_mean_probability": 0.3679674696908976,
+        "variant_mean_probability": 0.36108614583505316,
+        "mean_signed_change_pp": -0.6881323855844385,
+        "mean_absolute_change_pp": 2.294920542113958,
+        "max_absolute_change_pp": 6.066194433911326,
+        "brier": {
+          "baseline": 0.24968787838818216,
+          "variant": 0.2550492135158607,
+          "paired_delta": 0.0053613351276785804,
+          "resampled_days": 7,
+          "day_bootstrap_95": [
+            -0.012657931391480876,
+            0.016015214747057006
+          ]
+        },
+        "log_loss": {
+          "baseline": 0.6935960270539184,
+          "variant": 0.7060242601214335,
+          "paired_delta": 0.012428233067515199,
+          "resampled_days": 7,
+          "day_bootstrap_95": [
+            -0.02755867744104564,
+            0.036843102800227207
+          ]
+        }
+      }
+    },
+    {
+      "country": "England",
+      "division": "LS:england/northern-premier-division",
+      "n": 36,
+      "O25": {
+        "n": 36,
+        "actual_frequency": 0.6666666666666666,
+        "baseline_mean_probability": 0.5860092489948586,
+        "variant_mean_probability": 0.6198812745702272,
+        "mean_signed_change_pp": 3.387202557536864,
+        "mean_absolute_change_pp": 4.434471917504777,
+        "max_absolute_change_pp": 10.918617778520723,
+        "brier": {
+          "baseline": 0.23013055502715687,
+          "variant": 0.23511930714629445,
+          "paired_delta": 0.004988752119137613,
+          "resampled_days": 5,
+          "day_bootstrap_95": [
+            -0.002988468199370939,
+            0.010497197019164808
+          ]
+        },
+        "log_loss": {
+          "baseline": 0.652986666461614,
+          "variant": 0.6636602701038047,
+          "paired_delta": 0.010673603642190712,
+          "resampled_days": 5,
+          "day_bootstrap_95": [
+            -0.006698634560168332,
+            0.02317402445095994
+          ]
+        }
+      },
+      "BTTS": {
+        "n": 36,
+        "actual_frequency": 0.6388888888888888,
+        "baseline_mean_probability": 0.5922167482778615,
+        "variant_mean_probability": 0.6113994929840836,
+        "mean_signed_change_pp": 1.918274470622193,
+        "mean_absolute_change_pp": 3.053744313375627,
+        "max_absolute_change_pp": 8.400782739257483,
+        "brier": {
+          "baseline": 0.23554351933374992,
+          "variant": 0.23652294204991828,
+          "paired_delta": 0.0009794227161683486,
+          "resampled_days": 5,
+          "day_bootstrap_95": [
+            -0.012408000474390876,
+            0.013844041017775057
+          ]
+        },
+        "log_loss": {
+          "baseline": 0.6642710469323604,
+          "variant": 0.6676761459582261,
+          "paired_delta": 0.003405099025865621,
+          "resampled_days": 5,
+          "day_bootstrap_95": [
+            -0.02639908459570975,
+            0.03329198371852002
+          ]
+        }
+      }
+    },
+    {
+      "country": "England",
+      "division": "LS:england/isthmian-league-north-division",
+      "n": 32,
+      "O25": {
+        "n": 32,
+        "actual_frequency": 0.6875,
+        "baseline_mean_probability": 0.645382017422001,
+        "variant_mean_probability": 0.6389096273071906,
+        "mean_signed_change_pp": -0.6472390114810423,
+        "mean_absolute_change_pp": 1.9369763773087678,
+        "max_absolute_change_pp": 5.019056235246888,
+        "brier": {
+          "baseline": 0.2080288626942045,
+          "variant": 0.21012631096339607,
+          "paired_delta": 0.0020974482691915306,
+          "resampled_days": 6,
+          "day_bootstrap_95": [
+            -0.008227983258954774,
+            0.010435830575648052
+          ]
+        },
+        "log_loss": {
+          "baseline": 0.6058532996396193,
+          "variant": 0.6102271109469535,
+          "paired_delta": 0.004373811307334054,
+          "resampled_days": 6,
+          "day_bootstrap_95": [
+            -0.017945209233310833,
+            0.02291676715139631
+          ]
+        }
+      },
+      "BTTS": {
+        "n": 32,
+        "actual_frequency": 0.6875,
+        "baseline_mean_probability": 0.6262659995626212,
+        "variant_mean_probability": 0.6169008062146623,
+        "mean_signed_change_pp": -0.9365193347959023,
+        "mean_absolute_change_pp": 1.8795480880945645,
+        "max_absolute_change_pp": 5.253590992073254,
+        "brier": {
+          "baseline": 0.21237412624885438,
+          "variant": 0.21304878777179737,
+          "paired_delta": 0.0006746615229429975,
+          "resampled_days": 6,
+          "day_bootstrap_95": [
+            -0.006713423887115859,
+            0.006275362948829368
+          ]
+        },
+        "log_loss": {
+          "baseline": 0.6158508043227937,
+          "variant": 0.6173953699388479,
+          "paired_delta": 0.001544565616054169,
+          "resampled_days": 6,
+          "day_bootstrap_95": [
+            -0.014487129841868514,
+            0.013767650274953481
+          ]
+        }
+      }
+    },
+    {
+      "country": "Brazil",
+      "division": "LS:brazil/serie-b",
+      "n": 30,
+      "O25": {
+        "n": 30,
+        "actual_frequency": 0.43333333333333335,
+        "baseline_mean_probability": 0.44417327843907034,
+        "variant_mean_probability": 0.4499815249084336,
+        "mean_signed_change_pp": 0.5808246469363252,
+        "mean_absolute_change_pp": 2.5770653305334577,
+        "max_absolute_change_pp": 7.22971754246331,
+        "brier": {
+          "baseline": 0.23977916272935426,
+          "variant": 0.23918601044418547,
+          "paired_delta": -0.0005931522851688117,
+          "resampled_days": 9,
+          "day_bootstrap_95": [
+            -0.014771481425568021,
+            0.009122103399804406
+          ]
+        },
+        "log_loss": {
+          "baseline": 0.6720094822392227,
+          "variant": 0.6711052711605288,
+          "paired_delta": -0.0009042110786940986,
+          "resampled_days": 9,
+          "day_bootstrap_95": [
+            -0.029242099056760642,
+            0.018912583970441252
+          ]
+        }
+      },
+      "BTTS": {
+        "n": 30,
+        "actual_frequency": 0.43333333333333335,
+        "baseline_mean_probability": 0.4531612544925073,
+        "variant_mean_probability": 0.453141572808789,
+        "mean_signed_change_pp": -0.0019681683718371827,
+        "mean_absolute_change_pp": 2.323933206763983,
+        "max_absolute_change_pp": 5.82427746484483,
+        "brier": {
+          "baseline": 0.236312702062453,
+          "variant": 0.23227225088897066,
+          "paired_delta": -0.004040451173482403,
+          "resampled_days": 9,
+          "day_bootstrap_95": [
+            -0.015496276515701348,
+            0.005932560096668317
+          ]
+        },
+        "log_loss": {
+          "baseline": 0.6659703258574023,
+          "variant": 0.658225723420056,
+          "paired_delta": -0.007744602437346141,
+          "resampled_days": 9,
+          "day_bootstrap_95": [
+            -0.03198758047915919,
+            0.014699197881434842
+          ]
+        }
+      }
+    }
+  ]
+}

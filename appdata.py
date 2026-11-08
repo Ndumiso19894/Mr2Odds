@@ -476,7 +476,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
         "report_md": f"reports/{now:%Y-%m-%d}.md", "csv": f"reports/{now:%Y-%m-%d}.csv",
         "thresholds": {m: t["p"] for m, t in thresholds.items()}, "backtest": backtest,
         "next_run": ctx["window_end"].strftime("%Y-%m-%d %H:%M"), "refresh_minutes": 30,
-        "coverage": coverage or {}, "model_signals": ctx.get("model_signals"),
+        "coverage": coverage or {}, "model_signals": ctx.get("model_signals"), "recent_form": ctx.get("recent_form"),
     }
     # ---- blocks for the Mr 2 Odds web layer: advisor live record, shortlist report card, value/strong groups.
     # Pure presentation of what the tracker and picks already contain — no new model maths.
@@ -585,6 +585,8 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
     }
     if ctx.get("model_signals") is not None:
         app_meta["model_signals"] = ctx["model_signals"]
+    if ctx.get("recent_form") is not None:
+        app_meta["recent_form"] = ctx["recent_form"]
     if ctx.get("analysis_cache"):
         app_meta["analysis_cache"] = ctx["analysis_cache"]
     if report_run:

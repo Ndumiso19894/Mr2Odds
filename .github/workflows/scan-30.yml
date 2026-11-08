@@ -114,6 +114,7 @@ jobs:
       TZ_LABEL: "SAST"
       RUN_HOURS: "7,12,17"  # full-report hours (local); the other half-hourly runs are refreshes
       COVER_DAYS: "60"      # discover + analyse fixtures up to 60 days out (early data collection)
+      RECENT_FORM_ENABLED: ${{ vars.RECENT_FORM_ENABLED || '1' }}  # set repository variable to 0 for baseline rollback
       APP_WINDOW_HOURS: "24"  # the app publication still carries today's matches only
       NEWS_HOURS: "72"      # per-fixture news fetches only within 72 h of kick-off
       MIN_P_O15: "0.84"     # shortlist thresholds (final probability)
@@ -248,5 +249,6 @@ jobs:
           node tests/test_pending_refresh_ui.js
           node tests/test_price_floor_ui.js
           node tests/test_sheet_ui.js
+          node tests/test_recent_form_ui.js
           node tests/test_lineup_pilot_ui.js
           node tests/test_market_settlement_ui.js

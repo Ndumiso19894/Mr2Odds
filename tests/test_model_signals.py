@@ -101,6 +101,7 @@ def test_analysis_uses_adjusted_lambdas_for_all_goal_markets(monkeypatch):
     monkeypatch.setattr(scanner, 'sharp_ou', lambda *args: (None, None))
     monkeypatch.setattr(scanner, 'MODELS', {})
     monkeypatch.setattr(scanner, 'SIGNAL_BASELINES', {'E0':4.})
+    monkeypatch.setattr(scanner, 'RECENT_FORM_ENABLED', False)
     monkeypatch.setattr(scanner, 'EXPERIMENTAL_MODEL_SIGNALS', True)
     fx = pd.Series(dict(div='E0', country='England', home='H', away='A', source='main',
                         odds_over=float('nan'), odds_under=float('nan'), odds_h=float('nan'),
@@ -151,6 +152,7 @@ def test_analyse_corner_signal_applies_only_with_sufficient_real_data(monkeypatc
     monkeypatch.setattr(scanner, 'market_lambdas', lambda *args: None)
     monkeypatch.setattr(scanner, 'sharp_ou', lambda *args: (None, None))
     monkeypatch.setattr(scanner, 'SIGNAL_BASELINES', {})
+    monkeypatch.setattr(scanner, 'RECENT_FORM_ENABLED', False)
     monkeypatch.setattr(scanner, 'EXPERIMENTAL_MODEL_SIGNALS', True)
     class Dummy:
         div_avg = {'E0': (4., 4.)}
