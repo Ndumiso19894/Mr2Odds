@@ -33,3 +33,11 @@ def test_new_parlays_never_offer_sub_floor_legs(monkeypatch):
     monkeypatch.setattr(scanner.parlay_mod, 'build_parlays', lambda legs, *args: [])
     result = scanner.build_run_parlays([r], now, now + timedelta(hours=2), True)
     assert [leg.odds for leg in result['legs']] == [1.16]
+
+
+def test_no_parlay_legs_from_feed_averages_when_sportybet_unavailable(monkeypatch):
+    now = datetime(2026, 11, 4, 8)
+    r = SimpleNamespace(data_ok=True, fx={'kickoff': now + timedelta(hours=1)}, sb=None,
+                        extra=SimpleNamespace(x12={}), p_model={'O25': .8})
+    monkeypatch.setattr(scanner, 'avg_prices', lambda fx: (_ for _ in ()).throw(AssertionError('not a quote')))
+    assert scanner.build_run_parlays([r], now, now + timedelta(hours=2), False)['legs'] == []

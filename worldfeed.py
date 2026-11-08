@@ -393,12 +393,14 @@ class Archive:
                 st = stats.get(eid) or []
                 st = (st + [None] * 16)[:16] if st else [None] * 16
                 rows.append((data.get("country") or "", div, data.get("league") or "", esd[:8], home, away, hid, aid,
-                             hg, ag, hth, hta, eid, *st))
+                             hg, ag, hth, hta, eid, *st,
+                             f"Livescore:{key}", f"{esd[8:10]}:{esd[10:12]}" if len(esd) >= 12 else None))
         if not rows:
             return pd.DataFrame()
         df = pd.DataFrame(rows, columns=["country", "div", "league", "d", "home", "away", "home_id", "away_id",
                                          "hg", "ag", "hth", "hta", "eid",
-                                         "hc", "ac", "hy", "ay", "hr", "ar", "hs", "as", "hst", "ast", "hposs", "aposs", "hf", "af", "hsoff", "asoff"])
+                                         "hc", "ac", "hy", "ay", "hr", "ar", "hs", "as", "hst", "ast", "hposs", "aposs", "hf", "af", "hsoff", "asoff",
+                                         "_source_ref", "_history_kickoff"])
         df["date"] = pd.to_datetime(df["d"], format="%Y%m%d")
         df = df.drop(columns=["d"])
         for c in ("hg", "ag"):

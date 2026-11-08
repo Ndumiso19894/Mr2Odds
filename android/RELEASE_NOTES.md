@@ -1,3 +1,8 @@
+## Model history and price safeguards
+- Prediction inputs now exclude same-day results and reconcile repeated Livescore event IDs to reduce look-ahead and duplicate counting. Results used to settle tickets remain separate; unmatched cross-provider records are not automatically merged.
+- Experimental xG and shots adjustments are disabled by default while point-in-time validation is outstanding. Probabilities and qualifying selections can change; these safeguards do not establish improved accuracy or profitability.
+- Run parlays require SportyBet prices rather than substitute feed averages. Correct-score details now use the same score matrix as the model. The 1.16 app and 1.18 Final Picks price floors are unchanged.
+
 ## Daily Accumulators from Final Picks
 - Generate up to three distinct daily accumulators at combined odds 2.50–3.50 using the stricter Final Picks rules and a minimum 1.18 price on each selection. Longer tickets may be needed and have more ways to lose.
 - The app rechecks prices, qualification and kickoff before showing a ticket; fewer tickets or alternatives are shown when there are not enough qualifying matches. Existing tickets and Facebook posting schedules are unchanged.
@@ -21,7 +26,7 @@
 
 ## Markets and experimental model signals
 - 1X2, BTTS and team corners can be shortlisted when the existing price and screening rules are met. Booking recommendations and ticket grading remain paused until card data matches the bookmaker’s booking rules.
-- Experimental xG/xGA and shots adjustments are enabled where sufficient inputs exist, but are not yet backtested; missing inputs are not guessed. No improved accuracy is claimed.
+- At that release, experimental xG/xGA and shots adjustments were enabled where sufficient inputs existed. They are now disabled by default pending point-in-time validation; missing inputs are not guessed. No improved accuracy is claimed.
 
 ## Line-up research pilot
 - The Line-ups tab can show regular starters and changes from a rights-cleared, operator-supplied confirmed XI in two pilot leagues. It is context only and does not alter predictions. No automatic lineup source is configured yet.

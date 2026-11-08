@@ -55,7 +55,7 @@ def test_export_includes_home_selections_and_shortlist(tmp_path, monkeypatch):
                           data_ok=True, basis='model', mod_h=1.5, mod_a=1.0, mkt_h=float('nan'), mkt_a=float('nan'),
                           p_final=probs, p_model=probs, p_market_o25=None, fair={}, x12_market=None,
                           sb={'OU': {1.5: (1.3, 3.8)}}, sb_event=None, sb_full=None, h2h=[], div_avg=SimpleNamespace(mu_h=1.5, mu_a=1, o25_rate=.5),
-                          trends={}, mkt_source='')
+                          trends={}, mkt_source='', scores=[[1, 0, .1234567], [1, 1, .1]])
     monkeypatch.setattr(appdata, '_profile', lambda _: {})
     rows = [safe.sel_dict(s, 'Home', 'Away') for s in safe.selections(row)]
     stage = tmp_path / 'stage'; stage.mkdir()
@@ -69,6 +69,7 @@ def test_export_includes_home_selections_and_shortlist(tmp_path, monkeypatch):
     detail = json.loads((stage / 'fx' / (data['fixtures'][0]['d'] + '.json')).read_text())
     assert detail['lineup_context']['status'] == 'not_confirmed'
     assert detail['lineup_context']['home']['status'] == 'collecting'
+    assert detail['scores'] == [[1, 0, .123457], [1, 1, .1]]
     assert detail['p']['O15'] == .82  # lineup pilot never alters the baseline model
     assert detail['sheet_model']['ok'] is False  # empty samples are never fabricated
     assert detail['sheet_model']['v4']['ok'] is False

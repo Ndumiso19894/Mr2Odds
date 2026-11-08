@@ -22,6 +22,7 @@ from datetime import datetime
 
 import numpy as np
 import pandas as pd
+import cross_provider
 
 # ----------------------------------------------------------------------------- parameters (from the backtest)
 CORNERS = {"K": 40.0, "KV": 20.0, "HL": 120.0, "r_total": 80.0, "r_team": 10.0, "div_K": 30.0,
@@ -131,13 +132,20 @@ class CountModel:
         w = 0.5 ** ((self.now_ord - ords) / params["HL"])
         self.glob = (float((w * hv).sum() / w.sum()), float((w * av).sum() / w.sum()))
         self.div_avg: dict[str, tuple[float, float]] = {}
-        divs = df["div"].to_numpy()
-        for d in np.unique(divs):
-            m = divs == d
-            n = w[m].sum()
-            mh, ma = (w[m] * hv[m]).sum() / n, (w[m] * av[m]).sum() / n
+        # Division priors see each reviewed event under both provider keys; the
+        # global prior and team samples above/below remain one row per event.
+        div_df = cross_provider.division_view(df)
+        div_ords = div_df["date"].map(pd.Timestamp.toordinal).to_numpy()
+        div_w = 0.5 ** ((self.now_ord - div_ords) / params["HL"])
+        div_hv, div_av = div_df[hcol].to_numpy(dtype=float), div_df[acol].to_numpy(dtype=float)
+        div_keys = div_df["div"].to_numpy()
+        for d in np.unique(div_keys):
+            m = div_keys == d
+            n = div_w[m].sum()
+            mh, ma = (div_w[m] * div_hv[m]).sum() / n, (div_w[m] * div_av[m]).sum() / n
             dk = params["div_K"]
             self.div_avg[d] = ((n * mh + dk * self.glob[0]) / (n + dk), (n * ma + dk * self.glob[1]) / (n + dk))
+        divs = df["div"].to_numpy()
         self.team: dict[tuple[str, str], list] = defaultdict(list)
         self.ref: dict[str, list] = defaultdict(list)
         countries, homes, aways = df["country"].to_numpy(), df["home"].to_numpy(), df["away"].to_numpy()

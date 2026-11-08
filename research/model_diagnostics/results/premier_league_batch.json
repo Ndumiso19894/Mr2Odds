@@ -1,0 +1,132 @@
+{
+  "scope": "five unique Premier League matches from a postdated model snapshot; identity/time corroboration only",
+  "sources": {
+    "fpl_fixture_url": "https://github.com/vaastav/Fantasy-Premier-League/blob/a8337d50698de908f92e8d1905142d968384a2ca/data/2025-26/fixtures.csv",
+    "fpl_teams_url": "https://github.com/vaastav/Fantasy-Premier-League/blob/a8337d50698de908f92e8d1905142d968384a2ca/data/2025-26/teams.csv",
+    "fpl_fixtures_sha256": "2d7e3950d346df14ca486cb09e9b9ba406d37d943775244eed06cdc021ffb3a9",
+    "fpl_teams_sha256": "b29df099cb0ad25413e284e53116099b0e0496874f99743dbc0870d8241b46c5",
+    "openfootball_url": "https://github.com/openfootball/football.json/blob/1d0afcbd66d88df55e98166dd7d986d7c56d82ab/2025-26/en.1-full.json",
+    "openfootball_sha256": "cbc433be6594afec7c495a80e034578245ddda8cb0e9826743297471f188ceae",
+    "candidate_review_sha256": "f6579e40f7bb9d1fce2d5ed304da5808f6cdf2993de8a759e440cad050329e46"
+  },
+  "limitations": [
+    "FPL source is a third-party mirror of official FPL data, not a direct authenticated API response",
+    "OpenFootball and FPL upstream source independence is not established",
+    "Livescore archive records do not preserve the requested offset; UTC+2 matches are assumptions, not verified provenance",
+    "retrospective model snapshot postdates simulated cutoff and cannot establish data or quote availability",
+    "third-party source data is used as evidence only, not copied into the prediction pool"
+  ],
+  "approved_count": 0,
+  "records": [
+    {
+      "date": "2026-05-24",
+      "home": "Crystal Palace",
+      "away": "Arsenal",
+      "score": [
+        1,
+        2
+      ],
+      "candidate_id": "82bed47ae11ac1740499f559898725912a8f5eda2d28f420525b715d4fd13215",
+      "livescore_event_id": "1529164",
+      "fpl_fixture_id": 373,
+      "fpl_event_code": 2562267,
+      "utc_kickoff": "2026-05-24T15:00:00+00:00",
+      "football_data_clock": "16:00",
+      "football_data_timezone": "Europe/London (scanner feed convention)",
+      "livescore_recorded_clock": "17:00",
+      "livescore_clock_check": "matches UTC+2, but record has no captured timezone: unverified",
+      "openfootball_time": "16:00 UTC+1",
+      "openfootball_ground": "Selhurst Park, London",
+      "stat_conflicts": {},
+      "decision": "corroborated_fixture_but_not_approved: original Livescore time-zone provenance missing"
+    },
+    {
+      "date": "2026-05-24",
+      "home": "Liverpool",
+      "away": "Brentford",
+      "score": [
+        1,
+        1
+      ],
+      "candidate_id": "d6c2fc51064540f17334f0c74e321c43b67bfa935be59d0183defd27b94396ec",
+      "livescore_event_id": "1529182",
+      "fpl_fixture_id": 375,
+      "fpl_event_code": 2562269,
+      "utc_kickoff": "2026-05-24T15:00:00+00:00",
+      "football_data_clock": "16:00",
+      "football_data_timezone": "Europe/London (scanner feed convention)",
+      "livescore_recorded_clock": "17:00",
+      "livescore_clock_check": "matches UTC+2, but record has no captured timezone: unverified",
+      "openfootball_time": "15:00 UTC+0",
+      "openfootball_ground": "Anfield, Liverpool",
+      "stat_conflicts": {},
+      "decision": "corroborated_fixture_but_not_approved: original Livescore time-zone provenance missing"
+    },
+    {
+      "date": "2026-05-18",
+      "home": "Arsenal",
+      "away": "Burnley",
+      "score": [
+        1,
+        0
+      ],
+      "candidate_id": "9bf5b283070403a9f6ffad011dd25744c2cccf7a369280573703cd6c06ce4e06",
+      "livescore_event_id": "1529178",
+      "fpl_fixture_id": 361,
+      "fpl_event_code": 2562256,
+      "utc_kickoff": "2026-05-18T19:00:00+00:00",
+      "football_data_clock": "20:00",
+      "football_data_timezone": "Europe/London (scanner feed convention)",
+      "livescore_recorded_clock": "21:00",
+      "livescore_clock_check": "matches UTC+2, but record has no captured timezone: unverified",
+      "openfootball_time": "20:00 UTC+1",
+      "openfootball_ground": "Emirates Stadium, London",
+      "stat_conflicts": {},
+      "decision": "corroborated_fixture_but_not_approved: original Livescore time-zone provenance missing"
+    },
+    {
+      "date": "2026-05-17",
+      "home": "Everton",
+      "away": "Sunderland",
+      "score": [
+        1,
+        3
+      ],
+      "candidate_id": "6161fe1e4f6f29b4bef985c1e35d72fe53eac9807bc3c06444e5cb5e23071a90",
+      "livescore_event_id": "1529162",
+      "fpl_fixture_id": 366,
+      "fpl_event_code": 2562260,
+      "utc_kickoff": "2026-05-17T14:00:00+00:00",
+      "football_data_clock": "15:00",
+      "football_data_timezone": "Europe/London (scanner feed convention)",
+      "livescore_recorded_clock": "16:00",
+      "livescore_clock_check": "matches UTC+2, but record has no captured timezone: unverified",
+      "openfootball_time": "14:00 UTC+0",
+      "openfootball_ground": "Hill Dickinson Stadium, Liverpool, Merseyside",
+      "stat_conflicts": {},
+      "decision": "corroborated_fixture_but_not_approved: original Livescore time-zone provenance missing"
+    },
+    {
+      "date": "2026-05-15",
+      "home": "Aston Villa",
+      "away": "Liverpool",
+      "score": [
+        4,
+        2
+      ],
+      "candidate_id": "36b30f9f0dfee969d512b153836c0b91f83aa6c2ab2b60c34cb4254b076896f3",
+      "livescore_event_id": "1529175",
+      "fpl_fixture_id": 362,
+      "fpl_event_code": 2562257,
+      "utc_kickoff": "2026-05-15T19:00:00+00:00",
+      "football_data_clock": "20:00",
+      "football_data_timezone": "Europe/London (scanner feed convention)",
+      "livescore_recorded_clock": "21:00",
+      "livescore_clock_check": "matches UTC+2, but record has no captured timezone: unverified",
+      "openfootball_time": "20:00 UTC+1",
+      "openfootball_ground": "Villa Park, Birmingham",
+      "stat_conflicts": {},
+      "decision": "corroborated_fixture_but_not_approved: original Livescore time-zone provenance missing"
+    }
+  ]
+}

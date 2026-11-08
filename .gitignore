@@ -14,6 +14,8 @@ android/.idea/
 *.jks
 *.p12
 state/
+# Large, reproducible offline review queue; keep locally, not in Git.
+research/model_diagnostics/results/cross_provider_review.json
 
 # ---------------------------------------------------------------------------
 # credentials & signing material — never commit (see scripts/check_secrets.py)

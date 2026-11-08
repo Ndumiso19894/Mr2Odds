@@ -31,7 +31,7 @@ import pandas as pd
 
 log = logging.getLogger("acache")
 
-SCHEMA = 2   # bump whenever a payload layout changes (the whole cache is rebuilt, nothing breaks)
+SCHEMA = 3   # reviewed division aliases add match evidence and alter division-page cache keys
 
 
 def digest_rows(df: pd.DataFrame) -> str:

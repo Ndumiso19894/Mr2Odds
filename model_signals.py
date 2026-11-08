@@ -2,7 +2,7 @@
 
 Use only genuine observations, never infer missing xG or shots off target. Baselines and team
 profiles must be built from completed matches available before the analysis. These adjustments
-are active by user request and still need a chronological out-of-sample comparison.
+are disabled by default and need point-in-time chronological validation.
 """
 from __future__ import annotations
 import math
