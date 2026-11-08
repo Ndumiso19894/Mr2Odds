@@ -20,6 +20,7 @@ from pathlib import Path
 import pandas as pd
 
 import competition_policy
+import h2h_gate
 import recommendation_policy as rec_policy
 import sheet_model
 import lineup_pilot
@@ -239,7 +240,8 @@ def shortlist_payload(index: list[dict], now: datetime) -> dict:
             "counts": {"analysed": analysed, "screened": screened},
             "rules": {"min_odds": rec_policy.PRICE_FLOOR, "max_odds": 1.90}}
 
-def carry_over(prev: dict | None, index: list, bets: list, tracked: set, now: datetime, hours: float = 3.0) -> int:
+def carry_over(prev: dict | None, index: list, bets: list, tracked: set, now: datetime, hours: float = 3.0,
+               require_h2h: bool = False) -> int:
     """Fixtures of the previous publication that kicked off in the last `hours` and are no longer in the scan window
     are appended unchanged ("frozen"), together with their safest bets and tracked flags; returns how many."""
     if not prev:
@@ -250,6 +252,8 @@ def carry_over(prev: dict | None, index: list, bets: list, tracked: set, now: da
     frozen_ids = set()
     for f in prev.get("fixtures") or []:
         if not competition_policy.allows_record(f):
+            continue
+        if require_h2h and not h2h_gate.valid_proof(f.get("h2h_gate"), f.get("kickoff")):
             continue
         if f.get("id") in cur_ids:
             continue
@@ -351,6 +355,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
             "country": fx["country"], "league": fx["league"], "div": fx["div"], "competition": comp(r),
             "home": fx["home"], "away": fx["away"], "tier": fx.get("source") or "main",
             "data_ok": bool(r.data_ok), "basis": r.basis,
+            "h2h_gate": getattr(r, "h2h_gate", {}),
             "xg": [_f(r.mod_h, 2), _f(r.mod_a, 2)],
             "mxg": None if math.isnan(r.mkt_h) else [_f(r.mkt_h, 2), _f(r.mkt_a, 2)],
             "q": (((r.audit or {}).get("quality") or {}).get("overall")),
@@ -454,7 +459,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
         bkey = (b["kickoff"][:10], b["country"], b["home"], b["away"])
         safe_out["today"]["bets"].append({**b, "fixture": fid, "q": quality_by_key.get(bkey), "conf": conf_by_key.get(bkey),
                                           "badges": {"home": badges.get(b["home"]), "away": badges.get(b["away"])}})
-    frozen = carry_over(prev, index, safe_out["bets"], tracked, now)
+    frozen = carry_over(prev, index, safe_out["bets"], tracked, now, require_h2h=bool(ctx.get("h2h_gate")))
     if frozen:
         log.info("App data: %d started fixture(s) carried over from the previous publication", frozen)
     by_bet_id = {b["id"]: b for b in safe_out["today"]["bets"]}
@@ -477,7 +482,13 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
         "thresholds": {m: t["p"] for m, t in thresholds.items()}, "backtest": backtest,
         "next_run": ctx["window_end"].strftime("%Y-%m-%d %H:%M"), "refresh_minutes": 30,
         "coverage": coverage or {}, "model_signals": ctx.get("model_signals"), "recent_form": ctx.get("recent_form"),
+        "h2h_gate": ctx.get("h2h_gate"),
     }
+    # Current eligible IDs include the full 60-day analysis, not just the 24-hour index.
+    # The client uses this to hide stale pre-policy future day/detail records without
+    # deleting the historical archive or user tickets.
+    if ctx.get("h2h_gate") is not None:
+        meta["h2h_gate"] = {**ctx["h2h_gate"], "eligible_fixture_ids": sorted(ids_by_key.values())}
     # ---- blocks for the Mr 2 Odds web layer: advisor live record, shortlist report card, value/strong groups.
     # Pure presentation of what the tracker and picks already contain — no new model maths.
     def _nanfree(x):
@@ -585,6 +596,8 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
     }
     if ctx.get("model_signals") is not None:
         app_meta["model_signals"] = ctx["model_signals"]
+    if ctx.get("h2h_gate") is not None:
+        app_meta["h2h_gate"] = ctx["h2h_gate"]
     if ctx.get("recent_form") is not None:
         app_meta["recent_form"] = ctx["recent_form"]
     if ctx.get("analysis_cache"):

@@ -76,6 +76,7 @@ class Days:
                 "x12": [_f(x12.get("H")), _f(x12.get("D")), _f(x12.get("A"))],
                 "top": [s for s in sels_of(r)[:3]],
                 "data_ok": bool(r.data_ok),
+                "h2h_gate": getattr(r, "h2h_gate", {}),
             }
             old = next((f for f in day["fixtures"] if f["id"] == fid), None)
             if old:

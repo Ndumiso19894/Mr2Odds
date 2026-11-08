@@ -14,6 +14,7 @@ from pathlib import Path
 
 import safe
 import competition_policy
+import h2h_gate
 import recommendation_policy as rec_policy
 
 MAX_LATEST_MB = 4.0
@@ -77,6 +78,11 @@ def check_publication(staging: Path, live: Path, ledger: Path, now: datetime, ex
             errors.append(f"duplicate or empty fixture id {fid!r}")
             continue
         ids.add(fid)
+        if (meta.get("h2h_gate") is not None and not f.get("frozen") and
+                fid not in (meta["h2h_gate"].get("eligible_fixture_ids") or [])):
+            errors.append(f"fixture {fid} missing from H2H eligible IDs")
+        if meta.get("h2h_gate") is not None and not h2h_gate.valid_proof(f.get("h2h_gate"), f.get("kickoff")):
+            errors.append(f"fixture {fid} lacks valid H2H eligibility evidence")
         if not competition_policy.allows_record(f):
             errors.append(f"paused competition in published fixture {fid}")
         try:
