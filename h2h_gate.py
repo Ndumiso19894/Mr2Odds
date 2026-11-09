@@ -11,8 +11,8 @@ import pandas as pd
 
 import recent_form
 
-MIN_MEETINGS = 6
-MAX_YEARS = 3
+MIN_MEETINGS = 3
+MAX_YEARS = None  # no recency cutoff; meetings must still precede the fixture
 
 
 def _name(value):
@@ -89,7 +89,7 @@ def build_index(history: pd.DataFrame, as_of: datetime) -> dict:
 
 
 def eligibility(fx, index: dict) -> dict:
-    """Determine if six eligible meetings exist and the latest is <3 calendar years old."""
+    """Require at least three distinct earlier-day non-friendly meetings, with no age limit."""
     source = fx.get('source')
     if source == 'world':
         a, b = fx.get('home_id'), fx.get('away_id')
@@ -107,13 +107,13 @@ def eligibility(fx, index: dict) -> dict:
         kickoff = pd.Timestamp(fx.get('kickoff'))
         if pd.isna(kickoff):
             raise ValueError('missing kickoff')
-        cutoff = (pd.Timestamp(kickoff.date()) - pd.DateOffset(years=MAX_YEARS)).date()
     except (TypeError, ValueError, OverflowError):
         return {'eligible': False, 'reason': 'kickoff_unavailable', 'meetings': 0, 'last_meeting': None, 'identity': identity}
-    days = index.get(key, [])
+    # The index is as-of the scan. Do not count a meeting on or after this
+    # fixture's date even when evaluating an older fixture against a later index.
+    days = [day for day in index.get(key, []) if day < kickoff.date()]
     latest = days[0] if days else None
-    reason = ('insufficient_meetings' if len(days) < MIN_MEETINGS else
-              'last_meeting_too_old' if latest <= cutoff else 'eligible')
+    reason = 'insufficient_meetings' if len(days) < MIN_MEETINGS else 'eligible'
     return {'eligible': reason == 'eligible', 'reason': reason, 'meetings': len(days),
             'last_meeting': latest.isoformat() if latest else None, 'identity': identity}
 
@@ -143,7 +143,6 @@ def valid_proof(proof, kickoff):
         last = pd.Timestamp(proof.get('last_meeting'))
         if pd.isna(target) or pd.isna(last) or last.tzinfo is not None:
             return False
-        day = pd.Timestamp(target.date())
-        return (day - pd.DateOffset(years=MAX_YEARS)).date() < last.date() < day.date()
+        return last.date() < target.date()
     except (TypeError, ValueError, OverflowError):
         return False
