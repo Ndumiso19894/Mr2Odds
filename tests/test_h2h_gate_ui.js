@@ -11,17 +11,22 @@ const base='android/app/src/main/assets/www/';
 vm.runInContext(fs.readFileSync(base+'core.js','utf8'),ctx);
 vm.runInContext(fs.readFileSync(base+'pages.js','utf8'),ctx);
 const PR=ctx.window.PR;
-const proof={eligible:true,reason:'eligible',meetings:6,last_meeting:'2098-01-01'};
+const proof={eligible:true,reason:'eligible',meetings:3,last_meeting:'1980-01-01'};
 const fixture=(id,name,gate) => ({id,d:id,kickoff:'2099-01-05 12:00',country:'England',league:'Premier League',competition:'Premier League',
   home:name,away:'Away',xg:[1,1],p:{O25:.5},bets:[],h2h_gate:gate});
 const allowed=fixture('yes','Allowed',proof), missing=fixture('no','OldMissing',undefined),
   stale=fixture('stale','OldStale',proof);
-PR.state.data={meta:{h2h_gate:{eligible_fixture_ids:['yes']}}};
+PR.state.data={meta:{h2h_gate:{minimum_meetings:3,eligible_fixture_ids:['yes']}}};
 assert.equal(PR.h2hPredictionVisible(allowed),true);
 assert.equal(PR.h2hPredictionVisible(missing),false);
 assert.equal(PR.h2hPredictionVisible(stale),false);
 assert.equal(PR.h2hPredictionVisible({...missing,kickoff:'2000-01-01 12:00'}),true);
-assert.equal(PR.h2hPredictionVisible({...allowed,h2h_gate:{...proof,meetings:5}}),false);
+assert.equal(PR.h2hPredictionVisible({...allowed,h2h_gate:{...proof,meetings:2}}),false);
+assert.equal(PR.h2hPredictionVisible({...allowed,h2h_gate:{...proof,meetings:'3'}}),false);
+PR.state.data.meta.h2h_gate.minimum_meetings=6;
+assert.equal(PR.h2hPredictionVisible(allowed),false); // older strict publication
+assert.equal(PR.h2hPredictionVisible({...allowed,h2h_gate:{...proof,meetings:6}}),true);
+PR.state.data.meta.h2h_gate.minimum_meetings=3;
 PR.state.days['2099-01-05']={fixtures:[allowed,missing,stale],summary:{}};
 PR.pages.day({date:'2099-01-05'});
 assert.match(view.innerHTML,/Allowed/);

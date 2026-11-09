@@ -1,5 +1,5 @@
 ## Head-to-head eligibility
-- Predictions now require at least six available non-friendly meetings between the teams, with the latest less than three calendar years before the fixture. Missing or ambiguous history excludes the fixture; this does not guarantee predictability.
+- Predictions now require at least three available prior non-friendly meetings between the teams, with no age limit on the meetings. Missing or ambiguous history excludes the fixture; this does not guarantee predictability.
 - The filter uses available archives, so some meetings may be missing. Existing history and tickets remain intact. Eligibility is separate from the model's narrower same-competition H2H adjustment.
 
 ## Recent form in predictions

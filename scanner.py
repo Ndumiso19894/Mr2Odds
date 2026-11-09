@@ -2867,7 +2867,7 @@ def main() -> None:
     alerts = alerts[-50:]
 
     notes = [f"H2H eligibility: {ctx['h2h_gate']['eligible']} of {ctx['h2h_gate']['considered']} fixtures passed; "
-             "at least six available non-friendly meetings and a last meeting less than three calendar years old are required."]
+             "at least three available prior non-friendly meetings are required, with no age limit."]
     lowdata = sum(1 for r in rows if not r.data_ok)
     if lowdata:
         notes.append(f"{lowdata} fixture(s) flagged ⚠️ low data and excluded from shortlists.")

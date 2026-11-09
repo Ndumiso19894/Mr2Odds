@@ -35,48 +35,41 @@ def check(df, fx=None):
     return h2h_gate.eligibility(fx or fixture(), h2h_gate.build_index(df, NOW))
 
 
-@pytest.mark.parametrize('n',[0,1,2,3,4,5])
-def test_less_than_six_are_not_predicted(n):
+@pytest.mark.parametrize('n',[0,1,2])
+def test_fewer_than_three_are_not_predicted(n):
     result=check(records(n))
     assert not result['eligible'] and result['meetings']==n
 
 
-def test_six_are_eligible_including_reverse_and_cup_and_all_history():
-    df=records(6)
-    df.loc[5,'date']=pd.Timestamp('2010-01-01') # old meetings still count
+@pytest.mark.parametrize('n',[3,4,5,6])
+def test_three_or_more_are_eligible_including_reverse_and_cup(n):
+    df=records(n)
+    df.loc[n-1,'date']=pd.Timestamp('2010-01-01')
     result=check(df)
-    assert result['eligible'] and result['meetings']==6
+    assert result['eligible'] and result['meetings']==n
     assert result['last_meeting']=='2026-10-15'
     assert check(df,fixture(home_id='2',away_id='1',home='B',away='A'))['eligible']
 
 
-def test_age_is_relative_to_fixture_and_three_year_boundary_excluded():
-    df=records(6)
-    df['date']=pd.date_range('2020-01-01',periods=6,freq='100D')
-    df.loc[0,'date']=pd.Timestamp('2023-11-05')
-    assert check(df)['reason']=='last_meeting_too_old'
-    df.loc[0,'date']=pd.Timestamp('2023-11-06')
-    assert check(df)['eligible']
-    assert check(df,fixture(kickoff=datetime(2026,11,6)))['reason']=='last_meeting_too_old'
-
-
-def test_leap_day_calendar_boundary():
-    df=records(6)
-    df['date']=pd.date_range('2020-01-01',periods=6,freq='100D')
-    fx=fixture(kickoff=datetime(2028,2,29))
-    df.loc[0,'date']=pd.Timestamp('2025-02-28')
-    assert check(df,fx)['reason']=='last_meeting_too_old'
-    df.loc[0,'date']=pd.Timestamp('2025-03-01')
-    assert check(df,fx)['eligible']
+def test_no_age_limit_and_earlier_than_fixture_date():
+    df=records(3)
+    df['date']=pd.to_datetime(['1980-01-01','1981-01-01','1982-01-01'])
+    proof=check(df)
+    assert proof['eligible'] and proof['last_meeting']=='1982-01-01'
+    assert h2h_gate.valid_proof(proof,fixture()['kickoff'])
+    # An as-of index can never establish a meeting on or after a fixture date.
+    older_fixture = fixture(kickoff=datetime(1981,1,1))
+    assert check(df,older_fixture)['meetings']==1
+    assert not check(df,older_fixture)['eligible']
 
 
 def test_friendlies_and_missing_invalid_scores_not_counted():
-    df=records(10)
-    df.loc[6,'league']='Club Friendlies'
-    df.loc[7,'div']='LS:world/club-friendly'
-    df.loc[8,'hg']=np.nan
-    df.loc[9,'ag']=-1
-    assert check(df)['meetings']==6
+    df=records(7)
+    df.loc[3,'league']='Club Friendlies'
+    df.loc[4,'div']='LS:world/club-friendly'
+    df.loc[5,'hg']=np.nan
+    df.loc[6,'ag']=-1
+    assert check(df)['meetings']==3 and check(df)['eligible']
     df.loc[0,'league']=None
     assert check(df)['reason']=='insufficient_meetings'
 
@@ -123,7 +116,7 @@ def test_missing_kickoff_and_unknown_source_fail_closed():
 
 def test_filter_keeps_original_indices_and_prediction_only_eligible(monkeypatch):
     fixture_rows=pd.DataFrame([fixture(),fixture(home_id='3'),fixture(home_id=None)],index=[5,8,11])
-    eligible,evidence,counts=h2h_gate.filter_fixtures(fixture_rows,h2h_gate.build_index(records(),NOW))
+    eligible,evidence,counts=h2h_gate.filter_fixtures(fixture_rows,h2h_gate.build_index(records(3),NOW))
     assert list(eligible.index)==[5]
     assert counts == {'eligible':1,'insufficient_meetings':1,'identity_unavailable':1}
     seen=[]
@@ -132,8 +125,11 @@ def test_filter_keeps_original_indices_and_prediction_only_eligible(monkeypatch)
         return SimpleNamespace(fx=fx)
     monkeypatch.setattr(scanner,'analyse',predict)
     rows=scanner.analyse_eligible(fixture_rows,evidence,None,None,{},NOW,None)
-    assert seen==[5] and len(rows)==1 and rows[0].h2h_gate['meetings']==6
+    assert seen==[5] and len(rows)==1 and rows[0].h2h_gate['meetings']==3
     assert scanner.analyse_eligible(fixture_rows,{},None,None,{},NOW,None)==[]
+    _, too_few, _ = h2h_gate.filter_fixtures(fixture_rows,h2h_gate.build_index(records(2),NOW))
+    assert scanner.analyse_eligible(fixture_rows,too_few,None,None,{},NOW,None)==[]
+    assert seen == [5]  # The two-meeting fixture never reaches the predictor.
 
 
 def test_sticky_bets_and_unproven_frozen_predictions_not_republished():
@@ -156,8 +152,10 @@ def test_sticky_bets_and_unproven_frozen_predictions_not_republished():
 def test_proof_validation_cannot_be_forged_by_missing_fields():
     proof=check(records())
     assert h2h_gate.valid_proof(proof,fixture()['kickoff'])
-    assert not h2h_gate.valid_proof(dict(proof,meetings=5),fixture()['kickoff'])
-    assert not h2h_gate.valid_proof(dict(proof,last_meeting='2023-11-05'),fixture()['kickoff'])
+    assert not h2h_gate.valid_proof(dict(proof,meetings=2),fixture()['kickoff'])
+    assert not h2h_gate.valid_proof(dict(proof,meetings=True),fixture()['kickoff'])
+    assert h2h_gate.valid_proof(dict(proof,meetings=3,last_meeting='1980-01-01'),fixture()['kickoff'])
+    assert not h2h_gate.valid_proof(dict(proof,last_meeting=None),fixture()['kickoff'])
     assert not h2h_gate.valid_proof(dict(proof,last_meeting='2026-11-05'),fixture()['kickoff'])
     assert not h2h_gate.valid_proof(dict(proof,identity='unknown'),fixture()['kickoff'])
     assert not h2h_gate.valid_proof({},fixture()['kickoff'])
