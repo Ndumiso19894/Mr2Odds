@@ -36,7 +36,7 @@ def check(df, fx=None):
 
 
 @pytest.mark.parametrize('n',[0,1,2])
-def test_fewer_than_three_are_not_predicted(n):
+def test_fewer_than_three_are_limited_evidence(n):
     result=check(records(n))
     assert not result['eligible'] and result['meetings']==n
 
@@ -114,38 +114,41 @@ def test_missing_kickoff_and_unknown_source_fail_closed():
     assert check(df,fixture(source='other'))['reason']=='identity_unavailable'
 
 
-def test_filter_keeps_original_indices_and_prediction_only_eligible(monkeypatch):
+def test_all_fixtures_reach_predictor_regardless_of_h2h(monkeypatch):
+    import h2h_evidence
     fixture_rows=pd.DataFrame([fixture(),fixture(home_id='3'),fixture(home_id=None)],index=[5,8,11])
-    eligible,evidence,counts=h2h_gate.filter_fixtures(fixture_rows,h2h_gate.build_index(records(3),NOW))
-    assert list(eligible.index)==[5]
-    assert counts == {'eligible':1,'insufficient_meetings':1,'identity_unavailable':1}
+    index=h2h_gate.build_index(records(3),NOW)
+    evidence={i: h2h_evidence.assess(fx,index) for i,fx in fixture_rows.iterrows()}
     seen=[]
     def predict(fx,*args):
         seen.append(fx.name)
         return SimpleNamespace(fx=fx)
     monkeypatch.setattr(scanner,'analyse',predict)
-    rows=scanner.analyse_eligible(fixture_rows,evidence,None,None,{},NOW,None)
-    assert seen==[5] and len(rows)==1 and rows[0].h2h_gate['meetings']==3
-    assert scanner.analyse_eligible(fixture_rows,{},None,None,{},NOW,None)==[]
-    _, too_few, _ = h2h_gate.filter_fixtures(fixture_rows,h2h_gate.build_index(records(2),NOW))
-    assert scanner.analyse_eligible(fixture_rows,too_few,None,None,{},NOW,None)==[]
-    assert seen == [5]  # The two-meeting fixture never reaches the predictor.
+    rows=scanner.analyse_fixtures(fixture_rows,evidence,None,None,{},NOW,None)
+    assert seen==[5,8,11]
+    assert [r.h2h_evidence['status'] for r in rows]==['sufficient','limited','unavailable']
+    assert rows[1].h2h_evidence['meetings']==0
+    assert rows[2].h2h_evidence['meetings'] is None
+    index=h2h_gate.build_index(records(2),NOW)
+    evidence={i: h2h_evidence.assess(fx,index) for i,fx in fixture_rows.iterrows()}
+    assert len(scanner.analyse_fixtures(fixture_rows,evidence,None,None,{},NOW,None))==3
+    assert seen==[5,8,11,5,8,11]
 
 
-def test_sticky_bets_and_unproven_frozen_predictions_not_republished():
+def test_sticky_bets_and_frozen_history_preserved_without_h2h_requirement():
     f=fixture()
     row=SimpleNamespace(fx=pd.Series(f))
     good={'kickoff':'2026-11-05 12:00','country':'England','home':'A','away':'B','league':'Premier League'}
     bad={**good,'home':'C'}
     card={'bets':[good,bad],'groups':[{'bets':[good,bad]}]}
-    scanner.filter_botd_by_eligible_rows(card,[row])
+    scanner.filter_botd_by_current_rows(card,[row])
     assert card['bets']==[good] and card['groups'][0]['bets']==[good]
     old={'id':'old','kickoff':'2026-11-04 09:00','country':'England','league':'Premier League','home':'A','away':'B'}
     proven={**old,'id':'proven','h2h_gate':{'eligible':True,'reason':'eligible','meetings':6,'last_meeting':'2026-10-15','identity':'Livescore team and event IDs'}}
     prev={'fixtures':[old,proven], 'safe':{'bets':[]}}
     index=[]
-    assert appdata.carry_over(prev,index,[],set(),NOW,require_h2h=True)==1
-    assert [x['id'] for x in index]==['proven']
+    assert appdata.carry_over(prev,index,[],set(),NOW)==2
+    assert {x['id'] for x in index}=={'old','proven'}
     assert prev['fixtures'][0] == old  # input and historical records unchanged
 
 

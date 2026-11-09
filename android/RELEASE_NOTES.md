@@ -1,6 +1,6 @@
-## Head-to-head eligibility
-- Predictions now require at least three available prior non-friendly meetings between the teams, with no age limit on the meetings. Missing or ambiguous history excludes the fixture; this does not guarantee predictability.
-- The filter uses available archives, so some meetings may be missing. Existing history and tickets remain intact. Eligibility is separate from the model's narrower same-competition H2H adjustment.
+## Optional head-to-head context
+- Fixtures are no longer excluded for having too few prior meetings. Three available prior non-friendly meetings can break otherwise equal recommendation-ranking ties; they do not change probabilities or other safeguards.
+- Archive coverage may be incomplete. The optional tie-break is separate from the model's narrower same-competition H2H adjustment and is not proof of improved accuracy.
 
 ## Recent form in predictions
 - Recent last-5/10 and home/away form now have extra weight alongside longer history and league averages. A small head-to-head adjustment applies only to qualifying same-competition matches with exact IDs; ambiguous recent histories fall back to the baseline.

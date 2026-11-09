@@ -25,6 +25,7 @@ import pandas as pd
 
 import markets
 import competition_policy
+import h2h_evidence
 import recommendation_policy as rec_policy
 
 MIN_ODDS = rec_policy.PRICE_FLOOR  # current app-wide minimum for offered selections
@@ -296,6 +297,7 @@ class Bet:
     p_model: float
     p_sb: float | None
     odds: float
+    h2h_priority: bool = False  # only used after existing ranking criteria
 
     @property
     def label(self) -> str:
@@ -321,12 +323,12 @@ def safest(rows: list, now: datetime, window_end: datetime, min_odds: float = MI
             if not rec_policy.allowed(s.sel) or rec_policy.outlier(s.p_model, s.p_sb, s.odds):
                 continue
             bets.append(Bet(key, fx["div"], fx["league"], fx["home"], fx["away"], fx["kickoff"].strftime("%Y-%m-%d %H:%M"),
-                            s.sel, s.p, s.p_model, s.p_sb, s.odds))
+                            s.sel, s.p, s.p_model, s.p_sb, s.odds, h2h_evidence.row_preferred(r)))
     # The scan covers 60 days but the app's default screen is today. Applying the global cap
     # before considering the date lets far-future matches crowd every one of today's signals out.
     # Keep probability ranking within each partition; do not lower any selection thresholds.
     today = now.strftime("%Y-%m-%d")
-    bets.sort(key=lambda b: (b.key[0] != today, -b.p, -b.odds))
+    bets.sort(key=lambda b: (b.key[0] != today, -b.p, -b.odds, -int(b.h2h_priority)))
     # one market per match, preferring a visible market where available
     seen_match: set[tuple] = set()
     one = []
@@ -342,7 +344,7 @@ def safest(rows: list, now: datetime, window_end: datetime, min_odds: float = MI
         for b in cands:
             if b.key not in best or (b.p, b.odds) > (best[b.key].p, best[b.key].odds):
                 best[b.key] = b
-        return sorted(best.values(), key=lambda b: (-b.p, -b.odds))
+        return sorted(best.values(), key=lambda b: (-b.p, -b.odds, -int(b.h2h_priority)))
 
     short = [b for b in bets if datetime.strptime(b.kickoff, "%Y-%m-%d %H:%M") <= window_end.replace(tzinfo=None)]
     pool = pool_for(short)
@@ -440,9 +442,9 @@ def botd_candidates(rows: list, now: datetime, min_odds: float = MIN_ODDS, signa
                     if signal is not None and not signal(r, s.sel):
                         break
                 out.append(Bet(key, fx["div"], fx["league"], fx["home"], fx["away"], fx["kickoff"].strftime("%Y-%m-%d %H:%M"),
-                               s.sel, s.p, s.p_model, s.p_sb, s.odds))
+                               s.sel, s.p, s.p_model, s.p_sb, s.odds, h2h_evidence.row_preferred(r)))
                 break
-    out.sort(key=lambda b: (-b.p, -b.odds))
+    out.sort(key=lambda b: (-b.p, -b.odds, -int(b.h2h_priority)))
     return out
 
 
@@ -470,7 +472,7 @@ def pick_bets_of_the_day(df: pd.DataFrame, now: datetime, n: int = BOTD_PER_GROU
     # candidates from this run's rows (today only), most probable first
     cands = [b for b in (candidates or []) if b.key[0] == today and
              competition_policy.allowed(b.key[1], b.league, b.div, b.home, b.away) and rec_policy.allowed(b.sel)]
-    cands.sort(key=lambda b: (-b.p, -b.odds))
+    cands.sort(key=lambda b: (-b.p, -b.odds, -int(b.h2h_priority)))
     df_today = df[df["match_date"] == today]
     # Entries from before the pause remain in the ledger, but do not consume card slots.
     if not df_today.empty:

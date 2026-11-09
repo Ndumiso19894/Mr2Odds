@@ -19,23 +19,9 @@
   const xgA = (f) => Array.isArray(f.xg) ? f.xg[1] : (f.xg || {}).away;
   const x12 = (f, k) => Array.isArray(f.x12) ? f.x12[{ H: 0, D: 1, A: 2 }[k]] : (f.x12 || {})[k];
 
-  // Hide stale pre-policy future analyses without changing day archives or tickets.
-  PR.h2hPredictionVisible = function (f) {
-    const gate = state.data && state.data.meta && state.data.meta.h2h_gate;
-    if (!gate) return true;
-    const ko = f && parseLocal(f.kickoff);
-    if (!ko) return false;
-    if (ko <= tzNow()) return true; // historic/started records remain accessible
-    const proof = f.h2h_gate;
-    // Respect the publication's rule: older feeds still require six meetings.
-    const minimum = Number.isInteger(gate.minimum_meetings) && gate.minimum_meetings >= 3 ? gate.minimum_meetings : 6;
-    return !!(proof && proof.eligible === true && proof.reason === 'eligible' && Number.isInteger(proof.meetings) && proof.meetings >= minimum &&
-      Array.isArray(gate.eligible_fixture_ids) && gate.eligible_fixture_ids.includes(f.id));
-  };
-  function h2hUnavailable() {
-    view().innerHTML = head('Match') + '<div class="card empty">Prediction unavailable: this upcoming fixture does not meet the current head-to-head eligibility rule.</div>';
-    wireBack();
-  }
+  // H2H is optional evidence, never a fixture visibility gate.
+  PR.h2hPredictionVisible = function () { return true; };
+  function h2hUnavailable() {} // retained for old archive rendering paths
 
   // ------------------------------------------------------------------ live extras (statistics, line-ups) fetched on demand
   const LS = 'https://prod-public-api.livescore.com/v1/api/app';
@@ -506,7 +492,11 @@
         ${(e.outliers || []).length ? `<div class="small" style="margin-top:6px"><b>Extreme results</b> (kept, flagged):${e.outliers.map((o) => `<div>• ${esc(o.date)} ${esc(o.score)} ${o.venue === 'H' ? 'v' : '@'} ${esc(o.opp)}${o.last10_gf_with != null ? ` — last-10 goals for ${f2(o.last10_gf_with)} with / ${f2(o.last10_gf_without)} without` : ''}</div>`).join('')}</div>` : ''}
         <details style="margin-top:6px"><summary class="tiny muted">Matches used (${ms.length}) — raw observations</summary><table class="tbl" style="margin-top:4px">${ms.map((m) => `<tr class="${m.outlier ? 'hl' : ''}"><td class="tiny muted nowrap">${esc(m.date)}</td><td><div class="row" style="gap:6px"><i class="f ${wdl(m.gf, m.ga)}">${wdl(m.gf, m.ga)}</i><span class="nowrap">${m.venue === 'H' ? 'v' : '@'} ${esc(m.opp)}</span></div><div class="tiny muted">${esc(m.league || '')} · ${esc(m.season || '')}${m.friendly ? ' · friendly' : ''}${m.outlier ? ' · extreme' : ''}</div></td><td class="right nowrap"><b>${m.gf} – ${m.ga}</b></td><td class="tiny muted right nowrap">${m.xg_for != null ? `xG ${f2(m.xg_for)}/${f2(m.xg_against)}` : ''}${m.sot_for != null ? `<br>SOT ${m.sot_for}/${m.sot_against}` : ''}${m.corners_for != null ? `<br>corn ${m.corners_for}/${m.corners_against}` : ''}</td></tr>`).join('')}</table></details></div>`);
     });
-    if (f.h2h_gate && f.h2h_gate.eligible) parts.push(`<div class="card compact tiny muted"><b>Prediction eligibility:</b> ${f.h2h_gate.meetings} available non-friendly meetings; latest ${esc(f.h2h_gate.last_meeting || 'N/A')}. Eligibility follows the rule for this publication. This is a filter, not proof of predictability. The model's H2H adjustment below uses a narrower sample.</div>`);
+    if (f.h2h_evidence) {
+      const e = f.h2h_evidence;
+      const count = Number.isInteger(e.meetings) ? `${e.meetings} available non-friendly meetings` : 'H2H identity or timing unavailable';
+      parts.push(`<div class="card compact tiny muted"><b>H2H context:</b> ${esc(count)}; latest ${esc(e.last_meeting || 'N/A')}. Three or more may break ties in recommendation ranking; fewer or unknown never exclude a match. Archive coverage can be incomplete; this is not proof of predictability. The model's H2H adjustment uses a narrower sample.</div>`);
+    }
     // 5. head-to-head strength
     if (h2h) parts.push(`<div class="card compact"><div class="row"><div class="grow b">${icon('history', 'sm')} Head-to-head evidence</div><span class="chip ${h2h.n >= 5 ? '' : 'warn'}">H2H sample: ${h2h.n} · ${esc(h2h.label)}</span></div><div class="tiny muted" style="margin-top:4px">${h2h.n ? `${esc(h2h.first_date)} → ${esc(h2h.last_date)} · avg ${f1(h2h.avg_goals)} goals · O2.5 in ${h2h.o25}/${h2h.n} · BTTS in ${h2h.btts}/${h2h.n} · ` : ''}used by the model: <b>${h2h.used_by_model ? 'yes, eligible subset' : 'no'}</b>. ${esc(h2h.note || '')}</div></div>`);
     // 6. market comparison
@@ -1336,7 +1326,7 @@ view().innerHTML = parts.join('');
     parts.push(sec('corner', 'Corners', `<p><b>Over 9.5 corners</b> wins with 10 or more corners in the match (both teams together). Corners awarded but not taken before the final whistle still count. Modelled for the 22 main European leagues, from each team's corners for and against; average is about 10 per match.</p>`));
     parts.push(sec('card', 'Cards / bookings', `<p>Card-count statistics are shown for context, but bookmaker booking rules may count yellow and red cards differently. The exact SportyBet market and settlement rules have not been verified against the available data, so booking selections are withheld and existing booking tickets remain pending.</p>`));
     parts.push(sec('shield', 'Match result', `<p><b>1X2</b>: home win, draw or away win after 90 minutes. Shown on every match page for context; Mr 2 Odds's high-probability selections stay in the goals, corners and 1X2 markets, must carry a price of 1.16 or more, and are shown with the football-data model probability.</p>`));
-    parts.push(sec('trend', 'How the probabilities are made (data-first)', `<p>The published probabilities are calculated from football results, not blended with bookmaker prices. Only fixtures with at least three available prior non-friendly head-to-head meetings are predicted, with no age limit. Older publications may use stricter requirements. Missing or ambiguous history is excluded; this filter does not guarantee predictability. League averages and longer-history team ratings feed a Dixon-Coles score model. When available and unambiguous, recent 5/10 and venue form and a small eligible head-to-head adjustment are included; otherwise the baseline is retained. Squad availability is not used. This recent-form version is not prospectively validated. Sportybet's de-margined market probability is shown separately for comparison; large disagreements are excluded from recommendations. The model and market can both be wrong.</p><p>Every statistic carries its sample size and data quality. Missing data is N/A, not zero. High-probability selections require at least 70% model probability, a Sportybet price of 1.16 or more, and sufficient data. Bets of the day also apply their market-specific thresholds and form checks. The separate Shortlist applies its own odds band and fair-price screen. No selection is certain.</p>`));
+    parts.push(sec('trend', 'How the probabilities are made (data-first)', `<p>The published probabilities are calculated from football results, not blended with bookmaker prices. Fixtures are not excluded for missing head-to-head history. Three or more available prior non-friendly meetings may break ties in recommendation rankings; fewer or unknown do not affect eligibility; this tie-break does not change the model probability. Ambiguous historical records are not counted; archive coverage may be incomplete, and H2H evidence does not guarantee predictability. League averages and longer-history team ratings feed a Dixon-Coles score model. When available and unambiguous, recent 5/10 and venue form and a small eligible head-to-head adjustment are included; otherwise the baseline is retained. Squad availability is not used. This recent-form version is not prospectively validated. Sportybet's de-margined market probability is shown separately for comparison; large disagreements are excluded from recommendations. The model and market can both be wrong.</p><p>Every statistic carries its sample size and data quality. Missing data is N/A, not zero. High-probability selections require at least 70% model probability, a Sportybet price of 1.16 or more, and sufficient data. Bets of the day also apply their market-specific thresholds and form checks. The separate Shortlist applies its own odds band and fair-price screen. No selection is certain.</p>`));
     parts.push(sec('ticket', 'Bet slip & tickets', `<p>Tap <b>+</b> next to any priced selection (match page › Markets, high-probability selections, bets of the day) to put it on your slip — one selection per match, like a real multiple. Press <b>Done</b> to lock the ticket: Mr 2 Odds multiplies the prices, records an optional stake, and then follows the scores. Goals markets settle from the final score; corners settle when match statistics arrive. Booking tickets stay pending until their settlement rules and statistics are verified. You get a notification when the ticket is won or lost, and ☰ › <b>My tickets</b> keeps your record.</p><p>This is a private record on your phone — nothing is placed with a bookmaker.</p>`));
     parts.push(sec('info', 'Reading the numbers honestly', `<p>A 75% bet loses one time in four. A card of five 75% singles has all five winning only about 24% of the time — longer accumulators have more ways to lose. The Daily Accumulators page builds from stricter Final Picks but cannot guarantee results. Compare the <b>Hit</b> and <b>Exp.</b> columns under Performance: they should be close over a few weeks.</p><p>Coverage is limited to allowed senior men's domestic leagues and UEFA competitions. Women's and youth competitions, domestic cups, other international tournaments and tennis are paused. Prices are from Sportybet South Africa where available. Prices move; check the price before you bet. Statistical information, not betting advice. 18+, bet responsibly.</p>`));
     parts.push(sec('star', 'Bets of the day, favourites & alerts', `<p><b>⭐ Bets of the day</b> is built on Over 1.5, Over 2.5, 1X2, BTTS and corners (up to seven picks a block); <b>1X2 claims its matches first — up to five picks a day</b> — then <b>Over 2.5</b> gets its place, then the rest: 1X2 needs ≥70% and Over 2.5 needs ≥55%, all with recent form backing them; corners need ≥65%, and BTTS needs ≥55%. Every one must carry a price of 1.16 or more. Overs only, one market per match, picked by the first analysis of the day and graded separately — so the performance page can compare the markets fairly. Every match page has <b>Download stats (CSV)</b> and the ☰ menu downloads the whole day's analysis as a spreadsheet file. <b>Top leagues</b> ranks the major leagues by home wins, draws, away wins, overs, BTTS and corners.</p><p>Tap <b>☆</b> in a match header to make it a favourite: you get goal, half-time, full-time and kick-off alerts for it, it appears under Your matches on Home, and in the ★ filter of Matches.</p>`));
@@ -1485,7 +1475,7 @@ view().innerHTML = parts.join('');
       </div><div class="row" style="margin-top:8px;gap:8px"><button class="btn grow" id="adv-perf">Performance &amp; calibration</button><button class="btn grow" id="adv-best">Best of the day</button></div></div>`);
     // The briefing lives here and only here (user rule 2026-10-27): the Bet Advisor tab is where a viewer watches the
     // day's card read out slowly, match by match, in the same order as the Telegram/YouTube video.
-    parts.push(`<div class="card compact briefing-cta"><div class="row"><div class="grow"><div class="b">${icon('sparkle', 'sm')} Today’s briefing</div><div class="tiny muted">Opens with yesterday’s full card — every selection from every video — then today’s <b>Over 1.5 goals &amp; corners</b> picks (Advisor Over 2.5 as fallback) one at a time, with the reasons, both clubs’ last five and the head to head. Only matches with recent stats and a recent head to head appear; no match is repeated. Silent slides, one music track, kick-off times in SAST, and the pacing is deliberately slow. A shortlist for your review — never an instruction to bet.</div></div></div>
+    parts.push(`<div class="card compact briefing-cta"><div class="row"><div class="grow"><div class="b">${icon('sparkle', 'sm')} Today’s briefing</div><div class="tiny muted">Opens with yesterday’s full card — every selection from every video — then today’s <b>Over 1.5 goals &amp; corners</b> picks (Advisor Over 2.5 as fallback) one at a time, with the reasons, both clubs’ last five and the head to head. Only matches with recent team stats appear; head-to-head is shown when available. No match is repeated. Silent slides, one music track, kick-off times in SAST, and the pacing is deliberately slow. A shortlist for your review — never an instruction to bet.</div></div></div>
       <div class="row" style="gap:8px;margin-top:8px"><button class="btn" id="btn-briefing">${icon('live', 'sm')} Watch briefing</button><button class="btn" id="btn-briefing-dl">${icon('download', 'sm')} Download 16:9 video</button></div></div>`);
     parts.push(`<div class="note">Statistical information, not betting advice. Never stake money you cannot afford to lose.</div>`);
     view().innerHTML = parts.join('');
@@ -1505,7 +1495,6 @@ view().innerHTML = parts.join('');
   const REEL_MIN_ODDS = 1.16;
   const REEL_MAX_PICKS = 8;              // slower pacing means fewer matches per video
   const GATE_MIN_RESULTS = 5;            // recent results per club, with a score
-  const GATE_MIN_H2H = 2;                // head-to-head meetings with a score
   function reelMarket(x) {
     return /^(O15|O25|C[HA]?O\d+)$/.test(String((x && x.sel) || '').toUpperCase());
   }
@@ -1560,7 +1549,7 @@ view().innerHTML = parts.join('');
     return [];
   }
 
-  /** the stats gate: both clubs' last five with scores, and at least two head-to-head meetings with scores */
+  /** the stats gate: both clubs' last five with scores; H2H is optional */
   function briefingVerified(x, det) {
     if (!det || !det.teams) return false;
     if (String(x.sel || '').startsWith('C')) {
@@ -1577,10 +1566,8 @@ view().innerHTML = parts.join('');
       });
     };
     const rows = (side) => distinct(((det.teams || {})[side] || {}).last5, 'gf', 'ga');
-    const h2h = distinct(det.h2h, 'hg', 'ag');
     const age = (list) => Math.min(...list.map((m) => (Date.now()-Date.parse(String(m.date).slice(0,10)+'T00:00:00+02:00'))/86400000));
-    return age(rows('home')) <= 200 && age(rows('away')) <= 200 && age(h2h) <= 1100 && rows('home').length >= GATE_MIN_RESULTS && rows('away').length >= GATE_MIN_RESULTS
-      && h2h.length >= GATE_MIN_H2H;
+    return age(rows('home')) <= 200 && age(rows('away')) <= 200 && rows('home').length >= GATE_MIN_RESULTS && rows('away').length >= GATE_MIN_RESULTS;
   }
   function marketLabel(sel) {
     const s = String(sel || '').toUpperCase();
@@ -1697,8 +1684,7 @@ view().innerHTML = parts.join('');
     return { rows, line: `${w}W · ${d}D · ${rows.length - w - d}L in the last ${rows.length} meetings · ${goals.toFixed(1)} goals a game` };
   }
   function briefingSlides() {
-    // only matches whose own numbers check out (recent results both sides + a recent head to head) reach a slide,
-    // exactly like the pipeline's `reel_verify` gate — an unverifiable match is left out, never shown half-explained
+    // Require recent results for both teams; head-to-head is optional context.
     const picks = briefingCard(briefingPicks().filter((x) => briefingVerified(x, briefingDetail(x))));
     if (picks.length < 5) return [];
     const sl = (state.data && state.data.shortlist) || {};

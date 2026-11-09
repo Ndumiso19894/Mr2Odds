@@ -57,6 +57,17 @@ if (generated.slice(11) !== '23:59') {
   assert.match(view.innerHTML, /data-test-add/);
   assert.doesNotMatch(view.innerHTML, /Below floor|wrong stale name|Outside shortlist/);
 }
+// For exact ties, enough H2H history wins; higher probability or odds still wins first.
+if (generated.slice(11) !== '23:59') {
+  const tied = [fixture('a-limited',sel(.85,1.18)), fixture('z-enough',sel(.85,1.18)),
+                fixture('higher-p',sel(.86,1.18)), fixture('higher-odds',sel(.85,1.25))];
+  tied[0].h2h_evidence = {status:'limited',meetings:2};
+  tied[1].h2h_evidence = {status:'sufficient',meetings:3};
+  const td = PR.indexData({meta:{generated,tz:'SAST'}, fixtures:tied,
+    shortlist:{primary:tied.map(f => ({fixture:f.id,sel:'O15',kickoff:f.kickoff, odds:1.3, country:f.country, league:f.league, home:f.home, away:f.away}))}});
+  assert.deepEqual(Array.from(PR.finalPicksInfo(td).picks, x => x.home),
+    ['higher-p','higher-odds','z-enough','a-limited']);
+}
 // Use the real slip implementation: the current index price wins over stale detail,
 // and a pick that no longer meets the 1.18 floor cannot be added from this view.
 if (generated.slice(11) !== '23:59') {

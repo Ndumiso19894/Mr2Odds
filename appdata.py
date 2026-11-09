@@ -20,7 +20,7 @@ from pathlib import Path
 import pandas as pd
 
 import competition_policy
-import h2h_gate
+import h2h_evidence
 import recommendation_policy as rec_policy
 import sheet_model
 import lineup_pilot
@@ -223,14 +223,15 @@ def shortlist_payload(index: list[dict], now: datetime) -> dict:
             x = {"fixture": f["id"], "home": f["home"], "away": f["away"], "country": f["country"],
                  "league": f["league"], "kickoff": f["kickoff"], "sel": sel, "market": group,
                  "label": safe.label(sel, f["home"], f["away"]), "p": p, "p_sb": market,
-                 "odds": odds, "quality": f.get("q") or "N/A", "confidence": "N/A"}
+                 "odds": odds, "quality": f.get("q") or "N/A", "confidence": "N/A",
+                 "h2h_preferred": h2h_evidence.preferred(f.get("h2h_evidence"))}
             if group == "result" and p >= 0.60 and 1.20 <= odds <= 3.50:
                 results.append(x)
             if p >= bar and rec_policy.PRICE_FLOOR <= odds <= 1.90 and odds * p >= 0.95 and f.get("q") != "Low":
                 candidates.append(x)
     def unique(items):
         seen, out = set(), []
-        for x in sorted(items, key=lambda x: (-x["p"], -x["odds"], x["fixture"])):
+        for x in sorted(items, key=lambda x: (-x["p"], -x["odds"], -int(x["h2h_preferred"]), x["fixture"])):
             if x["fixture"] not in seen:
                 seen.add(x["fixture"])
                 out.append(dict(x, rank=len(out) + 1))
@@ -240,8 +241,7 @@ def shortlist_payload(index: list[dict], now: datetime) -> dict:
             "counts": {"analysed": analysed, "screened": screened},
             "rules": {"min_odds": rec_policy.PRICE_FLOOR, "max_odds": 1.90}}
 
-def carry_over(prev: dict | None, index: list, bets: list, tracked: set, now: datetime, hours: float = 3.0,
-               require_h2h: bool = False) -> int:
+def carry_over(prev: dict | None, index: list, bets: list, tracked: set, now: datetime, hours: float = 3.0) -> int:
     """Fixtures of the previous publication that kicked off in the last `hours` and are no longer in the scan window
     are appended unchanged ("frozen"), together with their safest bets and tracked flags; returns how many."""
     if not prev:
@@ -252,8 +252,6 @@ def carry_over(prev: dict | None, index: list, bets: list, tracked: set, now: da
     frozen_ids = set()
     for f in prev.get("fixtures") or []:
         if not competition_policy.allows_record(f):
-            continue
-        if require_h2h and not h2h_gate.valid_proof(f.get("h2h_gate"), f.get("kickoff")):
             continue
         if f.get("id") in cur_ids:
             continue
@@ -346,7 +344,8 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
         for d in sels:   # biggest model-vs-market edges (already-computed EV, presentation only)
             if fx["date"].strftime("%Y-%m-%d") == now.strftime("%Y-%m-%d") and r.data_ok and rec_policy.allowed(d["sel"]) and d.get("odds") and d["odds"] >= rec_policy.PRICE_FLOOR and not rec_policy.outlier(d.get("p_model"), d.get("p_sb"), d["odds"]) and d.get("ev") is not None and d["ev"] > 0 and d["p"] is not None and not d.get("diff"):
                 value_cands.append({"id": fid, "sel": d["sel"], "odds": round(d["odds"], 2),
-                                    "ev": round(d["ev"], 3), "p": round(d["p"], 3)})
+                                    "ev": round(d["ev"], 3), "p": round(d["p"], 3),
+                                    "h2h_preferred": h2h_evidence.row_preferred(r)})
         safe_best = _best(sels, safe_groups or None, min_odds, min_p) if r.data_ok else None
         eid = (ls or {}).get("eid")
         slim = {
@@ -355,7 +354,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
             "country": fx["country"], "league": fx["league"], "div": fx["div"], "competition": comp(r),
             "home": fx["home"], "away": fx["away"], "tier": fx.get("source") or "main",
             "data_ok": bool(r.data_ok), "basis": r.basis,
-            "h2h_gate": getattr(r, "h2h_gate", {}),
+            "h2h_evidence": getattr(r, "h2h_evidence", {}),
             "xg": [_f(r.mod_h, 2), _f(r.mod_a, 2)],
             "mxg": None if math.isnan(r.mkt_h) else [_f(r.mkt_h, 2), _f(r.mkt_a, 2)],
             "q": (((r.audit or {}).get("quality") or {}).get("overall")),
@@ -459,7 +458,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
         bkey = (b["kickoff"][:10], b["country"], b["home"], b["away"])
         safe_out["today"]["bets"].append({**b, "fixture": fid, "q": quality_by_key.get(bkey), "conf": conf_by_key.get(bkey),
                                           "badges": {"home": badges.get(b["home"]), "away": badges.get(b["away"])}})
-    frozen = carry_over(prev, index, safe_out["bets"], tracked, now, require_h2h=bool(ctx.get("h2h_gate")))
+    frozen = carry_over(prev, index, safe_out["bets"], tracked, now)
     if frozen:
         log.info("App data: %d started fixture(s) carried over from the previous publication", frozen)
     by_bet_id = {b["id"]: b for b in safe_out["today"]["bets"]}
@@ -482,13 +481,8 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
         "thresholds": {m: t["p"] for m, t in thresholds.items()}, "backtest": backtest,
         "next_run": ctx["window_end"].strftime("%Y-%m-%d %H:%M"), "refresh_minutes": 30,
         "coverage": coverage or {}, "model_signals": ctx.get("model_signals"), "recent_form": ctx.get("recent_form"),
-        "h2h_gate": ctx.get("h2h_gate"),
+        "h2h_evidence": ctx.get("h2h_evidence"),
     }
-    # Current eligible IDs include the full 60-day analysis, not just the 24-hour index.
-    # The client uses this to hide stale pre-policy future day/detail records without
-    # deleting the historical archive or user tickets.
-    if ctx.get("h2h_gate") is not None:
-        meta["h2h_gate"] = {**ctx["h2h_gate"], "eligible_fixture_ids": sorted(ids_by_key.values())}
     # ---- blocks for the Mr 2 Odds web layer: advisor live record, shortlist report card, value/strong groups.
     # Pure presentation of what the tracker and picks already contain — no new model maths.
     def _nanfree(x):
@@ -535,14 +529,14 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
     shortlist["rules"]["calibration"] = {"status": "raw model", "groups": {}}
 
     # strong signals (>=70% already filtered upstream) with the fixture's data-quality label
-    strong_cands = [(s[1], s[0], f["id"], f.get("q"))
+    strong_cands = [(s[1], s[0], f["id"], f.get("q"), h2h_evidence.preferred(f.get("h2h_evidence")))
                     for f in index if f.get("date") == now.strftime("%Y-%m-%d") and f.get("data_ok")
                     for s in f.get("sels", []) if s[1] is not None and s[1] >= .70 and s[4] is not None
                     and s[4] >= 1.16 and not s[5]
                     and rec_policy.allowed(s[0]) and not rec_policy.outlier(s[2], s[3], s[4])]
-    strong_sorted = sorted(strong_cands, key=lambda x: -x[0])[:5]
-    groups = {"value": sorted(value_cands, key=lambda x: -x["ev"])[:5],
-              "strong": [{"id": fid, "sel": sel, "p": p, "q": q} for p, sel, fid, q in strong_sorted]}
+    strong_sorted = sorted(strong_cands, key=lambda x: (-x[0], -int(x[4])))[:5]
+    groups = {"value": sorted(value_cands, key=lambda x: (-x["ev"], -int(x["h2h_preferred"])))[:5],
+              "strong": [{"id": fid, "sel": sel, "p": p, "q": q} for p, sel, fid, q, _ in strong_sorted]}
 
     # ---- strong markets for the day (home section): the model's high-probability Over 1.5 total
     # goals and total corners that carry a real Sportybet price. One row per market, per family caps
@@ -567,10 +561,11 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
             strong_by_fam.setdefault(family, []).append(
                 {"id": fid, "sel": sel, "label": d.get("label"), "family": family,
                  "kickoff": fx["kickoff"].strftime("%Y-%m-%d %H:%M"), "country": fx["country"],
-                 "home": fx["home"], "away": fx["away"], "odds": d["odds"], "p": d["p"]})
+                 "home": fx["home"], "away": fx["away"], "odds": d["odds"], "p": d["p"],
+                 "h2h_preferred": h2h_evidence.row_preferred(r)})
     strong_bets = [b for fam in ("o15", "corner_total") for b in sorted(strong_by_fam.get(fam, []),
-                 key=lambda x: -x["p"])[:STRONG_CAPS[fam]]]
-    strong_markets = {"bets": sorted(strong_bets, key=lambda x: -x["p"]),
+                 key=lambda x: (-x["p"], -int(x["h2h_preferred"])))[:STRONG_CAPS[fam]]]
+    strong_markets = {"bets": sorted(strong_bets, key=lambda x: (-x["p"], -int(x["h2h_preferred"]))),
                       "min_p": STRONG_MIN_P, "min_odds": STRONG_MIN_ODDS}
 
     # safe.botd = the bets-of-the-day settlement record (performance page reads it at the top level)
@@ -596,8 +591,8 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
     }
     if ctx.get("model_signals") is not None:
         app_meta["model_signals"] = ctx["model_signals"]
-    if ctx.get("h2h_gate") is not None:
-        app_meta["h2h_gate"] = ctx["h2h_gate"]
+    if ctx.get("h2h_evidence") is not None:
+        app_meta["h2h_evidence"] = ctx["h2h_evidence"]
     if ctx.get("recent_form") is not None:
         app_meta["recent_form"] = ctx["recent_form"]
     if ctx.get("analysis_cache"):

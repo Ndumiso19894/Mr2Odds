@@ -55,6 +55,7 @@ import markets
 import model_signals
 import recent_form
 import h2h_gate
+import h2h_evidence
 import quality
 import news as news_mod
 import parlays as parlay_mod
@@ -1053,7 +1054,7 @@ class MatchRow:
     audit: dict = field(default_factory=dict)  # evidence / quality / explanation / warnings (quality.py), filled in main()
     model_signals: dict = field(default_factory=dict)  # provisional adjustment audit
     recent_form: dict = field(default_factory=dict)  # per-fixture applied/fallback evidence
-    h2h_gate: dict = field(default_factory=dict)  # independent eligibility evidence
+    h2h_evidence: dict = field(default_factory=dict)  # optional sample evidence, never a gate
     scores: list = field(default_factory=list)  # most likely cells of the same DC matrix
 
     @property
@@ -1390,7 +1391,7 @@ def select_picks(rows: list[MatchRow]) -> dict[str, list[MatchRow]]:
         # backtest: team hit-rate floors and model-vs-market filters added nothing once the
         # probabilities were calibrated, so the rule is simply "final probability >= threshold"
         cand = [r for r in rows if r.data_ok and r.p_final[mkt] >= thr["p"]]
-        cand.sort(key=lambda r: r.p_final[mkt], reverse=True)
+        cand.sort(key=lambda r: (-r.p_final[mkt], -int(h2h_evidence.row_preferred(r))))
         picks[mkt] = cand[: CONFIG["MAX_PICKS"]]
     return picks
 
@@ -2472,21 +2473,18 @@ def require_publication(ctx: dict) -> None:
         raise RuntimeError("App publication failed; refusing to publish incomplete state")
 
 
-def analyse_eligible(fixtures, evidence, long, results, div_avgs, now, pool):
-    """Never call the prediction engine for a fixture without positive gate evidence."""
+def analyse_fixtures(fixtures, evidence, long, results, div_avgs, now, pool):
+    """Analyse every fixture; H2H sample evidence is optional context only."""
     rows = []
     for i, fx in fixtures.iterrows():
-        proof = evidence.get(i) or {}
-        if not h2h_gate.valid_proof(proof, fx.get("kickoff")):
-            continue
         row = analyse(fx, long, results, div_avgs, now, pool)
-        row.h2h_gate = proof
+        row.h2h_evidence = evidence.get(i, {'status': 'unavailable', 'meetings': None})
         rows.append(row)
     return rows
 
 
-def filter_botd_by_eligible_rows(card, rows):
-    """Do not republish an old sticky day-card pick excluded by the current gate."""
+def filter_botd_by_current_rows(card, rows):
+    """Keep sticky day-card picks within the current analysed fixture set."""
     eligible_keys = {(r.fx["date"].strftime("%Y-%m-%d"), r.fx["country"], r.fx["home"], r.fx["away"]) for r in rows}
     def eligible(b):
         return (competition_policy.allows_record(b) and
@@ -2498,7 +2496,7 @@ def filter_botd_by_eligible_rows(card, rows):
 
 
 def filter_pending_alerts(alerts, rows, now):
-    """Do not re-announce old upcoming alerts for fixtures that now fail the gate."""
+    """Do not re-announce old upcoming alerts outside the current analysed fixture set."""
     allowed = {appdata.fixture_id(r.fx["date"].strftime("%Y-%m-%d"), r.fx["country"],
                                   r.fx["home"], r.fx["away"]) for r in rows}
     cutoff = now.replace(tzinfo=None)
@@ -2692,12 +2690,14 @@ def main() -> None:
     long = make_long(results, div_avgs)
     build_long_index(long)
     build_h2h_index(pool)
-    gate_index = h2h_gate.build_index(pool, now)
-    todays, gate_evidence, gate_counts = h2h_gate.filter_fixtures(todays, gate_index)
-    ctx["h2h_gate"] = {"minimum_meetings": h2h_gate.MIN_MEETINGS, "max_years_exclusive": h2h_gate.MAX_YEARS,
-                       "counts": gate_counts, "considered": sum(gate_counts.values()), "eligible": len(todays)}
-    log.info("H2H eligibility (available archive, no friendlies): %s", ctx["h2h_gate"])
-    del gate_index
+    h2h_index = h2h_gate.build_index(pool, now)
+    sample_evidence = {i: h2h_evidence.assess(fx, h2h_index) for i, fx in todays.iterrows()}
+    counts = {status: sum(e['status'] == status for e in sample_evidence.values())
+              for status in ('sufficient', 'limited', 'unavailable')}
+    ctx["h2h_evidence"] = {"minimum_meetings": h2h_evidence.MIN_MEETINGS, "counts": counts,
+                           "considered": len(todays), "filter_enabled": False}
+    log.info("H2H sample evidence (no eligibility filter): %s", ctx["h2h_evidence"])
+    del h2h_index
     TEAM_HIST_CACHE.clear()
     H2H_CACHE.clear()
     PROFILE_CACHE.clear()
@@ -2733,7 +2733,7 @@ def main() -> None:
         todays = without_unverified_replay_prices(todays)
         log.warning("SCAN_NOW: current prices withheld; historical quote availability is not established")
     RECENT_TEAM_CACHE.clear()
-    rows = analyse_eligible(todays, gate_evidence, long, results, div_avgs, now, pool)
+    rows = analyse_fixtures(todays, sample_evidence, long, results, div_avgs, now, pool)
     app_rows = [r for r in rows if r.fx["kickoff"] <= app_end]   # what the app publication carries
     def _signal_count(key):
         return sum(any((r.model_signals.get(side) or {}).get(key, False) for side in ("home", "away")) for r in app_rows)
@@ -2848,7 +2848,7 @@ def main() -> None:
     ctx["safe_summary"] = safe_mod.summary(bets_df, accas_df, now)
     botd_card = safe_mod.bets_of_the_day(bets_df, now)
     # Sticky historical card entries can predate the pause; retain the ledger but do not republish them.
-    filter_botd_by_eligible_rows(botd_card, rows)
+    filter_botd_by_current_rows(botd_card, rows)
     ctx["botd"], ctx["botd_groups"] = botd_card["bets"], botd_card["groups"]
     log.info("Safest: %d bets (%d new), bets of the day: %d", len(safe_res["bets"]), len(new_bets), len(ctx["botd"]))
 
@@ -2866,8 +2866,8 @@ def main() -> None:
                        "fixture": appdata.fixture_id(b.key[0], b.key[1], b.home, b.away)})
     alerts = alerts[-50:]
 
-    notes = [f"H2H eligibility: {ctx['h2h_gate']['eligible']} of {ctx['h2h_gate']['considered']} fixtures passed; "
-             "at least three available prior non-friendly meetings are required, with no age limit."]
+    notes = ["H2H is optional: three available prior non-friendly meetings are a ranking tie-break only; "
+             "fixtures are not excluded for missing or limited H2H history."]
     lowdata = sum(1 for r in rows if not r.data_ok)
     if lowdata:
         notes.append(f"{lowdata} fixture(s) flagged ⚠️ low data and excluded from shortlists.")
