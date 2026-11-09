@@ -704,7 +704,8 @@ window.PR = (function () {
       return [{ ...x, home: f.home, away: f.away, country: f.country, league: f.league,
         label: selLabel(s.sel, f.home, f.away), market: selGroup(s.sel), p_sb: s.p_sb }];
     });
-    picks.sort((a, b) => b.p - a.p || b.odds - a.odds || String(a.fixture).localeCompare(String(b.fixture)));
+    const h2h = (x) => { const e = (d._byId[x.fixture] || {}).h2h_evidence; return !!(e && e.status === 'sufficient' && Number.isInteger(e.meetings) && e.meetings >= 3); };
+    picks.sort((a, b) => b.p - a.p || b.odds - a.odds || Number(h2h(b)) - Number(h2h(a)) || String(a.fixture).localeCompare(String(b.fixture)));
     return { status: 'ready', picks, published: stamp };
   }
   // Never present an old, partially started or repriced accumulator as usable.

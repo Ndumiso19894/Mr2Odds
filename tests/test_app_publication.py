@@ -56,23 +56,23 @@ def test_export_includes_home_selections_and_shortlist(tmp_path, monkeypatch):
                           p_final=probs, p_model=probs, p_market_o25=None, fair={}, x12_market=None,
                           sb={'OU': {1.5: (1.3, 3.8)}}, sb_event=None, sb_full=None, h2h=[], div_avg=SimpleNamespace(mu_h=1.5, mu_a=1, o25_rate=.5),
                           trends={}, mkt_source='', scores=[[1, 0, .1234567], [1, 1, .1]],
-                          h2h_gate={'eligible':True, 'reason':'eligible', 'meetings':3,
-                                    'last_meeting':'2026-10-01', 'identity':'exact football-data country and team names'})
+                          h2h_evidence={'status':'limited', 'meetings':2, 'last_meeting':'2026-10-01',
+                                        'identity':'exact football-data country and team names', 'minimum_meetings':3})
     monkeypatch.setattr(appdata, '_profile', lambda _: {})
     rows = [safe.sel_dict(s, 'Home', 'Away') for s in safe.selections(row)]
     stage = tmp_path / 'stage'; stage.mkdir()
     appdata.export(stage / 'latest.json', ctx={'now': NOW, 'start': NOW, 'end': NOW + timedelta(days=1),
                    'window_end': NOW + timedelta(hours=4), 'run': 'test',
-                   'h2h_gate': {'considered':1,'eligible':1,'minimum_meetings':3,'max_years_exclusive':None},
+                   'h2h_evidence': {'considered':1,'minimum_meetings':3,'filter_enabled':False},
                    'lineup_as_of': NOW.replace(tzinfo=timezone(timedelta(hours=2)))}, rows=[row], picks={}, tracker_summary={},
                    notes=[], ls_map={}, helpers={'render_details': lambda *_: '', 'stars': lambda *_: 1,
                    'comp': lambda _: 'Test', 'sb_price': lambda *_: 1.3, 'selections': lambda _: rows},
                    reports_dir=tmp_path, tz_label='SAST', thresholds={}, backtest={}, repo=None)
     data = json.loads((stage / 'latest.json').read_text())
     detail = json.loads((stage / 'fx' / (data['fixtures'][0]['d'] + '.json')).read_text())
-    assert data['meta']['h2h_gate']['eligible'] == 1
-    assert data['fixtures'][0]['id'] in data['meta']['h2h_gate']['eligible_fixture_ids']
-    assert data['fixtures'][0]['h2h_gate']['meetings'] == detail['h2h_gate']['meetings'] == 3
+    assert data['meta']['h2h_evidence']['filter_enabled'] is False
+    assert not data['meta'].get('h2h_gate')
+    assert data['fixtures'][0]['h2h_evidence']['meetings'] == detail['h2h_evidence']['meetings'] == 2
     assert detail['lineup_context']['status'] == 'not_confirmed'
     assert detail['lineup_context']['home']['status'] == 'collecting'
     assert detail['scores'] == [[1, 0, .123457], [1, 1, .1]]
@@ -86,11 +86,10 @@ def test_export_includes_home_selections_and_shortlist(tmp_path, monkeypatch):
     assert data['shortlist']['primary'][0]['fixture'] == data['fixtures'][0]['id']
     errors, _ = verify.check_publication(stage, stage, tmp_path / 'ledger.csv', NOW, 1)
     assert not errors, errors
-    data['fixtures'][0]['h2h_gate']['meetings'] = 2
+    data['fixtures'][0]['h2h_evidence'] = {'status':'unavailable', 'meetings':None}
     (stage / 'latest.json').write_text(json.dumps(data))
     errors, _ = verify.check_publication(stage, stage, tmp_path / 'ledger.csv', NOW, 1)
-    assert any('lacks valid H2H eligibility' in e for e in errors)
-    data['fixtures'][0]['h2h_gate']['meetings'] = 3
+    assert not errors, errors  # unavailable H2H is not a publication error
     del data['fixtures'][0]['sels']
     (stage / 'latest.json').write_text(json.dumps(data))
     errors, _ = verify.check_publication(stage, stage, tmp_path / 'ledger.csv', NOW, 1)

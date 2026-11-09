@@ -1,6 +1,6 @@
-"""Pre-prediction eligibility based only on available historical meetings.
+"""Legacy H2H archive index and sample-assessment helpers.
 
-This is a hard filter, not a model signal or a claim of predictive skill.
+These helpers assess available history; they must not filter predictions.
 No network calls, cross-provider name matching or fabricated identities.
 """
 from collections import Counter, defaultdict
@@ -116,17 +116,6 @@ def eligibility(fx, index: dict) -> dict:
     reason = 'insufficient_meetings' if len(days) < MIN_MEETINGS else 'eligible'
     return {'eligible': reason == 'eligible', 'reason': reason, 'meetings': len(days),
             'last_meeting': latest.isoformat() if latest else None, 'identity': identity}
-
-
-def filter_fixtures(fixtures: pd.DataFrame, index: dict):
-    """Preserve original indices (and therefore the Livescore/price mappings)."""
-    evidence, reasons = {}, Counter()
-    for i, fx in fixtures.iterrows():
-        result = eligibility(fx, index)
-        evidence[i] = result
-        reasons[result['reason']] += 1
-    keep = [i for i, result in evidence.items() if result['eligible']]
-    return fixtures.loc[keep].copy(), evidence, dict(reasons)
 
 
 def valid_proof(proof, kickoff):
