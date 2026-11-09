@@ -43,6 +43,8 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: "8.7"
+          # Keep releases working if the Actions cache service is unavailable.
+          cache-disabled: true
 
       - name: Restore signing key
         env:
