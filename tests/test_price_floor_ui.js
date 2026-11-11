@@ -8,7 +8,7 @@ const store = { getItem: k => values[k] || null, setItem: (k,v) => { values[k] =
 const elements = { '#view': { innerHTML: '' }, '#back': {}, '#slip-place': {}, '#slip-copy': {}, '#toast': { classList: {add(){}, remove(){}} } };
 const document = { documentElement: {dataset:{}}, body:{classList:{add(){},remove(){}}}, addEventListener(){},
   querySelector: s => elements[s] || null, querySelectorAll: () => [] };
-const ctx = {window:{}, document, localStorage:store, navigator:{onLine:true}, URL, console, setTimeout, clearTimeout, AbortController};
+const ctx = {window:{}, document, localStorage:store, navigator:{onLine:true}, URL, TextEncoder, Uint8Array, Uint32Array, DataView, console, setTimeout, clearTimeout, AbortController};
 vm.createContext(ctx);
 let core = fs.readFileSync(base+'core.js','utf8').replace('  return { native, settings,', '  return { testPrepDetail: prepDetail, native, settings,');
 vm.runInContext(core, ctx);
@@ -17,6 +17,7 @@ let pages = fs.readFileSync(base+'pages.js','utf8')
   .replace('  function matchMarkets(parts, f) {', '  PR.testMarkets = matchMarkets;\n  function matchMarkets(parts, f) {')
   .replace('  function matchSheet(parts, f) {', '  PR.testSheet = matchSheet;\n  function matchSheet(parts, f) {');
 vm.runInContext(pages, ctx);
+vm.runInContext(fs.readFileSync(base+'xlsx.js','utf8'), ctx);
 vm.runInContext(fs.readFileSync(base+'export.js','utf8'), ctx);
 const PR = ctx.window.PR;
 for (const value of [undefined, null, '', 'bad', NaN, Infinity, [], true, 1.15, 1.159, '1.159']) assert.equal(PR.offeredPrice(value), false, String(value));
@@ -47,11 +48,11 @@ let parts=[]; PR.testOverview(parts,detail,null); let html=parts.join('');
 assert.match(html,/1\.16/); assert.match(html,/3\.10/); assert.doesNotMatch(html,/1\.15(?:9)?\b/);
 parts=[]; PR.testMarkets(parts,detail); html=parts.join('');
 assert.match(html,/1\.16/); assert.match(html,/1\.25/); assert.doesNotMatch(html,/1\.15(?:9)?\b/);
-let csv=PR.matchCsv(detail,null,[]); assert.match(csv,/O25/); assert.match(csv,/O35/); assert.doesNotMatch(csv,/1\.15(?:9)?\b/);
+let matchData=JSON.stringify(PR.matchRows(detail,null,[])); assert.match(matchData,/O25/); assert.match(matchData,/O35/); assert.doesNotMatch(matchData,/1\.15(?:9)?\b/);
 const sheet = {home:'Home',away:'Away',sheet_model:{ok:true,inputs:{},model:{},markets:[],v4:{ok:true,model:{},markets:[
   {name:'Too low',odds:1.159,fair:1.12},{name:'At floor',odds:1.16,fair:1.12},{name:'Model only',odds:null,fair:1.12}]}}};
 parts=[]; PR.testSheet(parts,sheet); html=parts.join(''); assert.doesNotMatch(html,/Too low/); assert.match(html,/At floor/); assert.match(html,/Model only/);
-csv=PR.sheetCsv(sheet); assert.doesNotMatch(csv,/Too low/); assert.match(csv,/At floor/); assert.match(csv,/1\.12/); // fair price is not a bookmaker quote
+let sheetData=JSON.stringify(PR.sheetRows(sheet)); assert.doesNotMatch(sheetData,/Too low/); assert.match(sheetData,/At floor/); assert.match(sheetData,/1\.12/); // fair price is not a bookmaker quote
 const report='\ufeffhome,odds_home,sportybet_over25,fair_odds,notes\r\n"Club, A",1.159,1.16,1.12,"quoted, text"\r\nB,1.15,1.25,1.13,"multi\nline"\r\n';
 assert.equal(PR.filterCurrentMarketCsv(report),'\ufeffhome,odds_home,sportybet_over25,fair_odds,notes\r\n"Club, A",,1.16,1.12,"quoted, text"\r\nB,,1.25,1.13,"multi\nline"\r\n');
 const md='| Match | Sportybet 1X2 | Fair odds |\n|---|---|---|\n| A | 1.15 / 1.16 | 1.12 |\n\n* **Sportybet:** goals O1.5 1.15 / U 1.25\n* Model xG 1.12';
@@ -71,8 +72,14 @@ assert.doesNotMatch(elements['#view'].innerHTML,/>1\.15</);
 elements['#slip-place'].onclick().then(async ()=>{
   assert.equal(confirmed,false); assert.equal(JSON.parse(values.pr_slip).items[0].odds,1.15);
   assert.equal(JSON.parse(values.pr_tickets_full)[0].legs[0].odds,1.15);
-  PR.nfetch=async()=>({code:200,body:report}); let saved=''; PR.saveTextFile=(name,text)=>{saved=text};
-  await PR.downloadDayCsv(today); assert.equal(saved,PR.filterCurrentMarketCsv(report));
-  await PR.downloadDayCsv('2020-01-01'); assert.equal(saved,report); // older published reports remain unchanged
+  PR.nfetch=async()=>({code:200,body:report}); let saved=null;
+  PR.saveBinaryFile=(name,bytes,mime)=>{saved={name,bytes,mime};};
+  await PR.downloadDayXlsx(today);
+  assert.ok(saved.name.endsWith('_analysis.xlsx'));
+  assert.equal(saved.mime,'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  assert.deepEqual(Array.from(saved.bytes.slice(0,4)),[0x50,0x4b,0x03,0x04]);
+  assert.doesNotMatch(Buffer.from(saved.bytes).toString('utf8'),/1\.159/); // current sub-floor prices stay masked
+  await PR.downloadDayXlsx('2020-01-01');
+  assert.match(Buffer.from(saved.bytes).toString('utf8'),/1\.159/); // historical reports remain unchanged
   console.log('Current market price-floor UI and export tests passed');
 }).catch(e=>{console.error(e);process.exitCode=1});

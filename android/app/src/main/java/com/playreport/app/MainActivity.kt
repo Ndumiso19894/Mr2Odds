@@ -48,6 +48,14 @@ class MainActivity : AppCompatActivity() {
     private var networkCallback: ConnectivityManager.NetworkCallback? = null
     private var pendingSave: Pair<String, String>? = null
     private var pendingSaveBytes: Pair<String, ByteArray>? = null
+    private data class PendingSaveAssembly(
+        val name: String,
+        val byteCount: Int,
+        val chunks: Array<ByteArray?>,
+        var failed: Boolean = false,
+    )
+    private val saveAssemblyLock = Any()
+    private var pendingSaveAssembly: PendingSaveAssembly? = null
     /** The web app can consume the Android back key (menu open / a page pushed / off the Home tab). */
     private var webCanGoBack = false
 
@@ -387,16 +395,63 @@ class MainActivity : AppCompatActivity() {
                 .onFailure { js("window.__saveDone && window.__saveDone(false);") }
         }
 
+        private fun launchByteSave(name: String, bytes: ByteArray) {
+            runOnUiThread {
+                pendingSaveBytes = name to bytes
+                runCatching { saveDocumentBytes.launch(name) }
+                    .onFailure {
+                        pendingSaveBytes = null
+                        js("window.__saveDone && window.__saveDone(false);")
+                    }
+            }
+        }
+
         @android.webkit.JavascriptInterface
-        fun saveBase64(name: String, mime: String, b64: String) {
+        fun saveBase64(name: String, @Suppress("UNUSED_PARAMETER") mime: String, b64: String) {
             val bytes = try { java.util.Base64.getDecoder().decode(b64) } catch (e: Exception) { null }
             if (bytes == null) {
                 js("window.__saveDone && window.__saveDone(false);")
                 return
             }
-            pendingSaveBytes = name to bytes
-            runCatching { saveDocumentBytes.launch(name) }
-                .onFailure { js("window.__saveDone && window.__saveDone(false);") }
+            launchByteSave(name, bytes)
+        }
+
+        @android.webkit.JavascriptInterface
+        fun saveBase64Start(name: String, @Suppress("UNUSED_PARAMETER") mime: String, chunkCount: Int, byteCount: Int) {
+            val valid = name.isNotBlank() && chunkCount in 1..1024 && byteCount in 1..(20 * 1024 * 1024)
+            synchronized(saveAssemblyLock) {
+                pendingSaveAssembly = if (valid) PendingSaveAssembly(name, byteCount, arrayOfNulls(chunkCount))
+                else PendingSaveAssembly(name, 0, emptyArray<ByteArray?>(), failed = true)
+            }
+        }
+
+        @android.webkit.JavascriptInterface
+        fun saveBase64Chunk(index: Int, b64: String) {
+            val bytes = try { java.util.Base64.getDecoder().decode(b64) } catch (e: Exception) { null }
+            synchronized(saveAssemblyLock) {
+                val assembly = pendingSaveAssembly ?: return
+                if (bytes == null || index !in assembly.chunks.indices || assembly.chunks[index] != null) assembly.failed = true
+                else assembly.chunks[index] = bytes
+            }
+        }
+
+        @android.webkit.JavascriptInterface
+        fun saveBase64Finish() {
+            val completed = synchronized(saveAssemblyLock) {
+                val assembly = pendingSaveAssembly
+                pendingSaveAssembly = null
+                if (assembly == null || assembly.failed || assembly.chunks.any { it == null }) null
+                else {
+                    val output = java.io.ByteArrayOutputStream(assembly.byteCount)
+                    assembly.chunks.forEach { output.write(it!!) }
+                    output.toByteArray().takeIf { it.size == assembly.byteCount }?.let { assembly.name to it }
+                }
+            }
+            if (completed == null) {
+                js("window.__saveDone && window.__saveDone(false);")
+                return
+            }
+            launchByteSave(completed.first, completed.second)
         }
 
         @android.webkit.JavascriptInterface

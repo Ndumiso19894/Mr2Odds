@@ -24,7 +24,7 @@ def live_json():
     return {'Stages': [{'Snm': 'x', 'Cnm': 'y', 'Events': evs}]}
 STATS = {'Eid': 'x', 'Stat': [{'Tnb': 1, 'Pss': 61, 'Shon': 5, 'Shof': 4, 'Shbl': 2, 'Cos': 6, 'Fls': 9, 'Ofs': 1, 'Ycs': 1, 'Rcs': 0}, {'Tnb': 2, 'Pss': 39, 'Shon': 2, 'Shof': 3, 'Shbl': 1, 'Cos': 3, 'Fls': 12, 'Ofs': 2, 'Ycs': 3, 'Rcs': 0}]}
 INCS = {'Incs': {'1': [{'Min': 12, 'IT': 36, 'Nm': 1, 'Fn': 'John', 'Ln': 'Smith', 'Sc': [1, 0]}, {'Min': 40, 'IT': 39, 'Nm': 2, 'Fn': 'Peter', 'Ln': 'Jones', 'Sc': [1, 1]}]}}
-import base64, io
+import base64, io, zipfile
 try:
     from PIL import Image, ImageDraw
     _im = Image.new('RGBA', (64, 64), (0, 0, 0, 0)); ImageDraw.Draw(_im).ellipse((4, 4, 60, 60), fill=(30, 77, 140, 255)); _b = io.BytesIO(); _im.save(_b, 'PNG'); PNG = _b.getvalue()
@@ -57,9 +57,13 @@ with sync_playwright() as p:
         notificationsAllowed: () => true, requestNotifications: () => {}, refreshDone: () => {}, openUrl: (u) => { window.__opened = u; },
         notifyGoal: (eid, score, title, text) => window.__notified.push({eid, score, title, text}),
         notify: (ch, id, title, text, tab) => window.__notified.push({ch, id, title, text, tab}), setString: (k, v) => { window.__str = window.__str || {}; window.__str[k] = v; },
-        checkUpdate: () => setTimeout(() => window.__updateInfo({version: '1.1.1', url: 'https://data.test/PlayReport.apk', notes: '## What is new\\n- Instant pages from the on-phone cache\\n- CSV downloads\\n\\nPlayReport for Android v1.1.1 (build 9). Download PlayReport.apk and install it.'}), 200),
+        checkUpdate: () => setTimeout(() => window.__updateInfo({version: '1.1.1', url: 'https://data.test/PlayReport.apk', notes: '## What is new\\n- Instant pages from the on-phone cache\\n- Google Sheets-compatible .xlsx downloads\\n\\nPlayReport for Android v1.1.1 (build 9). Download PlayReport.apk and install it.'}), 200),
         getString: (k) => (window.__str || {})[k] == null ? null : window.__str[k],
         saveText: (name, mime, text) => { window.__saved = { name, mime, text }; setTimeout(() => window.__saveDone(true), 50); },
+        saveBase64: (name, mime, b64) => { window.__saved = { name, mime, b64 }; setTimeout(() => window.__saveDone(true), 50); },
+        saveBase64Start: (name, mime, count) => { window.__saveParts = { name, mime, parts: Array(count) }; },
+        saveBase64Chunk: (index, part) => { window.__saveParts.parts[index] = part; },
+        saveBase64Finish: () => { window.__saved = { name: window.__saveParts.name, mime: window.__saveParts.mime, b64: window.__saveParts.parts.join('') }; setTimeout(() => window.__saveDone(true), 50); },
         installUpdate: (u) => { window.__installed = u; setTimeout(() => window.__updateProgress('downloading'), 50); },
       };
     """)
@@ -153,13 +157,15 @@ with sync_playwright() as p:
             assert page.locator('#view .addsel.on').count() == 1, 'one selection per match'
     page.click('[data-mv=stats]'); page.wait_for_timeout(600); t = shot(page, 'match_stats2')
     assert 'this season' in t.lower() or 'not available' in t or 'Loading' in t, 'season block'
-    # ---- CSV export of the match + on-phone cache of the detail file
-    page.click('#dl-csv'); page.wait_for_timeout(300)
+    # ---- Google Sheets-compatible XLSX export of match data + on-phone cache of the detail file
+    page.click('#dl-match-xlsx'); page.wait_for_timeout(300)
     saved = page.evaluate('window.__saved')
-    assert saved and saved['name'].endswith('.csv') and saved['text'].startswith('\ufeffPlayReport match analysis') and 'Market selection,Code,Model %,Market implied %' in saved['text'] and 'Model xG' in saved['text'] and 'Data quality' in saved['text'] and 'Recent form' in saved['text'], f'match csv: {saved and saved["name"]}'
-    open('/tmp/ui_match.csv', 'w', encoding='utf-8').write(saved['text'])
-    csv_rows = [r for r in saved['text'].split('\r\n') if r.startswith('Over 1.5 goals,')]
-    assert csv_rows and float(csv_rows[0].split(',')[1]) > 0, 'csv probabilities are numeric percentages'
+    assert saved and saved['name'].endswith('.xlsx') and saved['mime'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', f'match workbook: {saved and saved["name"]}'
+    match_bytes = base64.b64decode(saved['b64'])
+    with zipfile.ZipFile(io.BytesIO(match_bytes)) as workbook:
+        xml = workbook.read('xl/worksheets/sheet1.xml').decode('utf-8')
+    assert 'Mr 2 Odds match analysis' in xml and 'Market selection' in xml and 'Model xG' in xml and 'Data quality' in xml and 'Recent form' in xml, 'match workbook preserves analysis sections'
+    open('/tmp/ui_match.xlsx', 'wb').write(match_bytes)
     assert page.evaluate("Object.keys(localStorage).filter((k) => k.startsWith('pr_c:fx/')).length") >= 1, 'detail cached on the phone'
     # ---- bet slip: add a second match from the Bets tab, lock the ticket, check pages
     page.click('#tabs button[data-tab=bets]'); page.click('[data-bv=safest]'); page.wait_for_timeout(200)
@@ -269,7 +275,7 @@ with sync_playwright() as p:
     page.reload(); page.wait_for_selector('#view .card', timeout=10000); page.wait_for_timeout(4600)
     assert page.locator('#modal:not([hidden])').count() == 0, 'update pop-up shown only once per version'
     page.click('#btn-menu'); page.click('#menu [data-page=settings]'); page.wait_for_timeout(300); t = shot(page, 'settings_update')
-    assert "What's new in 1.1.1" in t and 'CSV downloads' in t and 'analysed pages saved on this phone' in t, 'settings shows release notes and cache size'
+    assert "What's new in 1.1.1" in t and '.xlsx downloads' in t and 'analysed pages saved on this phone' in t, 'settings shows release notes and cache size'
     shot(page, 'update_banner')
     page.click('#b-update'); page.wait_for_timeout(200)
     assert page.evaluate('window.__installed') == 'https://data.test/PlayReport.apk', 'install url'
@@ -289,10 +295,13 @@ with sync_playwright() as p:
     # external link routing
     page.click('#btn-menu'); page.click('#menu [data-contact]'); page.wait_for_timeout(100)
     assert page.evaluate('window.__opened') == 'https://wa.me/27738212664', 'whatsapp link'
-    # ---- day CSV from the menu
-    page.click('#btn-menu'); page.click('#menu [data-csv]'); page.wait_for_timeout(500)
+    # ---- daily XLSX workbook from the menu
+    page.click('#btn-menu'); page.click('#menu [data-xlsx]'); page.wait_for_timeout(500)
     saved = page.evaluate('window.__saved')
-    assert saved and saved['name'].startswith('PlayReport_') and saved['name'].endswith('_analysis.csv') and 'kickoff' in saved['text'][:300], f'day csv: {saved and saved["name"]}'
+    assert saved and saved['name'].startswith('Mr_2_Odds_') and saved['name'].endswith('_analysis.xlsx'), f'day workbook: {saved and saved["name"]}'
+    with zipfile.ZipFile(io.BytesIO(base64.b64decode(saved['b64']))) as workbook:
+        xml = workbook.read('xl/worksheets/sheet1.xml').decode('utf-8')
+    assert 'kickoff' in xml, 'daily workbook includes the match data header'
     # ---- history survives a wiped WebView: tickets / favourites / settings restored from the native copy
     n_tickets = page.evaluate('window.app.PR.tickets().length'); assert n_tickets >= 1
     page.evaluate("window.__keep = Object.assign({}, window.__str); localStorage.clear();")

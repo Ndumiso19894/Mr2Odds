@@ -1,3 +1,6 @@
+## Google Sheets-compatible downloads
+- Match statistics, the match Sheet comparison and the day's analysis now download as editable `.xlsx` workbooks instead of CSV files. They open in Google Sheets or Excel; the Sheet comparison contains exported values, not the supplied workbook's live formulas.
+
 ## Optional head-to-head context
 - Fixtures are no longer excluded for having too few prior meetings. Three available prior non-friendly meetings can break otherwise equal recommendation-ranking ties; they do not change probabilities or other safeguards.
 - Archive coverage may be incomplete. The optional tie-break is separate from the model's narrower same-competition H2H adjustment and is not proof of improved accuracy.
@@ -155,4 +158,4 @@
 - Markets tab: Model / Market / Diff / Price · EV columns; corners and cards show LOW DATA CONFIDENCE when the sample is thin.
 - "Safest bets" are now called high-probability selections — a 75% probability still loses one time in four. Each one shows its data quality.
 - Model update validated on 52,000 matches: team strength is shrunk less than goal tempo, which improves home/away win, Over 1.5 and Over 2.5 accuracy (details in backtest/RESULTS.md).
-- CSV downloads include the data-quality assessment, the raw matches used and the model/market comparison.
+- Spreadsheet downloads include the data-quality assessment, the raw matches used and the model/market comparison.

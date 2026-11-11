@@ -1029,13 +1029,13 @@
     ]));
     parts.push(group('App & support', [
       row('settings', 'Settings', 'App preferences', 'data-page-go="settings"'),
-      row('download', 'Download today’s data (CSV)', 'Spreadsheet of the whole window', 'id="more-csv"'),
+      row('download', 'Download today’s data (.xlsx)', 'Editable workbook for Google Sheets or Excel', 'id="more-xlsx"'),
       row('chat', 'Contact on WhatsApp', 'Questions, feedback &amp; support', 'id="more-contact"'),
     ]));
     parts.push(`<div class="card version-card" style="margin-top:12px"><div class="b">Mr 2 Odds ${esc(PR.APP_VERSION || '')}</div><div class="tiny muted">Model \u00b7 Data \u00b7 Performance</div></div>`);
     view().innerHTML = parts.join('');
     wireCommon(); if (PR.wireTickets) PR.wireTickets();
-    const csv = $('#more-csv'); if (csv) csv.onclick = () => PR.downloadDayCsv();
+    const xlsx = $('#more-xlsx'); if (xlsx) xlsx.onclick = () => PR.downloadDayXlsx();
     const ct = $('#more-contact'); if (ct) ct.onclick = () => { if (PR.native && PR.native.openUrl) PR.native.openUrl(`https://wa.me/${PR.CONTACT.whatsapp}`); else window.open(`https://wa.me/${PR.CONTACT.whatsapp}`); };
   };
 

@@ -9,7 +9,7 @@
   $('#btn-menu').onclick = (e) => { e.stopPropagation(); PR.toggleMenu(); };
   $('#btn-search').onclick = (e) => { e.stopPropagation(); PR.closeMenu(); state.focusSearch = true; state.stack = []; if (state.tab === 'matches') PR.render(); else PR.setTab('matches'); const i = $('#fx-search'); if (i) { i.focus(); i.scrollIntoView({ block: 'start', behavior: 'smooth' }); } };
   $$('#menu [data-page]').forEach((b) => { b.onclick = () => { PR.closeMenu(); const t = b.dataset.page; state.stack = []; PR.push({ type: t }); }; });
-  $('#menu [data-csv]').onclick = () => { PR.closeMenu(); PR.downloadDayCsv(); };
+  $('#menu [data-xlsx]').onclick = () => { PR.closeMenu(); PR.downloadDayXlsx(); };
   $('#menu [data-contact]').onclick = () => { PR.closeMenu(); if (PR.native && PR.native.openUrl) PR.native.openUrl(`https://wa.me/${PR.CONTACT.whatsapp}`); else window.open(`https://wa.me/${PR.CONTACT.whatsapp}`); };
   document.addEventListener('visibilitychange', () => { if (!document.hidden) { if (state.tab === 'live' || state.tab === 'home') PR.live.refresh(false); if (['finalpicks', 'dailyaccumulators'].includes(state.tab) && !state.stack.length) PR.quietRender(); updateCheck(); } });
   // Recheck time-sensitive Final Picks even while the screen remains open.
@@ -46,7 +46,7 @@
   };
   /** The download finished and Android is asking to install it — the app never installs by itself. */
   window.__updateInstalling = function () { toast('Verified — Android will ask you to install it'); };
-  /** CSV "save as" result from the native picker */
+  /** File "save as" result from the native picker */
   window.__saveDone = function (ok) { toast(ok ? 'Saved — open it with Google Sheets or Excel' : 'Not saved'); };
   window.__updateProgress = function (stage) { state.updateStage = stage; if (stage === 'failed') toast('Could not open the download — try again'); else if (stage === 'browser') toast('Downloading — when it finishes, tap the file and choose Install'); };
 

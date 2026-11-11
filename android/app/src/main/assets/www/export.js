@@ -1,21 +1,15 @@
-/* Mr 2 Odds — CSV exports (Google Sheets / Excel friendly): one analysed match, or the whole day's analysis. */
+/* Mr 2 Odds — Google Sheets / Excel-compatible workbook exports for match and day data. */
 (function (PR) {
   'use strict';
   const { state, toast, selLabel, tzNow, ymd } = PR;
   const BOM = '\ufeff';
-  const cell = (v) => {
-    if (v == null) return '';
-    if (typeof v === 'number') return Number.isInteger(v) ? String(v) : String(Math.round(v * 1000) / 1000);
-    const s = String(v);
-    return /[",\n\r;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
-  };
-  const row = (arr) => arr.map(cell).join(',');
+  const row = (arr) => arr;
   const pc = (p) => (p == null ? '' : Math.round(p * 1000) / 10);          // 0.734 -> 73.4 (percent, numeric)
   const fileName = (s) => s.replace(/[^A-Za-z0-9._-]+/g, '_').replace(/^_+|_+$/g, '');
 
   /** hand a text file to the phone (system "save as" picker); browsers get a download */
   PR.saveTextFile = function (name, text, mime) {
-    const type = mime || 'text/csv';
+    const type = mime || 'text/plain';
     if (PR.native && PR.native.saveText) {
       try { PR.native.saveText(name, type, text); toast('Choose where to save the file…'); return; } catch (e) { /* fall through */ }
     }
@@ -25,6 +19,42 @@
       setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
       toast(`Downloaded ${name}`);
     } catch (e) { toast('Could not save the file'); }
+  };
+
+  function bytesToBase64(bytes) {
+    let binary = '';
+    for (let i = 0; i < bytes.length; i += 0x8000) binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+    return btoa(binary);
+  }
+
+  /** Save binary workbooks on Android through the native save picker; browser builds use Blob download. */
+  PR.saveBinaryFile = function (name, bytes, mime) {
+    const type = mime || 'application/octet-stream';
+    const data = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes || []);
+    if (!data.length) { toast('Could not create the spreadsheet'); return; }
+    if (PR.native && PR.native.saveBase64) {
+      try {
+        const b64 = bytesToBase64(data);
+        if (b64.length < 900000 || !PR.native.saveBase64Start || !PR.native.saveBase64Chunk || !PR.native.saveBase64Finish) {
+          PR.native.saveBase64(name, type, b64);
+        } else {
+          if (data.length > 20 * 1024 * 1024) { toast('This spreadsheet is too large to save on this device'); return; }
+          const chunkSize = 60000; // divisible by four, so each piece remains independently decodable Base64
+          const count = Math.ceil(b64.length / chunkSize);
+          PR.native.saveBase64Start(name, type, count, data.length);
+          for (let i = 0; i < count; i++) PR.native.saveBase64Chunk(i, b64.slice(i * chunkSize, (i + 1) * chunkSize));
+          PR.native.saveBase64Finish();
+        }
+        toast('Choose where to save the spreadsheet…');
+        return;
+      } catch (e) { /* use the browser download fallback */ }
+    }
+    try {
+      const blob = new Blob([data], { type });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+      setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
+      toast(`Downloaded ${name}`);
+    } catch (e) { toast('Could not save the spreadsheet'); }
   };
 
   const wdl = (gf, ga) => (gf > ga ? 'W' : gf < ga ? 'L' : 'D');
@@ -42,8 +72,8 @@
     return lines;
   };
 
-  /** CSV of one analysed match: header block, markets, team profiles, recent form, head-to-head, trends, corners & cards */
-  PR.matchCsv = function (x, live, extraStats) {
+  /** Rows for one analysed match: header block, markets, team profiles, form, H2H, trends, corners & cards. */
+  PR.matchRows = function (x, live, extraStats) {
     const L = [];
     const teams = x.teams || { home: {}, away: {} };
     const xg = x.xg || {}; const p = x.p || {}; const x12 = x.x12 || {}; const tg = x.team_goals || {};
@@ -126,22 +156,24 @@
       if (sb.BTTS) { L.push(row(['Both teams to score', 'Yes', sb.BTTS[0]])); L.push(row(['Both teams to score', 'No', sb.BTTS[1]])); }
       Object.entries(sb.OU || {}).sort((a, b) => +a[0] - +b[0]).forEach(([line, v]) => { L.push(row(['Total goals', `Over ${line}`, v[0]])); L.push(row(['Total goals', `Under ${line}`, v[1]])); });
     }
-    return BOM + L.join('\r\n') + '\r\n';
+    return L;
   };
 
-  PR.downloadMatchCsv = function (x, live, extraStats) {
-    const name = fileName(`Mr 2 Odds_${x.date}_${x.home}_v_${x.away}`) + '.csv';
-    PR.saveTextFile(name, PR.matchCsv(x, live, extraStats), 'text/csv');
+  PR.downloadMatchXlsx = function (x, live, extraStats) {
+    const name = fileName(`Mr 2 Odds_${x.date}_${x.home}_v_${x.away}`) + '.xlsx';
+    const rows = PR.matchRows(x, live, extraStats);
+    const bytes = PR.xlsx.create([{ name: 'Match analysis', rows, titleRow: 0 }]);
+    PR.saveBinaryFile(name, bytes, PR.xlsx.MIME);
   };
 
-  /** Filled Google Sheet V1 (MATCH_INPUT + MARKETS) for this match. */
-  PR.sheetCsv = function (x) {
+  /** Filled Google Sheet V1 (MATCH_INPUT + MARKETS) comparison rows for this match. */
+  PR.sheetRows = function (x) {
     const sm = x.sheet_model || {};
     const inp = sm.inputs || {};
     const eng = sm.model || {};
     const L = [];
     L.push(row(['BOOKMAKER-STYLE FOOTBALL MODEL — V1 (filled for this match)']));
-    L.push(row(['Source', 'Workbook V1 and V4 formula outputs; CSV values only, not spreadsheet formulas']));
+    L.push(row(['Source', 'Workbook V1 and V4 outputs; exported values, not the supplied workbook or its formulas']));
     L.push(row(['Note', sm.note || 'Comparison only. Mr 2 Odds model is not changed.']));
     L.push('');
     L.push(row(['MATCH INFORMATION']));
@@ -209,13 +241,15 @@
     }
     L.push(row(['Inputs used', (sm.used || []).join('; ')]));
     L.push(row(['Inputs not available', (sm.missing || []).join('; ')]));
-    return BOM + L.join('\r\n') + '\r\n';
+    return L;
   };
 
-  PR.downloadSheetCsv = function (x) {
+  PR.downloadSheetXlsx = function (x) {
     if (!x || !x.sheet_model) { toast('Sheet model is not on this match yet'); return; }
-    const name = fileName(`SheetModel_${x.date}_${x.home}_v_${x.away}`) + '.csv';
-    PR.saveTextFile(name, PR.sheetCsv(x), 'text/csv');
+    const name = fileName(`SheetModel_${x.date}_${x.home}_v_${x.away}`) + '.xlsx';
+    const rows = PR.sheetRows(x);
+    const bytes = PR.xlsx.create([{ name: 'Sheet model', rows, titleRow: 0 }]);
+    PR.saveBinaryFile(name, bytes, PR.xlsx.MIME);
   };
 
   // Mask actual bookmaker-price cells in current daily reports, not model/fair odds or historical reports.
@@ -244,17 +278,62 @@
     return records.map((r) => r.cells.join(',') + r.ending).join('');
   };
 
-  /** the day's analysis table published with every report (reports/<date>.csv) */
-  PR.downloadDayCsv = async function (date) {
+  function parseCsvRows(text) {
+    const records = []; let cells = [], field = '', quoted = false;
+    text = String(text || '').replace(/^\ufeff/, '');
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (ch === '"') {
+        if (quoted && text[i + 1] === '"') { field += '"'; i++; }
+        else if (quoted) quoted = false;
+        else if (!field) quoted = true;
+        else field += ch;
+      } else if (!quoted && ch === ',') { cells.push(field); field = ''; }
+      else if (!quoted && (ch === '\n' || ch === '\r')) {
+        cells.push(field); field = '';
+        if (cells.some((value) => value !== '')) records.push(cells);
+        cells = [];
+        if (ch === '\r' && text[i + 1] === '\n') i++;
+      } else field += ch;
+    }
+    if (field || cells.length) { cells.push(field); if (cells.some((value) => value !== '')) records.push(cells); }
+    return records;
+  }
+
+  function typedCsvRows(rows) {
+    const textColumns = new Set(['kickoff', 'country', 'competition', 'div', 'home', 'away', 'xg_market_source',
+      'data_quality', 'home_last10_o25', 'away_last10_o25']);
+    const headers = rows[0] || [];
+    return rows.map((cells, rowIndex) => cells.map((value, colIndex) => {
+      if (rowIndex === 0 || value === '') return value;
+      const header = String(headers[colIndex] || '').trim().toLowerCase();
+      if (textColumns.has(header)) return value;
+      if (header === 'data_ok' && /^(?:true|false)$/i.test(value)) return value.toLowerCase() === 'true';
+      const raw = String(value).trim();
+      if (/^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$/.test(raw)) {
+        const number = Number(raw);
+        if (Number.isFinite(number) && !/^[-+]?0\d/.test(raw)) return number;
+      }
+      return value;
+    }));
+  }
+
+  /** Convert the day's published report (reports/<date>.csv) to an editable .xlsx workbook. */
+  PR.downloadDayXlsx = async function (date) {
     const d = date || (state.data && state.data.meta ? state.data.meta.generated.slice(0, 10) : ymd(tzNow()));
-    toast('Preparing the file…');
+    toast('Preparing the spreadsheet…');
     try {
       const r = await PR.nfetch(PR.rawUrl(`reports/${d}.csv`) + '?t=' + Math.floor(Date.now() / 300000));
       if (r.code !== 200) throw new Error(`HTTP ${r.code}`);
       const text = r.body.charCodeAt(0) === 0xfeff ? r.body : BOM + r.body;
-      PR.saveTextFile(`Mr 2 Odds_${d}_analysis.csv`, d >= ymd(tzNow()) ? PR.filterCurrentMarketCsv(text) : text, 'text/csv');
+      const filtered = d >= ymd(tzNow()) ? PR.filterCurrentMarketCsv(text) : text;
+      const rows = typedCsvRows(parseCsvRows(filtered));
+      if (!rows.length) throw new Error('empty report');
+      const bytes = PR.xlsx.create([{ name: 'Daily analysis', rows, titleRow: false, headerRows: [0], freezeRows: 1, autoFilter: true }]);
+      const name = fileName(`Mr 2 Odds_${d}_analysis`) + '.xlsx';
+      PR.saveBinaryFile(name, bytes, PR.xlsx.MIME);
     } catch (e) {
-      toast(`Today's data file is not available yet (${e.message})`);
+      toast(`Today's spreadsheet is not available yet (${e.message})`);
     }
   };
 })(window.PR);
