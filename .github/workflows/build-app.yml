@@ -7,8 +7,14 @@ on:
       - "android/**"
       - ".github/workflows/build-app.yml"
   workflow_dispatch:
+    inputs:
+      telegram_artifact_run_id:
+        description: Optional Actions run ID with a PlayReport-apk artifact to send without rebuilding.
+        required: false
+        type: string
 
 permissions:
+  actions: read
   contents: write
 
 env:
@@ -21,6 +27,7 @@ concurrency:
 
 jobs:
   apk:
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.telegram_artifact_run_id == '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -89,18 +96,35 @@ jobs:
           gh release create "$TAG" "$RUNNER_TEMP/PlayReport.apk" --repo "$GITHUB_REPOSITORY" --title "Mr 2 Odds v${APP_VERSION_NAME}" --notes-file "$RUNNER_TEMP/notes.md" --latest
 
   telegram:
-    if: github.ref == 'refs/heads/main'
+    if: >-
+      ${{ always() && ((github.ref == 'refs/heads/main' && needs.apk.result == 'success') ||
+        (github.event_name == 'workflow_dispatch' && inputs.telegram_artifact_run_id != '')) }}
     name: Send APK to Telegram
     needs: apk
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Download published APK
+      - name: Download APK artifact
         uses: actions/download-artifact@v4
         with:
           name: PlayReport-apk
           path: release-apk
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.telegram_artifact_run_id || github.run_id }}
+      - name: Set version for existing artifact
+        if: inputs.telegram_artifact_run_id != ''
+        env:
+          SOURCE_RUN_ID: ${{ inputs.telegram_artifact_run_id }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SOURCE_RUN_NUMBER="$(gh run view "$SOURCE_RUN_ID" --repo "$GITHUB_REPOSITORY" --json number --jq .number)"
+          if [[ ! "$SOURCE_RUN_NUMBER" =~ ^[0-9]+$ ]]; then
+            echo "Could not determine the source APK run number." >&2
+            exit 1
+          fi
+          echo "APP_VERSION_NAME=1.8.${SOURCE_RUN_NUMBER}" >> "$GITHUB_ENV"
       - name: Send release to Telegram
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
