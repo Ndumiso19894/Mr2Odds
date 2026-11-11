@@ -198,6 +198,14 @@ def _selection_rows(sels: list[dict]) -> list[list]:
              1 if d["diff"] else 0, d.get("diff_pp"), d.get("ev")] for d in sels]
 
 
+def _x12_eligible(f: dict, sel: str) -> bool:
+    if sel not in ("H", "D", "A"):
+        return True
+    report = f.get("x12_research") or {}
+    outcome = (report.get("outcomes") or {}).get(sel) or {}
+    return outcome.get("eligible") is True
+
+
 def shortlist_payload(index: list[dict], now: datetime) -> dict:
     """Screen today's upcoming published fixtures, without manufacturing missing prices or probabilities."""
     import safe
@@ -214,6 +222,8 @@ def shortlist_payload(index: list[dict], now: datetime) -> dict:
             if not rec_policy.allowed(sel):
                 continue
             screened += 1
+            if group == "result" and not _x12_eligible(f, sel):
+                continue
             bar = 0.55 if sel in ("H", "D", "A", "O25", "BTTS") else 0.65 if group == "corners" else 0.70
             if p is None or not 0 < p < 1 or odds is None or odds <= 1 or diff:
                 continue
@@ -223,10 +233,15 @@ def shortlist_payload(index: list[dict], now: datetime) -> dict:
             x = {"fixture": f["id"], "home": f["home"], "away": f["away"], "country": f["country"],
                  "league": f["league"], "kickoff": f["kickoff"], "sel": sel, "market": group,
                  "label": safe.label(sel, f["home"], f["away"]), "p": p, "p_sb": market,
-                 "odds": odds, "quality": f.get("q") or "N/A", "confidence": "N/A",
+                 "odds": odds, "quality": f.get("q") or "N/A",
+                 "confidence": (f.get("x12_confidence") or "N/A") if group == "result" else "N/A",
                  "h2h_preferred": h2h_evidence.preferred(f.get("h2h_evidence"))}
-            if group == "result" and p >= 0.60 and 1.20 <= odds <= 3.50:
-                results.append(x)
+            if group == "result":
+                x["research"] = f.get("x12_research") or {}
+                if (p >= rec_policy.X12_MIN_PROBABILITY
+                        and rec_policy.X12_MIN_ODDS <= odds <= rec_policy.X12_MAX_ODDS
+                        and _x12_eligible(f, sel)):
+                    results.append(x)
             if p >= bar and rec_policy.PRICE_FLOOR <= odds <= 1.90 and odds * p >= 0.95 and f.get("q") != "Low":
                 candidates.append(x)
     def unique(items):
@@ -239,7 +254,8 @@ def shortlist_payload(index: list[dict], now: datetime) -> dict:
     primary = unique(candidates)
     return {"primary": primary, "x12": unique(results),
             "counts": {"analysed": analysed, "screened": screened},
-            "rules": {"min_odds": rec_policy.PRICE_FLOOR, "max_odds": 1.90}}
+            "rules": {"min_odds": rec_policy.PRICE_FLOOR, "max_odds": 1.90,
+                      "x12": rec_policy.X12_RULES}}
 
 def carry_over(prev: dict | None, index: list, bets: list, tracked: set, now: datetime, hours: float = 3.0) -> int:
     """Fixtures of the previous publication that kicked off in the last `hours` and are no longer in the scan window
@@ -336,17 +352,20 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
         ls = ls_map.get(fx.name)
         x12 = r.extra.x12 or {}
         sels = selections(r)
-        top = _best(sels, None, rec_policy.PRICE_FLOOR, 0.0)
-        hi = sorted([[d["sel"], round(d["p"], 3), round(d["odds"], 2) if d.get("odds") else None] for d in sels
+        x12_research = getattr(r, "x12_research", None) or {}
+        match_report = {"x12_research": x12_research}
+        app_sels = [d for d in sels if _x12_eligible(match_report, d["sel"])]
+        top = _best(app_sels, None, rec_policy.PRICE_FLOOR, 0.0)
+        hi = sorted([[d["sel"], round(d["p"], 3), round(d["odds"], 2) if d.get("odds") else None] for d in app_sels
                      if d.get("p") is not None and d["p"] >= 0.70 and not d["diff"] and rec_policy.allowed(d["sel"])
                      and d.get("odds") and d["odds"] >= rec_policy.PRICE_FLOOR
                      and not rec_policy.outlier(d.get("p_model"), d.get("p_sb"), d["odds"])], key=lambda x: -x[1])[:12]
-        for d in sels:   # biggest model-vs-market edges (already-computed EV, presentation only)
+        for d in app_sels:   # biggest model-vs-market edges (already-computed EV, presentation only)
             if fx["date"].strftime("%Y-%m-%d") == now.strftime("%Y-%m-%d") and r.data_ok and rec_policy.allowed(d["sel"]) and d.get("odds") and d["odds"] >= rec_policy.PRICE_FLOOR and not rec_policy.outlier(d.get("p_model"), d.get("p_sb"), d["odds"]) and d.get("ev") is not None and d["ev"] > 0 and d["p"] is not None and not d.get("diff"):
                 value_cands.append({"id": fid, "sel": d["sel"], "odds": round(d["odds"], 2),
                                     "ev": round(d["ev"], 3), "p": round(d["p"], 3),
                                     "h2h_preferred": h2h_evidence.row_preferred(r)})
-        safe_best = _best(sels, safe_groups or None, min_odds, min_p) if r.data_ok else None
+        safe_best = _best(app_sels, safe_groups or None, min_odds, min_p) if r.data_ok else None
         eid = (ls or {}).get("eid")
         slim = {
             "id": fid, "d": key, "date": date, "kickoff": fx["kickoff"].strftime("%Y-%m-%d %H:%M"),
@@ -355,13 +374,15 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
             "home": fx["home"], "away": fx["away"], "tier": fx.get("source") or "main",
             "data_ok": bool(r.data_ok), "basis": r.basis,
             "h2h_evidence": getattr(r, "h2h_evidence", {}),
+            "x12_research": x12_research,
             "xg": [_f(r.mod_h, 2), _f(r.mod_a, 2)],
             "mxg": None if math.isnan(r.mkt_h) else [_f(r.mkt_h, 2), _f(r.mkt_a, 2)],
             "q": (((r.audit or {}).get("quality") or {}).get("overall")),
+            "x12_confidence": _c.get("X12") or "N/A",
             "n": [int(r.home.n), int(r.away.n)],
             "p": {"O15": _f(r.p_final["O15"]), "O25": _f(r.p_final["O25"]), "BTTS": _f(r.p_final["BTTS"])},
             "x12": [_f(x12.get("H")), _f(x12.get("D")), _f(x12.get("A"))],
-            "priced": bool(r.sb), "top": top, "safe": safe_best, "hi": hi, "bo": _board(sels),
+            "priced": bool(r.sb), "top": top, "safe": safe_best, "hi": hi, "bo": _board(app_sels),
             "sels": _selection_rows(sels),
             "badges": {"home": badges.get(fx["home"]), "away": badges.get(fx["away"])},
             "livescore_id": eid,
@@ -532,6 +553,7 @@ def export(path: Path, *, ctx: dict, rows: list, all_rows: list | None = None, p
     strong_cands = [(s[1], s[0], f["id"], f.get("q"), h2h_evidence.preferred(f.get("h2h_evidence")))
                     for f in index if f.get("date") == now.strftime("%Y-%m-%d") and f.get("data_ok")
                     for s in f.get("sels", []) if s[1] is not None and s[1] >= .70 and s[4] is not None
+                    and (s[0] not in ("H", "D", "A") or _x12_eligible(f, s[0]))
                     and s[4] >= 1.16 and not s[5]
                     and rec_policy.allowed(s[0]) and not rec_policy.outlier(s[2], s[3], s[4])]
     strong_sorted = sorted(strong_cands, key=lambda x: (-x[0], -int(x[4])))[:5]

@@ -35,7 +35,7 @@ def test_shortlist_screening_and_1x2():
             fixture('Tomorrow', NOW + timedelta(days=1), selections=[sel('O15', .9)])]
     result = appdata.shortlist_payload(data, NOW)
     assert [(x['home'], x['sel']) for x in result['primary']] == [('Dropped', 'BTTS'), ('Qualified', 'O15'), ('Other', 'CO95')]
-    assert [(x['home'], x['sel']) for x in result['x12']] == [('Qualified', 'H')]
+    assert result['x12'] == []  # missing 1X2 research evidence fails closed even above the old probability bar
     assert result['counts']['analysed'] == 6
 
 

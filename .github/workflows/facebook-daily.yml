@@ -31,6 +31,7 @@ jobs:
           path: live-data
       - name: Render and validate morning content privately
         env:
+          GH_TOKEN: ${{ github.token }}
           REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
         run: |
           python scripts/facebook_accumulators.py prepare --snapshot live-data/data/app/latest.json --output "$RUNNER_TEMP/morning-preview"
@@ -126,6 +127,7 @@ jobs:
         id: prepare
         if: steps.claims.outputs.slot == '07' && steps.claims.outputs.source_exists != 'true'
         env:
+          GH_TOKEN: ${{ github.token }}
           REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
         run: python scripts/facebook_accumulators.py prepare --snapshot live-data/data/app/latest.json --output morning-output
       - name: Save the matched source before any publication

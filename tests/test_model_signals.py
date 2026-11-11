@@ -80,7 +80,9 @@ def test_requested_market_shortlists_keep_existing_filters():
         return {'id':name,'date':'2026-11-04','kickoff':'2026-11-04 10:00','data_ok':True,
                 'home':name,'away':'B','country':'England','league':'Test','q':q,
                 'sels':[[code,p,p,p,odds,0,None,None]]}
-    data = [fx('result','H',.65,1.5),fx('btts','BTTS',.65,1.5),fx('teamcorners','CHO35',.65,1.5),
+    result = fx('result','H',.65,1.5)
+    result['x12_research'] = {'outcomes': {'H': {'eligible': True}}}
+    data = [result,fx('btts','BTTS',.65,1.5),fx('teamcorners','CHO35',.65,1.5),
             fx('bookings','KHO15',.70,1.5),fx('no price','CAO35',.9,None),fx('low','KO35',.9,1.5,'Low'),
             fx('too-low','KAO15',.69,1.5), fx('disabled','HO05',.9)]
     picks = appdata.shortlist_payload(data, now)['primary']

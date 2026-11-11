@@ -75,7 +75,9 @@ def test_matching_post_and_reel_use_five_to_six_real_crest_inputs(tmp_path, monk
     assert all(p['sel'] in ('H','D','A') and .60 <= p['probability'] <= .95 and p['odds'] >= 1.16 for p in info['fixtures'])
     assert all(not p['home'].endswith('0') for p in info['fixtures'])
     assert json.loads((out/'selections.json').read_text()) == json.loads((out/'selection-reel.json').read_text())
-    assert '1X2 picks' in fb.caption_for(info) and 'Model' not in fb.caption_for(info)  # displayed on artwork
+    hashtags = fb.caption_for(info)
+    assert hashtags.split() and all(tag.startswith('#') for tag in hashtags.split())
+    assert '#Home1' in hashtags and '#Away1' in hashtags
     bad = json.loads((out/'selection-reel.json').read_text()); bad['fixtures'][0]['probability'] = .59
     (out/'selection-reel.json').write_text(json.dumps(bad)); (out/'selections.json').write_text(json.dumps(bad))
     with pytest.raises(ValueError, match='invalid'):
@@ -113,11 +115,9 @@ def test_13_post_is_included_in_verified_daily_results():
     assert 'facebook-1x2.yml' not in Path('.github/workflows/scan-30.yml').read_text()
 
 
-def test_natural_caption_varies_without_nonteam_hashtags():
+def test_social_caption_contains_only_team_hashtags():
     fixtures=[{'home':f'Home {i}', 'away':f'Away {i}'} for i in range(5)]
     captions=[fb.caption_for({'date':f'2026-11-{d:02}', 'fixtures':fixtures}) for d in range(1,5)]
-    assert len({c.splitlines()[2] for c in captions}) > 1
-    for caption in captions:
-        assert '18+ | Bet responsibly.' in caption and '?' in caption
-        assert all(t.startswith(('#Home','#Away')) for t in caption.split() if t.startswith('#'))
-        assert 'automated' not in caption.lower() and 'guaranteed' not in caption.lower()
+    expected = [f'#{name.replace(" ", "")}' for i in range(5) for name in (f'Home {i}', f'Away {i}')]
+    assert all(caption.split() == expected for caption in captions)
+    assert all(all(tag.startswith('#') for tag in caption.split()) for caption in captions)

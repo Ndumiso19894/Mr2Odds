@@ -19,7 +19,7 @@ NOW = datetime(2026, 11, 4, 7, 10, tzinfo=fb.SAST)
 def data():
     fixtures, primary = [], []
     for i in range(10):
-        f = {'id':str(i), 'home':f'Home {i}', 'away':f'Away {i}', 'country':'England',
+        f = {'id':str(i), 'livescore_id':f'event-{i}', 'home':f'Home {i}', 'away':f'Away {i}', 'country':'England',
              'league':'Championship', 'date':'2026-11-04', 'kickoff':'2026-11-04 15:00', 'time_known':True,
              'data_ok':True, 'q':'High', 'badges':{'home':'enet/1.png','away':'enet/2.png'},
              'sels':[['O15',.82,.82,.8,1.20,0]]}
@@ -51,6 +51,27 @@ def test_preparation_uses_only_current_eligible_selections_and_real_crests(tmp_p
     monkeypatch.setattr(fb,'badge',lambda *args:None)
     assert not reel.prepare(source,tmp_path/'empty',NOW,object(),music)
     assert not (tmp_path/'empty'/'selection-reel.mp4').exists()
+
+
+def test_prepare_excludes_prior_claimed_fixtures_and_event_ids(tmp_path, monkeypatch):
+    source = tmp_path/'snapshot.json'
+    source.write_text(json.dumps(data()))
+    music = tmp_path/'music.mp3'
+    music.write_bytes(b'music')
+    image = Image.new('RGBA', (15, 15), 'teal')
+    monkeypatch.setattr(fb, 'badge', lambda *args: image)
+    monkeypatch.setattr(reel, 'encode', lambda slides, music, out: out.write_bytes(b'video'))
+    prior_claims = [{'manifest': {'fixtures': [
+        {'home':'Home 0', 'away':'Away 0'},  # name identity works for legacy manifests
+        {'home':'Another Home', 'away':'Another Away', 'livescore_id':'event-1'},
+    ]}}]
+
+    output = tmp_path/'out'
+    assert reel.prepare(source, output, NOW, object(), music, prior_claims)
+    manifest = json.loads((output/'selection-reel.json').read_text())
+    assert len(manifest['fixtures']) == 8
+    assert not ({f['home'] for f in manifest['fixtures']} & {'Home 0', 'Home 1'})
+    assert not ({f['livescore_id'] for f in manifest['fixtures']} & {'event-0', 'event-1'})
 
 
 def test_validate_rejects_stale_started_or_unpriced_manifest(tmp_path):
@@ -96,9 +117,9 @@ def test_facebook_uses_real_reels_api_and_confirms_publication(tmp_path, monkeyp
     assert upload.kwargs['headers']['Authorization']=='OAuth fake-user-token'
     assert finish.kwargs['data']['video_state']=='PUBLISHED'
     description = finish.kwargs['data']['description']
-    assert description.startswith("Today's football picks - 4 November 2026\n\n")
-    assert '?' in description and 'Mr 2 Odds' in description
-    assert description.splitlines()[-1].startswith('#Home0 #Away0')
+    assert description.split() == [f'#{name.replace(" ", "")}' for i in range(5)
+                                   for name in (f'Home {i}', f'Away {i}')]
+    assert all(tag.startswith('#') for tag in description.split())
     assert 'fake-user-token' not in capsys.readouterr().out
 
 
@@ -232,4 +253,7 @@ def test_caption_for_eight_teams_fits_telegram_and_stays_team_only():
     tags = [word for word in text.split() if word.startswith('#')]
     assert len(tags) == 16
     assert all(tag.startswith(('#HomeUnited', '#AwayFootballClub')) for tag in tags)
-    assert 'Test reel' in text and '18+ | Bet responsibly.' in text
+    expected = [f'#{name.replace(" ", "")}' for i in range(8)
+                for name in (f'Home United {i}', f'Away Football Club {i}')]
+    assert text.split() == expected
+    assert reel.reel_caption(info, test=False) == text

@@ -247,7 +247,7 @@ def render(selections, path, logo_path=ROOT / 'android/design/mr-2-odds-logo.png
 
 
 def caption_for(manifest, *, medium='photo'):
-    """Only the teams actually printed on the card become hashtags."""
+    """Return only the hashtags for teams shown on the post or video."""
     if manifest.get("series") == "accumulators":
         from scripts import facebook_accumulators
         return facebook_accumulators.caption(manifest)
@@ -255,43 +255,34 @@ def caption_for(manifest, *, medium='photo'):
         from scripts import stats_watch_assets
         return stats_watch_assets.caption(manifest)
     try:
-        date = datetime.strptime(manifest['date'], '%Y-%m-%d')
         fixtures = manifest['fixtures']
-    except (KeyError, TypeError, ValueError):
-        raise ValueError('Invalid caption data') from None
-    if not 5 <= len(fixtures) <= 8:
-        raise ValueError('Caption requires the same 5 to 8 matches as the image')
+    except (KeyError, TypeError):
+        raise ValueError('Invalid hashtag data') from None
+    if not isinstance(fixtures, list) or not 5 <= len(fixtures) <= 8:
+        raise ValueError('Hashtags require the same 5 to 8 matches as the image')
     tags, seen = [], set()
     for item in fixtures:
         for side in ('home', 'away'):
             name = item.get(side)
             if not isinstance(name, str) or not name.strip():
-                raise ValueError('Missing team name in caption data')
+                raise ValueError('Missing team name in hashtag data')
             tag = ''.join(c for c in unicodedata.normalize('NFKC', name) if c.isalnum() or c == '_')
             if not tag:
                 raise ValueError('Cannot make a hashtag from the team name')
             if tag.casefold() not in seen:
                 seen.add(tag.casefold())
                 tags.append('#' + tag)
-    day = f'{date.day} {date.strftime("%B %Y")}'
-    intro = f"Today's {'1X2' if manifest.get('series') == '1x2' else 'football'} picks - {day}"
-    questions = ('Which match are you watching?', 'Which fixture stands out to you?',
-                 'Any of these matches on your radar?', 'Which game are you looking forward to?')
-    follows = ('Follow Mr 2 Odds for more picks and results.', 'More picks and results here at Mr 2 Odds.',
-               'Follow Mr 2 Odds for the next update.', 'Keep up with picks and results at Mr 2 Odds.')
-    choice = (date.toordinal() + sum(ord(c) for c in fixtures[0]['home'] + fixtures[0]['away'])
-              + (1 if medium == 'reel' else 0)) % len(questions)
-    return (f'{intro}\n\n{questions[choice]}\n{follows[choice]}\n'
-            '18+ | Bet responsibly. Odds from SportyBet; odds can change.\n\n' + ' '.join(tags))
+    return ' '.join(tags)
 
 
 def prepare(snapshot, output, now=None, session=None, prior_claims=None):
     now = now or datetime.now(SAST)
     excluded = facebook_history.prior_matches(prior_claims or [])
-    excluded_ids = {str(p['livescore_id']) for c in (prior_claims or []) for p in c['manifest']['fixtures'] if p.get('livescore_id')}
+    excluded_ids = facebook_history.prior_livescore_ids(prior_claims or [])
     picks = [p for p in candidates(json.loads(Path(snapshot).read_text(encoding='utf-8')), now)
              if facebook_history.match_key(p) not in excluded
-             and (not p.get('livescore_id') or str(p['livescore_id']) not in excluded_ids)]
+             and (not str(p.get('livescore_id') or '').strip()
+                  or str(p['livescore_id']).strip() not in excluded_ids)]
     session = session or requests.Session()
     complete = []
     for item in picks:
@@ -424,11 +415,12 @@ def main():
     sub.add_parser('diagnose')
     args = parser.parse_args()
     if args.cmd == 'prepare':
-        prior = facebook_history.load_claims(datetime.now(SAST).date().isoformat()) if args.exclude_claimed else None
+        prior = facebook_history.load_claims(datetime.now(SAST).date().isoformat()) if args.exclude_claimed else []
         ready = prepare(args.snapshot, args.output, prior_claims=prior)
         if not ready:
             from scripts import stats_watch_assets
-            ready = stats_watch_assets.prepare(args.output.parent, include_video=False, image_path=args.output)
+            ready = stats_watch_assets.prepare(args.output.parent, include_video=False, image_path=args.output,
+                                               prior_claims=prior)
         if os.environ.get('GITHUB_OUTPUT'):
             with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
                 out.write(f'ready={str(ready).lower()}\n')

@@ -88,13 +88,86 @@ def load_claims(day, confirmed_only=False, session=None):
     return claims
 
 
+def team_key(value):
+    """A stable, accent-preserving name key for same-day duplicate checks."""
+    if not isinstance(value, str) or not value.strip():
+        return None
+    return ' '.join(value.casefold().split())
+
+
 def match_key(item):
     """Fixture-level identity also handles old manifests that did not save an ID."""
-    names = tuple(' '.join(str(item.get(k) or '').casefold().split()) for k in ('home', 'away'))
+    if not isinstance(item, dict):
+        raise ValueError('A prior claim has no usable match names')
+    names = tuple(team_key(item.get(k)) for k in ('home', 'away'))
     if not all(names):
         raise ValueError('A prior claim has no usable match names')
     return names
 
 
+def _claim_items(claim, field):
+    manifest = claim.get('manifest') if isinstance(claim, dict) else None
+    items = manifest.get(field) if isinstance(manifest, dict) else None
+    if items is None and field == 'rows':
+        return []
+    if not isinstance(items, list):
+        raise ValueError('A prior claim has an invalid fixture list')
+    return items
+
+
 def prior_matches(claims):
-    return {match_key(item) for claim in claims for item in claim['manifest']['fixtures']}
+    matches = set()
+    for claim in claims:
+        matches.update(match_key(item) for item in _claim_items(claim, 'fixtures'))
+        for item in _claim_items(claim, 'rows'):
+            if isinstance(item, dict) and item.get('home') and item.get('away'):
+                matches.add(match_key(item))
+    return matches
+
+
+def prior_teams(claims):
+    """Team names already used in today's claimed content, including Stats Watch rows."""
+    teams = set()
+    for claim in claims:
+        for item in _claim_items(claim, 'fixtures'):
+            teams.update(match_key(item))
+        for item in _claim_items(claim, 'rows'):
+            if not isinstance(item, dict):
+                raise ValueError('A prior claim has an invalid Stats Watch row')
+            for name in (item.get('team'), item.get('home'), item.get('away')):
+                key = team_key(name)
+                if key:
+                    teams.add(key)
+    return teams
+
+
+def prior_team_ids(claims):
+    """ESPN club IDs already used by factual fallback rows."""
+    ids = set()
+    for claim in claims:
+        for item in _claim_items(claim, 'rows'):
+            if not isinstance(item, dict):
+                raise ValueError('A prior claim has an invalid Stats Watch row')
+            ids.update(str(item[k]) for k in ('team_id', 'home_id', 'away_id')
+                       if isinstance(item.get(k), (str, int)) and not isinstance(item.get(k), bool)
+                       and str(item[k]).isdigit())
+    return ids
+
+
+def prior_livescore_ids(claims):
+    """Livescore event IDs already present in claimed fixture or factual-row manifests."""
+    ids = set()
+    for claim in claims:
+        for field in ('fixtures', 'rows'):
+            for item in _claim_items(claim, field):
+                if not isinstance(item, dict):
+                    raise ValueError('A prior claim has an invalid fixture or factual row')
+                value = item.get('livescore_id')
+                if value is None or value == '':
+                    continue
+                if isinstance(value, bool) or not isinstance(value, (str, int)):
+                    raise ValueError('A prior claim has an invalid Livescore event ID')
+                value = str(value).strip()
+                if value:
+                    ids.add(value)
+    return ids

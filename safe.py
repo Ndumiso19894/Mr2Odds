@@ -309,7 +309,7 @@ class Bet:
 
 
 def safest(rows: list, now: datetime, window_end: datetime, min_odds: float = MIN_ODDS, min_p: float = MIN_P,
-           groups: tuple = SAFE_GROUPS, trebles: bool = False) -> dict:
+           groups: tuple = SAFE_GROUPS, trebles: bool = False, signal=None) -> dict:
     start = now + timedelta(minutes=10)
     bets: list[Bet] = []
     for r in rows:
@@ -321,6 +321,8 @@ def safest(rows: list, now: datetime, window_end: datetime, min_odds: float = MI
             if not s.priced or s.odds < min_odds or s.p < min_p or s.diff or s.group not in groups:
                 continue
             if not rec_policy.allowed(s.sel) or rec_policy.outlier(s.p_model, s.p_sb, s.odds):
+                continue
+            if s.group == "result" and (signal is None or not signal(r, s.sel)):
                 continue
             bets.append(Bet(key, fx["div"], fx["league"], fx["home"], fx["away"], fx["kickoff"].strftime("%Y-%m-%d %H:%M"),
                             s.sel, s.p, s.p_model, s.p_sb, s.odds, h2h_evidence.row_preferred(r)))
@@ -439,7 +441,7 @@ def botd_candidates(rows: list, now: datetime, min_odds: float = MIN_ODDS, signa
                 if gkey in SIGNAL_SECTIONS:
                     if s.p_model < thr or (s.p_sb is not None and s.p_sb < thr):
                         break
-                    if signal is not None and not signal(r, s.sel):
+                    if signal is None or not signal(r, s.sel):
                         break
                 out.append(Bet(key, fx["div"], fx["league"], fx["home"], fx["away"], fx["kickoff"].strftime("%Y-%m-%d %H:%M"),
                                s.sel, s.p, s.p_model, s.p_sb, s.odds, h2h_evidence.row_preferred(r)))

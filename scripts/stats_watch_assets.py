@@ -9,7 +9,7 @@ from pathlib import Path
 import requests
 from PIL import Image, ImageDraw, ImageOps
 
-from scripts import facebook_post as fb
+from scripts import facebook_history, facebook_post as fb
 from scripts import selection_reel as reel
 from scripts import stats_watch
 
@@ -28,11 +28,10 @@ def caption(info):
             if tag.casefold() not in seen:
                 tags.append('#'+tag)
                 seen.add(tag.casefold())
-    return ('Stats Watch: unbeaten league runs ⚽\n\n'
-            'These teams are in their league’s top two and unbeaten in recent league play. '
-            'Which run impresses you most?\n'
-            'Standings and fixtures: ESPN. Times shown in SAST.\n'
-            '18+ | Bet responsibly.\n\n' + ' '.join(tags))
+    text = ' '.join(tags)
+    if len(text) > 1024:
+        raise ValueError('Hashtags too long for a video caption')
+    return text
 
 
 def validate_manifest(info, now=None):
@@ -45,8 +44,9 @@ def validate_manifest(info, now=None):
     if info.get('date') != now.astimezone(fb.SAST).date().isoformat():
         raise ValueError('Stats-watch source is not for today')
     rows = info.get('rows') or []
-    if not 1 <= len(rows) <= 10 or len({r.get('team_id') for r in rows}) != len(rows):
-        raise ValueError('Stats-watch needs distinct teams')
+    if not isinstance(rows, list) or not 1 <= len(rows) <= 10:
+        raise ValueError('Stats-watch needs one to ten teams')
+    used_names, used_ids, used_events = set(), set(), set()
     for r in rows:
         code = r.get('league_code')
         if (code not in stats_watch.LEAGUES or r.get('country') != stats_watch.LEAGUES[code]
@@ -63,6 +63,14 @@ def validate_manifest(info, now=None):
             or stats_watch._utc(r.get('kickoff_utc')) <= now + timedelta(minutes=5)
             or not stats_watch.competition_policy.allowed(country=r['country'], league=r['competition'], home=r['home'], away=r['away'])):
             raise ValueError('Invalid or expired stats-watch evidence')
+        names = {facebook_history.team_key(r['home']), facebook_history.team_key(r['away'])}
+        ids = {str(r['home_id']), str(r['away_id'])}
+        if (len(names) != 2 or len(ids) != 2 or names & used_names or ids & used_ids
+                or str(r['event_id']) in used_events):
+            raise ValueError('Stats-watch rows must use distinct clubs and fixtures')
+        used_names.update(names)
+        used_ids.update(ids)
+        used_events.add(str(r['event_id']))
         if r.get('season') not in (generated.year, generated.year-1) or (r['season'] == generated.year-1 and generated.month >= 8):
             raise ValueError('Stats-watch season is stale')
         if min(r['wins'], r['draws']) < 0:
@@ -174,9 +182,11 @@ def render_slide(rows, page, count, now, path):
     image.save(path,'PNG')
 
 
-def prepare(output, now=None, music=None, session=None, minimum=1, include_video=True, image_path=None):
+def prepare(output, now=None, music=None, session=None, minimum=1, include_video=True, image_path=None, prior_claims=()):
     now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
-    rows = stats_watch.collect(now, limit=30)
+    excluded_teams = facebook_history.prior_teams(prior_claims or [])
+    excluded_ids = facebook_history.prior_team_ids(prior_claims or [])
+    rows = stats_watch.collect(now, limit=30, exclude_teams=excluded_teams, exclude_team_ids=excluded_ids)
     session = session or requests.Session()
     complete = []
     for row in rows:

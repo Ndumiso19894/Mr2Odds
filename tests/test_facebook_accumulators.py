@@ -37,7 +37,9 @@ def test_builds_three_disjoint_majority_goals_accumulators():
 
 def test_validate_market_total_expiry_and_flat_list():
     info=make_info();acc.validate(info,NOW)
-    assert 'Odds from SportyBet' in acc.caption(info) and 'model' not in acc.caption(info).lower()
+    hashtags = acc.caption(info).split()
+    assert len(hashtags) == 24 and all(tag.startswith('#') for tag in hashtags)
+    assert len({tag.casefold() for tag in hashtags}) == len(hashtags)
     for change in ('market','total','kickoff','duplicate','price'):
         bad=deepcopy(info)
         if change=='market': bad['accumulators'][0]['fixtures'][0]['sel']='H'
@@ -61,7 +63,9 @@ def test_album_uploads_three_images_as_one_post(tmp_path,monkeypatch):
     assert all(c.kwargs['data']['published']=='false' for c in session.post.call_args_list[:3])
     feed=session.post.call_args_list[-1]
     assert feed.args[0].endswith('/feed') and len([x for x in feed.kwargs['data'] if x.startswith('attached_media[')])==3
-    assert 'Odds from SportyBet' in feed.kwargs['data']['message']
+    message = feed.kwargs['data']['message']
+    assert message == acc.caption(info)
+    assert all(tag.startswith('#') for tag in message.split())
 
 
 def test_picture_and_reel_share_prediction_manifest(tmp_path):

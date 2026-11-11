@@ -1196,6 +1196,161 @@ MODELS: dict = {}   # count models, built once per run in main()
 SIGNAL_BASELINES: dict = {}
 
 
+def _x12_form(matches: list[dict] | None) -> dict:
+    """Recent W-D-L record, preserving the true denominator and ignoring malformed scores."""
+    scores = []
+    for match in (matches or [])[:rec_policy.X12_FORM_MATCHES]:
+        try:
+            gf, ga = match["gf"], match["ga"]
+            if (isinstance(gf, bool) or isinstance(ga, bool) or not math.isfinite(float(gf))
+                    or not math.isfinite(float(ga)) or int(gf) != float(gf) or int(ga) != float(ga)
+                    or gf < 0 or ga < 0):
+                continue
+            scores.append((int(gf), int(ga)))
+        except (KeyError, TypeError, ValueError, OverflowError):
+            continue
+    return {"n": len(scores), "w": sum(gf > ga for gf, ga in scores),
+            "d": sum(gf == ga for gf, ga in scores), "l": sum(gf < ga for gf, ga in scores)}
+
+
+def _x12_team_evidence(profile, ev: dict, venue: str) -> dict:
+    composition = ev.get("composition") or {}
+    share = composition.get("own_competition_share")
+    if isinstance(share, bool) or not isinstance(share, (int, float)) or not math.isfinite(float(share)):
+        share = None
+    days = composition.get("days_since_last")
+    if isinstance(days, bool) or not isinstance(days, int):
+        days = None
+    try:
+        n_eff = float(getattr(profile, "n_eff", 0) or 0)
+        n_eff = round(n_eff, 1) if math.isfinite(n_eff) else None
+    except (TypeError, ValueError, OverflowError):
+        n_eff = None
+    friendlies = composition.get("friendlies_included")
+    if isinstance(friendlies, bool) or not isinstance(friendlies, int) or friendlies < 0:
+        friendlies = None
+    return {
+        "matches": int(getattr(profile, "n", 0) or 0),
+        "effective_matches": n_eff,
+        "venue": venue,
+        "venue_matches": int(getattr(profile, "venue_n", 0) or 0),
+        "days_since_last": days,
+        "same_competition_share": round(float(share), 2) if share is not None else None,
+        "friendlies_in_sample": friendlies,
+        "last5": _x12_form(getattr(profile, "last5", None)),
+        "venue_last5": _x12_form(getattr(profile, "venue_last5", None)),
+    }
+
+
+def build_x12_research(r: MatchRow, ev_h: dict, ev_a: dict, quality_data: dict) -> dict:
+    """Build evidence-backed recommendation gates for the modelled 1X2 outcomes.
+
+    Every outcome needs High data quality, complete/recent team and venue samples,
+    and agreement with a complete de-margined 1X2 market. Straight wins also need
+    supporting W-D-L form; draws need recent draw evidence from both teams. Raw
+    probabilities remain visible as analysis even when a recommendation fails.
+    """
+    teams = {
+        "home": _x12_team_evidence(r.home, ev_h, "home"),
+        "away": _x12_team_evidence(r.away, ev_a, "away"),
+    }
+    common = []
+    if not r.data_ok:
+        common.append("match data checks did not pass")
+    if (quality_data or {}).get("overall") != "High":
+        common.append("overall data quality is not High")
+    for side, evidence in teams.items():
+        name = r.fx[side]
+        if evidence["matches"] < rec_policy.X12_MIN_TEAM_MATCHES:
+            common.append(f"{name}: fewer than {rec_policy.X12_MIN_TEAM_MATCHES} researched matches")
+        if (evidence["effective_matches"] is None
+                or evidence["effective_matches"] < rec_policy.X12_MIN_EFFECTIVE_MATCHES):
+            common.append(f"{name}: insufficient time-weighted evidence")
+        if evidence["venue_matches"] < rec_policy.X12_MIN_VENUE_MATCHES:
+            common.append(f"{name}: fewer than {rec_policy.X12_MIN_VENUE_MATCHES} {evidence['venue']} matches")
+        if (evidence["days_since_last"] is None
+                or not 0 <= evidence["days_since_last"] <= rec_policy.X12_MAX_DAYS_SINCE_LAST):
+            common.append(f"{name}: latest verified result is too old or unavailable")
+        if (evidence["same_competition_share"] is None
+                or evidence["same_competition_share"] < rec_policy.X12_MIN_COMPETITION_SHARE):
+            common.append(f"{name}: insufficient evidence from this competition")
+        if evidence["friendlies_in_sample"] is None:
+            common.append(f"{name}: friendly count is unavailable, so friendlies are not verified absent")
+        elif evidence["friendlies_in_sample"] > 0:
+            common.append(f"{name}: friendlies remain in the research sample")
+        if evidence["last5"]["n"] < rec_policy.X12_FORM_MATCHES:
+            common.append(f"{name}: incomplete recent-results sample")
+        if evidence["venue_last5"]["n"] < rec_policy.X12_FORM_MATCHES:
+            common.append(f"{name}: incomplete recent {evidence['venue']} form sample")
+
+    selections = {s.sel: s for s in safe_mod.selections(r) if s.sel in ("H", "D", "A")}
+    outcomes = {}
+    for code in ("H", "D", "A"):
+        selection = selections.get(code)
+        reasons = list(common)
+        if selection is None:
+            p = p_market = odds = None
+            reasons.append("complete selection price data is unavailable")
+        else:
+            p, p_market, odds = selection.p, selection.p_sb, selection.odds
+            if p < rec_policy.X12_MIN_PROBABILITY:
+                reasons.append(f"model probability is below {rec_policy.X12_MIN_PROBABILITY:.0%}")
+            if odds is None or not rec_policy.X12_MIN_ODDS <= odds <= rec_policy.X12_MAX_ODDS:
+                reasons.append(f"SportyBet price is missing or outside {rec_policy.X12_MIN_ODDS:.2f}–{rec_policy.X12_MAX_ODDS:.2f}")
+            if p_market is None:
+                reasons.append("a complete de-margined 1X2 market is unavailable")
+            elif abs(p - p_market) > rec_policy.X12_MAX_MARKET_GAP:
+                reasons.append(f"model and de-margined market differ by more than {100 * rec_policy.X12_MAX_MARKET_GAP:.0f} percentage points")
+            if odds is not None and p * odds < rec_policy.X12_MIN_MODEL_RETURN:
+                reasons.append(f"model probability × price is below {rec_policy.X12_MIN_MODEL_RETURN:.2f}")
+
+        form = None
+        if code in ("H", "A"):
+            own_side, opponent_side = ("home", "away") if code == "H" else ("away", "home")
+            own, opponent = teams[own_side], teams[opponent_side]
+            form = {"type": "win", "selected_team": {"overall": own["last5"], "venue": own["venue_last5"]},
+                    "opponent": {"overall": opponent["last5"], "venue": opponent["venue_last5"]}}
+            for label, own_form, opponent_form in (
+                    ("recent", own["last5"], opponent["last5"]),
+                    ("venue-specific recent", own["venue_last5"], opponent["venue_last5"])):
+                if own_form["n"] >= rec_policy.X12_FORM_MATCHES and (
+                        own_form["w"] < rec_policy.X12_FORM_MIN_WINS
+                        or own_form["l"] > rec_policy.X12_FORM_MAX_LOSSES):
+                    reasons.append(f"selected team lacks {label} backing ({rec_policy.X12_FORM_MIN_WINS} wins and at most {rec_policy.X12_FORM_MAX_LOSSES} loss from {rec_policy.X12_FORM_MATCHES} required)")
+                if opponent_form["n"] >= rec_policy.X12_FORM_MATCHES and (
+                        opponent_form["w"] > rec_policy.X12_OPPONENT_MAX_WINS):
+                    reasons.append(f"opponent has too many {label} wins (at most {rec_policy.X12_OPPONENT_MAX_WINS} from {rec_policy.X12_FORM_MATCHES} required)")
+        elif code == "D":
+            form = {"type": "draw", "home": {"overall": teams["home"]["last5"], "venue": teams["home"]["venue_last5"]},
+                    "away": {"overall": teams["away"]["last5"], "venue": teams["away"]["venue_last5"]}}
+            for side in ("home", "away"):
+                name = r.fx[side]
+                for label, sample in (("recent", teams[side]["last5"]),
+                                      ("venue-specific recent", teams[side]["venue_last5"])):
+                    if (sample["n"] >= rec_policy.X12_FORM_MATCHES
+                            and sample["d"] < rec_policy.X12_DRAW_MIN_DRAWS):
+                        reasons.append(f"{name}: fewer than {rec_policy.X12_DRAW_MIN_DRAWS} draws in the last {rec_policy.X12_FORM_MATCHES} {label} matches")
+
+        gap = (p - p_market) * 100 if p is not None and p_market is not None else None
+        outcomes[code] = {
+            "eligible": not reasons,
+            "reasons": reasons,
+            "model_probability": p,
+            "market_probability": p_market,
+            "market_gap_pp": round(gap, 1) if gap is not None else None,
+            "odds": odds,
+            "form": form,
+        }
+    return {"quality": (quality_data or {}).get("overall") or "N/A", "teams": teams,
+            "outcomes": outcomes, "rules": rec_policy.X12_RULES}
+
+
+def x12_research_eligible(r: MatchRow, sel: str) -> bool:
+    report = getattr(r, "x12_research", None) or {}
+    outcome = (report.get("outcomes") or {}).get(sel) or {}
+    return outcome.get("eligible") is True
+
+
 def build_audits(rows: list[MatchRow], now: datetime) -> None:
     """Fill MatchRow.audit: sample evidence of both teams, head-to-head strength, data quality, the lambda
     explanation, the market comparison layer and the automatic model-v-raw-data warnings."""
@@ -1208,6 +1363,7 @@ def build_audits(rows: list[MatchRow], now: datetime) -> None:
             h2h = quality.h2h_evidence(r.h2h, now, r.recent_form)
             q = quality.data_quality(r, ev_h, ev_a, h2h, now)
             mkt = quality.market_layer(r)
+            r.x12_research = build_x12_research(r, ev_h, ev_a, q)
             n_min = min(r.home.n, r.away.n)
             conf = {k: quality.confidence(r.p_model.get(k), q, n_min) for k in ("O15", "O25", "O35", "BTTS")}
             conf["X12"] = quality.confidence(r.extra.x12.get("H") if r.extra.x12 else None, q, n_min)
@@ -2399,17 +2555,10 @@ def send_telegram(text: str) -> None:
 
 
 def strong_signal(r: MatchRow, sel: str) -> bool:
-    """Form backing for 1X2 and Over 2.5; other current day-card markets need no extra signal."""
+    """Evidence backing for every 1X2 outcome and Over 2.5; other day-card markets need no extra signal."""
     H, A = r.home, r.away
-
-    def wins(p):
-        return sum(1 for m in (p.last5 or []) if m["gf"] > m["ga"]), sum(1 for m in (p.last5 or []) if m["gf"] < m["ga"]), len(p.last5 or [])
-
-    if sel in ("H", "A"):
-        me, opp = (H, A) if sel == "H" else (A, H)
-        w, l, n = wins(me)
-        ow, ol, on = wins(opp)
-        return n >= 4 and w >= 3 and l <= 1 and on >= 4 and ow <= 1
+    if sel in ("H", "D", "A"):
+        return x12_research_eligible(r, sel)
     if sel == "BTTS":
         return H.last_n >= 6 and A.last_n >= 6 and H.last_btts / H.last_n >= 0.6 and A.last_btts / A.last_n >= 0.6 \
             and (H.venue_rate_btts >= 0.5 if H.venue_rate_btts == H.venue_rate_btts else True)
@@ -2461,9 +2610,11 @@ def all_sels(r: MatchRow) -> list[dict]:
 
 
 def top_sels(r: MatchRow) -> list[dict]:
-    """The three best priced selections (for the day history)."""
+    """The three best priced selections for day history; 1X2 requires its research gate."""
     out = [d for d in all_sels(r) if d["odds"] and d["odds"] >= safe_mod.MIN_ODDS and not d["diff"]
-           and rec_policy.allowed(d["sel"]) and not rec_policy.outlier(d.get("p_model"), d.get("p_sb"), d["odds"])]
+           and rec_policy.allowed(d["sel"])
+           and (d["sel"] not in ("H", "D", "A") or x12_research_eligible(r, d["sel"]))
+           and not rec_policy.outlier(d.get("p_model"), d.get("p_sb"), d["odds"])]
     return [{"sel": d["sel"], "label": d["label"], "p": d["p"], "odds": d["odds"]} for d in out[:3]]
 
 
@@ -2484,11 +2635,13 @@ def analyse_fixtures(fixtures, evidence, long, results, div_avgs, now, pool):
 
 
 def filter_botd_by_current_rows(card, rows):
-    """Keep sticky day-card picks within the current analysed fixture set."""
-    eligible_keys = {(r.fx["date"].strftime("%Y-%m-%d"), r.fx["country"], r.fx["home"], r.fx["away"]) for r in rows}
+    """Keep sticky day-card picks in current rows; stale 1X2 picks must still pass research."""
+    rows_by_key = {(r.fx["date"].strftime("%Y-%m-%d"), r.fx["country"], r.fx["home"], r.fx["away"]): r for r in rows}
     def eligible(b):
-        return (competition_policy.allows_record(b) and
-                (str(b.get("kickoff") or "")[:10], b.get("country"), b.get("home"), b.get("away")) in eligible_keys)
+        key = (str(b.get("kickoff") or "")[:10], b.get("country"), b.get("home"), b.get("away"))
+        row = rows_by_key.get(key)
+        return (competition_policy.allows_record(b) and row is not None
+                and (b.get("sel") not in ("H", "D", "A") or x12_research_eligible(row, b.get("sel"))))
     card["bets"] = [b for b in card.get("bets", []) if eligible(b)]
     for group in card.get("groups", []):
         group["bets"] = [b for b in group.get("bets", []) if eligible(b)]
@@ -2830,7 +2983,8 @@ def main() -> None:
     ctx.update({"parlays": pr, "parlay_ids": [], "parlay_summary": parlay_mod.summary(ledger, now), "parlay_recent": []})
 
     # ---- high-probability selections and the day card (current app recommendation policy)
-    safe_res = safe_mod.safest(rows, now, window_end, groups=safe_mod.SAFE_GROUPS, trebles=False)
+    safe_res = safe_mod.safest(rows, now, window_end, groups=safe_mod.SAFE_GROUPS, trebles=False,
+                               signal=x12_research_eligible)
     safe_res["quality"] = {(r.fx["date"].strftime("%Y-%m-%d"), r.fx["country"], r.fx["home"], r.fx["away"]):
                            ((r.audit or {}).get("quality") or {}).get("overall") for r in rows if r.data_ok}
     bets_df = safe_mod.load_csv(SAFE_BETS_FILE, safe_mod.SAFE_BET_COLS)

@@ -20,7 +20,7 @@ import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import competition_policy
-from scripts import facebook_post as fb
+from scripts import facebook_history, facebook_post as fb
 
 # Senior men's domestic leagues only; no cup, women's, youth or international league.
 LEAGUES = {
@@ -208,8 +208,13 @@ def next_fixture(candidate, league_schedule, all_schedule, now):
             'event_id':event_id, 'schedule_url':SCHEDULE.format('all', candidate['team_id']) + '?fixture=true'}
 
 
-def collect(now=None, limit=10, get=_json):
+def collect(now=None, limit=10, get=_json, exclude_teams=(), exclude_team_ids=()):
+    """Collect verified rows, avoiding repeated clubs and fixtures within and across same-day posts."""
     now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    if limit <= 0:
+        return []
+    excluded_names = {facebook_history.team_key(x) for x in exclude_teams if facebook_history.team_key(x)}
+    excluded_ids = {str(x) for x in exclude_team_ids if str(x).isdigit()}
     candidates = []
     def table(code):
         try:
@@ -229,7 +234,24 @@ def collect(now=None, limit=10, get=_json):
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         values = [x for x in pool.map(fixture, candidates) if x]
     values.sort(key=lambda x: (-x['streak'], x['league_code'], x['team']))
-    return values[:limit]
+    out, used_names, used_ids, used_fixtures = [], set(), set(), set()
+    for row in values:
+        home_key, away_key = (facebook_history.team_key(row.get(side)) for side in ('home', 'away'))
+        if not home_key or not away_key or home_key == away_key:
+            continue
+        names = {home_key, away_key}
+        ids = {str(row.get(k)) for k in ('home_id', 'away_id') if str(row.get(k) or '').isdigit()}
+        fixture_key = tuple(sorted(names))
+        if (names & excluded_names or ids & excluded_ids or names & used_names
+                or ids & used_ids or fixture_key in used_fixtures):
+            continue
+        out.append(row)
+        used_names.update(names)
+        used_ids.update(ids)
+        used_fixtures.add(fixture_key)
+        if len(out) >= limit:
+            break
+    return out
 
 
 def main():

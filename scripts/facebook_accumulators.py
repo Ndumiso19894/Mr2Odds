@@ -19,7 +19,7 @@ from PIL import Image, ImageDraw
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import safe
-from scripts import facebook_post as fb
+from scripts import facebook_history, facebook_post as fb
 from scripts import selection_reel as reel
 
 
@@ -141,17 +141,14 @@ def caption(info):
             tag = ''.join(c for c in unicodedata.normalize('NFKC',name) if c.isalnum() or c == '_')
             if tag and tag.casefold() not in seen:
                 tags.append('#'+tag); seen.add(tag.casefold())
-    day = datetime.strptime(info['date'],'%Y-%m-%d')
-    text = (f"Morning predictions · {day.day} {day.strftime('%B %Y')} ⚽\n\n"
-            "Three accumulators: mostly over 1.5 goals, with corners where available.\n"
-            "Which one are you following?\nOdds from SportyBet; odds can change.\n"
-            "18+ | Bet responsibly.\n\n" + ' '.join(tags))
+    datetime.strptime(info['date'],'%Y-%m-%d')  # reject malformed manifests without adding generated copy
+    text = ' '.join(tags)
     if len(text) > 1000:
-        raise ValueError('Caption too long for Telegram')
+        raise ValueError('Hashtags too long for Telegram')
     return text
 
 
-def prepare(snapshot, output, now=None, music=None):
+def prepare(snapshot, output, now=None, music=None, prior_claims=()):
     now = (now or datetime.now(fb.SAST)).astimezone(fb.SAST)
     data = json.loads(Path(snapshot).read_text(encoding='utf-8'))
     refs = []
@@ -176,7 +173,7 @@ def prepare(snapshot, output, now=None, music=None):
     if not groups:
         print('Fewer than three qualifying accumulators: preparing a verified Stats Watch instead.')
         from scripts import stats_watch_assets
-        return stats_watch_assets.prepare(Path(output),now=now,music=music)
+        return stats_watch_assets.prepare(Path(output),now=now,music=music,prior_claims=prior_claims)
     output = Path(output); output.mkdir(parents=True,exist_ok=True)
     fields = ('fixture','kickoff','country','league','home','away','sel','selection','odds','probability','livescore_id','badges')
     accs = [{'total_odds':f'{total(group):.2f}','fixtures':[{k:item[k] for k in fields} for item in group]} for group in groups]
@@ -235,7 +232,8 @@ def main():
     val=sub.add_parser('validate');val.add_argument('--output',type=Path,required=True)
     a=p.parse_args()
     if a.cmd=='prepare':
-        ready=prepare(a.snapshot,a.output)
+        claims=facebook_history.load_claims(datetime.now(fb.SAST).date().isoformat())
+        ready=prepare(a.snapshot,a.output,prior_claims=claims)
         if os.environ.get('GITHUB_OUTPUT'):
             with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as out:out.write(f'ready={str(ready).lower()}\n')
     elif a.cmd=='publish': publish(a.output)

@@ -282,6 +282,11 @@
       <div class="row"><div class="grow"><div class="cell" style="display:inline-block"><div class="k">Model xG</div><div class="v">${f1(xgH(f))} – ${f1(xgA(f))}</div><div class="tiny muted">total ${f2(xg.total)}</div></div>${mk}</div>
       <div class="rings" style="flex:2">${ringSet}</div></div>
       <div class="tiny muted" style="margin-top:8px"><b>Model probabilities</b> from football data only (goals, form, venue, league baseline) — bookmaker prices are compared, never blended in. Confidence ${esc(conf.O25 || 'N/A')}${q ? ` · data quality ${esc(q.overall)}` : ''} · samples ${(f.teams.home || {}).n || 0} / ${(f.teams.away || {}).n || 0} matches · league avg ${f2((f.league_avg.home_goals || 0) + (f.league_avg.away_goals || 0))} goals, O2.5 in ${pct(f.league_avg.o25)}${xg.market_total != null ? ` · model v market total ${(xg.total - xg.market_total) >= 0 ? '+' : ''}${f2(xg.total - xg.market_total)}` : ''}</div></div>`);
+    const research = f.x12_research || {}; const outcomes = research.outcomes || {};
+    const homeWin = outcomes.H || {}; const draw = outcomes.D || {}; const awayWin = outcomes.A || {};
+    const status = (o) => o.eligible === true ? 'checks passed' : 'analysis only';
+    const failedReasons = [...new Set([...(homeWin.reasons || []), ...(draw.reasons || []), ...(awayWin.reasons || [])])].slice(0, 3);
+    parts.push(`<div class="card tiny muted"><b>1X2 recommendation gate</b> — home: <b>${status(homeWin)}</b> · draw: <b>${status(draw)}</b> · away: <b>${status(awayWin)}</b>. Each recommendation needs High overall data quality, substantial recent team/venue samples, current same-competition evidence, clean match data, a complete de-margined 1X2 market within the published tolerance, and the stated probability/price checks. Straight wins also need supporting selected-team and opponent form; draws need recent draws from both teams. The rings above remain model analysis when an outcome is not recommended.${failedReasons.length && [homeWin, draw, awayWin].some((o) => o.eligible !== true) ? ` <span>Example checks not passed: ${failedReasons.map(esc).join('; ')}.</span>` : ''}</div>`);
     if (f.scores && f.scores.length) {
       const cov = f.scores.reduce((a, sc) => a + (sc[2] || 0), 0);
       parts.push(`<div class="card compact"><div class="row"><div class="grow b">Most likely scorelines</div><span class="tiny muted">Dixon-Coles model</span></div>
@@ -296,7 +301,7 @@
     const evs = eventsCard(f, fin0); if (evs) parts.push(evs);
     const bets = betsOn(f.id);
     if (bets.length) parts.push(`<div class="card compact"><div class="b">Bets on this match</div><div class="chips" style="margin-top:6px">${bets.map((b) => { const vd = liveVerdict(b.sel, s); return `<span class="chip ${vd.cls}">${esc(b.kind)}: ${esc(b.label)}${b.odds ? ' @ ' + f2(b.odds) : ''} · ${esc(vd.text)}</span>`; }).join('')}</div></div>`);
-    const best = f.sels.filter((x) => PR.offeredPrice(x.odds)).slice(0, 5);
+    const best = f.sels.filter((x) => PR.offeredPrice(x.odds) && PR.resultResearchEligible(f, x.sel)).slice(0, 5);
     if (best.length) parts.push(`<div class="card compact"><div class="row"><div class="grow b">${icon('target', 'sm')} Highest model probabilities (priced)</div><span class="tiny muted">+ adds to your slip</span></div><table class="tbl">${best.map((x) => `<tr><td><div class="b">${esc(selLabel(x.sel, f.home, f.away))}</div><div class="tiny muted">${esc(GROUPS[selGroup(x.sel)])} · market implied ${pct(x.p_sb)}${x.diff_pp != null ? ` · ${x.diff_pp >= 0 ? '+' : ''}${f1(x.diff_pp)} pp` : ''}</div></td><td class="right"><b>${f2(x.odds)}</b></td><td class="right"><div class="row" style="gap:0;justify-content:flex-end">${pill(x.p, 0.8, 0.7)}${PR.addBtn ? PR.addBtn(f.id, x.sel, x.odds) : ''}</div></td></tr>`).join('')}</table></div>`);
     // non-Trends surfaces show only the 3 strongest trends (user rule 2026-10-13) — the Trends tab keeps everything
     const tr = f.trends || {}; const topTrends = [].concat((tr.match || []).filter((t) => t.kind !== 'info'), (tr.home && tr.home.all) || [], (tr.away && tr.away.all) || [], tr.h2h || [])
@@ -1070,7 +1075,7 @@ view().innerHTML = parts.join('');
         <td class="right">${pill(r.top[1], 0.8, 0.7)}</td></tr>`).join('')}</table>` : '';
     let total = x12rows.length;
     parts.push(shell('1X2', '🏆', `${x12rows.length} match${x12rows.length === 1 ? '' : 'es'} · strongest first`,
-      'Model 1X2 from the Dixon-Coles score matrix — football data only.', x12Body));
+      'Contextual Dixon–Coles model probabilities. Straight-win recommendations appear only after the dedicated 1X2 research, form and market checks pass.', x12Body));
     const add = (title, ico, test, sub) => {
       const rows = gather(test);
       total += rows.length;
@@ -1149,7 +1154,8 @@ view().innerHTML = parts.join('');
     // ---- candidates from the published index (model bars applied here)
     const resCand = (code) => all.map((f) => {
       const e = selsOf(f).find((s) => s.sel === code);
-      if (!e || e.p == null || e.p < 0.60 || !e.odds || f.q === 'Low') return null;
+      if (!e || e.p == null || e.p < 0.60 || !e.odds || f.q === 'Low'
+          || !PR.resultResearchEligible(f, code)) return null;
       return { f, p: e.p, odds: e.odds, ev: e.ev, sel: code };
     }).filter(Boolean).sort((a, b) => b.p - a.p);
 
@@ -1182,33 +1188,19 @@ view().innerHTML = parts.join('');
       return famN[fam] <= 3;
     });
 
-    // ---- club-performance confirmation for the result picks (detail file venue/road splits)
+    // ---- confirmation uses the same server-built 1X2 evidence gate as every other recommendation surface
     const resultRow = (it) => {
-      const det = detOf(it.f);
-      if (!det) {
-        return { ok: true, why: detFailed(it.f)
-          ? '<div class="tiny muted">club form data unavailable — model bar only</div>'
-          : '<div class="tiny muted">checking club form…</div>' };
+      if (!PR.resultResearchEligible(it.f, it.sel)) return { ok: false };
+      const outcome = ((it.f.x12_research || {}).outcomes || {})[it.sel] || {};
+      const form = outcome.form || {};
+      const gap = outcome.market_gap_pp == null ? 'N/A' : `${outcome.market_gap_pp > 0 ? '+' : ''}${f1(outcome.market_gap_pp)} pp`;
+      let formText = '';
+      if (form.type === 'win') {
+        const own = form.selected_team || {}, opponent = form.opponent || {};
+        const record = (x) => x ? `${x.w}-${x.d}-${x.l}` : 'N/A';
+        formText = ` · selected ${record(own.overall)} overall / ${record(own.venue)} at venue; opponent ${record(opponent.overall)} / ${record(opponent.venue)}`;
       }
-      const H = det.teams.home || {}, A = det.teams.away || {};
-      const vt = tally(H.venue_last5);                                  // home club's last games at its venue
-      const rt = tally((A.last5 || []).filter((m) => m.venue === 'A')); // away club's last games on the road
-      const homeStrong = ((H.venue_n || 0) >= 3 && H.venue_gf != null && H.venue_ga != null)
-        ? ((H.venue_gf - H.venue_ga) >= 0.3 || (vt.n >= 3 && vt.w >= 3 && vt.l <= 1))
-        : (vt.n >= 3 && ((vt.w >= 3 && vt.l <= 1) || (vt.gf - vt.ga) / vt.n >= 0.3));
-      const awayStrong = rt.n >= 3 && ((rt.w >= 3 && rt.l <= 1) || (rt.gf - rt.ga) / rt.n >= 0.3);
-      const ok = it.sel === 'H' ? (homeStrong && !awayStrong) : (awayStrong && !homeStrong);
-      if (!ok) return { ok: false };
-      const homeSeg = vt.n
-        ? `${esc(H.name || it.f.home)}: <b>${vt.w}-${vt.d}-${vt.l}</b> at home (last ${vt.n})${H.venue_gf != null ? ` · ${f1(H.venue_gf)}–${f1(H.venue_ga)} avg` : ''}`
-        : (H.venue_n ? `${esc(H.name || it.f.home)}: <b>${H.venue_n}</b> home games${H.venue_gf != null ? ` · ${f1(H.venue_gf)}–${f1(H.venue_ga)} avg` : ''}` : '');
-      const awaySeg = rt.n
-        ? `${esc(A.name || it.f.away)}: <b>${rt.w}-${rt.d}-${rt.l}</b> on the road (last ${rt.n})`
-        : `${esc(A.name || it.f.away)}: little road data`;
-      const why = it.sel === 'H'
-        ? `<div class="tiny" style="margin-top:2px">🏠 ${homeSeg} · ✈ ${awaySeg}</div>`
-        : `<div class="tiny" style="margin-top:2px">✈ ${awaySeg} · 🏠 ${homeSeg}</div>`;
-      return { ok: true, why };
+      return { ok: true, why: `<div class="tiny" style="margin-top:2px">Evidence gate passed · ${esc(it.f.x12_research.quality || 'N/A')} data quality · model/market gap ${esc(gap)}${formText}</div>` };
     };
     const applyResult = (code) => resCand(code).map((it) => ({ it, r: resultRow(it) }))
       .filter((x) => x.r.ok).map((x) => Object.assign({}, x.it, { why: x.r.why }));
@@ -1322,14 +1314,14 @@ view().innerHTML = parts.join('');
     const sec = (ico, title, body) => `<div class="card guide"><div class="row"><span class="ico">${icon(ico)}</span><b>${title}</b></div><div class="small" style="margin-top:6px">${body}</div></div>`;
     parts.push(sec('ball', 'Over goals', `<p><b>Over 1.5</b> wins when the match has 2 or more goals; <b>Over 2.5</b> needs 3 or more. The half-goal line means there is never a push. Own goals count, extra time does not (90 minutes plus stoppage time only).</p><p>Typical prices: Over 1.5 around 1.20–1.40 in open leagues; Over 2.5 around 1.70–2.10.</p>`));
     parts.push(sec('swap', 'Both teams to score (BTTS / GG)', `<p><b>Yes</b> wins if each team scores at least once, whatever the result — 1-1 and 3-2 win, 2-0 loses. <b>No</b> is the opposite. On Sportybet this is the "GG / NG" market.</p><p>BTTS Yes can appear as a selection when the current data-quality, probability and actual-price checks pass. Its probability is also shown for context; it is not a guarantee.</p>`));
-    parts.push(sec('target', 'What Mr 2 Odds no longer offers', `<p>Current recommendations exclude <b>double chance, team goals, bookings, Over 0.5</b> and <b>unders</b>. The boards include <b>1X2, BTTS, total goals overs, and total and team corners</b>. Over 2.5, BTTS and 1X2 start from <b>55%</b>, corners from <b>65%</b>, <b>nothing priced under 1.16 is offered</b>; the Shortlist additionally checks the price against 95 % of its model fair price. Old tickets and the track record remain available; booking tickets stay pending until their rules can be verified.</p>`));
+    parts.push(sec('target', 'What Mr 2 Odds no longer offers', `<p>Current recommendations exclude <b>double chance, team goals, bookings, Over 0.5</b> and <b>unders</b>. The boards include <b>1X2, BTTS, total goals overs, and total and team corners</b>. General model bars are market-specific; <b>1X2 has a separate evidence gate</b> and is not a probability-only pick. Its dedicated board requires at least <b>60%</b> model probability, SportyBet odds of <b>1.20–3.50</b>, expected return of at least <b>0.95</b>, a complete de-margined market within <b>8 percentage points</b>, High-quality team/venue evidence and outcome-specific recent form. Raw 1X2 probabilities remain visible for match analysis when a pick does not qualify. Old tickets and the track record remain available; booking tickets stay pending until their rules can be verified.</p>`));
     parts.push(sec('corner', 'Corners', `<p><b>Over 9.5 corners</b> wins with 10 or more corners in the match (both teams together). Corners awarded but not taken before the final whistle still count. Modelled for the 22 main European leagues, from each team's corners for and against; average is about 10 per match.</p>`));
     parts.push(sec('card', 'Cards / bookings', `<p>Card-count statistics are shown for context, but bookmaker booking rules may count yellow and red cards differently. The exact SportyBet market and settlement rules have not been verified against the available data, so booking selections are withheld and existing booking tickets remain pending.</p>`));
-    parts.push(sec('shield', 'Match result', `<p><b>1X2</b>: home win, draw or away win after 90 minutes. Shown on every match page for context; Mr 2 Odds's high-probability selections stay in the goals, corners and 1X2 markets, must carry a price of 1.16 or more, and are shown with the football-data model probability.</p>`));
-    parts.push(sec('trend', 'How the probabilities are made (data-first)', `<p>The published probabilities are calculated from football results, not blended with bookmaker prices. Fixtures are not excluded for missing head-to-head history. Three or more available prior non-friendly meetings may break ties in recommendation rankings; fewer or unknown do not affect eligibility; this tie-break does not change the model probability. Ambiguous historical records are not counted; archive coverage may be incomplete, and H2H evidence does not guarantee predictability. League averages and longer-history team ratings feed a Dixon-Coles score model. When available and unambiguous, recent 5/10 and venue form and a small eligible head-to-head adjustment are included; otherwise the baseline is retained. Squad availability is not used. This recent-form version is not prospectively validated. Sportybet's de-margined market probability is shown separately for comparison; large disagreements are excluded from recommendations. The model and market can both be wrong.</p><p>Every statistic carries its sample size and data quality. Missing data is N/A, not zero. High-probability selections require at least 70% model probability, a Sportybet price of 1.16 or more, and sufficient data. Bets of the day also apply their market-specific thresholds and form checks. The separate Shortlist applies its own odds band and fair-price screen. No selection is certain.</p>`));
+    parts.push(sec('shield', 'Match result', `<p><b>1X2</b>: home win, draw or away win after 90 minutes. Raw Dixon–Coles probabilities appear on match pages for context. A 1X2 recommendation is stricter: at least 60% model probability, SportyBet price 1.20–3.50, model probability × price ≥0.95, and a complete de-margined 1X2 market within 8 percentage points. Both teams also need High overall data quality, 12+ matches (8+ effective), five or more matches at the relevant venue, a result within 30 days, 70%+ same-competition evidence, no friendlies, and five recent matches overall and at that venue. Home/away picks require at least three wins and no more than one loss from the selected team's last five overall and venue-specific matches, while the opponent must have no more than one win in each sample. A draw requires both teams to have at least two draws in each of those samples. Missing evidence means analysis only, not an assumed pass. These screens do not guarantee a win.</p>`));
+    parts.push(sec('trend', 'How the probabilities are made (data-first)', `<p>The published probabilities are calculated from football results, not blended with bookmaker prices. Fixtures are not excluded for missing head-to-head history. Three or more available prior non-friendly meetings may break ties in recommendation rankings; fewer or unknown do not affect eligibility; this tie-break does not change the model probability. Ambiguous historical records are not counted; archive coverage may be incomplete, and H2H evidence does not guarantee predictability. League averages and longer-history team ratings feed a Dixon-Coles score model. When available and unambiguous, recent 5/10 and venue form and a small eligible head-to-head adjustment are included; otherwise the baseline is retained. Squad availability is not used. This recent-form version is not prospectively validated. Sportybet's de-margined market probability is shown separately for comparison; large disagreements are excluded from recommendations. The model and market can both be wrong.</p><p>Every statistic carries its sample size and data quality. Missing data is N/A, not zero. General high-probability selections require at least 70% model probability, a Sportybet price of 1.16 or more, and sufficient data. <b>1X2 recommendations use their stricter evidence, form, price and market-agreement gate; raw 1X2 probabilities are analysis, not picks, when the gate fails.</b> Bets of the day and the separate Shortlist apply their own additional rules. No selection is certain.</p>`));
     parts.push(sec('ticket', 'Bet slip & tickets', `<p>Tap <b>+</b> next to any priced selection (match page › Markets, high-probability selections, bets of the day) to put it on your slip — one selection per match, like a real multiple. Press <b>Done</b> to lock the ticket: Mr 2 Odds multiplies the prices, records an optional stake, and then follows the scores. Goals markets settle from the final score; corners settle when match statistics arrive. Booking tickets stay pending until their settlement rules and statistics are verified. You get a notification when the ticket is won or lost, and ☰ › <b>My tickets</b> keeps your record.</p><p>This is a private record on your phone — nothing is placed with a bookmaker.</p>`));
     parts.push(sec('info', 'Reading the numbers honestly', `<p>A 75% bet loses one time in four. A card of five 75% singles has all five winning only about 24% of the time — longer accumulators have more ways to lose. The Daily Accumulators page builds from stricter Final Picks but cannot guarantee results. Compare the <b>Hit</b> and <b>Exp.</b> columns under Performance: they should be close over a few weeks.</p><p>Coverage is limited to allowed senior men's domestic leagues and UEFA competitions. Women's and youth competitions, domestic cups, other international tournaments and tennis are paused. Prices are from Sportybet South Africa where available. Prices move; check the price before you bet. Statistical information, not betting advice. 18+, bet responsibly.</p>`));
-    parts.push(sec('star', 'Bets of the day, favourites & alerts', `<p><b>⭐ Bets of the day</b> is built on Over 1.5, Over 2.5, 1X2, BTTS and corners (up to seven picks a block); <b>1X2 claims its matches first — up to five picks a day</b> — then <b>Over 2.5</b> gets its place, then the rest: 1X2 needs ≥70% and Over 2.5 needs ≥55%, all with recent form backing them; corners need ≥65%, and BTTS needs ≥55%. Every one must carry a price of 1.16 or more. Overs only, one market per match, picked by the first analysis of the day and graded separately — so the performance page can compare the markets fairly. Every match page has <b>Download stats (CSV)</b> and the ☰ menu downloads the whole day's analysis as a spreadsheet file. <b>Top leagues</b> ranks the major leagues by home wins, draws, away wins, overs, BTTS and corners.</p><p>Tap <b>☆</b> in a match header to make it a favourite: you get goal, half-time, full-time and kick-off alerts for it, it appears under Your matches on Home, and in the ★ filter of Matches.</p>`));
+    parts.push(sec('star', 'Bets of the day, favourites & alerts', `<p><b>⭐ Bets of the day</b> is built on Over 1.5, Over 2.5, straight 1X2 wins, BTTS and corners (up to seven picks a block). The result block claims its matches first, then Over 2.5, then the remaining blocks. 1X2 picks need at least 70% probability <b>and must pass the same High-quality evidence, venue, form, price and market-agreement gate</b>; Over 2.5 needs ≥55% plus form backing, corners ≥65%, and BTTS ≥55%. Every pick needs a SportyBet price of at least 1.16; the separate 1X2 board has its own 60% threshold and 1.20–3.50 price band. Overs only, one market per match, picked by the first analysis of the day and graded separately — so the performance page can compare the markets fairly. Every match page has <b>Download stats (CSV)</b> and the ☰ menu downloads the whole day's analysis as a spreadsheet file. <b>Top leagues</b> ranks the major leagues by home wins, draws, away wins, overs, BTTS and corners.</p><p>Tap <b>☆</b> in a match header to make it a favourite: you get goal, half-time, full-time and kick-off alerts for it, it appears under Your matches on Home, and in the ★ filter of Matches.</p>`));
     parts.push(PR.editorCard(false));
     parts.push(contactCard(false));
     view().innerHTML = parts.join('');

@@ -17,13 +17,14 @@ def make_reel(path):
     return info
 
 
-def test_live_test_label_keeps_caption_and_only_team_hashtags(tmp_path, monkeypatch):
+def test_video_captions_are_only_team_hashtags_even_in_live_test_mode(tmp_path, monkeypatch):
     info = make_reel(tmp_path)
     standard = reel.reel_caption(info)
     test = reel.reel_caption(info, test=True)
-    assert test.startswith("Today's football picks - 4 November 2026\n\nTest reel\n\n")
-    assert test.splitlines()[-1] == standard.splitlines()[-1]
-    assert '#Mr2Odds' not in test
+    expected = ' '.join(f'#{name.replace(" ", "")}' for i in range(5)
+                        for name in (f'Home {i}', f'Away {i}'))
+    assert standard == test == expected
+    assert all(tag.startswith('#') for tag in test.split())
     monkeypatch.setenv('REEL_TEST', 'true')
     monkeypatch.setenv('FACEBOOK_PAGE_ACCESS_TOKEN', 'fake-token')
     monkeypatch.setenv('FACEBOOK_PAGE_ID', '123456')
@@ -42,11 +43,12 @@ def test_live_test_label_keeps_caption_and_only_team_hashtags(tmp_path, monkeypa
     assert session.post.call_args_list[3].kwargs['data']['caption'] == test
 
 
-def test_default_caption_has_no_test_label(tmp_path, monkeypatch):
+def test_default_video_caption_is_only_team_hashtags(tmp_path, monkeypatch):
     info = make_reel(tmp_path)
     monkeypatch.delenv('REEL_TEST', raising=False)
-    assert reel.reel_caption(info) == fb.caption_for(info, medium='reel')
-    assert 'Test reel' not in reel.reel_caption(info)
+    caption = reel.reel_caption(info)
+    assert caption == fb.caption_for(info, medium='reel')
+    assert all(tag.startswith('#') for tag in caption.split())
 
 
 def test_revised_live_test_has_separate_opt_in_claims():

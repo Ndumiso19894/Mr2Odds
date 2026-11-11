@@ -37,12 +37,12 @@ def one_x_two_candidates(data, now, prior_claims=()):
     refs.sort(key=lambda x: (-x[0], x[1], x[2]))
     picks = fb.candidates(data, now, [{'fixture': fid, 'sel': code} for _, fid, code in refs])
     excluded = history.prior_matches(prior_claims)
-    ids = {str(p['livescore_id']) for c in prior_claims for p in c['manifest']['fixtures'] if p.get('livescore_id')}
+    ids = history.prior_livescore_ids(prior_claims)
     seen = set()
     result = []
     for pick in picks:
         key = history.match_key(pick)
-        if key in excluded or key in seen or (pick.get('livescore_id') and str(pick['livescore_id']) in ids):
+        if key in excluded or key in seen or str(pick.get('livescore_id') or '').strip() in ids:
             continue
         seen.add(key)
         result.append({**pick, 'series':'1x2',
@@ -128,12 +128,12 @@ def main():
         if day == '2026-11-05':
             # The user specifically requested ten unbeaten top-two teams today.
             from scripts import stats_watch_assets
-            ready = stats_watch_assets.prepare(args.output, minimum=10)
+            ready = stats_watch_assets.prepare(args.output, minimum=10, prior_claims=claims)
         else:
             ready = prepare(args.snapshot, args.output, prior_claims=claims)
             if not ready:
                 from scripts import stats_watch_assets
-                ready = stats_watch_assets.prepare(args.output)
+                ready = stats_watch_assets.prepare(args.output, prior_claims=claims)
         if os.environ.get('GITHUB_OUTPUT'):
             with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
                 out.write(f'ready={str(ready).lower()}\n')

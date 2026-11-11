@@ -139,6 +139,7 @@ jobs:
         id: prepare
         if: steps.claims.outputs.active == 'true' && steps.claims.outputs.source_exists != 'true' && (steps.claims.outputs.facebook_exists != 'true' || steps.claims.outputs.telegram_exists != 'true')
         env:
+          GH_TOKEN: ${{ github.token }}
           REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
         run: python scripts/selection_reel.py prepare --snapshot live-data/data/app/latest.json --output reel-output
       - name: Save prepared reel for both platforms

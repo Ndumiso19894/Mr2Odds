@@ -129,7 +129,8 @@
   const sameDay = (b) => String((b && b.kickoff) || '').slice(0, 10) === ymd(tzNow());
   function safeList(group) {
     const sf = state.data.safe || { bets: [] };
-    let lst = (sf.bets || []).filter((b) => inScope(fx(b.fixture)) && !PR.isDropped(b.sel));
+    let lst = (sf.bets || []).filter((b) => inScope(fx(b.fixture)) && !PR.isDropped(b.sel)
+      && PR.resultResearchEligible(fx(b.fixture), b.sel));
     if (group && group !== 'all') lst = lst.filter((b) => (FAMILY[group] || [group]).includes(b.group));
     return lst;
   }
@@ -153,7 +154,7 @@
   }
   function botdCard(compact) {
     const sf = state.data.safe || {}; const today = sf.today || { bets: [] };
-    const over = (b) => b && !PR.isDropped(b.sel);
+    const over = (b) => b && !PR.isDropped(b.sel) && PR.resultResearchEligible(fx(b.fixture), b.sel);
     const bets = (today.bets || []).filter(over); const groups = (today.groups || []).map((g) => ({ ...g, bets: (g.bets || []).filter(over) })).filter((g) => g.bets.length);
     const settled = bets.filter((b) => b.status && b.status !== 'pending'); const won = settled.filter((b) => b.status === 'hit' || b.status === 'won').length;
     const rec = (sf.summary && sf.summary.botd) || {};
@@ -230,14 +231,14 @@
     const worth = (s) => !(s.odds && s.odds < 1.16);
     return (d.fixtures || []).filter((f) => f.date === today && f.data_ok && inScope(f)).flatMap((f) => (f.sels || [])
       .filter((s) => s && s.p != null && s.p > 0 && s.p < 1 && s.odds && s.odds > 1 && worth(s) && !s.diff && !PR.isOutlier(s) && !PR.isDropped(s.sel)
-        && s.p >= barOf(s.sel, selGroup(s.sel)))
+        && PR.resultResearchEligible(f, s.sel) && s.p >= barOf(s.sel, selGroup(s.sel)))
       .map((s) => ({ f, s, g: selGroup(s.sel) })));
   }
   function homeEvBets(d) {
     const today = ymd(tzNow());
     return (d.fixtures || []).filter((f) => f.date === today && f.data_ok && inScope(f)).flatMap((f) => (f.sels || [])
       .filter((s) => s && s.p != null && s.p > 0 && s.p < 1 && s.odds && s.odds >= HOME_EV_MIN_ODDS && !s.diff && !PR.isOutlier(s) && !PR.isDropped(s.sel)
-        && s.p >= barOf(s.sel, selGroup(s.sel)) && evOf(s) > 0)
+        && PR.resultResearchEligible(f, s.sel) && s.p >= barOf(s.sel, selGroup(s.sel)) && evOf(s) > 0)
       .map((s) => ({ f, s, g: selGroup(s.sel) })));
   }
   // ------------------------------------------------------------------ HOME: high-conviction shortlist (server-built, shortlist.py)
@@ -329,30 +330,54 @@
 
   PR.views.x12 = function () {
     const d = state.data; const sl = d.shortlist || {}; const rows = (sl.x12 || []).filter((x) => String(x.kickoff || '').slice(0, 10) === ymd(tzNow()) && parseLocal(x.kickoff) > tzNow());
-    const R = sl.rules || {};
+    const R = sl.rules || {}; const XR = R.x12 || {};
+    const rule = (key, fallback) => Number.isFinite(XR[key]) ? XR[key] : fallback;
+    const minP = rule('min_probability', 0.60); const minOdds = rule('min_odds', 1.20); const maxOdds = rule('max_odds', 3.50);
+    const minReturn = rule('min_model_return', 0.95); const maxGap = rule('max_market_gap', 0.08);
+    const minMatches = rule('min_team_matches', 12); const minEffective = rule('min_effective_matches', 8);
+    const minVenue = rule('min_venue_matches', 5); const maxDays = rule('max_days_since_last', 30);
+    const minShare = rule('min_competition_share', 0.70); const formN = rule('form_matches', 5);
+    const minWins = rule('form_min_wins', 3); const maxLosses = rule('form_max_losses', 1);
+    const maxOpponentWins = rule('opponent_max_wins', 1); const minDraws = rule('draw_min_draws', 2);
     const parts = [];
     parts.push(`<div class="hero-row"><div><div class="kicker">Match result</div><h1>1X2</h1></div><span class="quality">today only</span></div>`);
-    parts.push(`<div class="card compact"><div class="b">Home, draw or away — one pick per match</div><div class="tiny muted">Independent of the Shortlist winner. Model bar 60%. Sportybet prices ${f2(1.20)}–${f2(3.50)}. Overs-side policy still applies (no double chance). Statistical information, not betting advice. 18+.</div></div>`);
+    parts.push(`<div class="card compact"><div class="b">Home, draw or away — evidence-screened, one recommendation per match</div><div class="tiny muted">Model ≥${pct(minP)}, SportyBet ${f2(minOdds)}–${f2(maxOdds)}, probability × price ≥${f2(minReturn)}, and model within ${Math.round(maxGap * 100)} percentage points of a complete de-margined 1X2 market. Both teams need High data quality, ${minMatches}+ matches, ${f1(minEffective)}+ effective matches, ${minVenue}+ matches at their relevant venue, a latest result within ${maxDays} days, ≥${Math.round(minShare * 100)}% same-competition evidence, no friendlies and ${formN} valid recent results overall and at the venue. Straight wins additionally require the selected team to have ${minWins}+ wins and at most ${maxLosses} loss in each ${formN}-match sample, with the opponent on at most ${maxOpponentWins} win. A draw additionally needs at least ${minDraws} draws for each team in both samples. Raw 1X2 probabilities remain available as match-analysis context when checks do not pass. Statistical information, not betting advice. 18+.</div></div>`);
     if (!sl.counts) {
       parts.push(`<div class="card empty">The 1X2 board appears after the next analysis run (every 30 minutes).</div>`);
       view().innerHTML = parts.join('');
       return;
     }
     const na = (v, f) => (v == null ? 'N/A' : f(v));
-    const card = (x) => `<div class="card compact tap" data-fx="${esc(x.fixture || '')}">
-      <div class="row"><span class="pill hi">#${x.rank}</span><div class="grow"><div class="b">${esc(x.home)} v ${esc(x.away)}</div><div class="tiny muted">${flag(x.country)} ${esc(x.league)} · ${esc(koShort(x.kickoff))}</div></div></div>
-      <div class="b" style="margin-top:6px">🏆 ${esc(x.label)} @ ${na(x.odds, f2)}</div>
-      <table class="tbl" style="margin-top:4px">
-        <tr><td>Model probability</td><td class="right b">${pct(x.p)}</td></tr>
-        <tr><td>Bookmaker implied (margin removed)</td><td class="right">${na(x.p_sb, pct)}</td></tr>
-        <tr><td>Data quality · confidence</td><td class="right">${esc(x.quality)} · ${esc(x.confidence)}</td></tr></table>
-      <div class="row" style="justify-content:flex-end;margin-top:6px">${PR.addBtn && x.odds ? PR.addBtn(x.fixture, x.sel, x.odds) : ''}</div></div>`;
+    const record = (x) => x ? `${x.w}-${x.d}-${x.l}` : 'N/A';
+    const card = (x) => {
+      const research = x.research || {}; const teams = research.teams || {};
+      const outcome = ((research.outcomes || {})[x.sel]) || {};
+      const h = teams.home || {}; const a = teams.away || {};
+      const gap = outcome.market_gap_pp == null ? 'N/A' : `${outcome.market_gap_pp > 0 ? '+' : ''}${f1(outcome.market_gap_pp)} pp`;
+      let form = '';
+      if (outcome.form && outcome.form.type === 'draw') {
+        const fh = outcome.form.home || {}; const fa = outcome.form.away || {};
+        form = ` · last-five draws overall / venue: home ${fh.overall ? fh.overall.d : 'N/A'} / ${fh.venue ? fh.venue.d : 'N/A'}, away ${fa.overall ? fa.overall.d : 'N/A'} / ${fa.venue ? fa.venue.d : 'N/A'}`;
+      } else if (outcome.form) {
+        const own = outcome.form.selected_team || {}; const opp = outcome.form.opponent || {};
+        form = ` · last-five overall / venue: selected ${record(own.overall)} / ${record(own.venue)}, opponent ${record(opp.overall)} / ${record(opp.venue)}`;
+      }
+      return `<div class="card compact tap" data-fx="${esc(x.fixture || '')}">
+        <div class="row"><span class="pill hi">#${x.rank}</span><div class="grow"><div class="b">${esc(x.home)} v ${esc(x.away)}</div><div class="tiny muted">${flag(x.country)} ${esc(x.league)} · ${esc(koShort(x.kickoff))}</div></div></div>
+        <div class="b" style="margin-top:6px">🏆 ${esc(x.label)} @ ${na(x.odds, f2)}</div>
+        <table class="tbl" style="margin-top:4px">
+          <tr><td>Model probability</td><td class="right b">${pct(x.p)}</td></tr>
+          <tr><td>Bookmaker implied (margin removed)</td><td class="right">${na(x.p_sb, pct)}</td></tr>
+          <tr><td>Data quality · confidence</td><td class="right">${esc(x.quality)} · ${esc(x.confidence)}</td></tr></table>
+        <div class="tiny muted" style="margin-top:4px"><b>Evidence gate passed</b> · ${esc(research.quality || x.quality)} quality · home ${h.matches || 0} matches (${h.venue_matches || 0} at home), away ${a.matches || 0} (${a.venue_matches || 0} away) · model/market gap ${esc(gap)}${form}</div>
+        <div class="row" style="justify-content:flex-end;margin-top:6px">${PR.addBtn && x.odds ? PR.addBtn(x.fixture, x.sel, x.odds) : ''}</div></div>`;
+    };
     if (rows.length) {
       parts.push(`<div class="card compact mk-rail result"><div class="comp-head">🏆 Match result · ${rows.length}</div>${rows.map(card).join('')}</div>`);
     } else {
-      parts.push(`<div class="card empty small"><b>NO QUALIFYING 1X2 SELECTIONS.</b> Nothing cleared the 60% bar with a Sportybet price in ${f2(1.20)}–${f2(3.50)}.</div>`);
+      parts.push(`<div class="card empty small"><b>NO QUALIFYING 1X2 RECOMMENDATIONS.</b> No outcome passed the probability, price, market-agreement and research gates. Raw probabilities remain on each match page for analysis; no team is promoted on model probability alone.</div>`);
     }
-    parts.push(`<div class="card tiny muted"><b>How 1X2 is built</b> — every analysed match is screened for home / draw / away from <b>60%</b>. One selection per match (the strongest 1X2). This tab does not steal slots from Over 2.5 or the corner lines on the Shortlist. Not an instruction to bet.</div>`);
+    parts.push(`<div class="card tiny muted"><b>How 1X2 is built</b> — this is a separate, evidence-backed board, not a probability-only ranking. Every recommendation must pass the displayed research and market checks; straight wins additionally need recent overall and venue form backing. One selection per match. Not an instruction to bet.</div>`);
     view().innerHTML = parts.join('');
   };
 
@@ -456,7 +481,7 @@
     else out.push(`<div class="card empty small">${tab === 'ev' ? `No bet the model supports has positive EV at a Sportybet price of ${f2(HOME_EV_MIN_ODDS)} or more today${mk !== 'any' ? ' in this market' : ''}.` : tab === 'eighty' ? `No market has a published model probability of at least 80% and its own SportyBet price of 1.16 or more today${mk !== 'any' ? ' in this market' : ''}. The thresholds are never lowered to fill this collection.` : tab === 'high' ? `No priced bet reaches ${pct(HOME_HIGH)} today${mk !== 'any' ? ' in this market' : ''} yet.` : `No priced bet clears its model bar today${mk !== 'any' ? ' in this market' : ''} yet.`} The board fills as Sportybet prices and probabilities firm up.${majorOnly() ? ' (Major leagues only — change in Settings.)' : ''}</div>`);
     if (tab === 'eighty') out.push(`<div class="card tiny muted"><b>Analysis only, not a shortlist or betting recommendation.</b> Today's published modelled markets with an unrounded probability ≥80% and their own SportyBet price of at least 1.16 are shown, including multiple markets per match. Low-data, restricted or disagreeing estimates may appear with warnings. Bookings remain unverified and are not priced as recommendations. No slip selections are offered here. The Major leagues setting still applies. These are pre-match estimates, not live probabilities; prices and data may be stale. Experimental xG and shots adjustments are unvalidated. A high probability is not a guarantee.</div>`);
     if (tab === 'ev') out.push(`<div class="card tiny muted"><b>Positive EV</b> — bets the model supports (same bars: 1X2, BTTS and Over 2.5 ≥55%, corners ≥65%, other markets ≥70%) whose Sportybet price is <b>${f2(HOME_EV_MIN_ODDS)} or more</b> and pays more than the model thinks is fair: <b>EV = model probability × odds − 1 &gt; 0</b>. EV +5% means the model expects 5c back per R1 staked over many such bets — an estimate that is only as good as the model, not a guarantee. Gaps of 15+ points over the price stay quarantined as data faults.</div>`);
-    if (tab !== 'eighty') out.push(`<div class="card tiny muted"><b>How this board is built</b> — <b>one bet per match</b>: the model names each match's strongest market and lists only that one (the match page still shows every market). Today's matches, all markets. A bet appears when the model clears its bar (<b>1X2, BTTS and Over 2.5 from 55%</b>, <b>corners 65%</b>, <b>other markets 70%</b>) <b>and</b> Sportybet prices it at <b>1.16 or more</b>. <b>High probability</b> = model ≥70% on any market. The model probability is independent of the price; large model–market disagreements are excluded. ${d.meta && d.meta.model_signals && d.meta.model_signals.status === "disabled" ? "Experimental xG and shots adjustments are disabled." : "Experimental xG and shots adjustments are enabled where data permits, but have not been backtested."} A high probability is not a certainty.</div>`);
+    if (tab !== 'eighty') out.push(`<div class="card tiny muted"><b>How this board is built</b> — <b>one bet per match</b>: the model names each match's strongest eligible market and lists only that one (the match page still shows every market). Today's matches, all markets. General bars: <b>1X2, BTTS and Over 2.5 from 55%</b>, <b>corners 65%</b>, <b>other markets 70%</b>, plus a Sportybet price of <b>1.16 or more</b>. <b>Straight-win 1X2 picks also require High-quality, substantial team and venue research, supportive recent form, and agreement with a complete de-margined market; see the 1X2 tab for the full gate.</b> <b>High probability</b> = model ≥70% on any market. The model probability is independent of the price; large model–market disagreements are excluded. ${d.meta && d.meta.model_signals && d.meta.model_signals.status === "disabled" ? "Experimental xG and shots adjustments are disabled." : "Experimental xG and shots adjustments are enabled where data permits, but have not been backtested."} A high probability is not a certainty.</div>`);
     if (!PR._homeRefreshed && (d.fixtures || []).length && !(d.fixtures || []).some((f) => (f.sels || []).length)) { PR._homeRefreshed = true; setTimeout(() => PR.loadData(false), 250); }
     return out.join('');
   }
@@ -643,7 +668,7 @@
     parts.push(botdCard(false));
     if (PR.ticketsCard) parts.push(PR.ticketsCard(false));
     const rec = ((state.data.safe || {}).summary || {}).botd || {};
-    parts.push(`<div class="card small"><b>How the card is picked</b><div class="muted" style="margin-top:4px">Five blocks: <b>1X2</b>, <b>Over 2.5</b>, <b>Over 1.5</b>, <b>Corners</b> and <b>BTTS</b>. Each shows only qualifying bets, with one selection per match across the card. Goals need 70%; Over 2.5 and BTTS need 55%; corners need 65%. Result wins need 70% and form backing, as does Over 2.5. A real price of at least 1.16 is required. Picks are frozen for the day; corner bets wait for match statistics. Bookings are temporarily unavailable until the card data and bookmaker rules match.</div>
+    parts.push(`<div class="card small"><b>How the card is picked</b><div class="muted" style="margin-top:4px">Five blocks: <b>1X2</b>, <b>Over 2.5</b>, <b>Over 1.5</b>, <b>Corners</b> and <b>BTTS</b>. Each shows only qualifying bets, with one selection per match across the card. Goals need 70%; Over 2.5 and BTTS need 55%; corners need 65%. Result wins need 70% and must pass the dedicated High-quality 1X2 evidence, venue, market-agreement and recent-form gate; Over 2.5 needs its separate form backing. A real price of at least 1.16 is required. Picks are frozen for the day; corner bets wait for match statistics. Bookings are temporarily unavailable until the card data and bookmaker rules match.</div>
       ${rec.all && rec.all.n ? `<table class="tbl head" style="margin-top:8px"><tr><th>Bets of the day</th><th class="right">Won</th><th class="right">Hit</th><th class="right">Exp.</th><th class="right">Return</th></tr>${[['All time', rec.all], ['Last 30 days', rec['30d']]].filter(([, s]) => s && s.n).map(([n, s]) => `<tr><td>${n}</td><td class="right">${s.won}/${s.n}</td><td class="right"><b>${pct(s.rate)}</b></td><td class="right muted">${pct(s.exp_rate)}</td><td class="right ${s.roi > 0 ? 'good' : s.roi < 0 ? 'bad' : ''}">${signed(s.roi)}</td></tr>`).join('')}</table>` : '<div class="tiny muted" style="margin-top:6px">The record starts with the first settled card.</div>'}</div>`);
   }
   function renderSafest(parts) {

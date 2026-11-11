@@ -18,7 +18,7 @@ import requests
 from PIL import Image, ImageDraw, ImageOps
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from scripts import facebook_post as fb
+from scripts import facebook_history, facebook_post as fb
 
 # Digest of the supplied track. The Drive file ID is configured separately as an
 # Actions secret, not embedded in this public repository.
@@ -165,10 +165,22 @@ def encode(slides, music, output):
         raise ValueError('Rendered reel is empty or too large for Telegram')
 
 
-def prepare(snapshot, output, now=None, session=None, music=None):
+def prepare(snapshot, output, now=None, session=None, music=None, prior_claims=()):
     now = (now or datetime.now(fb.SAST)).astimezone(fb.SAST)
     session = session or requests.Session()
-    picks = fb.candidates(json.loads(snapshot.read_text(encoding='utf-8')), now)
+    excluded = facebook_history.prior_matches(prior_claims or ())
+    excluded_ids = facebook_history.prior_livescore_ids(prior_claims or ())
+    picks = []
+    seen, seen_ids = set(), set()
+    for item in fb.candidates(json.loads(snapshot.read_text(encoding='utf-8')), now):
+        key = facebook_history.match_key(item)
+        event_id = str(item.get('livescore_id') or '').strip()
+        if key in excluded or key in seen or (event_id and (event_id in excluded_ids or event_id in seen_ids)):
+            continue
+        seen.add(key)
+        if event_id:
+            seen_ids.add(event_id)
+        picks.append(item)
     complete = []
     for item in picks:
         home = fb.badge(session, item['home'], item['badges'].get('home'))
@@ -183,7 +195,7 @@ def prepare(snapshot, output, now=None, session=None, music=None):
     output.mkdir(parents=True, exist_ok=True)
     day = now.date().isoformat()
     info = {'date':day, 'generated':json.loads(snapshot.read_text(encoding='utf-8'))['meta']['generated'],
-            'fixtures':[{k:p[k] for k in ('fixture','home','away','kickoff','country','league','sel','selection','odds','badges')}
+            'fixtures':[{k:p[k] for k in ('fixture','home','away','kickoff','country','league','sel','selection','odds','livescore_id','badges')}
                         for p in complete]}
     with tempfile.TemporaryDirectory() as td:
         td = Path(td)
@@ -202,10 +214,8 @@ def prepare(snapshot, output, now=None, session=None, music=None):
 
 
 def reel_caption(info, test=False):
-    caption = fb.caption_for(info, medium='reel')
-    if test:
-        caption = caption.replace('\n\n', '\n\nTest reel\n\n', 1)
-    return caption
+    """Return only team hashtags; the caller can add its own manual video description."""
+    return fb.caption_for(info, medium='reel')
 
 
 def validate_prepared(output, now=None):
@@ -316,10 +326,11 @@ def main():
         p=sub.add_parser(cmd);p.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
     if args.cmd == 'prepare':
-        ready=prepare(args.snapshot,args.output)
+        claims = facebook_history.load_claims(datetime.now(fb.SAST).date().isoformat())
+        ready=prepare(args.snapshot,args.output,prior_claims=claims)
         if not ready:
             from scripts import stats_watch_assets
-            ready=stats_watch_assets.prepare(args.output)
+            ready=stats_watch_assets.prepare(args.output,prior_claims=claims)
         if os.environ.get('GITHUB_OUTPUT'):
             with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as out:
                 out.write(f'ready={str(ready).lower()}\n')

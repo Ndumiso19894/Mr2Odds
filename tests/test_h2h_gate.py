@@ -140,7 +140,8 @@ def test_sticky_bets_and_frozen_history_preserved_without_h2h_requirement():
     row=SimpleNamespace(fx=pd.Series(f))
     good={'kickoff':'2026-11-05 12:00','country':'England','home':'A','away':'B','league':'Premier League'}
     bad={**good,'home':'C'}
-    card={'bets':[good,bad],'groups':[{'bets':[good,bad]}]}
+    old_result={**good,'sel':'H'}  # sticky legacy result has no research report and is hidden, not deleted
+    card={'bets':[good,bad,old_result],'groups':[{'bets':[good,bad,old_result]}]}
     scanner.filter_botd_by_current_rows(card,[row])
     assert card['bets']==[good] and card['groups'][0]['bets']==[good]
     old={'id':'old','kickoff':'2026-11-04 09:00','country':'England','league':'Premier League','home':'A','away':'B'}

@@ -381,6 +381,11 @@ window.PR = (function () {
   }
   /** sels rows: [sel, p (model), p_model, p_market (implied, comparison only), odds, disagreement flag, diff pp, EV] */
   const selObj = (x) => Array.isArray(x) ? { sel: x[0], p: x[1], p_model: x[2], p_sb: x[3], odds: x[4], diff: !!x[5], diff_pp: x.length > 6 ? x[6] : (x[2] != null && x[3] != null ? Math.round(1000 * (x[2] - x[3])) / 10 : null), ev: x.length > 7 ? x[7] : (x[2] != null && x[4] ? Math.round(1000 * (x[2] * x[4] - 1)) / 1000 : null) } : x;
+  function resultResearchEligible(f, sel) {
+    if (!['H', 'D', 'A'].includes(sel)) return true;
+    const result = f && f.x12_research && f.x12_research.outcomes && f.x12_research.outcomes[sel];
+    return !!(result && result.eligible === true);
+  }
   function indexData(d) {
     d.fixtures = (d.fixtures || []).filter(competitionAllowed);
     if (d.safe) {
@@ -404,8 +409,23 @@ window.PR = (function () {
       if (f.safe && !offeredPrice(f.safe[2])) f.safe = null;
       f.p = f.p || {}; f.xg = f.xg || [null, null]; f.x12 = f.x12 || [null, null, null]; f.major = f.tier !== 'world';
     });
-    if (d.groups && Array.isArray(d.groups.value)) d.groups.value = d.groups.value.filter((x) => offeredPrice(x.odds));
-    if (d.safe && d.safe.bets) d.safe.bets.forEach((b) => { const f = d._byId[b.fixture]; b.major = f ? f.major : true; });
+    if (d.shortlist && Array.isArray(d.shortlist.x12)) {
+      d.shortlist.x12 = d.shortlist.x12.filter((x) => resultResearchEligible(d._byId[x.fixture], x.sel));
+    }
+    if (d.safe) {
+      const researched = (b) => resultResearchEligible(d._byId[b.fixture], b.sel);
+      if (Array.isArray(d.safe.bets)) d.safe.bets = d.safe.bets.filter(researched);
+      if (d.safe.today) {
+        if (Array.isArray(d.safe.today.bets)) d.safe.today.bets = d.safe.today.bets.filter(researched);
+        (d.safe.today.groups || []).forEach((g) => { g.bets = (g.bets || []).filter(researched); });
+      }
+      if (d.safe.bets) d.safe.bets.forEach((b) => { const f = d._byId[b.fixture]; b.major = f ? f.major : true; });
+    }
+    if (d.picks) Object.keys(d.picks).forEach((sel) => {
+      if (['H', 'D', 'A'].includes(sel)) d.picks[sel] = (d.picks[sel] || []).filter((x) => resultResearchEligible(d._byId[x.fixture], sel));
+    });
+    if (d.groups && Array.isArray(d.groups.value)) d.groups.value = d.groups.value.filter((x) => offeredPrice(x.odds)
+      && resultResearchEligible(d._byId[x.id], x.sel));
     return d;
   }
   const fx = (id) => state.data && state.data._byId[id];
@@ -676,7 +696,8 @@ window.PR = (function () {
       const s = (f.sels || []).find((v) => v.sel === x.sel);
       if (!s || !/^(?:H|D|A|BTTS|O(?:15|25|35|45|55)|C[HA]?O\d+)$/.test(s.sel)) return [];
       const bar = /^(?:H|D|A|BTTS|O25)$/.test(s.sel) ? 0.55 : /^C/.test(s.sel) ? 0.65 : 0.70;
-      if (!Number.isFinite(s.p) || s.p < bar || s.p >= 1 || !Number.isFinite(s.odds) || s.odds < 1.16 || s.odds > 1.90 || s.p * s.odds < 0.95 || s.diff || isOutlier(s)) return [];
+      if (!Number.isFinite(s.p) || s.p < bar || s.p >= 1 || !Number.isFinite(s.odds) || s.odds < 1.16 || s.odds > 1.90 || s.p * s.odds < 0.95 || s.diff || isOutlier(s)
+          || !resultResearchEligible(f, s.sel)) return [];
       seen.add(f.id);
       return [{ ...x, p: s.p, odds: s.odds, p_sb: s.p_sb, quality: f.q || 'N/A', kickoff: f.kickoff }];
     });
@@ -1197,7 +1218,7 @@ window.PR = (function () {
 
   return { native, settings, state, $, $$, saveSettings, nfetch, getJson, resources, migrateResource, validResource, refreshVisible, connectionChanged, clearDataCache, rawUrl, esc, pct, f1, f2, signed, DAYS, MONTHS, parseLocal, tzNow, ymd, stored, persist, cache, prefetchDetails, pubStamp,
     dayName, niceDate, koTime, koShort, toast, pill, competitionAllowed, bar, wdl, formBadges, md, GROUPS, GROUP_ICON, selGroup, isUnder, isDropped, SEL_FLOOR, selLabel, selShort, settleSel,
-    liveVerdict, isLive, isFT, indexData, fx, loadDetail, detailCached, detailKey, loadData, saveLatest, saveAux, statusLine, isOutlier, strictShortlist, finalPicksInfo, dailyPicksInfo, MIN_MARKET_ODDS, offeredPrice, marketVisible, visiblePrice, visibleSportyPrices, loadDay, dayRecord, finalFor, storedIncidents, loadTeams, teamsCached, loadTeamIndex, realTable, slug, TABS, render, quietRender, setTab, push, replace,
+    liveVerdict, isLive, isFT, indexData, fx, loadDetail, detailCached, detailKey, loadData, saveLatest, saveAux, statusLine, isOutlier, resultResearchEligible, strictShortlist, finalPicksInfo, dailyPicksInfo, MIN_MARKET_ODDS, offeredPrice, marketVisible, visiblePrice, visibleSportyPrices, loadDay, dayRecord, finalFor, storedIncidents, loadTeams, teamsCached, loadTeamIndex, realTable, slug, TABS, render, quietRender, setTab, push, replace,
     sbEventUrl, sbShareUrl, openSportybet, openBookingCode, openExternal, copyText, namesAgree, displayName, fittedSbEvent,
     back, openMatch, openTeam, toggleMenu, closeMenu, contactCard, editorCard, teamLink, teamSpan, matchLine, matchRow, segmented, select, scoreBox, statusIcon, CONTACT, APP_VERSION,
     confirmBox, isFav, toggleFav, favList: () => favs, saveFavs,

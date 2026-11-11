@@ -93,9 +93,8 @@ def test_publish_uses_photo_endpoint_and_secret_without_logging(tmp_path, monkey
     args, kwargs = session.post.call_args
     assert args[0] == 'https://graph.facebook.com/v24.0/123456/photos'
     message = kwargs['data']['message']
-    assert message.startswith("Today's football picks - 4 November 2026\n\n")
-    assert '?' in message and 'Mr 2 Odds' in message and '18+ | Bet responsibly.' in message
-    assert message.endswith('#HomeFC #AwayUnited')
+    assert message == '#HomeFC #AwayUnited'
+    assert all(tag.startswith('#') for tag in message.split())
     assert 'example_test_secret_not_real' not in capsys.readouterr().out
     with pytest.raises(ValueError): fb.publish(path, NOW + timedelta(hours=4), session=session)
     assert session.post.call_count == 1
@@ -178,12 +177,9 @@ def test_caption_has_only_the_teams_on_the_picture():
         {'home': 'Home 5', 'away': 'Away 5'},
     ]}
     caption = fb.caption_for(info)
-    assert caption.startswith("Today's football picks - 4 November 2026\n\n")
-    assert '?' in caption
-    assert 'Mr 2 Odds' in caption
-    assert '18+ | Bet responsibly.' in caption
-    assert caption.splitlines()[-1].split() == ['#StJohnsFC', '#ASÉtoile', '#ManchesterUnited', '#AwayUnited',
-                                                '#HomeClub', '#AwayClub', '#Home4', '#Away4', '#Home5', '#Away5']
+    assert caption.split() == ['#StJohnsFC', '#ASÉtoile', '#ManchesterUnited', '#AwayUnited',
+                               '#HomeClub', '#AwayClub', '#Home4', '#Away4', '#Home5', '#Away5']
+    assert all(tag.startswith('#') for tag in caption.split())
     assert '#Mr2Odds' not in caption and '#BettingTips' not in caption
     info['fixtures'][4]['away'] = 'Away United'  # repeated clubs appear only once
     assert fb.caption_for(info).count('#AwayUnited') == 1
@@ -257,7 +253,7 @@ def test_repost_uses_original_morning_picks_but_current_quotes(tmp_path, monkeyp
     result = repost.prepare(source, tmp_path/'repost.png', claims, NOW, session=object())
     assert result['fixtures'][0]['odds'] == 1.21
     assert [x['fixture'] for x in result['fixtures']] == [x['fixture'] for x in picks]
-    assert 'Odds from SportyBet' in fb.caption_for(result)
+    assert fb.caption_for(result).split() and all(tag.startswith('#') for tag in fb.caption_for(result).split())
     assert Image.open(tmp_path/'repost.png').size == (1080,1920)
     data['fixtures'][0]['sels'][0][4] = 1.01
     source.write_text(json.dumps(data))
