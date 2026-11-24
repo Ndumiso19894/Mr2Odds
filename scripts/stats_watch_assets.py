@@ -16,7 +16,7 @@ from scripts import stats_watch
 
 def caption(info):
     from scripts.social_caption import social_caption
-    return social_caption()
+    return social_caption(info)
 
 
 def validate_manifest(info, now=None):
