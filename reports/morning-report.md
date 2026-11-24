@@ -1,7 +1,7 @@
 # Mr2Odds Daily Research — 24 November 2026
-**Feed:** 14:00 SAST · SportyBet ZA snapshot · kick-offs SAST
+**Feed:** 14:00 SAST · SportyBet ZA
 
-**Coverage:** 139 fixtures; 78 priced after 17:00 SAST. Recent-form inputs on 110. Advanced xG/shots/corners signals are disabled; probabilities are model estimates and prices may move.
+**Coverage:** 139 fixtures; 78 priced after 17:00 SAST. Recent-form inputs on 110. xG/shots/corners signals are disabled; probabilities are model estimates.
 
 ## Match analysis
 
