@@ -118,17 +118,17 @@ jobs:
           from pathlib import Path
           import sys
           source=Path(sys.argv[1]).read_text(encoding="utf-8").strip()
-          paras=source.split("\\n\\n")
+          paras=source.split("\n\n")
           parts=[]
           cur=""
           for p in paras:
               if len(cur)+len(p)+2>3500 and cur:
                   parts.append(cur);cur=p
               else:
-                  cur=(cur+"\\n\\n"+p).strip()
+                  cur=(cur+"\n\n"+p).strip()
           if cur: parts.append(cur)
           for i,p in enumerate(parts,1):
-              Path(f"youtube-part-{i:02d}.txt").write_text(f"YOUTUBE SCRIPT — PART {i}/{len(parts)}\\n\\n"+p,encoding="utf-8")
+              Path(f"youtube-part-{i:02d}.txt").write_text(f"YOUTUBE SCRIPT — PART {i}/{len(parts)}\n\n"+p,encoding="utf-8")
           print("Created",len(parts),"script messages")
           PY
           for file in youtube-part-*.txt; do
