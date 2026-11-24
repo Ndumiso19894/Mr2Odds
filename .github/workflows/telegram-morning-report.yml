@@ -77,7 +77,7 @@ jobs:
 
       - name: Verify the configured Facebook Page
         id: facebook-check
-        if: ${{ steps.facebook-duplicate-check.outcome == 'success' && steps.facebook-duplicate-check.outputs.already_published != 'true' }}
+        if: ${{ always() && steps.facebook-duplicate-check.outcome == 'success' && steps.facebook-duplicate-check.outputs.already_published != 'true' }}
         env:
           FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
@@ -85,11 +85,11 @@ jobs:
 
       - name: Claim today's Facebook image publication
         id: facebook-claim
-        if: ${{ steps.facebook-check.outcome == 'success' && steps.facebook-duplicate-check.outputs.already_published != 'true' }}
+        if: ${{ always() && steps.facebook-check.outcome == 'success' && steps.facebook-duplicate-check.outputs.already_published != 'true' }}
         run: |
           printf '%s\n' "A4 Facebook publication reserved for $(TZ=Africa/Johannesburg date +%F)" > facebook-publication-claim.txt
       - uses: actions/upload-artifact@v4
-        if: ${{ steps.facebook-claim.outcome == 'success' }}
+        if: ${{ always() && steps.facebook-claim.outcome == 'success' }}
         with:
           name: mr2odds-daily-slip-facebook-${{ steps.date.outputs.value }}
           path: facebook-publication-claim.txt
@@ -98,7 +98,7 @@ jobs:
 
       - name: Publish the same A4 slip image to Facebook
         id: facebook-photo
-        if: ${{ steps.facebook-claim.outcome == 'success' }}
+        if: ${{ always() && steps.facebook-claim.outcome == 'success' }}
         env:
           FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
