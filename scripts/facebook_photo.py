@@ -12,6 +12,8 @@ from zoneinfo import ZoneInfo
 
 import requests
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 API = "https://graph.facebook.com/v24.0"
 SAST = ZoneInfo("Africa/Johannesburg")
 
