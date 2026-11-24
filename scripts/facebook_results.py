@@ -232,7 +232,7 @@ def publish(output, now=None, session=None):
     if not 1 <= len(fixtures) <= 24:
         raise ValueError('Invalid results manifest')
     from scripts.social_caption import social_caption
-    caption = social_caption()
+    caption = social_caption({'fixtures': fixtures})
     token, page_id = fb.credentials()
     session = session or requests.Session()
     token, _ = fb.resolve_page_token(session, token, page_id)
