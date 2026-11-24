@@ -1,7 +1,7 @@
 # Mr2Odds Daily Research — 24 November 2026
 **Feed:** 14:00 SAST · SportyBet ZA
 
-**Coverage:** 139 fixtures; 78 priced after 17:00 SAST. Recent-form inputs on 110. xG/shots/corners signals are disabled; probabilities are model estimates.
+**Coverage:** 139 fixtures; 78 priced after 17:00. Recent form on 110; advanced xG/shots/corners signals disabled. Probabilities are model estimates.
 
 ## Match analysis
 
@@ -23,17 +23,17 @@
 
 ## Final tickets — exactly three
 
-### SLIP 1
+### SLIP 1 — Porto and Cardiff
 • Feyenoord vs FC Porto — Porto win @2.25
 • Cardiff City vs Preston — Over 1.5 goals @1.13
 **Combined odds 2.54** (2.25 × 1.13 = 2.5425)
 
-### SLIP 2
+### SLIP 2 — Two BTTS picks
 • Manchester City vs Napoli — BTTS Yes @1.58
 • Slovan Bratislava vs Real Betis — BTTS Yes @1.74
 **Combined odds 2.75** (1.58 × 1.74 = 2.7492)
 
-### SLIP 3
+### SLIP 3 — Goal markets
 • Como vs AEK Athens — Over 2.5 goals @1.36
 • Forest Green vs Southend — Over 2.5 goals @1.40
 • Hibernian vs Dundee — Over 1.5 goals @1.22
