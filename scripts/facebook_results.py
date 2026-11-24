@@ -231,26 +231,8 @@ def publish(output, now=None, session=None):
     fixtures = info.get('fixtures') or []
     if not 1 <= len(fixtures) <= 24:
         raise ValueError('Invalid results manifest')
-    # Reuse team-only hashtag handling without the selections-card count constraint.
-    tags, seen = [], set()
-    for item in fixtures:
-        for side in ('home', 'away'):
-            name = item.get(side)
-            if not isinstance(name, str) or not name.strip():
-                raise ValueError('Missing team in results caption')
-            import unicodedata
-            tag = ''.join(c for c in unicodedata.normalize('NFKC', name) if c.isalnum() or c == '_')
-            if not tag:
-                raise ValueError('Invalid results hashtag')
-            if tag.casefold() not in seen:
-                seen.add(tag.casefold()); tags.append('#' + tag)
-    day = datetime.strptime(info['date'], '%Y-%m-%d')
-    questions = ('Which match did you follow?', 'Did you catch any of these games?',
-                 'Which result caught your eye?', 'What did you make of these matches?')
-    caption = (f"Yesterday's results - {day.day} {day.strftime('%B %Y')}\n\n"
-               f"{questions[day.toordinal() % len(questions)]}\n"
-               'Follow Mr 2 Odds for more picks and results.\n'
-               '18+ | Bet responsibly.\n\n' + ' '.join(tags))
+    from scripts.social_caption import social_caption
+    caption = social_caption()
     token, page_id = fb.credentials()
     session = session or requests.Session()
     token, _ = fb.resolve_page_token(session, token, page_id)
