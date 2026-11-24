@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'reports/morning-report.md'
+      - 'reports/youtube-script-*.md'
       - '.github/workflows/telegram-morning-report.yml'
   workflow_dispatch:
 
@@ -102,6 +103,40 @@ jobs:
               --form "caption=Mr2Odds — Slip ${n}")
             echo "$response" | grep -q '"ok":true' || { echo "Telegram did not confirm Slip ${n} photo"; echo "$response"; exit 1; }
             echo "Telegram confirmed Slip ${n} photo"
+          done
+
+
+      - name: Send YouTube script to Telegram in parts
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          set -euo pipefail
+          script=$(ls reports/youtube-script-*.md | sort | tail -n 1)
+          test -s "$script"
+          python - "$script" <<'PY'
+          from pathlib import Path
+          import sys
+          source=Path(sys.argv[1]).read_text(encoding="utf-8").strip()
+          paras=source.split("\\n\\n")
+          parts=[]
+          cur=""
+          for p in paras:
+              if len(cur)+len(p)+2>3500 and cur:
+                  parts.append(cur);cur=p
+              else:
+                  cur=(cur+"\\n\\n"+p).strip()
+          if cur: parts.append(cur)
+          for i,p in enumerate(parts,1):
+              Path(f"youtube-part-{i:02d}.txt").write_text(f"YOUTUBE SCRIPT — PART {i}/{len(parts)}\\n\\n"+p,encoding="utf-8")
+          print("Created",len(parts),"script messages")
+          PY
+          for file in youtube-part-*.txt; do
+            response=$(curl --fail --silent --show-error --request POST \
+              "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+              --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" --data-urlencode "text@$file")
+            echo "$response" | grep -q '"ok":true' || { echo "Telegram failed to confirm $file"; echo "$response"; exit 1; }
+            echo "Telegram confirmed $file"
           done
 
       - name: Send report text to Telegram
