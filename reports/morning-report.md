@@ -1,50 +1,43 @@
 MR2ODDS — 24 NOVEMBER 2026
-Independent market review • SAST • Mr2Odds snapshot 09:50
+Independent review • SAST • scanner snapshot 09:50
 
-SCREENING
-Feed contains 108 fixtures (84 data-usable). Shortlist ranked from model profile, prices and major matches; selected fixtures cross-checked against independent previews/market data and UEFA team news. Advanced xG/shots/corners model is DISABLED. No live lineups confirmed. Prices are snapshots, not guaranteed current SportyBet prices. Focused shortlist, not 108 independently researched matches.
+METHOD / LIMITS
+Mr2Odds is a shortlist and odds snapshot, not the decision-maker. Today’s feed has 108 fixtures; advanced xG/shots/corners module is disabled. Prices below are snapshot prices, not guaranteed current bookmaker prices. Lineups were not live-confirmed. Focused independent review—not every fixture individually researched. No guaranteed outcomes or stake advice.
 
-RB LEIPZIG vs LENS — 22:00
-Feed: Leipzig 1.40; O2.5 1.33; BTTS 1.52; O9.5 corners 1.75 (independent market).
-Lens conceded 16 in four European matches, including 1–9 Como; Leipzig have recent 5–1 Union and 5–2 Augsburg wins. Leipzig home form is strong, but they have conceded too and Lens have scored in their recent matches. O2.5 fits the game profile better than a large handicap, yet independent market probability is around 72% (fair ~1.39), below 1.33 offered. PASS for value; Leipzig win is a lean only.
-Sources: https://football-stats.co.uk/match/rb-leipzig-lens-2026-11-24/ • https://new.cornerprobet.com/en/articles/champions-league-2026-11-24
+MATCH NOTES
+MAN CITY vs NAPOLI
+City win @1.32: reasonable favourite, but City’s recent domestic run has been poor. Napoli have struggled in Europe and carry notable absences (Di Lorenzo, Lobotka and suspended Rafa Marin among those reported). City’s home European record vs Italian opposition is positive; Napoli’s away European record is poor. City win is playable only as a slip leg, not a banker. Risk: City’s inconsistent domestic form.
+RB LEIPZIG vs LENS
+Over 2.5 @1.33: Leipzig have scored 3+ in five of seven home games; six of seven Leipzig home games reportedly cleared 2.5. Lens were beaten 9–1 by Como and have struggled defensively in Europe. Strong match profile for goals, but the short price leaves little margin.
+FEYENOORD vs PORTO
+BTTS Yes @1.55: Feyenoord’s recent home UCL games have been goal-heavy, while defensive absences have contributed to their recent concessions. Porto beat Napoli 4–1 and have been competitive in Europe. Both scoring is plausible, but Feyenoord defensive injuries and BTTS variance make this a risk leg.
+CARDIFF vs PRESTON
+Over 2.5 @1.45: Cardiff have been unbeaten at home across eight league matches and have scored 21 home goals; Preston are bottom but recently earned two positive results. Cardiff’s home attack and the matchup support goals. Risk: Preston may keep the game tight.
+BRISTOL CITY vs WREXHAM
+BTTS Yes @1.76 (feed snapshot): independent match model gives BTTS around 57%; market shown around 53%. Both teams have scoring potential, but this is not a strong edge and the odds can move.
+NORWICH vs QPR
+BTTS Yes @1.56 (feed snapshot): model estimate around 60%, with both teams capable of scoring. At 1.56 the price is short relative to that estimate (fair ~1.67); included for slip construction, not a value claim.
+CHARLTON vs LINCOLN
+BTTS Yes @1.85: model estimate about 57%, market snapshot about 53%; a marginal price case, not certainty. Match volatility remains.
 
-MAN CITY vs NAPOLI — 22:00
-Feed: City 1.32; O2.5 1.32; BTTS 1.59; O9.5 corners 1.90.
-City won 3/4 European games; Napoli lost 3/4, including 1–4 Porto. Napoli have key absences, including Lobotka, Di Lorenzo, Meret and suspended Rafa Marin. City's domestic form is poor; win pick only moderate confidence. Corners alternative needs price/line confirmation.
-Source: https://mrfixitstips.co.uk/previews/manchester-city-vs-napoli-prediction-and-betting-tips-2026-11-24/ • UEFA: https://www.uefa.com/uefachampionsleague/news/02ab-2223c67db015-c4f7874e074e-1000--champions-league-predicted-line-ups-matchday-5-team-news-/
-
-REAL MADRID vs PSV — 22:00
-Feed: Madrid 1.14; O2.5 1.17; BTTS 1.63. Madrid won first four European games and six straight domestically; PSV have four European points but three domestic wins. Madrid win is logical, but 1.14 is accumulator-only.
-Source: https://mrfixitstips.co.uk/previews/real-madrid-vs-psv-prediction-and-betting-tips-2026-11-24/
-
-FEYENOORD vs PORTO — 22:00
-Feed: Porto 2.25; O2.5 1.64; BTTS 1.55. Feyenoord are winless in five and conceded 11 in four European games; Porto beat Napoli 4–1 and are in form. Porto DNB is preferable to outright, but DNB price not in feed. BTTS/O2.5 plausible yet high variance. PASS pending DNB price.
-Source: https://mrfixitstips.co.uk/previews/feyenoord-vs-porto-prediction-and-betting-tips-2026-11-24/
-
-GALATASARAY vs ASTON VILLA — 19:45
-Feed BTTS 1.48 / O2.5 1.54. Galatasaray missing Osimhen, Rafael Leão and Sallai; Jakobs doubtful. Absences weaken short goals prices. PASS.
-BODØ/GLIMT vs LASK — 19:45
-Feed O2.5 1.29 / BTTS 1.41 / home 1.51. Short prices, absences; no verified edge. PASS.
-
-OTHER MODEL FLAGS — NOT YET VALIDATED
-Fratria–Yantra BTTS 1.65 (model 61.7%); Cray Wanderers–Wingate BTTS 1.60 (67.3%); Leek–Gainsborough O2.5 1.65 (73.7%). Lower-league data uncertainty; no selections without deeper independent checks.
-
-SLIP 1 — LOWER VARIANCE (combined odds 1.50)
-• Manchester City win @1.32
-• Real Madrid win @1.14
-Risk: City inconsistency; short return. Not value singles.
-
-SLIP 2 — MODERATE (combined odds 1.76)
-• RB Leipzig vs Lens — Over 2.5 goals @1.33
-• Manchester City win @1.32
-Risk: Leipzig total below estimated fair odds (~1.39).
-
-SLIP 3 — HIGHER RISK (combined odds 2.72)
+SLIP 1 — 2.72 (three legs)
+• Manchester City to win @1.32
+• Leipzig vs Lens — Over 2.5 goals @1.33
 • Feyenoord vs Porto — BTTS Yes @1.55
-• RB Leipzig vs Lens — Over 2.5 @1.33
-• Manchester City win @1.32
-Risk: Three legs and goals variance. Not recommended staking.
+Combined odds 2.72 (1.32 × 1.33 × 1.55)
+Risk: City inconsistency plus two goal markets. No leg is guaranteed.
 
-FINAL POSITION
-No clear price edge on researched shortlist: PASS. Slip 1 is least aggressive, not value. Verify prices/lineups. No guarantees.
+SLIP 2 — 2.55 (two legs)
+• Cardiff vs Preston — Over 2.5 goals @1.45
+• Bristol City vs Wrexham — BTTS Yes @1.76
+Combined odds 2.55 (1.45 × 1.76)
+Risk: depends on both matches opening up; Bristol/Wrexham is a modest-confidence leg.
+
+SLIP 3 — 2.89 (two legs)
+• Norwich vs QPR — BTTS Yes @1.56
+• Charlton vs Lincoln — BTTS Yes @1.85
+Combined odds 2.89 (1.56 × 1.85)
+Risk: two BTTS legs; Norwich price is short against model probability, so this is not a value slip.
+
+FINAL
+All three slips fit the requested 2.50–3.00 range. These are probability-based combinations, not verified value bets; prices and team news must be checked before placing. If odds drop materially or lineup/news changes, skip or rebuild.
