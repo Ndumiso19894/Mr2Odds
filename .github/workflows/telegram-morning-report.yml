@@ -8,6 +8,8 @@ on:
       - 'reports/youtube-script-*.md'
       - 'reports/youtube-script-*.txt'
       - '.github/workflows/telegram-morning-report.yml'
+      - 'scripts/render_daily_slips.py'
+      - 'scripts/facebook_photo.py'
   workflow_dispatch:
 
 permissions:
@@ -81,7 +83,7 @@ jobs:
         env:
           FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-        run: python -c "from scripts import facebook_post; facebook_post.diagnose()"
+        run: python scripts/facebook_photo.py diagnose
 
       - name: Claim today's Facebook image publication
         id: facebook-claim
@@ -102,42 +104,7 @@ jobs:
         env:
           FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-        run: |
-          python - <<'PY'
-          from datetime import datetime
-          from pathlib import Path
-          import requests
-          from scripts import facebook_post as fb
-
-          token, page_id = fb.credentials()
-          session = requests.Session()
-          token, _ = fb.resolve_page_token(session, token, page_id)
-          day = datetime.now(fb.SAST).strftime('%-d %B %Y')
-          caption = (
-              f"Mr2Odds daily football selections — {day}.\n\n"
-              "Three researched slips with the selected markets, odds and estimated probabilities.\n"
-              "Check the live price and exact market line before placing.\n"
-              "18+ | Bet responsibly."
-          )
-          image_path = Path("daily-slips-a4.png")
-          if not image_path.is_file() or image_path.stat().st_size == 0:
-              raise SystemExit("The A4 slip image is missing.")
-          try:
-              with image_path.open("rb") as image:
-                  response = session.post(
-                      f"https://graph.facebook.com/v24.0/{page_id}/photos",
-                      data={"access_token": token, "message": caption},
-                      files={"source": ("mr2odds-daily-slips-a4.png", image, "image/png")},
-                      timeout=90,
-                  )
-              if not response.ok:
-                  raise RuntimeError("Facebook rejected the A4 image: " + fb.error_summary(response))
-              if not response.json().get("id"):
-                  raise RuntimeError("Facebook did not confirm the photo ID; check the Page before retrying.")
-          except requests.RequestException:
-              raise RuntimeError("Facebook upload result is unknown; check the Page before retrying.") from None
-          print("Facebook confirmed the combined A4 slip image post.")
-          PY
+        run: python scripts/facebook_photo.py publish --image daily-slips-a4.png
 
       - name: Prepare plain-text YouTube script
         if: ${{ !contains(github.event.head_commit.message, '[report-only]') }}
