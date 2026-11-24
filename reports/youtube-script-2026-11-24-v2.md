@@ -15,15 +15,15 @@ We also removed three earlier BTTS selections: Bristol City against Wrexham, Nor
 
 [TICKET ONE — 1:40]
 
-Ticket one combines Fratria against Yantra, Holywell Town against Penybont, and Como against AEK Athens.
+Ticket one combines two model-led lower-league selections with one Champions League goals selection.
 
-First, Fratria against Yantra: Both Teams to Score at 1.76. Mr2Odds estimates BTTS at 61.7 percent, with 40 observations for Fratria and 39 for Yantra. The model's fair price is approximately 1.62, so 1.76 is above that estimate. The model also has four previous head-to-head meetings available. This is a Bulgarian second-tier fixture, and I could not verify a current independent team-news preview. So this is a model-led selection, not a fully corroborated one. The risk is obvious: lower-league information can be less complete, and one team may fail to score.
+First, Fratria against Yantra: Both Teams to Score at 1.76. Mr2Odds estimates BTTS at 61.7 percent, with 40 observations for Fratria and 39 for Yantra, and four previous meetings. The model's fair price is approximately 1.62, so 1.76 is above that estimate. I could not verify a current independent team-news preview. This is therefore a model-led selection, not a fully corroborated one. The risk is lower-league uncertainty and one team failing to score.
 
-Second, Holywell Town against Penybont: Penybont to win at 1.16. The model estimates the away win at 85.8 percent. However, the underlying sample is smaller than the major-league fixtures, with 16 home observations and 25 away observations. I could not verify a current independent preview, so do not treat this as a certainty. The selection is based on the substantial model gap between the teams, but away wins always carry risk. If the price changes or the team news is unfavourable, remove it rather than forcing the ticket.
+Second, Holywell Town against Penybont: Penybont to win at 1.16. The model estimates the away win at 85.8 percent, but the underlying sample is smaller, with 16 home observations and 25 away observations. I could not verify an independent current preview. Away wins always carry risk, and this selection should be removed if the team news or price changes unfavourably.
 
-Third, Como against AEK Athens: Over 2.5 goals at 1.36. Mr2Odds estimates this at 68.3 percent. Independent reporting says Como have won four of their last five and scored 17 goals across that run, including a 9–1 Champions League win over Lens. AEK have conceded in four of their last five. There are attacking absences for Como, including Moise Kean and other wide options, and AEK are missing Koita through suspension. We prefer the match total to the Como win because the model gives the goals market stronger support. The main risk is that Como's absences reduce their attacking output.
+Third, Como against AEK Athens: Over 2.5 goals at 1.36. Mr2Odds estimates this at 68.3 percent. Independent reporting says Como won four of their last five and scored 17 goals in that run, including a 9–1 Champions League win over Lens. AEK conceded in four of their last five. Como have attacking absences, including Moise Kean and other wide options, while AEK miss Koita through suspension. We prefer the match total to Como win because the model gives the goals market stronger support. The main risk is that Como's absences reduce their attacking output.
 
-The combined price for ticket one is approximately 2.78. It has two lower-league model-led selections, which is why I rate its risk medium-high. The price target is met, but that does not make the ticket safe.
+The combined price is approximately 2.78. Two legs are model-led lower-league selections, so this ticket carries medium-high risk. Meeting the odds target does not make it safe.
 
 [TICKET TWO — 4:35]
 
