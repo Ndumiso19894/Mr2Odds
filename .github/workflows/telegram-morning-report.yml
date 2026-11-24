@@ -6,6 +6,7 @@ on:
     paths:
       - 'reports/morning-report.md'
       - 'reports/youtube-script-*.md'
+      - 'reports/youtube-script-*.txt'
       - '.github/workflows/telegram-morning-report.yml'
   workflow_dispatch:
 
@@ -41,9 +42,9 @@ jobs:
             m=re.match(r"SLIP ([1-3]) — (.+)",sec)
             if not m: continue
             num,label=m.groups()
-            odds=re.search(r"combined odds\s+([0-9.]+)",sec,re.I)
-            risk=re.search(r"Risk:\s*(.+)",sec)
-            legs=re.findall(r"^•\s*(.+)$",sec,re.M)
+            odds=re.search(r"combined odds\\s+([0-9.]+)",sec,re.I)
+            risk=re.search(r"Risk:\\s*(.+)",sec)
+            legs=re.findall(r"^•\\s*(.+)$",sec,re.M)
             if not legs: raise SystemExit(f"No selections found for Slip {num}")
             slips[num]=(label.strip(),odds.group(1) if odds else "N/A",legs,risk.group(1).strip() if risk else "")
           if len(slips)!=3: raise SystemExit(f"Expected 3 slips but parsed {len(slips)}")
@@ -106,23 +107,42 @@ jobs:
             echo "Telegram confirmed Slip ${n} photo"
           done
 
+      - name: Prepare plain-text YouTube script
+        if: ${{ !contains(github.event.head_commit.message, '[report-only]') }}
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          scripts=sorted(Path("reports").glob("youtube-script-*.md"))
+          if not scripts:
+              raise SystemExit("No YouTube Markdown script found")
+          source=scripts[-1]
+          text=source.read_text(encoding="utf-8")
+          text=re.sub(r"^#{1,6}\\s*", "", text, flags=re.M)
+          text=re.sub(r"^\\[([A-Z0-9 —-]+)\\]$", r"\\1", text, flags=re.M)
+          text=re.sub(r"\\*\\*(.*?)\\*\\*", r"\\1", text)
+          text=re.sub(r"`([^\`]+)`", r"\\1", text)
+          target=source.with_suffix(".txt")
+          target.write_text(text, encoding="utf-8")
+          print(f"Prepared {target} ({len(text)} characters)")
+          PY
 
-      - name: Send YouTube script to Telegram as a document
+      - name: Send plain-text YouTube script to Telegram
         if: ${{ !contains(github.event.head_commit.message, '[report-only]') }}
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           set -euo pipefail
-          script=$(ls reports/youtube-script-*.md | sort | tail -n 1)
+          script=$(ls reports/youtube-script-*.txt | sort | tail -n 1)
           test -s "$script"
           response=$(curl --fail --silent --show-error --request POST \
             "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument" \
             --form "chat_id=${TELEGRAM_CHAT_ID}" \
             --form "document=@${script}" \
-            --form "caption=Mr2Odds — YouTube analysis script")
-          echo "$response" | grep -q '"ok":true' || { echo "Telegram did not confirm YouTube script"; echo "$response"; exit 1; }
-          echo "Telegram confirmed YouTube script document"
+            --form "caption=Mr2Odds — YouTube script (plain text)")
+          echo "$response" | grep -q '"ok":true' || { echo "Telegram did not confirm plain-text YouTube script"; echo "$response"; exit 1; }
+          echo "Telegram confirmed plain-text YouTube script"
 
       - name: Send report text to Telegram
         if: ${{ !contains(github.event.head_commit.message, '[script-only]') }}
