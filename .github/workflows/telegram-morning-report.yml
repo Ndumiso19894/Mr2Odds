@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - 'reports/morning-report.md'
+      - 'reports/slip-1.png'
+      - 'reports/slip-2.png'
+      - 'reports/slip-3.png'
       - '.github/workflows/telegram-morning-report.yml'
   workflow_dispatch:
 
@@ -14,11 +17,29 @@ permissions:
 jobs:
   send-report:
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 3
     steps:
-      - name: Checkout report
+      - name: Checkout report and slip images
         uses: actions/checkout@v4
-      - name: Send report to Telegram
+      - name: Send slip images to Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          set -euo pipefail
+          for image in reports/slip-1.png reports/slip-2.png reports/slip-3.png; do
+            if [ -s "$image" ]; then
+              echo "Sending $image"
+              curl --fail --silent --show-error --request POST \
+                "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto" \
+                --form "chat_id=${TELEGRAM_CHAT_ID}" \
+                --form "photo=@${image}" \
+                --form "caption=$(basename "${image}" .png | tr '-' ' ')"
+            else
+              echo "Image not found (skipping): $image"
+            fi
+          done
+      - name: Send report text to Telegram
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
