@@ -81,13 +81,8 @@ def publish(image_path: Path):
         raise ValueError("The combined A4 image is missing or empty")
     session = requests.Session()
     token = page_token(session, token, page_id)
-    day = datetime.now(SAST).strftime("%-d %B %Y")
-    caption = (
-        f"Mr2Odds daily football selections — {day}.\n\n"
-        "Three researched slips with the selected markets, odds and estimated probabilities.\n"
-        "Check the live price and exact market line before placing.\n"
-        "18+ | Bet responsibly."
-    )
+    from scripts.social_caption import social_caption
+    caption = social_caption()
     try:
         with image_path.open("rb") as image:
             response = session.post(
