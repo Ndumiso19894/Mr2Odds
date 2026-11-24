@@ -10,24 +10,84 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: telegram-today-videos
   cancel-in-progress: false
 
 jobs:
-  test-runner:
+  send:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 25
     steps:
-      - name: Confirm GitHub runner starts
-        run: |
-          echo "Runner started."
-          echo "Current time (UTC): $(date -u)"
-          echo "Branch: $GITHUB_REF"
       - uses: actions/checkout@v4
-      - name: Verify repository scripts exist
+      - name: Checkout current scan data
+        uses: actions/checkout@v4
+        with:
+          ref: data
+          path: live-data
+      - name: Confirm one-off date and prevent duplicate delivery
+        id: guard
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          test -f scripts/facebook_accumulators.py
-          test -f scripts/selection_reel.py
-          echo "Video scripts are present."
+          set -euo pipefail
+          day=$(TZ=Africa/Johannesburg date +%F)
+          if [ "$day" != "2026-11-24" ]; then
+            echo "Today's delivery window ended; exiting."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          name="telegram-today-video-$day"
+          existing=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=$name" --jq ".artifacts[] | select(.name == \"$name\" and .expired == false) | .id")
+          if [ -n "$existing" ]; then
+            echo "Video already sent for $day; no duplicate."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Install Python
+        if: steps.guard.outputs.ready == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install video dependencies
+        if: steps.guard.outputs.ready == 'true'
+        run: pip install --only-binary=:all: --retries 5 --timeout 60 -r requirements.txt 'Pillow>=10,<12' 'imageio-ffmpeg>=0.6,<1'
+      - name: Generate video from latest scan
+        id: prepare
+        if: steps.guard.outputs.ready == 'true'
+        env:
+          REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
+        run: python scripts/facebook_accumulators.py prepare --snapshot live-data/data/app/latest.json --output video-output
+      - name: Validate video and selections
+        if: steps.prepare.outputs.ready == 'true'
+        run: python scripts/facebook_accumulators.py validate --output video-output
+      - name: Send generated video to Telegram only
+        id: telegram
+        if: steps.prepare.outputs.ready == 'true'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scripts/selection_reel.py telegram --output video-output
+      - name: Save delivery claim after Telegram confirms success
+        if: steps.telegram.outcome == 'success'
+        run: |
+          echo "Telegram confirmed delivery on $(TZ=Africa/Johannesburg date +%F)." > telegram-claim.txt
+      - uses: actions/upload-artifact@v4
+        if: steps.telegram.outcome == 'success'
+        with:
+          name: telegram-today-video-2026-11-24
+          path: telegram-claim.txt
+          retention-days: 35
+          if-no-files-found: error
+      - name: Save rendered video for temporary review
+        if: steps.prepare.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: telegram-video-preview-2026-11-24
+          path: video-output/
+          retention-days: 2
+          if-no-files-found: error
