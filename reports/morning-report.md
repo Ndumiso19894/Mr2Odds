@@ -1,5 +1,5 @@
 # Mr2Odds Daily Research — 24 November 2026
-**Feed:** 14:00 SAST · SportyBet ZA
+**Feed:** 14:00 SAST
 
 **Coverage:** 139 fixtures; 78 priced after 17:00. Recent form on 110; advanced xG/shots/corners signals disabled. Probabilities are model estimates.
 
@@ -40,4 +40,4 @@
 • Holywell Town vs Penybont — Penybont win @1.16
 **Combined odds 2.69** (1.36 × 1.40 × 1.22 × 1.16 = 2.6945408)
 
-No repeated fixtures. Slip 1 is result-led, Slip 2 uses two BTTS markets, and Slip 3 combines goal profiles with one model-led supporting result. Recheck current prices and confirmed line-ups.
+No repeated fixtures. Slip 1 is result-led; Slip 2 is BTTS-led; Slip 3 combines goals and one model-led result. Recheck current prices and confirmed line-ups.
