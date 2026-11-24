@@ -95,12 +95,12 @@ def render_accumulator(items, path, index):
               subheading=f"TOTAL ODDS {total(items):.2f}")
 
 
-def validate(info, now=None):
+def validate(info, now=None, allow_stale=False):
     now = (now or datetime.now(fb.SAST)).astimezone(fb.SAST)
     if info.get('series') != 'accumulators' or info.get('date') != now.date().isoformat():
         raise ValueError('Not today’s accumulator manifest')
     generated = datetime.strptime(info['generated'], '%Y-%m-%d %H:%M').replace(tzinfo=fb.SAST)
-    if not timedelta(minutes=-5) <= now-generated <= timedelta(minutes=90):
+    if not allow_stale and not timedelta(minutes=-5) <= now-generated <= timedelta(minutes=90):
         raise ValueError('Accumulator prices are stale')
     groups = info.get('accumulators') or []
     if len(groups) != 3:
@@ -165,7 +165,7 @@ def prepare(snapshot, output, now=None, music=None):
     accs = [{'total_odds':f'{total(group):.2f}','fixtures':[{k:item[k] for k in fields} for item in group]} for group in groups]
     info = {'date':now.date().isoformat(),'generated':data['meta']['generated'],'series':'accumulators',
             'accumulators':accs,'fixtures':[x for g in accs for x in g['fixtures']]}
-    validate(info,now); caption(info)
+    validate(info,now,allow_stale=os.environ.get('ALLOW_STALE_SCAN','').lower()=='true'); caption(info)
     with tempfile.TemporaryDirectory() as td:
         temp = Path(td); slides=[]
         for i, group in enumerate(groups,1):
