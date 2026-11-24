@@ -47,11 +47,12 @@ jobs:
         run: |
           set -euo pipefail
           test -s daily-slips-a4.png
+          caption=$(python scripts/social_caption.py)
           response=$(curl --fail --silent --show-error --request POST \
             "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto" \
             --form "chat_id=${TELEGRAM_CHAT_ID}" \
             --form "photo=@daily-slips-a4.png" \
-            --form-string "caption=Today's slips selections, GOOD LUCK! #Mr2Odds #FootballPredictions #FootballTips #SoccerPredictions #FootballAnalysis #BetResponsibly")
+            --form-string "caption=$caption")
           echo "$response" | grep -q '"ok":true' || { echo "Telegram did not confirm the A4 slip image"; exit 1; }
           echo "Telegram confirmed the combined A4 slip image"
 
