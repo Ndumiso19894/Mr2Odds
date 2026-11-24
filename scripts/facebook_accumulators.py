@@ -130,25 +130,8 @@ def validate(info, now=None):
 
 
 def caption(info):
-    if info.get('series') == 'stats-watch':
-        from scripts import stats_watch_assets
-        return stats_watch_assets.caption(info)
-    fixtures = info['fixtures']
-    tags, seen = [], set()
-    import unicodedata
-    for item in fixtures:
-        for name in (item['home'], item['away']):
-            tag = ''.join(c for c in unicodedata.normalize('NFKC',name) if c.isalnum() or c == '_')
-            if tag and tag.casefold() not in seen:
-                tags.append('#'+tag); seen.add(tag.casefold())
-    day = datetime.strptime(info['date'],'%Y-%m-%d')
-    text = (f"Morning predictions · {day.day} {day.strftime('%B %Y')} ⚽\n\n"
-            "Three accumulators: mostly over 1.5 goals, with corners where available.\n"
-            "Which one are you following?\nOdds from SportyBet; odds can change.\n"
-            "18+ | Bet responsibly.\n\n" + ' '.join(tags))
-    if len(text) > 1000:
-        raise ValueError('Caption too long for Telegram')
-    return text
+    from scripts.social_caption import social_caption
+    return social_caption()
 
 
 def prepare(snapshot, output, now=None, music=None):
