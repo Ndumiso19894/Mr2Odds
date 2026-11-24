@@ -24,7 +24,7 @@ jobs:
       - name: Install video dependencies
         run: |
           pip install --only-binary=:all: --retries 5 --timeout 60 -r requirements.txt
-          pip install --only-binary=:all: 'Pillow>=10,<12' 'imageio-ffmpeg>=0.6,<1'
+          pip install --only-binary=:all: 'imageio-ffmpeg>=0.6,<1'
       - name: Generate video
         env:
           REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
