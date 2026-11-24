@@ -89,7 +89,7 @@ jobs:
           PY
 
       - name: Send slip photos to Telegram
-        if: ${{ !contains(github.event.head_commit.message, '[report-only]') }}
+        if: ${{ !contains(github.event.head_commit.message, '[report-only]') && !contains(github.event.head_commit.message, '[script-only]') }}
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -125,6 +125,7 @@ jobs:
           echo "Telegram confirmed YouTube script document"
 
       - name: Send report text to Telegram
+        if: ${{ !contains(github.event.head_commit.message, '[script-only]') }}
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
