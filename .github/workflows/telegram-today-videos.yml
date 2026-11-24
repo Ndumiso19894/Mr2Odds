@@ -3,20 +3,24 @@ name: Telegram video generator
 on:
   push:
     branches:
+      - main
       - data
     paths:
+      - '.github/workflows/telegram-today-videos.yml'
       - 'data/app/latest.json'
       - 'data/app/meta.json'
   workflow_dispatch:
 
 jobs:
   generate:
+    if: github.ref == 'refs/heads/data' || github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, 'Use last scan video with stale-data override')
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Checkout scan data
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: data
           path: live-data
@@ -27,12 +31,13 @@ jobs:
       - name: Install video dependencies
         run: |
           pip install --only-binary=:all: --retries 5 --timeout 60 -r requirements.txt
-          pip install --only-binary=:all: 'imageio-ffmpeg>=0.6,<1'
-      - name: Generate video
+          pip install --only-binary=:all: 'Pillow>=10,<12' 'imageio-ffmpeg>=0.6,<1'
+      - name: Generate video from latest published scan
         env:
           REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
+          ALLOW_STALE_SCAN: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, 'Use last scan video with stale-data override') }}
         run: python scripts/facebook_accumulators.py prepare --snapshot live-data/data/app/latest.json --output video-output
-      - name: Validate video and selection assets
+      - name: Validate generated video and assets
         run: python scripts/facebook_accumulators.py validate --output video-output
       - name: Send video to Telegram only
         env:
