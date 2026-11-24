@@ -247,42 +247,9 @@ def render(selections, path, logo_path=ROOT / 'android/design/mr-2-odds-logo.png
 
 
 def caption_for(manifest, *, medium='photo'):
-    """Only the teams actually printed on the card become hashtags."""
-    if manifest.get("series") == "accumulators":
-        from scripts import facebook_accumulators
-        return facebook_accumulators.caption(manifest)
-    if manifest.get("series") == "stats-watch":
-        from scripts import stats_watch_assets
-        return stats_watch_assets.caption(manifest)
-    try:
-        date = datetime.strptime(manifest['date'], '%Y-%m-%d')
-        fixtures = manifest['fixtures']
-    except (KeyError, TypeError, ValueError):
-        raise ValueError('Invalid caption data') from None
-    if not 5 <= len(fixtures) <= 8:
-        raise ValueError('Caption requires the same 5 to 8 matches as the image')
-    tags, seen = [], set()
-    for item in fixtures:
-        for side in ('home', 'away'):
-            name = item.get(side)
-            if not isinstance(name, str) or not name.strip():
-                raise ValueError('Missing team name in caption data')
-            tag = ''.join(c for c in unicodedata.normalize('NFKC', name) if c.isalnum() or c == '_')
-            if not tag:
-                raise ValueError('Cannot make a hashtag from the team name')
-            if tag.casefold() not in seen:
-                seen.add(tag.casefold())
-                tags.append('#' + tag)
-    day = f'{date.day} {date.strftime("%B %Y")}'
-    intro = f"Today's {'1X2' if manifest.get('series') == '1x2' else 'football'} picks - {day}"
-    questions = ('Which match are you watching?', 'Which fixture stands out to you?',
-                 'Any of these matches on your radar?', 'Which game are you looking forward to?')
-    follows = ('Follow Mr 2 Odds for more picks and results.', 'More picks and results here at Mr 2 Odds.',
-               'Follow Mr 2 Odds for the next update.', 'Keep up with picks and results at Mr 2 Odds.')
-    choice = (date.toordinal() + sum(ord(c) for c in fixtures[0]['home'] + fixtures[0]['away'])
-              + (1 if medium == 'reel' else 0)) % len(questions)
-    return (f'{intro}\n\n{questions[choice]}\n{follows[choice]}\n'
-            '18+ | Bet responsibly. Odds from SportyBet; odds can change.\n\n' + ' '.join(tags))
+    """Use the owner's exact caption and standard hashtags on every post."""
+    from scripts.social_caption import social_caption
+    return social_caption()
 
 
 def prepare(snapshot, output, now=None, session=None, prior_claims=None):
