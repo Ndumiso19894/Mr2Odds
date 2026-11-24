@@ -11,6 +11,8 @@ on:
       - 'scripts/render_daily_slips.py'
       - 'scripts/facebook_photo.py'
       - 'scripts/social_caption.py'
+  schedule:
+    - cron: '15 5 * * *' # 07:15 South Africa time, daily A4 publication
   workflow_dispatch:
 
 permissions:
@@ -37,6 +39,146 @@ jobs:
           test -s /tmp/Caveat.ttf
           python scripts/render_daily_slips.py --report reports/morning-report.md --output daily-slips-a4.png --font /tmp/Caveat.ttf
           test -s daily-slips-a4.png
+
+      - name: Verify the report is for today's South African date
+        run: |
+          python - <<'PY'
+          from datetime import datetime
+          from pathlib import Path
+          import re
+          report = Path('reports/morning-report.md').read_text(encoding='utf-8')
+          expected = datetime.now().strftime('%A %-d %B %Y')
+          match = re.search(r'^# Mr2Odds Daily Research — (.+)
+        id: telegram-photo
+        if: ${{ !contains(github.event.head_commit.message, '[report-only]') && !contains(github.event.head_commit.message, '[script-only]') }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          set -euo pipefail
+          test -s daily-slips-a4.png
+          caption=$(python scripts/social_caption.py)
+          response=$(curl --fail --silent --show-error --request POST \
+            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto" \
+            --form "chat_id=${TELEGRAM_CHAT_ID}" \
+            --form "photo=@daily-slips-a4.png" \
+            --form-string "caption=$caption")
+          echo "$response" | grep -q '"ok":true' || { echo "Telegram did not confirm the A4 slip image"; exit 1; }
+          echo "Telegram confirmed the combined A4 slip image"
+
+      - name: Set South African publication date
+        id: date
+        if: ${{ always() && steps.render.outcome == 'success' }}
+        run: echo "value=$(TZ=Africa/Johannesburg date +%F)" >> "$GITHUB_OUTPUT"
+
+      - name: Check whether today's Facebook slip image was already published
+        id: facebook-duplicate-check
+        if: ${{ always() && steps.render.outcome == 'success' && github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, '[report-only]') && !contains(github.event.head_commit.message, '[script-only]') }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          day=$(TZ=Africa/Johannesburg date +%F)
+          name="mr2odds-daily-slip-facebook-v5-$day"
+          existing=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=$name" --jq ".artifacts[] | select(.name == \"$name\" and .expired == false) | .id")
+          if [ -n "$existing" ]; then
+            echo "already_published=true" >> "$GITHUB_OUTPUT"
+            echo "Today's Facebook slip image already has a publication claim; skipping duplicate."
+          else
+            echo "already_published=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Verify the configured Facebook Page
+        id: facebook-check
+        if: ${{ always() && steps.facebook-duplicate-check.outcome == 'success' && steps.facebook-duplicate-check.outputs.already_published != 'true' }}
+        env:
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+        run: python scripts/facebook_photo.py diagnose
+
+      - name: Claim today's Facebook image publication
+        id: facebook-claim
+        if: ${{ always() && steps.facebook-check.outcome == 'success' && steps.facebook-duplicate-check.outputs.already_published != 'true' }}
+        run: |
+          printf '%s\n' "A4 Facebook publication reserved for $(TZ=Africa/Johannesburg date +%F)" > facebook-publication-claim.txt
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && steps.facebook-claim.outcome == 'success' }}
+        with:
+          name: mr2odds-daily-slip-facebook-v5-${{ steps.date.outputs.value }}
+          path: facebook-publication-claim.txt
+          retention-days: 35
+          if-no-files-found: error
+
+      - name: Publish the same A4 slip image to Facebook
+        id: facebook-photo
+        if: ${{ always() && steps.facebook-claim.outcome == 'success' }}
+        env:
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+        run: python scripts/facebook_photo.py publish --image daily-slips-a4.png
+
+      - name: Prepare plain-text YouTube script
+        if: ${{ !contains(github.event.head_commit.message, '[report-only]') }}
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          scripts=sorted(Path("reports").glob("youtube-script-*.md"))
+          if not scripts:
+              raise SystemExit("No YouTube Markdown script found")
+          source=scripts[-1]
+          text=source.read_text(encoding="utf-8")
+          text=re.sub(r"^#{1,6}\s*", "", text, flags=re.M)
+          text=re.sub(r"^\[([A-Z0-9 —-]+)\]$", r"\1", text, flags=re.M)
+          text=re.sub(r"\*\*(.*?)\*\*", r"\1", text)
+          text=re.sub(r"`([^\`]+)`", r"\1", text)
+          target=source.with_suffix(".txt")
+          target.write_text(text, encoding="utf-8")
+          print(f"Prepared {target} ({len(text)} characters)")
+          PY
+
+      - name: Send plain-text YouTube script to Telegram
+        if: ${{ !contains(github.event.head_commit.message, '[report-only]') }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          set -euo pipefail
+          script=$(ls reports/youtube-script-*.txt | sort | tail -n 1)
+          test -s "$script"
+          response=$(curl --fail --silent --show-error --request POST \
+            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument" \
+            --form "chat_id=${TELEGRAM_CHAT_ID}" \
+            --form "document=@${script}" \
+            --form "caption=Mr2Odds — YouTube script (plain text)")
+          echo "$response" | grep -q '"ok":true' || { echo "Telegram did not confirm plain-text YouTube script"; echo "$response"; exit 1; }
+          echo "Telegram confirmed plain-text YouTube script"
+
+      - name: Send report text to Telegram
+        if: ${{ !contains(github.event.head_commit.message, '[script-only]') }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          set -euo pipefail
+          test -s reports/morning-report.md
+          python - <<'PY'
+          from pathlib import Path
+          text=Path("reports/morning-report.md").read_text(encoding="utf-8").strip()
+          if not text: raise SystemExit("Report is empty")
+          if len(text)>4000: raise SystemExit(f"Report too long ({len(text)} chars); split before sending.")
+          print("Report prepared:",len(text),"characters")
+          PY
+          response=$(curl --fail --silent --show-error --request POST \
+            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" --data-urlencode "text@reports/morning-report.md")
+          echo "$response" | grep -q '"ok":true' || { echo "Telegram did not confirm report"; echo "$response"; exit 1; }
+          echo "Telegram confirmed report text"
+, report, re.M)
+          if not match or match.group(1).strip() != expected:
+              raise SystemExit(f'Report date is not current: expected {expected}; found {match.group(1).strip() if match else "no dated heading"}. Refusing to publish stale slips.')
+          print(f'Report date verified: {expected}')
+          PY
 
       - name: Send the combined A4 slip image to Telegram
         id: telegram-photo
@@ -69,7 +211,7 @@ jobs:
         run: |
           set -euo pipefail
           day=$(TZ=Africa/Johannesburg date +%F)
-          name="mr2odds-daily-slip-facebook-v4-$day"
+          name="mr2odds-daily-slip-facebook-v5-$day"
           existing=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=$name" --jq ".artifacts[] | select(.name == \"$name\" and .expired == false) | .id")
           if [ -n "$existing" ]; then
             echo "already_published=true" >> "$GITHUB_OUTPUT"
@@ -94,7 +236,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: ${{ always() && steps.facebook-claim.outcome == 'success' }}
         with:
-          name: mr2odds-daily-slip-facebook-v4-${{ steps.date.outputs.value }}
+          name: mr2odds-daily-slip-facebook-v5-${{ steps.date.outputs.value }}
           path: facebook-publication-claim.txt
           retention-days: 35
           if-no-files-found: error
