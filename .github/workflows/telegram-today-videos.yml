@@ -9,32 +9,13 @@ on:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
     steps:
-      - name: Checkout repository
+      - name: Runner check
+        run: echo "runner active"
+      - name: Checkout code
         uses: actions/checkout@v4
-      - name: Checkout latest scan data
+      - name: Checkout scan data
         uses: actions/checkout@v4
         with:
           ref: data
           path: live-data
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Install dependencies
-        run: pip install --only-binary=:all: --retries 5 --timeout 60 -r requirements.txt 'Pillow>=10,<12' 'imageio-ffmpeg>=0.6,<1'
-      - name: Generate video from current scan
-        id: prepare
-        env:
-          REEL_MUSIC_FILE_ID: ${{ secrets.REEL_MUSIC_FILE_ID }}
-        run: python scripts/facebook_accumulators.py prepare --snapshot live-data/data/app/latest.json --output video-output
-      - name: Validate
-        if: ${{ steps.prepare.outputs.ready == 'true' }}
-        run: python scripts/facebook_accumulators.py validate --output video-output
-      - name: Telegram only
-        if: ${{ steps.prepare.outputs.ready == 'true' }}
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python scripts/selection_reel.py telegram --output video-output
