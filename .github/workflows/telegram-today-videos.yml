@@ -9,9 +9,8 @@ on:
 jobs:
   generate:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
-      - name: Runner check
-        run: echo "runner active"
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Checkout scan data
@@ -19,3 +18,11 @@ jobs:
         with:
           ref: data
           path: live-data
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install video dependencies
+        run: pip install --only-binary=:all: --retries 5 --timeout 60 -r requirements.txt 'Pillow>=10,<12' 'imageio-ffmpeg>=0.6,<1'
+      - name: Validate Python scripts
+        run: python -m py_compile scripts/facebook_accumulators.py scripts/selection_reel.py scripts/stats_watch_assets.py
