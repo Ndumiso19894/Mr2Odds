@@ -5,7 +5,8 @@ on:
     paths:
       - '.github/workflows/telegram-today-videos.yml'
   schedule:
-    - cron: '0,15,30,45 15-23 * * *'
+    - cron: '15,30,45 15-23 * * *'
+    - cron: '0 16-23 * * *'
 
 permissions:
   contents: read
@@ -22,6 +23,12 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
+      - name: Check out today's data branch
+        if: github.ref == 'refs/heads/main'
+        uses: actions/checkout@v4
+        with:
+          ref: data
+          path: live-data
       - name: Check today and freshness
         id: fresh
         run: |
@@ -58,12 +65,6 @@ jobs:
           count=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=$name" --jq ".artifacts[] | select(.name == \"$name\" and .expired == false) | .id" | wc -l)
           if [ "$count" -gt 1 ]; then echo 'Duplicate claims; refusing to send.' >&2; exit 1; fi
           echo "exists=$([ "$count" -eq 1 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
-      - name: Check out today's data branch
-        if: steps.fresh.outputs.ready == 'true' && steps.claimcheck.outputs.exists != 'true'
-        uses: actions/checkout@v4
-        with:
-          ref: data
-          path: live-data
       - name: Install video dependencies
         if: steps.fresh.outputs.ready == 'true' && steps.claimcheck.outputs.exists != 'true'
         uses: actions/setup-python@v5
