@@ -249,7 +249,7 @@ def render(selections, path, logo_path=ROOT / 'android/design/mr-2-odds-logo.png
 def caption_for(manifest, *, medium='photo'):
     """Use the owner's exact caption and standard hashtags on every post."""
     from scripts.social_caption import social_caption
-    return social_caption()
+    return social_caption(manifest)
 
 
 def prepare(snapshot, output, now=None, session=None, prior_claims=None):
