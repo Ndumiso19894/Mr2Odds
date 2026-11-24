@@ -1,0 +1,40 @@
+name: Telegram morning report delivery
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'reports/morning-report.md'
+      - '.github/workflows/telegram-morning-report.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  send-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout report
+        uses: actions/checkout@v4
+      - name: Send report to Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          set -euo pipefail
+          test -s reports/morning-report.md || { echo "Report file missing or empty"; exit 1; }
+          python - <<'PY'
+          from pathlib import Path
+          text = Path("reports/morning-report.md").read_text(encoding="utf-8").strip()
+          if not text:
+              raise SystemExit("Report is empty")
+          if len(text) > 4000:
+              raise SystemExit(f"Report is too long for a single Telegram message ({len(text)} chars); split it before sending.")
+          print("Report prepared:", len(text), "characters")
+          PY
+          curl --fail --silent --show-error --request POST \
+            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text@reports/morning-report.md"
