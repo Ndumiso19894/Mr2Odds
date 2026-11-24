@@ -22,6 +22,8 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install video dependencies
-        run: pip install --only-binary=:all: --retries 5 --timeout 60 -r requirements.txt 'Pillow>=10,<12' 'imageio-ffmpeg>=0.6,<1'
+        run: |
+          pip install --only-binary=:all: --retries 5 --timeout 60 -r requirements.txt
+          pip install --only-binary=:all: 'Pillow>=10,<12' 'imageio-ffmpeg>=0.6,<1'
       - name: Python version
         run: python --version
