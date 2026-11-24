@@ -2,8 +2,11 @@ name: Telegram video generator
 
 on:
   push:
+    branches:
+      - data
     paths:
-      - '.github/workflows/telegram-today-videos.yml'
+      - 'data/app/latest.json'
+      - 'data/app/meta.json'
   workflow_dispatch:
 
 jobs:
