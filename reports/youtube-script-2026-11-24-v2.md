@@ -3,68 +3,66 @@
 
 [INTRO — 0:00]
 
-Welcome back. In today's football analysis, we are looking at three separate tickets, each built to a combined price between 2.50 and 3.00. The important point is that these are not three tickets assembled by copying the scanner. We have checked the current Mr2Odds feed, compared the suggested markets, reviewed available match previews and team news, and removed selections where the evidence did not justify the price.
+Welcome back. Today we have three separate football tickets, each with combined odds between 2.50 and 3.00. These are not simply scanner predictions copied onto betting slips. We checked the latest Mr2Odds feed, reviewed match previews and team news where available, compared the available markets, and removed several selections from the earlier report that did not stand up to the updated numbers.
 
-The prices in this video are SportyBet South Africa snapshots from the 14:00 SAST Mr2Odds refresh on 24 November. They can change. Please check the exact market and price in your own account before placing anything. The model probabilities are estimates, not guarantees, and some matches have stronger independent evidence than others.
+All prices quoted are SportyBet South Africa snapshots from the 14:00 SAST feed on 24 November. They can change. Please verify the exact selection and price before placing a bet. Model probabilities are estimates, not guarantees.
 
-[HOW THE TICKETS WERE BUILT — 0:50]
+[THE RESEARCH — 0:45]
 
-The scanner feed contains 139 fixtures in its current window. It has recent-form inputs for most fixtures, but its advanced expected-goals, shots and corners signals are disabled. That means I will not pretend that we have a full corners or bookings model today. Where there is no reliable market price or referee information, I will leave that market alone.
+The feed contains 139 fixtures in the current app window. Recent-form inputs are enabled, but advanced xG, shots and corners signals are disabled. That is important: we cannot claim a specialist corners model or a referee-based bookings edge today. Where the evidence is missing, we leave those markets out.
 
-We also corrected several earlier selections. Bristol City against Wrexham BTTS, Norwich against QPR BTTS, and Charlton against Lincoln BTTS were not strong enough at their previously quoted prices. Those selections have been removed. We are not keeping a bet simply because it appeared in an earlier report.
+We also removed three earlier BTTS selections: Bristol City against Wrexham, Norwich against QPR, and Charlton against Lincoln. The updated model probabilities did not support the confidence previously attached to those prices. We should be willing to change our minds when the data changes.
 
-[TICKET ONE — 1:45]
+[TICKET ONE — 1:40]
 
-Ticket one combines three goal-market selections.
+Ticket one combines Fratria against Yantra, Holywell Town against Penybont, and Como against AEK Athens.
 
-First, Como against AEK Athens: Over 2.5 goals at 1.36. The Mr2Odds model estimates Over 2.5 at 68.3 percent. The independent preview reports that Como have won four of their last five, including a 9–1 Champions League win over Lens, and scored 17 goals across those five matches. AEK have conceded in four of their last five and their recent European matches have been open. There are attacking absences for Como, including Moise Kean and several wide options, while AEK are missing Koita through suspension. This is why we prefer the match total rather than simply backing Como to win at a short price. The main risk is that Como's attacking absences reduce their finishing options, or AEK struggle to contribute enough to the score.
+First, Fratria against Yantra: Both Teams to Score at 1.76. Mr2Odds estimates BTTS at 61.7 percent, with 40 observations for Fratria and 39 for Yantra. The model's fair price is approximately 1.62, so 1.76 is above that estimate. The model also has four previous head-to-head meetings available. This is a Bulgarian second-tier fixture, and I could not verify a current independent team-news preview. So this is a model-led selection, not a fully corroborated one. The risk is obvious: lower-league information can be less complete, and one team may fail to score.
 
-Second, Feyenoord against Porto: Both Teams to Score at 1.55. Mr2Odds estimates BTTS at 69.1 percent. The preview describes Feyenoord's poor recent run, including a six-match winless sequence and defensive problems, while Porto have looked stronger and have the capacity to punish those weaknesses. Feyenoord have several defensive and midfield absences, and Hadj Moussa was listed as doubtful. Porto also have absentees, but their attacking options remain competitive. We choose BTTS rather than Feyenoord to win. The risk is that Porto control the match and Feyenoord fail to score, or that Porto's attack does the damage alone.
+Second, Holywell Town against Penybont: Penybont to win at 1.16. The model estimates the away win at 85.8 percent. However, the underlying sample is smaller than the major-league fixtures, with 16 home observations and 25 away observations. I could not verify a current independent preview, so do not treat this as a certainty. The selection is based on the substantial model gap between the teams, but away wins always carry risk. If the price changes or the team news is unfavourable, remove it rather than forcing the ticket.
 
-Third, Portsmouth against West Ham: Over 1.5 goals at 1.25. The feed gives this an 80.8 percent estimate, based on 40 observations for each side, with expected goals around 1.49 for Portsmouth and 1.52 for West Ham. This is a lower line than Over 2.5 because the model's Over 2.5 estimate is only 57.9 percent. We are deliberately taking the safer goal threshold. We do not have a separately verified current team-news report for this fixture in this review, so confidence is medium rather than high.
+Third, Como against AEK Athens: Over 2.5 goals at 1.36. Mr2Odds estimates this at 68.3 percent. Independent reporting says Como have won four of their last five and scored 17 goals across that run, including a 9–1 Champions League win over Lens. AEK have conceded in four of their last five. There are attacking absences for Como, including Moise Kean and other wide options, and AEK are missing Koita through suspension. We prefer the match total to the Como win because the model gives the goals market stronger support. The main risk is that Como's absences reduce their attacking output.
 
-The combined price is approximately 2.64. This is a three-leg ticket, so one failed selection loses the whole combination. It is not a guarantee.
+The combined price for ticket one is approximately 2.78. It has two lower-league model-led selections, which is why I rate its risk medium-high. The price target is met, but that does not make the ticket safe.
 
-[TICKET TWO — 4:20]
+[TICKET TWO — 4:35]
 
-Ticket two has three selections from different competitions.
+Ticket two has Leipzig against Lens, Orlando Pirates against Golden Arrows, and Carlisle against Tamworth.
 
-RB Leipzig against Lens: Over 2.5 goals at 1.31. The model estimate is 82.9 percent. Leipzig's recent attacking output has been strong, while Lens have had defensive problems, including a heavy European defeat. The UEFA team-news page lists absences for both teams, but does not show a major new attacking crisis for Leipzig. We prefer Over 2.5 to Leipzig on the handicap because the Lens defence has been vulnerable and the match can still produce goals without Leipzig needing to win by a large margin. The risk is that Lens sit deep and Leipzig do not convert their chances.
+RB Leipzig against Lens: Over 2.5 goals at 1.31. The model estimate is 82.9 percent, with 40 observations for each side. Leipzig's recent attacking performances have been productive, while Lens have had defensive problems, including a heavy European defeat. UEFA's team-news coverage lists absences for both clubs. We prefer Over 2.5 to a Leipzig handicap because the match can produce three goals without requiring Leipzig to win by a particular margin. The risk is that Lens defend deep and Leipzig do not convert their chances.
 
-Orlando Pirates to beat Golden Arrows at 1.40. Pirates have won seven consecutive matches in all competitions, scoring 16 and keeping six clean sheets during that run, according to the club preview. They also return after a 2–0 win over Stellenbosch. The Mr2Odds feed estimates the home win at 80.1 percent, but rates the data quality medium and has only nine recent observations per side. That limited sample is important. We select the match result rather than BTTS because the scanner estimates Golden Arrows scoring probability to be low. The main risk is sample size and the possibility of rotation or fatigue, as Pirates are playing their second match in four days.
+Orlando Pirates to beat Golden Arrows at 1.40. The Mr2Odds estimate is 80.1 percent, but the feed rates this data Medium and has only nine observations per team. The official Pirates preview says the club has won seven consecutive matches in all competitions, scoring 16 and keeping six clean sheets. Pirates are playing for the second time in four days, however, so fatigue or rotation is a genuine risk. We select the home win rather than BTTS because the model estimates a low chance of Golden Arrows scoring. This is a strong form angle, but the limited model sample must be respected.
 
-Carlisle against Tamworth: Over 2.5 goals at 1.41. Mr2Odds estimates this at 71.4 percent, with model expected goals of approximately 2.62 for Carlisle and 1.07 for Tamworth. The feed rates the data quality high and has 40 observations per side. However, I could not independently verify a fresh team-news preview for this lower-league fixture, so treat this as model-led evidence rather than a fully corroborated team-news pick. The risk is that Carlisle dominate without the match reaching three goals.
+Carlisle against Tamworth: Over 2.5 goals at 1.41. Mr2Odds estimates this at 71.4 percent, with model expected goals of 2.62 for Carlisle and 1.07 for Tamworth. The feed has 40 observations for each side and marks data quality high. But I could not verify a fresh independent team-news preview, so this remains a model-led lower-league selection. The risk is Carlisle controlling the match without reaching three goals.
 
-The combined price is approximately 2.58. The two goal selections carry the usual risk that a strong attacking profile does not necessarily translate into goals on the night.
+The combined price is approximately 2.59. It contains two Over 2.5 selections, so the main shared risk is that one of those matches becomes a low-scoring contest.
 
-[TICKET THREE — 6:50]
+[TICKET THREE — 7:20]
 
-Ticket three is deliberately shorter: two selections, not three.
+Ticket three contains two selections.
 
-Porto to beat Feyenoord at 2.25. The Mr2Odds model estimates an away win at 54.3 percent, which is materially above the probability implied by 2.25 odds. The independent preview describes Feyenoord as winless in six and coming off a 3–2 home defeat to Excelsior, while Porto have shown stronger form and previously beat Napoli 4–1. Porto are not a risk-free away selection, but at this price the away win is more interesting than the shorter goals prices. The main risk is De Kuip and the possibility that Feyenoord's home crowd and attacking quality produce a response. Porto also have to turn their recent form into an away performance.
+FC Porto to beat Feyenoord at 2.25. The Mr2Odds model estimates the away win at 54.3 percent, with model expected goals of 1.47 for Feyenoord and 2.22 for Porto. The independent preview describes Feyenoord as winless in six matches and coming off a 3–2 home defeat to Excelsior. Several Feyenoord players are unavailable. Porto have shown stronger form and previously beat Napoli 4–1. At 2.25, the away win is more interesting than taking a short goals price. But this is the highest-variance leg in the three tickets. De Kuip is a difficult away venue, and Feyenoord still have attacking quality. Porto must turn their form into an away performance.
 
-Cardiff against Preston: Over 1.5 goals at 1.13. Mr2Odds estimates this at 86.6 percent and gives Cardiff a strong home expected-goals figure. We are not using BTTS because its model estimate is lower, at 59.4 percent. We are also not using Cardiff to win because the odds are shorter and the lower goal line offers a different route to success. The risk is a low-scoring match, particularly if Preston defend deep or Cardiff struggle to break them down.
+Cardiff against Preston: Over 1.5 goals at 1.13. Mr2Odds estimates this at 86.6 percent, with expected goals of 2.44 for Cardiff and 1.04 for Preston. There are 40 observations for each side and six previous head-to-head meetings. We prefer Over 1.5 to BTTS, which the model estimates at 59.4 percent, and to Over 2.5 at 67.6 percent. The lower line gives the ticket a second route to land even if the match does not become a high-scoring game. The risk is a low-scoring contest, especially if Preston defend deep and Cardiff struggle to break them down.
 
-The combined price is approximately 2.54. It is a two-leg ticket, but remember that the Porto away win is the higher-variance leg. The Cardiff goal line is intended to balance the combination, not eliminate the risk.
+The combined price is approximately 2.54. This is a two-leg ticket, but do not confuse fewer selections with certainty. Porto to win is still a demanding away result.
 
-[SELECTIONS WE LEFT OUT — 8:15]
+[WHAT WE REJECTED — 8:55]
 
-We rejected several tempting options. Galatasaray against Aston Villa has a strong BTTS model number, but Galatasaray are missing key attacking players including Osimhen and Rafael Leao, so we do not want to treat the model output as sufficient on its own. Bodø/Glimt against LASK has a promising goals profile, but the independent preview highlights Bodø's limited European scoring output and recent goalless draw. Rangers are in strong form, but the feed's 1.23 price is shorter than its model probability would justify, so we do not use that as a value selection. Palermo are a strong home side, but their latest defeat and Südtirol's recent unbeaten run make the home price less straightforward than it first appears.
+We did not include Galatasaray against Aston Villa BTTS despite a strong scanner estimate. Galatasaray are missing key attacking players, including Victor Osimhen and Rafael Leao. We also rejected Bodø/Glimt against LASK because the independent preview raised concerns about Bodø's European scoring output and their recent goalless draw.
 
-We have also left corners and bookings out of these tickets. The current feed does not provide the advanced corner model, and we do not have enough verified referee and team disciplinary data to claim an edge in cards. A professional report should say when the evidence is missing.
+Rangers to win was also left out. Rangers have a strong unbeaten run, but the model's 69.1 percent estimate does not support the 1.23 price as value. A strong team is not automatically a good bet at every price.
 
-[FINAL REVIEW — 9:15]
+We have not forced corners or bookings into these slips. The advanced corners model is disabled and we do not have enough verified referee and disciplinary evidence to claim an advantage in cards.
 
-Here are the three combined prices again.
+[FINAL REVIEW — 9:35]
 
-Ticket one: Como Over 2.5, Feyenoord–Porto BTTS, and Portsmouth–West Ham Over 1.5. Combined odds approximately 2.64.
+Ticket one: Fratria–Yantra BTTS, Penybont win, and Como–AEK Over 2.5. Combined odds approximately 2.78.
 
-Ticket two: Leipzig–Lens Over 2.5, Orlando Pirates to win, and Carlisle–Tamworth Over 2.5. Combined odds approximately 2.58.
+Ticket two: Leipzig–Lens Over 2.5, Orlando Pirates win, and Carlisle–Tamworth Over 2.5. Combined odds approximately 2.59.
 
-Ticket three: Porto to win at Feyenoord, and Cardiff–Preston Over 1.5. Combined odds approximately 2.54.
+Ticket three: Porto to beat Feyenoord and Cardiff–Preston Over 1.5. Combined odds approximately 2.54.
 
-All prices are snapshots from the scanner feed, not a promise that the same price is still available. Recheck lineups, late injuries and odds before kickoff. If a market has moved materially, do not force the old ticket.
+Check the exact market lines, prices and starting lineups before kickoff. If a price has shortened materially, do not force the old ticket. These selections can all lose. Never chase losses and only stake money you can afford to lose.
 
-[OUTRO — 9:50]
-
-That is today's analysis. The aim is not to make betting look certain. It is to compare the available markets, explain the reasoning, and be honest about the weaknesses. Stake responsibly, never chase losses, and only risk money you can afford to lose. Thank you for watching.
+Thank you for watching. The goal of this analysis is to explain the evidence and the risks honestly, not to promise winning bets.
