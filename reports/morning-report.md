@@ -2,7 +2,7 @@
 
 **Latest scan used:** 14:00 SAST · 139 fixtures · next refresh 17:00 SAST  
 **Prices:** Sportybet ZA snapshot; verify again before placing. Selected fixtures kick off from 19:45 SAST.  
-**Method:** Mr2Odds is a discovery and data feed, not a command to copy its top signal. Probabilities are model estimates. [Latest app feed](https://github.com/Ndumiso19894/Mr2Odds/blob/data/data/app/latest.json) · [Full scan report](https://github.com/Ndumiso19894/Mr2Odds/blob/data/reports/2026-11-24.md).
+**Method:** Independent market comparison; probabilities are model estimates. [Latest app feed](https://github.com/Ndumiso19894/Mr2Odds/blob/data/data/app/latest.json) · [Full scan report](https://github.com/Ndumiso19894/Mr2Odds/blob/data/reports/2026-11-24.md).
 
 ## Market decisions
 
