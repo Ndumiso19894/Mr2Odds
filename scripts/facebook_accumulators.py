@@ -131,7 +131,7 @@ def validate(info, now=None):
 
 def caption(info):
     from scripts.social_caption import social_caption
-    return social_caption()
+    return social_caption(info)
 
 
 def prepare(snapshot, output, now=None, music=None):
