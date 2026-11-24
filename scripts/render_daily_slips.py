@@ -75,8 +75,9 @@ def render(report_path: Path, output: Path, font_path: Path):
     texture = Image.effect_noise((W, H), 13).convert("RGB")
     paper = Image.blend(base, texture, 0.025)
     draw = ImageDraw.Draw(paper)
-    ink = "#142D73"
-    muted = "#203C80"
+    # Strong cobalt-blue ballpoint ink: clearly blue, not grey or washed-out navy.
+    ink = "#123FC5"
+    muted = "#123FC5"
 
     title_font = handwriting_font(font_path, 53)
     slip_font = handwriting_font(font_path, 76)
@@ -97,6 +98,7 @@ def render(report_path: Path, output: Path, font_path: Path):
         draw.text((72, y), f"SLIP {slip['number']}", font=slip_font, fill=ink)
         y += 82
 
+        # The market-style slip title is always written directly below SLIP N and underlined.
         label_lines = wrap(draw, slip["label"], subtitle_font, max_width)
         for line in label_lines:
             draw.text((72 + rng.randint(-1, 2), y + rng.randint(-1, 2)),
