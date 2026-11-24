@@ -44,7 +44,7 @@ jobs:
                   return ImageFont.truetype(fallback or "/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf", size)
           title_font = font(92)
           label_font = font(48)
-          leg_font = font(59)
+          leg_font = font(52)
           odds_font = font(88)
           tiny_font = font(38)
           slips = {}
@@ -108,8 +108,8 @@ jobs:
                   yy = y - 4
                   for ln in lines:
                       d.text((250, yy), ln, font=leg_font, fill="#203C57", stroke_width=0)
-                      yy += 54
-                  y += max(116, 58 * len(lines) + 52)
+                      yy += 50
+                  y += max(112, 52 * len(lines) + 48)
               # underline and boxed odds, like a pen annotation
               box_y = min(max(y + 14, 1000), 1110)
               d.line((190, box_y, 950, box_y - 3), fill="#203C57", width=4)
