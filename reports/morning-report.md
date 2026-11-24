@@ -2,7 +2,7 @@
 Mr2Odds feed: 14:00 SAST. SportyBet ZA snapshot prices; verify before placing.
 
 ## 1. Method and limitations
-Reviewed 139 fixtures in the current app window. Recent-form inputs enabled; advanced xG/shots/corners signals disabled. Percentages are model estimates. Independent previews/team news checked where available. No validated corners or referee/cards edge. Fratria and Holywell/Penybont are model-led without independent previews; Portsmouth and Carlisle lack verified current team news. Prices/lineups can change.
+139 fixtures reviewed. Recent-form inputs enabled; advanced xG/shots/corners disabled. Percentages are model estimates. Previews/team news checked where available. No validated corners/cards edge. Fratria and Holywell/Penybont are model-led; Portsmouth and Carlisle lack verified team news. Prices/lineups can change.
 
 ## 2. Match assessments
 **Como–AEK (UCL, 22:00):** SELECT Over 2.5 @1.36; model 68.3%, xG 2.40–1.12, 40 observations each. Como won four of five, scoring 17; AEK conceded in four of five. Como miss Kean and other attackers; AEK miss Koita. Goals preferred to Como win. Risk: Como absences. Medium.
@@ -25,21 +25,21 @@ Reviewed 139 fixtures in the current app window. Recent-form inputs enabled; adv
 
 **Rejected:** Rangers win @1.23 (model 69.1% vs 81.3% implied); Galatasaray–Villa BTTS (major Gala attacking absences); Bodø/Glimt–LASK goals (European scoring concern and recent 0–0). Previous Bristol City–Wrexham, Norwich–QPR and Charlton–Lincoln BTTS picks removed after updated estimates. No corners/cards selections without evidence.
 
-## 3. SLIP 1 — Model-led value mix
+## SLIP 1 — Model-led value mix
 • Fratria vs Yantra — BTTS Yes @1.76
 • Holywell Town vs Penybont — Penybont win @1.16
 • Como vs AEK Athens — Over 2.5 @1.36
 **Combined odds 2.78** (1.76 × 1.16 × 1.36 = 2.7753).
 Risk: two model-led lower-league picks; Como attacking absences.
 
-## 4. SLIP 2 — Goals and home strength
+## SLIP 2 — Goals and home strength
 • RB Leipzig vs Lens — Over 2.5 @1.31
 • Orlando Pirates vs Golden Arrows — Pirates win @1.40
 • Carlisle vs Tamworth — Over 2.5 @1.41
 **Combined odds 2.59** (1.31 × 1.40 × 1.41 = 2.58594).
 Risk: Pirates sample limited; Carlisle model-led; two three-goal lines.
 
-## 5. SLIP 3 — Two-leg ticket
+## SLIP 3 — Two-leg ticket
 • FC Porto to beat Feyenoord @2.25
 • Cardiff vs Preston — Over 1.5 @1.13
 **Combined odds 2.54** (2.25 × 1.13 = 2.5425).
