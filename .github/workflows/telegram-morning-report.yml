@@ -12,6 +12,11 @@ on:
 
 permissions:
   contents: read
+  actions: read
+
+concurrency:
+  group: mr2odds-daily-report-delivery
+  cancel-in-progress: false
 
 jobs:
   send-report:
@@ -21,123 +26,118 @@ jobs:
       - name: Checkout report
         uses: actions/checkout@v4
 
-      - name: Generate handwritten paper slip images
+      - name: Generate one combined A4 handwritten slip image
+        id: render
         run: |
-          python -m pip install --quiet Pillow
-          FONT_PATH=/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf
-          if curl -fsSL 'https://raw.githubusercontent.com/google/fonts/main/ofl/caveat/Caveat%5Bwght%5D.ttf' -o /tmp/Caveat.ttf; then
-            FONT_PATH=/tmp/Caveat.ttf
+          python -m pip install --quiet Pillow requests
+          if ! curl -fsSL 'https://raw.githubusercontent.com/google/fonts/main/ofl/caveat/Caveat%5Bwght%5D.ttf' -o /tmp/Caveat.ttf; then
+            echo 'Handwriting font download failed; using the local italic fallback.'
           fi
-          export FONT_PATH
-          python - <<'PY'
-          from pathlib import Path
-          import os, re, textwrap
-          from PIL import Image, ImageDraw, ImageFont, ImageFilter
-          report = Path("reports/morning-report.md").read_text(encoding="utf-8")
-          W, H = 1080, 1350
-          PW, PH = 980, 1250
-          font_path = os.environ.get("FONT_PATH", "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf")
-          def font(size, fallback=None):
-              try:
-                  return ImageFont.truetype(font_path, size)
-              except Exception:
-                  return ImageFont.truetype(fallback or "/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf", size)
-          title_font = font(92)
-          label_font = font(48)
-          leg_font = font(52)
-          odds_font = font(88)
-          tiny_font = font(38)
-          slips = {}
-          for sec in re.split(r"(?=SLIP [1-3] —)", report):
-              m = re.match(r"SLIP ([1-3]) — (.+)", sec)
-              if not m:
-                  continue
-              num, label = m.groups()
-              odds = re.search(r"combined odds\s+([0-9.]+)", sec, re.I)
-              legs = re.findall(r"^•\s*(.+)$", sec, re.M)
-              if not legs:
-                  raise SystemExit(f"No selections found for Slip {num}")
-              if not odds:
-                  raise SystemExit(f"Combined odds missing for Slip {num}")
-              slips[num] = (label.strip(), odds.group(1), legs)
-          if len(slips) != 3:
-              raise SystemExit(f"Expected 3 slips but parsed {len(slips)}")
-          for n in "123":
-              label, combined, legs = slips[n]
-              canvas = Image.new("RGB", (W, H), "#CDBB9E")
-              # soft paper shadow
-              shadow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-              sd = ImageDraw.Draw(shadow)
-              sd.rectangle((43, 42, 1035, 1308), fill=(44, 34, 22, 85))
-              shadow = shadow.filter(ImageFilter.GaussianBlur(22))
-              canvas.paste(shadow, (0, 0), shadow)
-              paper = Image.new("RGB", (PW, PH), "#F6F0E2")
-              noise = Image.effect_noise((PW, PH), 10).convert("RGB")
-              paper = Image.blend(paper, noise, 0.035)
-              canvas.paste(paper, (50, 42))
-              d = ImageDraw.Draw(canvas)
-              # paper edge and notebook ruling
-              d.rectangle((50, 42, 1030, 1292), outline="#E5DAC5", width=3)
-              for yy in range(330, 1175, 74):
-                  d.line((95, yy, 1000, yy), fill="#D8E1E8", width=2)
-              d.line((160, 90, 160, 1225), fill="#D99B91", width=3)
-              d.text((205, 92), "Mr2Odds  •  match notes", font=label_font, fill="#52677A")
-              d.text((205, 165), f"SLIP {n}", font=title_font, fill="#203C57")
-              d.text((210, 258), label, font=label_font, fill="#39536B")
-              # hand-drawn divider
-              d.line((205, 315, 955, 311), fill="#39536B", width=4)
-              y = 355
-              for i, leg in enumerate(legs, 1):
-                  words = leg.split()
-                  lines, line = [], ""
-                  for word in words:
-                      candidate = (line + " " + word).strip()
-                      if d.textbbox((0, 0), candidate, font=leg_font)[2] > 780 and line:
-                          lines.append(line)
-                          line = word
-                      else:
-                          line = candidate
-                  if line:
-                      lines.append(line)
-                  if len(lines) > 2:
-                      raise SystemExit(f"Slip {n}, leg {i} is too long for a readable handwritten layout")
-                  # ink check mark
-                  d.line((105, y + 34, 122, y + 52), fill="#245B48", width=6)
-                  d.line((122, y + 52, 145, y + 17), fill="#245B48", width=6)
-                  d.text((180, y), f"{i}.", font=label_font, fill="#52677A")
-                  yy = y - 4
-                  for ln in lines:
-                      d.text((250, yy), ln, font=leg_font, fill="#203C57", stroke_width=0)
-                      yy += 50
-                  y += max(112, 52 * len(lines) + 48)
-              # underline and boxed odds, like a pen annotation
-              box_y = min(max(y + 14, 1000), 1110)
-              d.line((190, box_y, 950, box_y - 3), fill="#203C57", width=4)
-              d.text((205, box_y + 14), "COMBINED ODDS", font=label_font, fill="#52677A")
-              d.text((205, box_y + 62), combined, font=odds_font, fill="#203C57")
-              d.line((190, box_y + 160, 950, box_y + 157), fill="#203C57", width=5)
-              d.text((205, 1235), "Check the live price and exact market line before placing", font=tiny_font, fill="#697A84")
-              canvas.save(f"slip-{n}.png", quality=95)
-              print(f"Generated handwritten-paper Slip {n}: {len(legs)} selections, odds {combined}")
-          PY
+          python scripts/render_daily_slips.py --report reports/morning-report.md --output daily-slips-a4.png --font /tmp/Caveat.ttf
+          test -s daily-slips-a4.png
 
-      - name: Send slip photos to Telegram
+      - name: Send the combined A4 slip image to Telegram
+        id: telegram-photo
         if: ${{ !contains(github.event.head_commit.message, '[report-only]') && !contains(github.event.head_commit.message, '[script-only]') }}
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           set -euo pipefail
-          for n in 1 2 3; do
-            file="slip-${n}.png"
-            test -s "$file" || { echo "Missing image $file"; exit 1; }
-            response=$(curl --fail --silent --show-error --request POST \
-              "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto" \
-              --form "chat_id=${TELEGRAM_CHAT_ID}" --form "photo=@${file}" \
-              --form "caption=Mr2Odds — Slip ${n}")
-            echo "$response" | grep -q '"ok":true' || { echo "Telegram did not confirm Slip ${n} photo"; echo "$response"; exit 1; }
-            echo "Telegram confirmed Slip ${n} photo"
-          done
+          test -s daily-slips-a4.png
+          response=$(curl --fail --silent --show-error --request POST \
+            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto" \
+            --form "chat_id=${TELEGRAM_CHAT_ID}" \
+            --form "photo=@daily-slips-a4.png" \
+            --form "caption=Mr2Odds — Daily slips")
+          echo "$response" | grep -q '"ok":true' || { echo "Telegram did not confirm the A4 slip image"; exit 1; }
+          echo "Telegram confirmed the combined A4 slip image"
+
+      - name: Set South African publication date
+        id: date
+        if: ${{ always() && steps.render.outcome == 'success' }}
+        run: echo "value=$(TZ=Africa/Johannesburg date +%F)" >> "$GITHUB_OUTPUT"
+
+      - name: Check whether today's Facebook slip image was already published
+        id: facebook-duplicate-check
+        if: ${{ always() && steps.render.outcome == 'success' && github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, '[report-only]') && !contains(github.event.head_commit.message, '[script-only]') }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          day=$(TZ=Africa/Johannesburg date +%F)
+          name="mr2odds-daily-slip-facebook-$day"
+          existing=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=$name" --jq ".artifacts[] | select(.name == \"$name\" and .expired == false) | .id")
+          if [ -n "$existing" ]; then
+            echo "already_published=true" >> "$GITHUB_OUTPUT"
+            echo "Today's Facebook slip image already has a publication claim; skipping duplicate."
+          else
+            echo "already_published=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Verify the configured Facebook Page
+        id: facebook-check
+        if: ${{ steps.facebook-duplicate-check.outcome == 'success' && steps.facebook-duplicate-check.outputs.already_published != 'true' }}
+        env:
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+        run: python -c "from scripts import facebook_post; facebook_post.diagnose()"
+
+      - name: Claim today's Facebook image publication
+        id: facebook-claim
+        if: ${{ steps.facebook-check.outcome == 'success' && steps.facebook-duplicate-check.outputs.already_published != 'true' }}
+        run: |
+          printf '%s\n' "A4 Facebook publication reserved for $(TZ=Africa/Johannesburg date +%F)" > facebook-publication-claim.txt
+      - uses: actions/upload-artifact@v4
+        if: ${{ steps.facebook-claim.outcome == 'success' }}
+        with:
+          name: mr2odds-daily-slip-facebook-${{ steps.date.outputs.value }}
+          path: facebook-publication-claim.txt
+          retention-days: 35
+          if-no-files-found: error
+
+      - name: Publish the same A4 slip image to Facebook
+        id: facebook-photo
+        if: ${{ steps.facebook-claim.outcome == 'success' }}
+        env:
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+        run: |
+          python - <<'PY'
+          from datetime import datetime
+          from pathlib import Path
+          import requests
+          from scripts import facebook_post as fb
+
+          token, page_id = fb.credentials()
+          session = requests.Session()
+          token, _ = fb.resolve_page_token(session, token, page_id)
+          day = datetime.now(fb.SAST).strftime('%-d %B %Y')
+          caption = (
+              f"Mr2Odds daily football selections — {day}.\n\n"
+              "Three researched slips with the selected markets, odds and estimated probabilities.\n"
+              "Check the live price and exact market line before placing.\n"
+              "18+ | Bet responsibly."
+          )
+          image_path = Path("daily-slips-a4.png")
+          if not image_path.is_file() or image_path.stat().st_size == 0:
+              raise SystemExit("The A4 slip image is missing.")
+          try:
+              with image_path.open("rb") as image:
+                  response = session.post(
+                      f"https://graph.facebook.com/v24.0/{page_id}/photos",
+                      data={"access_token": token, "message": caption},
+                      files={"source": ("mr2odds-daily-slips-a4.png", image, "image/png")},
+                      timeout=90,
+                  )
+              if not response.ok:
+                  raise RuntimeError("Facebook rejected the A4 image: " + fb.error_summary(response))
+              if not response.json().get("id"):
+                  raise RuntimeError("Facebook did not confirm the photo ID; check the Page before retrying.")
+          except requests.RequestException:
+              raise RuntimeError("Facebook upload result is unknown; check the Page before retrying.") from None
+          print("Facebook confirmed the combined A4 slip image post.")
+          PY
 
       - name: Prepare plain-text YouTube script
         if: ${{ !contains(github.event.head_commit.message, '[report-only]') }}
