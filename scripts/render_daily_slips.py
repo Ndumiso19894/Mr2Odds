@@ -37,7 +37,7 @@ def clean_selection(value: str):
     value = re.sub(r"\bO([0-9]+(?:\.[0-9]+)?)\b", r"Over \1", value)
     value = re.sub(r"Match corners\s+Over\s+([0-9.]+)", r"Over \1 corners", value, flags=re.I)
     value = re.sub(r"([A-Za-z .'-]+) corners\s+Over\s+([0-9.]+)", r"\1 — Over \2 team corners", value)
-    value = value.replace(" — Rangers win", " — Rangers win")
+    value = value.replace("Bristol — Over ", "Bristol City — Over ")
     return value
 
 
