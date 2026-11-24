@@ -15,24 +15,8 @@ from scripts import stats_watch
 
 
 def caption(info):
-    rows = info.get('rows') or []
-    if not 1 <= len(rows) <= 10:
-        raise ValueError('Invalid stats-watch caption')
-    tags, seen = [], set()
-    import unicodedata
-    for row in rows:
-        for name in (row['home'], row['away']):
-            tag = ''.join(c for c in unicodedata.normalize('NFKC', name) if c.isalnum() or c == '_')
-            if not tag:
-                raise ValueError('Invalid club name')
-            if tag.casefold() not in seen:
-                tags.append('#'+tag)
-                seen.add(tag.casefold())
-    return ('Stats Watch: unbeaten league runs ⚽\n\n'
-            'These teams are in their league’s top two and unbeaten in recent league play. '
-            'Which run impresses you most?\n'
-            'Standings and fixtures: ESPN. Times shown in SAST.\n'
-            '18+ | Bet responsibly.\n\n' + ' '.join(tags))
+    from scripts.social_caption import social_caption
+    return social_caption()
 
 
 def validate_manifest(info, now=None):
