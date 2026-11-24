@@ -22,22 +22,22 @@
 ## Final tickets — exactly three
 
 ### SLIP 1 — Balanced goals, result and corners
-• Rangers v Aberdeen — Rangers to win @1.23 (model 69.1%)
-• Hibernian v Dundee — Over 1.5 goals @1.22 (model 78.9%)
-• Wolves v Derby — Over 8.5 match corners @1.36 (model 71.4%)
-• Bodø/Glimt v LASK — Over 2.5 goals @1.27 (model 70.9%)
+• Rangers v Aberdeen — Rangers win @1.23 (69.1%)
+• Hibernian v Dundee — O1.5 goals @1.22 (78.9%)
+• Wolves v Derby — Match corners O8.5 @1.36 (71.4%)
+• Bodø/Glimt v LASK — O2.5 goals @1.27 (70.9%)
 **Combined odds 2.59** (1.23 × 1.22 × 1.36 × 1.27 = 2.5903)
 
 ### SLIP 2 — Goals and team-corner lines
-• Galatasaray v Aston Villa — Over 2.5 goals @1.48 (model 77.9%)
-• Cesena v Ascoli — Ascoli over 3.5 team corners @1.33 (model 70.0%)
-• Bristol City v Wrexham — Bristol City over 3.5 team corners @1.30 (model 73.5%)
+• Galatasaray v Aston Villa — O2.5 goals @1.48 (77.9%)
+• Cesena v Ascoli — Ascoli corners O3.5 @1.33 (70.0%)
+• Bristol City v Wrexham — Bristol corners O3.5 @1.30 (73.5%)
 **Combined odds 2.56** (1.48 × 1.33 × 1.30 = 2.55872)
 
 ### SLIP 3 — Lower goal line, BTTS and corners
-• Woking v Worthing — Over 1.5 goals @1.16 (model 84.2%)
-• Slovan Bratislava v Real Betis — BTTS Yes @1.74 (model 67.5%)
-• Chapecoense v Palmeiras — Over 8.5 match corners @1.26 (model 70.5%)
+• Woking v Worthing — O1.5 goals @1.16 (84.2%)
+• Slovan Bratislava v Real Betis — BTTS Yes @1.74 (67.5%)
+• Chapecoense v Palmeiras — Match corners O8.5 @1.26 (70.5%)
 **Combined odds 2.54** (1.16 × 1.74 × 1.26 = 2.544624)
 
 No fixture is repeated across slips. All tickets remain within the 2.50–3.00 target.
