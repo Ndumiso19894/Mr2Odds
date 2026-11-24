@@ -1,42 +1,50 @@
-MR2ODDS — DAILY REPORT
-Tuesday, 24 November 2026 (SAST)
-Research snapshot: Mr2Odds data feed generated 09:25 SAST. Prices are feed/source references, not guaranteed current bookmaker prices.
+MR2ODDS — 24 NOVEMBER 2026
+Independent market review • SAST • Mr2Odds snapshot 09:50
 
-Today's focus: compare markets independently. The scanner is a fixture-discovery tool; Over 1.5 is not compulsory. Primary markets considered: corners, BTTS, Over 2.5, 1X2 and cards.
+SCREENING
+Feed contains 108 fixtures (84 data-usable). Shortlist ranked from model profile, prices and major matches; selected fixtures cross-checked against independent previews/market data and UEFA team news. Advanced xG/shots/corners model is DISABLED. No live lineups confirmed. Prices are snapshots, not guaranteed current SportyBet prices. This is a focused shortlist—not 108 independent match reports.
 
-SLIP 1 — MIXED MARKETS (combined odds 2.65)
-• Galatasaray v Aston Villa — BTTS Yes @1.47 (Mr2Odds)
-• Orlando Pirates v Golden Arrows — Orlando Pirates win @1.40 (Mr2Odds)
-• Bodø/Glimt v LASK — Over 2.5 goals @1.29 (Mr2Odds)
-Risk: Medium-high; three legs. Galatasaray have home strength, but team absences and Villa's recent form make BTTS less certain. Pirates' win is supported by the model's strong home-side projection. Bodø/LASK has both teams' attacking output and independent goal/corner indicators pointing toward an open match.
+RB LEIPZIG vs LENS — 22:00
+Feed: Leipzig 1.40; O2.5 1.33; BTTS 1.52; O9.5 corners 1.75 (independent market).
+Lens conceded 16 in four European matches, including 1–9 Como; Leipzig have recent 5–1 Union and 5–2 Augsburg wins. Leipzig home form is strong, but they have conceded too and Lens have scored in their recent matches. O2.5 fits the game profile better than a large handicap, yet independent market probability is around 72% (fair ~1.39), below 1.33 offered. PASS for value; Leipzig win is a lean only.
+Sources: https://football-stats.co.uk/match/rb-leipzig-lens-2026-11-24/ • https://new.cornerprobet.com/en/articles/champions-league-2026-11-24
 
-SLIP 2 — CORNERS (combined odds 2.92)
-• RB Leipzig v Lens — Total corners Over 9.5 @1.80 (Squawka preview price, UK bookmaker)
-• Manchester City v Napoli — Total corners Over 8.5 @1.62 (Squawka preview price, UK bookmaker)
-Risk: High/volatile. These are two corner selections. Leipzig–Lens has an expected 11.1 corners and an estimated 67% for over 9.5 in the cited preview. City–Napoli is projected at 10.7 corners and 74% over 8.5 in the cited preview. These are independent preview/model estimates; corner prices may differ in South African bookmakers.
+MAN CITY vs NAPOLI — 22:00
+Feed: City 1.32; O2.5 1.32; BTTS 1.59; O9.5 corners 1.90.
+City won 3/4 European games; Napoli lost 3/4, including 1–4 Porto. Preview reports defensive errors and Napoli absences including Lobotka, Di Lorenzo, Meret and suspended Rafa Marin. City have struggled domestically recently, so their short win price is not risk-free. Best listed market: City win, but moderate confidence only; corners are an alternative, price/line need confirmation.
+Source: https://mrfixitstips.co.uk/previews/manchester-city-vs-napoli-prediction-and-betting-tips-2026-11-24/ • UEFA: https://www.uefa.com/uefachampionsleague/news/02ab-2223c67db015-c4f7874e074e-1000--champions-league-predicted-line-ups-matchday-5-team-news-/
 
-SLIP 3 — BTTS + WIN MARKETS (combined odds 2.80)
-• Fratria v Yantra — BTTS Yes @1.65 (Mr2Odds)
-• Palermo v Sudtirol — Palermo win @1.49 (Mr2Odds)
-• Real Madrid v PSV — Real Madrid win @1.14 (BetVictor reference)
-Risk: Medium-high; three legs. Fratria–Yantra BTTS and Palermo's home win are the higher-variance legs. Real Madrid are a strong market favourite, but the short price does not remove upset risk.
+REAL MADRID vs PSV — 22:00
+Feed: Madrid 1.14; O2.5 1.17; BTTS 1.63. Madrid won first four European matches and six straight domestically; PSV have four points in Europe but three domestic wins. Madrid win is the logical market, but 1.14 is accumulator-only, not attractive single value.
+Source: https://mrfixitstips.co.uk/previews/real-madrid-vs-psv-prediction-and-betting-tips-2026-11-24/
 
-OTHER STRONG/POSSIBLE CANDIDATES
-• Manchester City v Napoli — City win, Over 2.5, or corners may be preferable to blindly using the scanner's goals flag; the independent preview favours City and estimates 10.7 corners.
-• RB Leipzig v Lens — Leipzig win, Over 2.5 or corners; Leipzig have conceded heavily in the league phase and Lens have 25 corners to Leipzig's 17 across the four league-phase matches, per the preview.
-• Bodø/Glimt v LASK — Over 2.5 / BTTS / corners are worth consideration; preview models estimate 72% Over 2.5 and 10.3 corners.
-• Galatasaray v Aston Villa — BTTS is supported by the feed but injuries/absences are a caution; check confirmed XI.
-• Cards were researched as a priority market, but no reliable current price was verified for a cards selection, so none is included today.
+FEYENOORD vs PORTO — 22:00
+Feed: Porto 2.25; O2.5 1.64; BTTS 1.55. Feyenoord winless in five and conceded 11 in four European games; Porto beat Napoli 4–1 and arrive on a strong run. Porto DNB is preferable to outright, but DNB price not in feed. BTTS/O2.5 plausible yet high variance. PASS pending DNB price.
+Source: https://mrfixitstips.co.uk/previews/feyenoord-vs-porto-prediction-and-betting-tips-2026-11-24/
 
-PRICE / DATA NOTES
-• Slip 1 and Slip 3 prices primarily use the Mr2Odds feed. Slip 2 prices are converted from UK preview fractional prices (Leipzig corners 4/5 = 1.80; City corners 8/13 ≈ 1.62) and are not confirmed South African prices.
-• Combined odds are simple multiplication of displayed leg prices; bookmaker bet-builder/accumulator pricing may differ.
-• No stake advice, no bets placed. All three slips can lose. Do not chase losses; verify odds, team news, fixture status and market availability before considering any bet.
+GALATASARAY vs ASTON VILLA — 19:45
+Feed BTTS 1.48 / O2.5 1.54. Galatasaray missing Osimhen, Rafael Leão and Sallai; Jakobs doubtful. Attacking absences weaken the short goals prices. PASS.
+BODØ/GLIMT vs LASK — 19:45
+Feed O2.5 1.29 / BTTS 1.41 / home 1.51. Both have absences and short prices; no verified edge. PASS.
 
-SOURCES
-• Mr2Odds repository data feed: https://github.com/Ndumiso19894/Mr2Odds
-• Galatasaray v Aston Villa preview/team news: https://news.bet365.com/en-us/article/galatasaray-vs-aston-villa-lineup-predictions-odds-and-streaming/2026112317210497813
-• Bodø/Glimt v LASK preview and stats: https://www.squawka.com/en/news/previews/bodo-glimt-vs-lask-predictions-betting-tips-24-11-26/
-• Manchester City v Napoli preview and stats: https://www.squawka.com/en/news/previews/manchester-city-vs-napoli-predictions-betting-tips-24-11-26/
-• RB Leipzig v Lens preview and stats: https://www.squawka.com/en/news/rb-leipzig-vs-lens-predictions-betting-tips-24-11-26/
-• Fixture list: https://www.theguardian.com/football/fixtures/2026/Nov/24
+OTHER MODEL FLAGS — NOT YET VALIDATED
+Fratria–Yantra BTTS 1.65 (model 61.7%); Cray Wanderers–Wingate BTTS 1.60 (67.3%); Leek–Gainsborough O2.5 1.65 (73.7%). Lower-league data uncertainty; no selections without deeper independent checks.
+
+SLIP 1 — LOWER VARIANCE (combined odds 1.50)
+• Manchester City win @1.32
+• Real Madrid win @1.14
+Risk: City domestic inconsistency and short combined return. Favourites, not guaranteed/value singles.
+
+SLIP 2 — MODERATE (combined odds 1.76)
+• RB Leipzig vs Lens — Over 2.5 goals @1.33
+• Manchester City win @1.32
+Risk: Leipzig total is below independent fair price estimate (~1.39); odds should improve.
+
+SLIP 3 — HIGHER RISK (combined odds 2.72)
+• Feyenoord vs Porto — BTTS Yes @1.55
+• RB Leipzig vs Lens — Over 2.5 @1.33
+• Manchester City win @1.32
+Risk: Three legs; goal outcomes add variance. Optional only, not recommended staking.
+
+FINAL POSITION
+There are match opinions but no clear price edge on the researched shortlist. Strict value position: PASS. Slip 1 is the least aggressive, not a strong value ticket. Verify live prices and lineups before kickoff. No guarantees.
