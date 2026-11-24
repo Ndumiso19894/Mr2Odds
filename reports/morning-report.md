@@ -1,5 +1,5 @@
 MR2ODDS — 24 NOVEMBER 2026
-Independent review • SAST • scanner snapshot 09:50
+Independent review • SAST • scanner snapshot 09:50 • revised slips and video script delivery
 
 METHOD / LIMITS
 Mr2Odds is a shortlist and odds snapshot, not the decision-maker. Today’s feed has 108 fixtures; advanced xG/shots/corners module is disabled. Prices below are snapshot prices, not guaranteed current bookmaker prices. Lineups were not live-confirmed. Focused independent review—not every fixture individually researched. No guaranteed outcomes or stake advice.
