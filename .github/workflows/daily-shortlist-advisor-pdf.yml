@@ -1,0 +1,42 @@
+name: Email daily Mr2Odds Shortlist and Bet Advisor PDF
+
+on:
+  schedule:
+    - cron: '0 7 * * *'
+      timezone: Africa/Johannesburg
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mr2odds-daily-pdf-email
+  cancel-in-progress: false
+
+jobs:
+  build-and-email:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TZ: Africa/Johannesburg
+      GMAIL_USERNAME: msanindumiso@gmail.com
+      REPORT_EMAIL: msanindumiso@gmail.com
+      GMAIL_APP_PASSWORD: \${{ secrets.GMAIL_APP_PASSWORD }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Fetch latest Mr2Odds scan
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location \
+            'https://raw.githubusercontent.com/Ndumiso19894/Mr2Odds/data/data/app/latest.json' \
+            -o /tmp/mr2odds-latest.json
+          python -m json.tool /tmp/mr2odds-latest.json >/dev/null
+      - name: Install PDF dependency
+        run: python -m pip install --disable-pip-version-check reportlab
+      - name: Build and email PDF
+        run: |
+          set -euo pipefail
+          test -n "$GMAIL_APP_PASSWORD" || { echo 'Missing GMAIL_APP_PASSWORD repository secret'; exit 1; }
+          python scripts/export_shortlist_advisor_pdf.py /tmp/mr2odds-latest.json reports/Mr2Odds_Daily.pdf
+          test -s reports/Mr2Odds_Daily.pdf
