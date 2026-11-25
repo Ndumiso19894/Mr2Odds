@@ -9,6 +9,7 @@ on:
       - 'reports/youtube-script-*.txt'
       - '.github/workflows/telegram-morning-report.yml'
       - 'scripts/render_daily_slips.py'
+      - 'scripts/render_three_slips.py'
       - 'scripts/facebook_photo.py'
       - 'scripts/social_caption.py'
   schedule:
@@ -16,7 +17,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   actions: read
 
 concurrency:
@@ -26,62 +27,95 @@ concurrency:
 jobs:
   send-report:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
+    env:
+      REPORT_ONLY: \${{ contains(github.event.head_commit.message || '', '[report-only]') }}
+      SCRIPT_ONLY: \${{ contains(github.event.head_commit.message || '', '[script-only]') }}
     steps:
       - name: Checkout report
         uses: actions/checkout@v4
 
-      - name: Generate one combined A4 handwritten slip image
+      - name: Generate three individual handwritten slips and the Facebook A4 sheet
         id: render
         run: |
+          set -euo pipefail
           python -m pip install --quiet Pillow requests
           curl --fail --silent --show-error --location 'https://raw.githubusercontent.com/google/fonts/main/ofl/caveat/Caveat%5Bwght%5D.ttf' -o /tmp/Caveat.ttf
           test -s /tmp/Caveat.ttf
+          day=$(TZ=Africa/Johannesburg date +%F)
           python scripts/render_daily_slips.py --report reports/morning-report.md --output daily-slips-a4.png --font /tmp/Caveat.ttf
+          python scripts/render_three_slips.py --report reports/morning-report.md --font /tmp/Caveat.ttf --date "$day" --out-dir reports
           test -s daily-slips-a4.png
+          for n in 1 2 3; do test -s "reports/slip-$day-$n.png"; done
 
       - name: Verify the report is for today's South African date
+        id: verify-date
+        if: \${{ always() && steps.render.outcome == 'success' }}
         run: |
           python - <<'PY'
           from datetime import datetime
           from pathlib import Path
           import re
+          from zoneinfo import ZoneInfo
           report = Path('reports/morning-report.md').read_text(encoding='utf-8')
-          expected = datetime.now().strftime('%A %-d %B %Y')
+          expected = datetime.now(ZoneInfo('Africa/Johannesburg')).strftime('%A %-d %B %Y')
           match = re.search(r'^# Mr2Odds Daily Research — (.+)$', report, re.M)
           actual = match.group(1).strip() if match else 'no dated heading'
           if actual != expected:
               raise SystemExit(f'Report date is not current: expected {expected}; found {actual}. Refusing to publish stale slips.')
           print(f'Report date verified: {expected}')
+          PY
 
-      - name: Send the combined A4 slip image to Telegram
-        id: telegram-photo
-        if: ${{ !contains(github.event.head_commit.message, '[report-only]') && !contains(github.event.head_commit.message, '[script-only]') }}
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      - name: Commit the three individual slip PNGs to main
+        id: commit-slip-images
+        if: \${{ always() && steps.render.outcome == 'success' && steps.verify-date.outcome == 'success' && github.ref == 'refs/heads/main' }}
+        continue-on-error: true
         run: |
           set -euo pipefail
-          test -s daily-slips-a4.png
-          caption=$(python scripts/social_caption.py)
-          response=$(curl --fail --silent --show-error --request POST \
-            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto" \
-            --form "chat_id=${TELEGRAM_CHAT_ID}" \
-            --form "photo=@daily-slips-a4.png" \
-            --form-string "caption=$caption")
-          echo "$response" | grep -q '"ok":true' || { echo "Telegram did not confirm the A4 slip image"; exit 1; }
-          echo "Telegram confirmed the combined A4 slip image"
+          day=$(TZ=Africa/Johannesburg date +%F)
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "reports/slip-$day-1.png" "reports/slip-$day-2.png" "reports/slip-$day-3.png"
+          if git diff --cached --quiet; then
+            echo 'The three dated PNGs are already current.'
+          else
+            git commit -m "Add handwritten slips for $day"
+            git push origin HEAD:main
+            echo 'Committed exactly three dated slip PNGs.'
+          fi
+
+      - name: Send exactly three individual slip images to Telegram
+        id: telegram-images
+        if: \${{ always() && steps.render.outcome == 'success' && steps.verify-date.outcome == 'success' && env.REPORT_ONLY != 'true' && env.SCRIPT_ONLY != 'true' }}
+        env:
+          TELEGRAM_BOT_TOKEN: \${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: \${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          set -euo pipefail
+          day=$(TZ=Africa/Johannesburg date +%F)
+          for n in 1 2 3; do
+            image="reports/slip-$day-$n.png"
+            test -s "$image"
+            response=$(curl --fail --silent --show-error --request POST \
+              "https://api.telegram.org/bot\${TELEGRAM_BOT_TOKEN}/sendPhoto" \
+              --form "chat_id=\${TELEGRAM_CHAT_ID}" \
+              --form "photo=@\${image}" \
+              --form-string "caption=Mr2Odds — Slip $n — $day")
+            echo "$response" | grep -q '"ok":true' || { echo "Telegram did not confirm Slip $n image"; echo "$response"; exit 1; }
+            echo "Telegram confirmed Slip $n PNG"
+          done
+          echo 'Telegram confirmed all three individual slip images.'
 
       - name: Set South African publication date
         id: date
-        if: ${{ always() && steps.render.outcome == 'success' }}
+        if: \${{ always() && steps.render.outcome == 'success' }}
         run: echo "value=$(TZ=Africa/Johannesburg date +%F)" >> "$GITHUB_OUTPUT"
 
       - name: Check whether today's Facebook slip image was already published
         id: facebook-duplicate-check
-        if: ${{ always() && steps.render.outcome == 'success' && github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, '[report-only]') && !contains(github.event.head_commit.message, '[script-only]') }}
+        if: \${{ always() && steps.render.outcome == 'success' && steps.verify-date.outcome == 'success' && github.ref == 'refs/heads/main' && env.REPORT_ONLY != 'true' && env.SCRIPT_ONLY != 'true' }}
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: \${{ github.token }}
         run: |
           set -euo pipefail
           day=$(TZ=Africa/Johannesburg date +%F)
@@ -96,87 +130,123 @@ jobs:
 
       - name: Verify the configured Facebook Page
         id: facebook-check
-        if: ${{ always() && steps.facebook-duplicate-check.outcome == 'success' && steps.facebook-duplicate-check.outputs.already_published != 'true' }}
+        if: \${{ always() && steps.facebook-duplicate-check.outcome == 'success' && steps.facebook-duplicate-check.outputs.already_published != 'true' }}
         env:
-          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
-          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          FACEBOOK_PAGE_ACCESS_TOKEN: \${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: \${{ secrets.FACEBOOK_PAGE_ID }}
         run: python scripts/facebook_photo.py diagnose
 
       - name: Claim today's Facebook image publication
         id: facebook-claim
-        if: ${{ always() && steps.facebook-check.outcome == 'success' && steps.facebook-duplicate-check.outputs.already_published != 'true' }}
+        if: \${{ always() && steps.facebook-check.outcome == 'success' && steps.facebook-duplicate-check.outputs.already_published != 'true' }}
         run: |
           printf '%s\n' "A4 Facebook publication reserved for $(TZ=Africa/Johannesburg date +%F)" > facebook-publication-claim.txt
       - uses: actions/upload-artifact@v4
-        if: ${{ always() && steps.facebook-claim.outcome == 'success' }}
+        if: \${{ always() && steps.facebook-claim.outcome == 'success' }}
         with:
-          name: mr2odds-daily-slip-facebook-v5-${{ steps.date.outputs.value }}
+          name: mr2odds-daily-slip-facebook-v5-\${{ steps.date.outputs.value }}
           path: facebook-publication-claim.txt
           retention-days: 35
           if-no-files-found: error
 
-      - name: Publish the same A4 slip image to Facebook
+      - name: Publish the combined A4 slip image to Facebook
         id: facebook-photo
-        if: ${{ always() && steps.facebook-claim.outcome == 'success' }}
+        if: \${{ always() && steps.facebook-claim.outcome == 'success' }}
         env:
-          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
-          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          FACEBOOK_PAGE_ACCESS_TOKEN: \${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: \${{ secrets.FACEBOOK_PAGE_ID }}
         run: python scripts/facebook_photo.py publish --image daily-slips-a4.png
 
       - name: Prepare plain-text YouTube script
-        if: ${{ !contains(github.event.head_commit.message, '[report-only]') }}
+        id: prepare-script
+        if: \${{ always() && steps.render.outcome == 'success' && steps.verify-date.outcome == 'success' && env.REPORT_ONLY != 'true' }}
         run: |
           python - <<'PY'
           from pathlib import Path
           import re
-          scripts=sorted(Path("reports").glob("youtube-script-*.md"))
-          if not scripts:
-              raise SystemExit("No YouTube Markdown script found")
-          source=scripts[-1]
-          text=source.read_text(encoding="utf-8")
-          text=re.sub(r"^#{1,6}\s*", "", text, flags=re.M)
-          text=re.sub(r"^\[([A-Z0-9 —-]+)\]$", r"\1", text, flags=re.M)
-          text=re.sub(r"\*\*(.*?)\*\*", r"\1", text)
-          text=re.sub(r"`([^\`]+)`", r"\1", text)
-          target=source.with_suffix(".txt")
-          target.write_text(text, encoding="utf-8")
-          print(f"Prepared {target} ({len(text)} characters)")
+          def date_key(p):
+              m=re.search(r'(20\d\d-\d\d-\d\d)',p.name)
+              return m.group(1) if m else ''
+          txts=sorted(Path('reports').glob('youtube-script-*.txt'),key=date_key)
+          mds=sorted(Path('reports').glob('youtube-script-*.md'),key=date_key)
+          latest_txt=txts[-1] if txts else None
+          latest_md=mds[-1] if mds else None
+          if latest_txt and (not latest_md or date_key(latest_txt)>=date_key(latest_md)):
+              print(f'Using existing plain-text script: {latest_txt}')
+          elif latest_md:
+              text=latest_md.read_text(encoding='utf-8')
+              text=re.sub(r'^#{1,6}\s*','',text,flags=re.M)
+              text=re.sub(r'^\[([A-Z0-9 —-]+)\]$',r'\1',text,flags=re.M)
+              text=re.sub(r'\*\*(.*?)\*\*',r'\1',text)
+              text=text.replace(chr(96),'')
+              target=latest_md.with_suffix('.txt')
+              target.write_text(text,encoding='utf-8')
+              print(f'Converted {latest_md} to {target} ({len(text)} chars)')
+          else:
+              raise SystemExit('No dated YouTube script (.txt or .md) found')
           PY
 
       - name: Send plain-text YouTube script to Telegram
-        if: ${{ !contains(github.event.head_commit.message, '[report-only]') }}
+        id: telegram-script
+        if: \${{ always() && steps.prepare-script.outcome == 'success' && env.REPORT_ONLY != 'true' }}
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_BOT_TOKEN: \${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: \${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           set -euo pipefail
           script=$(ls reports/youtube-script-*.txt | sort | tail -n 1)
           test -s "$script"
           response=$(curl --fail --silent --show-error --request POST \
-            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument" \
-            --form "chat_id=${TELEGRAM_CHAT_ID}" \
-            --form "document=@${script}" \
+            "https://api.telegram.org/bot\${TELEGRAM_BOT_TOKEN}/sendDocument" \
+            --form "chat_id=\${TELEGRAM_CHAT_ID}" \
+            --form "document=@\${script}" \
             --form "caption=Mr2Odds — YouTube script (plain text)")
-          echo "$response" | grep -q '"ok":true' || { echo "Telegram did not confirm plain-text YouTube script"; echo "$response"; exit 1; }
-          echo "Telegram confirmed plain-text YouTube script"
+          echo "$response" | grep -q '"ok":true' || { echo 'Telegram did not confirm plain-text YouTube script'; echo "$response"; exit 1; }
+          echo "Telegram confirmed plain-text YouTube script: $script"
 
-      - name: Send report text to Telegram
-        if: ${{ !contains(github.event.head_commit.message, '[script-only]') }}
+      - name: Send full report text to Telegram (split into safe chunks)
+        id: telegram-report
+        if: \${{ always() && steps.render.outcome == 'success' && steps.verify-date.outcome == 'success' && env.SCRIPT_ONLY != 'true' }}
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_BOT_TOKEN: \${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: \${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           set -euo pipefail
-          test -s reports/morning-report.md
           python - <<'PY'
           from pathlib import Path
-          text=Path("reports/morning-report.md").read_text(encoding="utf-8").strip()
-          if not text: raise SystemExit("Report is empty")
-          if len(text)>4000: raise SystemExit(f"Report too long ({len(text)} chars); split before sending.")
-          print("Report prepared:",len(text),"characters")
+          text=Path('reports/morning-report.md').read_text(encoding='utf-8').strip()
+          if not text: raise SystemExit('Report is empty')
+          limit=3600
+          paras=text.split('\n\n')
+          def split_long(s):
+              out=[]; current=''
+              for line in s.splitlines():
+                  if current and len(current)+len(line)+1>limit:
+                      out.append(current); current=line
+                  else: current=(current+'\n'+line).strip()
+              if current: out.append(current)
+              return out
+          chunks=[]; current=''
+          for para in paras:
+              if len(para)>limit:
+                  if current: chunks.append(current); current=''
+                  chunks.extend(split_long(para)); continue
+              candidate=(current+'\n\n'+para).strip()
+              if current and len(candidate)>limit:
+                  chunks.append(current); current=para
+              else: current=candidate
+          if current: chunks.append(current)
+          out=Path('/tmp/telegram-report-chunks'); out.mkdir(exist_ok=True)
+          for p in out.glob('*.txt'): p.unlink()
+          for i,c in enumerate(chunks,1): (out/f'{i:02d}.txt').write_text(c,encoding='utf-8')
+          print(f'Prepared {len(chunks)} report chunks, total {len(text)} characters')
           PY
-          response=$(curl --fail --silent --show-error --request POST \
-            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" --data-urlencode "text@reports/morning-report.md")
-          echo "$response" | grep -q '"ok":true' || { echo "Telegram did not confirm report"; echo "$response"; exit 1; }
-          echo "Telegram confirmed report text"
+          for chunk in /tmp/telegram-report-chunks/*.txt; do
+            response=$(curl --fail --silent --show-error --request POST \
+              "https://api.telegram.org/bot\${TELEGRAM_BOT_TOKEN}/sendMessage" \
+              --data-urlencode "chat_id=\${TELEGRAM_CHAT_ID}" \
+              --data-urlencode "text@\${chunk}")
+            echo "$response" | grep -q '"ok":true' || { echo "Telegram did not confirm report chunk $chunk"; echo "$response"; exit 1; }
+            echo "Telegram confirmed report text chunk $(basename "$chunk")"
+          done
+          echo 'Telegram confirmed all report text chunks.'
