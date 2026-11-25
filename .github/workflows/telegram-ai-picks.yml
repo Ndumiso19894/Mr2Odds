@@ -1,0 +1,75 @@
+name: Export latest Mr2Odds picks to AI and Telegram
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/export_ai_picks.py'
+      - '.github/workflows/telegram-ai-picks.yml'
+  schedule:
+    - cron: '10 5 * * *'
+    - cron: '10 15 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mr2odds-ai-picks-export
+  cancel-in-progress: false
+
+jobs:
+  export-and-send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TZ: Africa/Johannesburg
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Fetch latest scan from data branch
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location \
+            'https://raw.githubusercontent.com/Ndumiso19894/Mr2Odds/data/data/app/latest.json' \
+            -o /tmp/mr2odds-latest.json
+          python -m json.tool /tmp/mr2odds-latest.json >/dev/null
+
+      - name: Build compact AI-readable picks export
+        run: |
+          set -euo pipefail
+          python scripts/export_ai_picks.py /tmp/mr2odds-latest.json reports/ai-daily-picks.txt
+          test -s reports/ai-daily-picks.txt
+          cat reports/ai-daily-picks.txt
+
+      - name: Publish export to main branch
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add reports/ai-daily-picks.txt
+          if git diff --cached --quiet; then
+            echo 'Export is unchanged; no commit needed.'
+          else
+            git commit -m 'Update AI-readable daily picks export'
+            git push origin HEAD:main
+          fi
+
+      - name: Send latest picks file to Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          set -euo pipefail
+          test -n "$TELEGRAM_BOT_TOKEN" || { echo 'TELEGRAM_BOT_TOKEN secret is missing'; exit 1; }
+          test -n "$TELEGRAM_CHAT_ID" || { echo 'TELEGRAM_CHAT_ID secret is missing'; exit 1; }
+          response=$(curl --fail --silent --show-error --request POST \
+            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument" \
+            --form "chat_id=${TELEGRAM_CHAT_ID}" \
+            --form "document=@reports/ai-daily-picks.txt" \
+            --form-string "caption=Mr2Odds latest picks — AI-readable export")
+          echo "$response" | grep -q '"ok":true' || { echo 'Telegram did not confirm delivery'; echo "$response"; exit 1; }
+          echo 'Telegram confirmed delivery of the latest picks export.'
