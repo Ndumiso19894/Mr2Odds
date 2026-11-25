@@ -29,6 +29,12 @@ def is_upcoming(x):
     if not stamp:
         f=str(x.get("fixture",""))
         stamp=f[:10] if len(f)>=10 and f[4:5]=="-" else None
+    # Date-only advisor records count as upcoming throughout that local calendar day.
+    if stamp and len(str(stamp)) == 10:
+        try:
+            return datetime.strptime(str(stamp), "%Y-%m-%d").date() >= now.date()
+        except ValueError:
+            pass
     parsed=dt(stamp)
     return parsed is None or parsed >= now
 
