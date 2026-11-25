@@ -21,7 +21,7 @@ jobs:
       TZ: Africa/Johannesburg
       GMAIL_USERNAME: msanindumiso@gmail.com
       REPORT_EMAIL: msanindumiso@gmail.com
-      GMAIL_APP_PASSWORD: \${{ secrets.GMAIL_APP_PASSWORD }}
+      GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
