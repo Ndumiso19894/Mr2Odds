@@ -1,0 +1,320 @@
+MR2ODDS — LATEST PICKS EXPORT
+Generated from scan: 2026-11-25 16:02 SAST
+Export created: 2026-11-25 16:18 SAST
+Upcoming fixtures in latest feed: 66
+Total fixtures in feed: 74
+Model signals status: disabled
+Recent-form module: enabled
+
+IMPORTANT DATA LIMITATIONS
+- These are scanner shortlist outputs, not independently verified betting recommendations.
+- Model probabilities are estimates, not guarantees; compare them with current bookmaker prices.
+- Experimental xG/xGA and shots signals are disabled when model_signals.status is disabled.
+- No bookings market is included unless an explicit bookings selection appears in the source data.
+- Do not treat the label 'safe' as a guarantee. It is the scanner's internal shortlist label.
+
+UPCOMING PRICED SHORTLIST
+
+1. Ludogorets Razgrad II vs Etar
+   Kick-off: Wed 25 Nov 17:00 SAST
+   Competition: Bulgaria · Vtora Liga
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 82.0%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.82; O2.5=0.599; BTTS=0.579
+
+2. FC Rustavi vs FC Meshakhte Tkibuli
+   Kick-off: Wed 25 Nov 17:00 SAST
+   Competition: Georgia · Erovnuli Liga
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 72.1%
+   Sportybet decimal odds: 1.21
+   Data quality: High
+   Other model probabilities: O1.5=0.721; O2.5=0.46; BTTS=0.473
+
+3. Resovia vs Swit Szczecin
+   Kick-off: Wed 25 Nov 18:30 SAST
+   Competition: Poland · II Liga
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 76.4%
+   Sportybet decimal odds: 1.19
+   Data quality: High
+   Other model probabilities: O1.5=0.764; O2.5=0.516; BTTS=0.559
+
+4. Matebele FC vs Gaborone United
+   Kick-off: Wed 25 Nov 19:00 SAST
+   Competition: Botswana · Premier League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.4%
+   Sportybet decimal odds: 1.31
+   Data quality: High
+   Other model probabilities: O1.5=0.784; O2.5=0.546; BTTS=0.468
+
+5. Sevilla Atletico vs Recreativo Huelva
+   Kick-off: Wed 25 Nov 19:00 SAST
+   Competition: Spain · Segunda Division RFEF: Group 4
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.1%
+   Sportybet decimal odds: 1.30
+   Data quality: High
+   Other model probabilities: O1.5=0.771; O2.5=0.526; BTTS=0.532
+
+6. Slavia Prague vs Villarreal
+   Kick-off: Wed 25 Nov 19:45 SAST
+   Competition: Champions League · League Stage
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 89.1%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.891; O2.5=0.721; BTTS=0.618
+
+7. ENPPI vs Ceramica Cleopatra
+   Kick-off: Wed 25 Nov 20:00 SAST
+   Competition: Egypt · Premier League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 75.9%
+   Sportybet decimal odds: 1.40
+   Data quality: High
+   Other model probabilities: O1.5=0.759; O2.5=0.51; BTTS=0.514
+
+8. CF Talavera de la Reina vs Conquense
+   Kick-off: Wed 25 Nov 20:30 SAST
+   Competition: Spain · Segunda Division RFEF: Group 5
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 76.1%
+   Sportybet decimal odds: 1.39
+   Data quality: High
+   Other model probabilities: O1.5=0.761; O2.5=0.512; BTTS=0.558
+
+9. Boreham Wood vs Aldershot
+   Kick-off: Wed 25 Nov 21:00 SAST
+   Competition: England · National League
+   Selection: Home win [H]
+   Model probability: 72.3%
+   Sportybet decimal odds: 1.21
+   Data quality: High
+   Other model probabilities: O1.5=0.878; O2.5=0.698; BTTS=0.582
+
+10. Mantova vs Arezzo
+   Kick-off: Wed 25 Nov 21:00 SAST
+   Competition: Italy · Serie B
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 74.7%
+   Sportybet decimal odds: 1.25
+   Data quality: High
+   Other model probabilities: O1.5=0.747; O2.5=0.493; BTTS=0.508
+
+11. Padova vs Sampdoria
+   Kick-off: Wed 25 Nov 21:00 SAST
+   Competition: Italy · Serie B
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 71.4%
+   Sportybet decimal odds: 1.35
+   Data quality: High
+   Other model probabilities: O1.5=0.714; O2.5=0.45; BTTS=0.492
+
+12. Pisa vs Modena
+   Kick-off: Wed 25 Nov 21:00 SAST
+   Competition: Italy · Serie B
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.5%
+   Sportybet decimal odds: 1.23
+   Data quality: High
+   Other model probabilities: O1.5=0.785; O2.5=0.546; BTTS=0.559
+
+13. Burnley vs Birmingham
+   Kick-off: Wed 25 Nov 21:45 SAST
+   Competition: England · Championship
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.1%
+   Sportybet decimal odds: 1.24
+   Data quality: High
+   Other model probabilities: O1.5=0.781; O2.5=0.539; BTTS=0.566
+
+14. Watford vs Blackburn
+   Kick-off: Wed 25 Nov 21:45 SAST
+   Competition: England · Championship
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 74.2%
+   Sportybet decimal odds: 1.31
+   Data quality: High
+   Other model probabilities: O1.5=0.742; O2.5=0.486; BTTS=0.528
+
+15. Bolton Wanderers vs West Bromwich Albion
+   Kick-off: Wed 25 Nov 21:45 SAST
+   Competition: England · Championship
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 81.6%
+   Sportybet decimal odds: 1.22
+   Data quality: High
+   Other model probabilities: O1.5=0.816; O2.5=0.592; BTTS=0.613
+
+16. Harrogate vs Kidderminster
+   Kick-off: Wed 25 Nov 21:45 SAST
+   Competition: England · National League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.0%
+   Sportybet decimal odds: 1.23
+   Data quality: High
+   Other model probabilities: O1.5=0.77; O2.5=0.525; BTTS=0.531
+
+17. Hartlepool vs Solihull
+   Kick-off: Wed 25 Nov 21:45 SAST
+   Competition: England · National League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 85.1%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.851; O2.5=0.648; BTTS=0.662
+
+18. Club Brugge vs Liverpool
+   Kick-off: Wed 25 Nov 22:00 SAST
+   Competition: Champions League · League Stage
+   Selection: Match total over 2.5 goals [O25]
+   Model probability: 74.3%
+   Sportybet decimal odds: 1.34
+   Data quality: High
+   Other model probabilities: O1.5=0.903; O2.5=0.743; BTTS=0.707
+
+19. Lille vs Bayern Munich
+   Kick-off: Wed 25 Nov 22:00 SAST
+   Competition: Champions League · League Stage
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 84.1%
+   Sportybet decimal odds: 1.25
+   Data quality: High
+   Other model probabilities: O1.5=0.841; O2.5=0.631; BTTS=0.619
+
+20. Shakhtar Donetsk vs Fenerbahçe
+   Kick-off: Wed 25 Nov 22:00 SAST
+   Competition: Champions League · League Stage
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 81.1%
+   Sportybet decimal odds: 1.26
+   Data quality: High
+   Other model probabilities: O1.5=0.811; O2.5=0.583; BTTS=0.588
+
+21. Sporting CP vs Manchester United
+   Kick-off: Wed 25 Nov 22:00 SAST
+   Competition: Champions League · League Stage
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 93.5%
+   Sportybet decimal odds: 1.17
+   Data quality: High
+   Other model probabilities: O1.5=0.935; O2.5=0.813; BTTS=0.612
+
+22. Stoke vs Millwall
+   Kick-off: Wed 25 Nov 22:00 SAST
+   Competition: England · Championship
+   Selection: Home team over 3.5 corners [CHO35]
+   Model probability: 80.1%
+   Sportybet decimal odds: 1.22
+   Data quality: High
+   Other model probabilities: O1.5=0.792; O2.5=0.557; BTTS=0.55
+
+23. Colon vs Atenas
+   Kick-off: Wed 25 Nov 23:00 SAST
+   Competition: Uruguay · Segunda División: Play-off
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 71.6%
+   Sportybet decimal odds: 1.49
+   Data quality: High
+   Other model probabilities: O1.5=0.716; O2.5=0.452; BTTS=0.51
+
+24. Guerreros de Autlan vs Heroes de Zaci
+   Kick-off: Thu 26 Nov 00:00 SAST
+   Competition: Mexico · Liga Premier: Serie A Clausura
+   Selection: Match total over 2.5 goals [O25]
+   Model probability: 78.2%
+   Sportybet decimal odds: 1.27
+   Data quality: High
+   Other model probabilities: O1.5=0.92; O2.5=0.782; BTTS=0.511
+
+25. Atletico MG vs Corinthians
+   Kick-off: Thu 26 Nov 01:00 SAST
+   Competition: Brazil · Serie A
+   Selection: Home team over 3.5 corners [CHO35]
+   Model probability: 77.6%
+   Sportybet decimal odds: 1.30
+   Data quality: High
+   Other model probabilities: O1.5=0.681; O2.5=0.41; BTTS=0.471
+
+26. Barcelona SC vs Independiente del Valle
+   Kick-off: Thu 26 Nov 02:00 SAST
+   Competition: Ecuador · Serie A: Championship Group
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 75.1%
+   Sportybet decimal odds: 1.33
+   Data quality: High
+   Other model probabilities: O1.5=0.751; O2.5=0.498; BTTS=0.526
+
+27. CD Platense Municipal vs CD FAS
+   Kick-off: Thu 26 Nov 03:00 SAST
+   Competition: El Salvador · Primera Division: Apertura Play-off
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.5%
+   Sportybet decimal odds: 1.33
+   Data quality: High
+   Other model probabilities: O1.5=0.775; O2.5=0.53; BTTS=0.566
+
+28. Toluca vs Atlas
+   Kick-off: Thu 26 Nov 03:00 SAST
+   Competition: Mexico · Liga MX: Apertura: Play-off
+   Selection: Match total over 2.5 goals [O25]
+   Model probability: 71.8%
+   Sportybet decimal odds: 1.46
+   Data quality: High
+   Other model probabilities: O1.5=0.89; O2.5=0.718; BTTS=0.691
+
+29. CSD Municipal vs Aurora FC
+   Kick-off: Thu 26 Nov 04:00 SAST
+   Competition: Guatemala · Liga Nacional: Apertura
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 71.8%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.718; O2.5=0.455; BTTS=0.465
+
+30. Monterrey vs CF America
+   Kick-off: Thu 26 Nov 05:10 SAST
+   Competition: Mexico · Liga MX: Apertura: Play-off
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 83.9%
+   Sportybet decimal odds: 1.29
+   Data quality: High
+   Other model probabilities: O1.5=0.839; O2.5=0.628; BTTS=0.648
+
+31. Borneo FC Samarinda vs Persita Tangerang
+   Kick-off: Thu 26 Nov 10:30 SAST
+   Competition: Indonesia · Super League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.9%
+   Sportybet decimal odds: 1.26
+   Data quality: High
+   Other model probabilities: O1.5=0.789; O2.5=0.55; BTTS=0.581
+
+32. El Entag El Harby vs Kahrbaa Alasmalia
+   Kick-off: Thu 26 Nov 14:30 SAST
+   Competition: Egypt · 2. Division A
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 70.1%
+   Sportybet decimal odds: 1.38
+   Data quality: High
+   Other model probabilities: O1.5=0.701; O2.5=0.434; BTTS=0.493
+
+33. El Sekka El Hadid vs Proxy
+   Kick-off: Thu 26 Nov 14:30 SAST
+   Competition: Egypt · 2. Division A
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 70.8%
+   Sportybet decimal odds: 1.45
+   Data quality: High
+   Other model probabilities: O1.5=0.708; O2.5=0.443; BTTS=0.482
+
+AI ANALYSIS INSTRUCTIONS
+Independently research each listed match. Do not copy the scanner market automatically.
+Assess recent home/away scoring and conceding form, opponent quality, team-goal alternatives,
+corners won/conceded and match style. Assess bookings only with reliable referee and team data.
+Compare fair probability with the listed price; explain uncertainty and reject weak matches.
+Return PASS when evidence is insufficient. Never invent statistics, odds, injuries or line-ups.
