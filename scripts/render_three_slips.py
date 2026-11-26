@@ -30,7 +30,7 @@ def parse_report(path):
         if not legs or not odds: raise ValueError(f"Slip {head.group(1)} missing legs or odds")
         parsed=[]
         for leg in legs:
-            m=re.match(r"(.+?)\s+—\s+(.+?)\s+@([0-9]+(?:\.[0-9]+)?)\s+\(([[\d.]+%])\)$",leg)
+            m=re.match(r"(.+?)\s+—\s+(.+?)\s+@([0-9]+(?:\.[0-9]+)?)\s+\(([\d.]+%)\)$",leg)
             if not m: raise ValueError("Selection format not recognized: "+leg)
             parsed.append({"fixture":m.group(1).strip(),"market":m.group(2).strip(),"odds":float(m.group(3)),"prob":m.group(4)})
         total=math.prod(x["odds"] for x in parsed)
