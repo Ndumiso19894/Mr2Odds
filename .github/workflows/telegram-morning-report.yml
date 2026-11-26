@@ -36,7 +36,7 @@ jobs:
       - name: Checkout report
         uses: actions/checkout@v4
 
-      - name: Generate three individual handwritten slips and the Facebook A4 sheet
+      - name: Render three individual slips; optionally render the Facebook A4 sheet
         id: render
         run: |
           set -euo pipefail
@@ -44,10 +44,14 @@ jobs:
           curl --fail --silent --show-error --location 'https://raw.githubusercontent.com/google/fonts/main/ofl/caveat/Caveat%5Bwght%5D.ttf' -o /tmp/Caveat.ttf
           test -s /tmp/Caveat.ttf
           day=$(TZ=Africa/Johannesburg date +%F)
-          python scripts/render_daily_slips.py --report reports/morning-report.md --output daily-slips-a4.png --font /tmp/Caveat.ttf
           python scripts/render_three_slips.py --report reports/morning-report.md --font /tmp/Caveat.ttf --date "$day" --out-dir reports
-          test -s daily-slips-a4.png
           for n in 1 2 3; do test -s "reports/slip-$day-$n.png"; done
+          if python scripts/render_daily_slips.py --report reports/morning-report.md --output daily-slips-a4.png --font /tmp/Caveat.ttf && test -s daily-slips-a4.png; then
+            echo "facebook_a4_ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "facebook_a4_ready=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Facebook A4 layout omitted because all selections did not fit; the three individual slips were rendered."
+          fi
 
       - name: Verify the report is for today's South African date
         id: verify-date
@@ -139,11 +143,11 @@ jobs:
 
       - name: Claim today's Facebook image publication
         id: facebook-claim
-        if: ${{ always() && steps.facebook-check.outcome == 'success' && steps.facebook-duplicate-check.outputs.already_published != 'true' && env.FACEBOOK_ENABLED == 'true' }}
+        if: ${{ always() && steps.facebook-check.outcome == 'success' && steps.facebook-duplicate-check.outputs.already_published != 'true' && env.FACEBOOK_ENABLED == 'true' && steps.render.outputs.facebook_a4_ready == 'true' }}
         run: |
           printf '%s\n' "A4 Facebook publication reserved for $(TZ=Africa/Johannesburg date +%F)" > facebook-publication-claim.txt
       - uses: actions/upload-artifact@v4
-        if: ${{ always() && steps.facebook-claim.outcome == 'success' }}
+        if: ${{ always() && steps.facebook-claim.outcome == 'success' && steps.render.outputs.facebook_a4_ready == 'true' }}
         with:
           name: mr2odds-daily-slip-facebook-v5-${{ steps.date.outputs.value }}
           path: facebook-publication-claim.txt
