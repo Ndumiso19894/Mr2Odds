@@ -112,7 +112,7 @@ def main():
     if not a.font.is_file() or a.font.stat().st_size<10000: raise ValueError("Caveat handwriting font is missing; refusing a typed fallback")
     day=a.date or date.today().isoformat()
     report_text=a.report.read_text(encoding="utf-8")
-    snapshot=re.search(r"Odds snapshot:.*?(\\d{2}:\\d{2}) SAST",report_text)
+    snapshot=re.search(r"Odds snapshot:.*?(\d{2}:\d{2}) SAST",report_text)
     snapshot_time=snapshot.group(1) if snapshot else "time unavailable"
     for s in parse_report(a.report): render(s,day,a.font,a.out_dir/f"slip-{day}-{s['number']}.png",snapshot_time)
 if __name__=="__main__":
