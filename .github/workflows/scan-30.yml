@@ -207,16 +207,7 @@ jobs:
           fi
           echo "published $(git rev-parse --short HEAD)"
 
-      - name: Trigger Facebook posting window after a fresh scan
-        # GitHub schedules can be delayed. Slot-specific claims make fallback dispatches safe.
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          case "$(TZ=Africa/Johannesburg date +%H)" in
-            07|08) gh workflow run facebook-daily.yml --repo "$GITHUB_REPOSITORY" --ref main ;;
-            *) echo "Outside a Facebook posting window." ;;
-          esac
+      # Automatic Facebook dispatch is paused at the user's request.
 
   unit-tests:
     needs: gate

@@ -31,27 +31,21 @@ jobs:
     env:
       REPORT_ONLY: ${{ contains(github.event.head_commit.message || '', '[report-only]') }}
       SCRIPT_ONLY: ${{ contains(github.event.head_commit.message || '', '[script-only]') }}
-      FACEBOOK_ENABLED: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN != '' && secrets.FACEBOOK_PAGE_ID != '' }}
     steps:
       - name: Checkout report
         uses: actions/checkout@v4
 
-      - name: Render three individual slips; optionally render the Facebook A4 sheet
+      - name: Render three individual handwritten slips (Facebook paused)
         id: render
         run: |
           set -euo pipefail
-          python -m pip install --quiet Pillow requests
+          python -m pip install --quiet Pillow
           curl --fail --silent --show-error --location 'https://raw.githubusercontent.com/google/fonts/main/ofl/caveat/Caveat%5Bwght%5D.ttf' -o /tmp/Caveat.ttf
           test -s /tmp/Caveat.ttf
           day=$(TZ=Africa/Johannesburg date +%F)
           python scripts/render_three_slips.py --report reports/morning-report.md --font /tmp/Caveat.ttf --date "$day" --out-dir reports
           for n in 1 2 3; do test -s "reports/slip-$day-$n.png"; done
-          if python scripts/render_daily_slips.py --report reports/morning-report.md --output daily-slips-a4.png --font /tmp/Caveat.ttf && test -s daily-slips-a4.png; then
-            echo "facebook_a4_ready=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "facebook_a4_ready=false" >> "$GITHUB_OUTPUT"
-            echo "::warning::Facebook A4 layout omitted because all selections did not fit; the three individual slips were rendered."
-          fi
+          echo "::notice::Facebook posting is paused; no A4 or Facebook post will be created."
 
       - name: Verify the report is for today's South African date
         id: verify-date
@@ -110,57 +104,6 @@ jobs:
             echo "Telegram confirmed Slip $n PNG"
           done
           echo 'Telegram confirmed all three individual slip images.'
-
-      - name: Set South African publication date
-        id: date
-        if: ${{ always() && steps.render.outcome == 'success' }}
-        run: echo "value=$(TZ=Africa/Johannesburg date +%F)" >> "$GITHUB_OUTPUT"
-
-      - name: Check whether today's Facebook slip image was already published
-        id: facebook-duplicate-check
-        if: ${{ always() && steps.render.outcome == 'success' && steps.verify-date.outcome == 'success' && github.ref == 'refs/heads/main' && env.FACEBOOK_ENABLED == 'true' && env.REPORT_ONLY != 'true' && env.SCRIPT_ONLY != 'true' }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          day=$(TZ=Africa/Johannesburg date +%F)
-          name="mr2odds-daily-slip-facebook-v5-$day"
-          existing=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100&name=$name" --jq ".artifacts[] | select(.name == \"$name\" and .expired == false) | .id")
-          if [ -n "$existing" ]; then
-            echo "already_published=true" >> "$GITHUB_OUTPUT"
-            echo "Today's Facebook slip image already has a publication claim; skipping duplicate."
-          else
-            echo "already_published=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Verify the configured Facebook Page
-        id: facebook-check
-        if: ${{ always() && steps.facebook-duplicate-check.outcome == 'success' && steps.facebook-duplicate-check.outputs.already_published != 'true' && env.FACEBOOK_ENABLED == 'true' }}
-        env:
-          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
-          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-        run: python scripts/facebook_photo.py diagnose
-
-      - name: Claim today's Facebook image publication
-        id: facebook-claim
-        if: ${{ always() && steps.facebook-check.outcome == 'success' && steps.facebook-duplicate-check.outputs.already_published != 'true' && env.FACEBOOK_ENABLED == 'true' && steps.render.outputs.facebook_a4_ready == 'true' }}
-        run: |
-          printf '%s\n' "A4 Facebook publication reserved for $(TZ=Africa/Johannesburg date +%F)" > facebook-publication-claim.txt
-      - uses: actions/upload-artifact@v4
-        if: ${{ always() && steps.facebook-claim.outcome == 'success' && steps.render.outputs.facebook_a4_ready == 'true' }}
-        with:
-          name: mr2odds-daily-slip-facebook-v5-${{ steps.date.outputs.value }}
-          path: facebook-publication-claim.txt
-          retention-days: 35
-          if-no-files-found: error
-
-      - name: Publish the combined A4 slip image to Facebook
-        id: facebook-photo
-        if: ${{ always() && steps.facebook-claim.outcome == 'success' }}
-        env:
-          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
-          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-        run: python scripts/facebook_photo.py publish --image daily-slips-a4.png
 
       - name: Prepare plain-text YouTube script
         id: prepare-script

@@ -61,7 +61,7 @@ def paper(w,h,seed):
     d.line((42,42,w-42,42),fill=(255,255,255,55),width=2)
     return p
 
-def render(s,date_str,font_path,out):
+def render(s,date_str,font_path,out,snapshot_time):
     W,H=1080,1560; pw,ph=920,1400; x0,y0=(W-pw)//2,70
     base=desk(W,H,s["number"]).convert("RGBA")
     shadow=Image.new("RGBA",(W,H),(0,0,0,0)); sd=ImageDraw.Draw(shadow)
@@ -100,7 +100,7 @@ def render(s,date_str,font_path,out):
     lw=d.textbbox((0,0),label,font=sub)[2]
     d.text((box_x+lw+82,box_y+8),odds_text,font=total,fill=INK)
     d.line((box_x+lw+75,box_y+78,box_x+lw+total.getbbox(odds_text)[2]+105,box_y+77),fill=INK,width=3)
-    d.text((left,y0+ph-88),f"SportyBet ZA prices • 08:50 SAST • {date_str}",font=small,fill=(78,88,103))
+    d.text((left,y0+ph-88),f"SportyBet ZA prices • {snapshot_time} SAST • {date_str}",font=small,fill=(78,88,103))
     if y>H-165: raise ValueError(f"Slip {s['number']} text overflows: y={y}")
     out.parent.mkdir(parents=True,exist_ok=True); im.save(out,"PNG",optimize=True,dpi=(150,150))
     print(f"Rendered {out} ({out.stat().st_size} bytes)")
@@ -111,7 +111,10 @@ def main():
     ap.add_argument("--out-dir",type=Path,default=Path("reports")); a=ap.parse_args()
     if not a.font.is_file() or a.font.stat().st_size<10000: raise ValueError("Caveat handwriting font is missing; refusing a typed fallback")
     day=a.date or date.today().isoformat()
-    for s in parse_report(a.report): render(s,day,a.font,a.out_dir/f"slip-{day}-{s['number']}.png")
+    report_text=a.report.read_text(encoding="utf-8")
+    snapshot=re.search(r"Odds snapshot:.*?(\\d{2}:\\d{2}) SAST",report_text)
+    snapshot_time=snapshot.group(1) if snapshot else "time unavailable"
+    for s in parse_report(a.report): render(s,day,a.font,a.out_dir/f"slip-{day}-{s['number']}.png",snapshot_time)
 if __name__=="__main__":
     try: main()
     except (OSError,ValueError) as e: print("ERROR:",e,file=sys.stderr); raise SystemExit(1)
