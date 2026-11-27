@@ -1,8 +1,8 @@
 MR2ODDS — LATEST PICKS EXPORT
-Generated from scan: 2026-11-27 16:30 SAST
-Export created: 2026-11-27 16:57 SAST
-Upcoming fixtures in latest feed: 410
-Total fixtures in feed: 443
+Generated from scan: 2026-11-28 01:15 SAST
+Export created: 2026-11-28 01:25 SAST
+Upcoming fixtures in latest feed: 662
+Total fixtures in feed: 670
 Model signals status: disabled
 Recent-form module: enabled
 
@@ -15,547 +15,16 @@ IMPORTANT DATA LIMITATIONS
 
 UPCOMING PRICED SHORTLIST
 
-1. FK Neftchi vs Zira
-   Kick-off: Fri 27 Nov 17:00 SAST
-   Competition: Azerbaijan · Premier League
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 82.6%
-   Sportybet decimal odds: 1.25
-   Data quality: High
-   Other model probabilities: O1.5=0.826; O2.5=0.608; BTTS=0.573
-
-2. East Riffa vs Al Ittifaq BHR
-   Kick-off: Fri 27 Nov 17:00 SAST
-   Competition: Bahrain · Premier League
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 72.9%
-   Sportybet decimal odds: 1.39
-   Data quality: Medium
-   Other model probabilities: O1.5=0.729; O2.5=0.47; BTTS=0.462
-
-3. Malkia vs Manama
-   Kick-off: Fri 27 Nov 17:00 SAST
-   Competition: Bahrain · Premier League
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 72.7%
-   Sportybet decimal odds: 1.29
-   Data quality: Medium
-   Other model probabilities: O1.5=0.727; O2.5=0.466; BTTS=0.521
-
-4. Lusail SC vs Al-Arabi
-   Kick-off: Fri 27 Nov 17:30 SAST
-   Competition: Qatar · Qatar Stars League
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 83.8%
-   Sportybet decimal odds: 1.16
-   Data quality: High
-   Other model probabilities: O1.5=0.838; O2.5=0.627; BTTS=0.641
-
-5. Universitatea Cluj vs Sepsi OSK
-   Kick-off: Fri 27 Nov 17:30 SAST
-   Competition: Romania · Liga 1
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 82.9%
-   Sportybet decimal odds: 1.24
-   Data quality: High
-   Other model probabilities: O1.5=0.829; O2.5=0.615; BTTS=0.485
-
-6. Al-Gharraf vs Al-Mosul
-   Kick-off: Fri 27 Nov 18:00 SAST
-   Competition: Iraq · Iraq Stars League
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 70.2%
-   Sportybet decimal odds: 1.46
-   Data quality: High
-   Other model probabilities: O1.5=0.702; O2.5=0.435; BTTS=0.497
-
-7. Correcaminos de la UAT II vs Santiago FC
-   Kick-off: Fri 27 Nov 18:00 SAST
-   Competition: Mexico · Liga Premier: Serie A Clausura
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 74.7%
-   Sportybet decimal odds: 1.17
-   Data quality: High
-   Other model probabilities: O1.5=0.747; O2.5=0.492; BTTS=0.541
-
-8. FK IMT Beograd vs Macva Sabac
-   Kick-off: Fri 27 Nov 18:00 SAST
-   Competition: Serbia · Super Liga
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 71.7%
-   Sportybet decimal odds: 1.33
-   Data quality: High
-   Other model probabilities: O1.5=0.717; O2.5=0.455; BTTS=0.445
-
-9. Celik Zenica vs FK BSK Banja Luka
-   Kick-off: Fri 27 Nov 19:00 SAST
-   Competition: Bosnia and Herzegovina · Premier League
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 80.6%
-   Sportybet decimal odds: 1.25
-   Data quality: High
-   Other model probabilities: O1.5=0.806; O2.5=0.576; BTTS=0.607
-
-10. NK Istra 1961 vs NK Varazdin
-   Kick-off: Fri 27 Nov 19:00 SAST
-   Competition: Croatia · HNL
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 75.0%
-   Sportybet decimal odds: 1.24
-   Data quality: High
-   Other model probabilities: O1.5=0.75; O2.5=0.496; BTTS=0.543
-
-11. AEK Larnaca vs Apollon Limassol
-   Kick-off: Fri 27 Nov 19:00 SAST
-   Competition: Cyprus · 1st Division
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 75.8%
-   Sportybet decimal odds: 1.28
-   Data quality: High
-   Other model probabilities: O1.5=0.758; O2.5=0.507; BTTS=0.542
-
-12. AEL Limassol vs Olympiakos Nicosia
-   Kick-off: Fri 27 Nov 19:00 SAST
-   Competition: Cyprus · 1st Division
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 77.6%
-   Sportybet decimal odds: 1.28
-   Data quality: High
-   Other model probabilities: O1.5=0.776; O2.5=0.533; BTTS=0.554
-
-13. Dukla Praha vs FK MAS Taborsko
-   Kick-off: Fri 27 Nov 19:00 SAST
-   Competition: Czech Republic · 2nd league
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 78.8%
-   Sportybet decimal odds: 1.24
-   Data quality: High
-   Other model probabilities: O1.5=0.788; O2.5=0.549; BTTS=0.56
-
-14. GKS Tychy 71 vs Chojniczanka Chojnice
-   Kick-off: Fri 27 Nov 19:00 SAST
-   Competition: Poland · II Liga
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 75.4%
-   Sportybet decimal odds: 1.25
-   Data quality: High
-   Other model probabilities: O1.5=0.754; O2.5=0.502; BTTS=0.537
-
-15. Radomlje vs Nafta
-   Kick-off: Fri 27 Nov 19:00 SAST
-   Competition: Slovenia · Prva Liga
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 75.7%
-   Sportybet decimal odds: 1.21
-   Data quality: High
-   Other model probabilities: O1.5=0.757; O2.5=0.506; BTTS=0.555
-
-16. Alanyaspor vs Konyaspor
-   Kick-off: Fri 27 Nov 19:00 SAST
-   Competition: Turkey · Süper Lig
-   Selection: Home team over 3.5 corners [CHO35]
-   Model probability: 70.7%
-   Sportybet decimal odds: 1.40
-   Data quality: High
-   Other model probabilities: O1.5=0.683; O2.5=0.412; BTTS=0.473
-
-17. Rizespor vs Kasimpasa
-   Kick-off: Fri 27 Nov 19:00 SAST
-   Competition: Turkey · Süper Lig
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 78.4%
-   Sportybet decimal odds: 1.21
-   Data quality: High
-   Other model probabilities: O1.5=0.784; O2.5=0.543; BTTS=0.579
-
-18. Sariyer vs Istanbulspor
-   Kick-off: Fri 27 Nov 19:00 SAST
-   Competition: Turkiye · 1st Lig
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 75.8%
-   Sportybet decimal odds: 1.34
-   Data quality: High
-   Other model probabilities: O1.5=0.758; O2.5=0.507; BTTS=0.544
-
-19. Umraniyespor vs Manisa FK
-   Kick-off: Fri 27 Nov 19:00 SAST
-   Competition: Turkiye · 1st Lig
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 79.0%
-   Sportybet decimal odds: 1.26
-   Data quality: High
-   Other model probabilities: O1.5=0.79; O2.5=0.553; BTTS=0.558
-
-20. FC Dinamo City vs Partizani
-   Kick-off: Fri 27 Nov 19:30 SAST
-   Competition: Albania · Kategoria Superiore
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 75.8%
-   Sportybet decimal odds: 1.35
-   Data quality: High
-   Other model probabilities: O1.5=0.758; O2.5=0.507; BTTS=0.545
-
-21. Bochum vs Darmstadt
-   Kick-off: Fri 27 Nov 19:30 SAST
-   Competition: Germany · 2. Bundesliga
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 79.7%
-   Sportybet decimal odds: 1.22
-   Data quality: High
-   Other model probabilities: O1.5=0.797; O2.5=0.565; BTTS=0.505
-
-22. Heidenheim vs Nurnberg
-   Kick-off: Fri 27 Nov 19:30 SAST
-   Competition: Germany · 2. Bundesliga
-   Selection: Home team over 3.5 corners [CHO35]
-   Model probability: 73.8%
-   Sportybet decimal odds: 1.22
-   Data quality: High
-   Other model probabilities: O1.5=0.83; O2.5=0.614; BTTS=0.634
-
-23. Al Ittihad vs NEOM SC
-   Kick-off: Fri 27 Nov 19:30 SAST
-   Competition: Saudi Arabia · Saudi Professional League
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 77.9%
-   Sportybet decimal odds: 1.24
-   Data quality: High
-   Other model probabilities: O1.5=0.779; O2.5=0.536; BTTS=0.577
-
-24. Hvidovre vs Kolding IF
-   Kick-off: Fri 27 Nov 20:00 SAST
-   Competition: Denmark · 1st Division
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 78.2%
-   Sportybet decimal odds: 1.20
-   Data quality: High
-   Other model probabilities: O1.5=0.782; O2.5=0.542; BTTS=0.531
-
-25. SoenderjyskE vs Broendby IF
-   Kick-off: Fri 27 Nov 20:00 SAST
-   Competition: Denmark · Superliga
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 82.9%
-   Sportybet decimal odds: 1.19
-   Data quality: High
-   Other model probabilities: O1.5=0.829; O2.5=0.613; BTTS=0.635
-
-26. Grazer AK vs SCR Altach
-   Kick-off: Fri 27 Nov 20:30 SAST
-   Competition: Austria · Bundesliga
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 70.4%
-   Sportybet decimal odds: 1.27
-   Data quality: High
-   Other model probabilities: O1.5=0.704; O2.5=0.438; BTTS=0.5
-
-27. Petrolul Ploiesti vs ACS Champions FC Arges
-   Kick-off: Fri 27 Nov 20:30 SAST
-   Competition: Romania · Liga 1
-   Selection: Home team over 3.5 corners [CHO35]
-   Model probability: 72.7%
-   Sportybet decimal odds: 1.28
-   Data quality: High
-   Other model probabilities: O1.5=0.708; O2.5=0.444; BTTS=0.436
-
-28. Francs Borains vs Eupen
-   Kick-off: Fri 27 Nov 21:00 SAST
-   Competition: Belgium · Challenger Pro League
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 75.4%
-   Sportybet decimal odds: 1.23
-   Data quality: High
-   Other model probabilities: O1.5=0.754; O2.5=0.502; BTTS=0.552
-
-29. Birkirkara vs Mosta
-   Kick-off: Fri 27 Nov 21:00 SAST
-   Competition: Malta · Malta Premier: Closing Relegation Group
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 80.1%
-   Sportybet decimal odds: 1.24
-   Data quality: High
-   Other model probabilities: O1.5=0.801; O2.5=0.569; BTTS=0.576
-
-30. Groningen vs Willem II
-   Kick-off: Fri 27 Nov 21:00 SAST
-   Competition: Netherlands · Eredivisie
-   Selection: Match total over 2.5 goals [O25]
-   Model probability: 75.9%
-   Sportybet decimal odds: 1.44
-   Data quality: High
-   Other model probabilities: O1.5=0.91; O2.5=0.759; BTTS=0.675
-
-31. Etoile Carouge vs FC Stade Lausanne-Ouchy
-   Kick-off: Fri 27 Nov 21:15 SAST
-   Competition: Switzerland · Challenge League
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 81.3%
-   Sportybet decimal odds: 1.21
-   Data quality: High
-   Other model probabilities: O1.5=0.813; O2.5=0.59; BTTS=0.486
-
-32. FC Wacker Innsbruck vs First Vienna FC
-   Kick-off: Fri 27 Nov 21:30 SAST
-   Competition: Austria · 2. Liga
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 76.1%
-   Sportybet decimal odds: 1.34
-   Data quality: High
-   Other model probabilities: O1.5=0.761; O2.5=0.511; BTTS=0.558
-
-33. Werder Bremen vs M'gladbach
-   Kick-off: Fri 27 Nov 21:30 SAST
-   Competition: Germany · Bundesliga
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 87.0%
-   Sportybet decimal odds: 1.18
-   Data quality: High
-   Other model probabilities: O1.5=0.87; O2.5=0.684; BTTS=0.591
-
-34. Cavese vs Scafatese
-   Kick-off: Fri 27 Nov 21:30 SAST
-   Competition: Italy · Serie C: Group C
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 80.9%
-   Sportybet decimal odds: 1.32
-   Data quality: High
-   Other model probabilities: O1.5=0.809; O2.5=0.581; BTTS=0.607
-
-35. Gornik Zabrze vs Wisla Plock
-   Kick-off: Fri 27 Nov 21:30 SAST
-   Competition: Poland · Ekstraklasa
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 75.1%
-   Sportybet decimal odds: 1.27
-   Data quality: High
-   Other model probabilities: O1.5=0.751; O2.5=0.499; BTTS=0.501
-
-36. Chrobry Glogow vs Skierniewice
-   Kick-off: Fri 27 Nov 21:30 SAST
-   Competition: Poland · I Liga
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 72.9%
-   Sportybet decimal odds: 1.19
-   Data quality: High
-   Other model probabilities: O1.5=0.729; O2.5=0.469; BTTS=0.525
-
-37. Oud-Heverlee Leuven vs Kortrijk
-   Kick-off: Fri 27 Nov 21:45 SAST
-   Competition: Belgium · Pro League
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 75.0%
-   Sportybet decimal odds: 1.20
-   Data quality: High
-   Other model probabilities: O1.5=0.75; O2.5=0.499; BTTS=0.415
-
-38. Scunthorpe vs Wealdstone
-   Kick-off: Fri 27 Nov 21:45 SAST
-   Competition: England · National League
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 80.6%
-   Sportybet decimal odds: 1.17
-   Data quality: High
-   Other model probabilities: O1.5=0.806; O2.5=0.576; BTTS=0.608
-
-39. Brest vs Paris FC
-   Kick-off: Fri 27 Nov 21:45 SAST
-   Competition: France · Ligue 1
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 77.5%
-   Sportybet decimal odds: 1.30
-   Data quality: High
-   Other model probabilities: O1.5=0.775; O2.5=0.53; BTTS=0.571
-
-40. Venezia vs Bologna
-   Kick-off: Fri 27 Nov 21:45 SAST
-   Competition: Italy · Serie A
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 78.7%
-   Sportybet decimal odds: 1.34
-   Data quality: High
-   Other model probabilities: O1.5=0.787; O2.5=0.549; BTTS=0.547
-
-41. Institute vs Ards
-   Kick-off: Fri 27 Nov 21:45 SAST
-   Competition: Northern Ireland · Championship
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 71.2%
-   Sportybet decimal odds: 1.24
-   Data quality: High
-   Other model probabilities: O1.5=0.712; O2.5=0.447; BTTS=0.49
-
-42. Newry City AFC vs Ballinamallard United
-   Kick-off: Fri 27 Nov 21:45 SAST
-   Competition: Northern Ireland · Championship
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 74.4%
-   Sportybet decimal odds: 1.22
-   Data quality: High
-   Other model probabilities: O1.5=0.744; O2.5=0.488; BTTS=0.538
-
-43. Warrenpoint Town vs Harland & Wolff Welders FC
-   Kick-off: Fri 27 Nov 21:45 SAST
-   Competition: Northern Ireland · Championship
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 78.3%
-   Sportybet decimal odds: 1.16
-   Data quality: High
-   Other model probabilities: O1.5=0.783; O2.5=0.542; BTTS=0.583
-
-44. Coleraine vs Dungannon Swifts
-   Kick-off: Fri 27 Nov 21:45 SAST
-   Competition: Northern Ireland · Premiership
-   Selection: Home win [H]
-   Model probability: 70.2%
-   Sportybet decimal odds: 1.42
-   Data quality: High
-   Other model probabilities: O1.5=0.832; O2.5=0.619; BTTS=0.523
-
-45. Glentoran vs Larne
-   Kick-off: Fri 27 Nov 21:45 SAST
-   Competition: Northern Ireland · Premiership
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 76.2%
-   Sportybet decimal odds: 1.29
-   Data quality: High
-   Other model probabilities: O1.5=0.762; O2.5=0.512; BTTS=0.558
-
-46. Briton Ferry vs Penybont
-   Kick-off: Fri 27 Nov 21:45 SAST
-   Competition: Wales · JD Cymru Premier
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 80.7%
-   Sportybet decimal odds: 1.23
-   Data quality: High
-   Other model probabilities: O1.5=0.807; O2.5=0.578; BTTS=0.536
-
-47. Cardiff Met University vs Airbus UK Broughton
-   Kick-off: Fri 27 Nov 21:45 SAST
-   Competition: Wales · JD Cymru Premier
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 89.6%
-   Sportybet decimal odds: 1.19
-   Data quality: High
-   Other model probabilities: O1.5=0.896; O2.5=0.729; BTTS=0.726
-
-48. Colwyn Bay vs Ammanford
-   Kick-off: Fri 27 Nov 21:45 SAST
-   Competition: Wales · JD Cymru Premier
-   Selection: Match total over 2.5 goals [O25]
-   Model probability: 75.9%
-   Sportybet decimal odds: 1.32
-   Data quality: High
-   Other model probabilities: O1.5=0.909; O2.5=0.759; BTTS=0.531
-
-49. Haverfordwest vs Connah's Quay
-   Kick-off: Fri 27 Nov 21:45 SAST
-   Competition: Wales · JD Cymru Premier
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 74.3%
-   Sportybet decimal odds: 1.36
-   Data quality: High
-   Other model probabilities: O1.5=0.743; O2.5=0.488; BTTS=0.442
-
-50. Southampton vs Middlesbrough
-   Kick-off: Fri 27 Nov 22:00 SAST
-   Competition: England · Championship
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 78.5%
-   Sportybet decimal odds: 1.17
-   Data quality: High
-   Other model probabilities: O1.5=0.785; O2.5=0.546; BTTS=0.559
-
-51. Nott'm Forest vs Chelsea
-   Kick-off: Fri 27 Nov 22:00 SAST
-   Competition: England · Premier League
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 77.2%
-   Sportybet decimal odds: 1.26
-   Data quality: High
-   Other model probabilities: O1.5=0.772; O2.5=0.526; BTTS=0.547
-
-52. Levante vs Santander
-   Kick-off: Fri 27 Nov 22:00 SAST
-   Competition: Spain · La Liga
-   Selection: Home team over 3.5 corners [CHO35]
-   Model probability: 74.2%
-   Sportybet decimal odds: 1.23
-   Data quality: High
-   Other model probabilities: O1.5=0.84; O2.5=0.629; BTTS=0.64
-
-53. Maritimo vs Nacional
-   Kick-off: Fri 27 Nov 22:15 SAST
-   Competition: Portugal · Primeira Liga
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 72.9%
-   Sportybet decimal odds: 1.42
-   Data quality: High
-   Other model probabilities: O1.5=0.729; O2.5=0.469; BTTS=0.526
-
-54. Hercules vs Antequera CF
-   Kick-off: Fri 27 Nov 22:15 SAST
-   Competition: Spain · Primera Division RFEF: Group 2
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 73.8%
-   Sportybet decimal odds: 1.28
-   Data quality: High
-   Other model probabilities: O1.5=0.738; O2.5=0.481; BTTS=0.525
-
-55. Nacional Asuncion vs Rubio Nu
-   Kick-off: Fri 27 Nov 22:30 SAST
-   Competition: Paraguay · Division Profesional: Clausura
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 75.2%
-   Sportybet decimal odds: 1.25
-   Data quality: High
-   Other model probabilities: O1.5=0.752; O2.5=0.501; BTTS=0.473
-
-56. Deportivo Cuenca vs Manta
-   Kick-off: Fri 27 Nov 23:30 SAST
-   Competition: Ecuador · Serie A: Relegation Group
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 77.9%
-   Sportybet decimal odds: 1.23
-   Data quality: High
-   Other model probabilities: O1.5=0.779; O2.5=0.536; BTTS=0.561
-
-57. Fluminense vs Cruzeiro
-   Kick-off: Sat 28 Nov 01:00 SAST
-   Competition: Brazil · Serie A
-   Selection: Home team over 3.5 corners [CHO35]
-   Model probability: 78.3%
-   Sportybet decimal odds: 1.19
-   Data quality: High
-   Other model probabilities: O1.5=0.772; O2.5=0.527; BTTS=0.566
-
-58. Antofagasta vs Deportes Copiapo
-   Kick-off: Sat 28 Nov 01:00 SAST
-   Competition: Chile · Primera B: Promotion Playoff
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 82.7%
-   Sportybet decimal odds: 1.20
-   Data quality: High
-   Other model probabilities: O1.5=0.827; O2.5=0.611; BTTS=0.509
-
-59. Luqueno vs Olimpia
-   Kick-off: Sat 28 Nov 01:00 SAST
-   Competition: Paraguay · Division Profesional: Clausura
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 78.7%
-   Sportybet decimal odds: 1.22
-   Data quality: High
-   Other model probabilities: O1.5=0.787; O2.5=0.55; BTTS=0.498
-
-60. Deportivo Cali vs Bucaramanga
+1. Deportivo Cali vs Bucaramanga
    Kick-off: Sat 28 Nov 01:35 SAST
    Competition: Colombia · Primera A: Clausura: Play-off: Group B
    Selection: Match total over 1.5 goals [O15]
    Model probability: 73.7%
-   Sportybet decimal odds: 1.45
+   Sportybet decimal odds: 1.44
    Data quality: High
    Other model probabilities: O1.5=0.737; O2.5=0.479; BTTS=0.518
 
-61. Millonarios vs America de Cali
+2. Millonarios vs America de Cali
    Kick-off: Sat 28 Nov 03:40 SAST
    Competition: Colombia · Primera A: Clausura: Play-off: Group B
    Selection: Home team over 3.5 corners [CHO35]
@@ -564,43 +33,43 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.699; O2.5=0.431; BTTS=0.494
 
-62. Club Sport Herediano vs Escorpiones
+3. Club Sport Herediano vs Escorpiones
    Kick-off: Sat 28 Nov 04:00 SAST
    Competition: Costa Rica · Primera División: Apertura
    Selection: Match total over 1.5 goals [O15]
    Model probability: 82.1%
-   Sportybet decimal odds: 1.17
+   Sportybet decimal odds: 1.18
    Data quality: High
    Other model probabilities: O1.5=0.821; O2.5=0.599; BTTS=0.626
 
-63. Reboceros de la Piedad vs Lobos ULMX
+4. Reboceros de la Piedad vs Lobos ULMX
    Kick-off: Sat 28 Nov 04:00 SAST
    Competition: Mexico · Primera Premier
    Selection: Match total over 1.5 goals [O15]
    Model probability: 77.2%
    Sportybet decimal odds: 1.21
    Data quality: High
-   Other model probabilities: O1.5=0.772; O2.5=0.527; BTTS=0.563
+   Other model probabilities: O1.5=0.772; O2.5=0.527; BTTS=0.564
 
-64. Real Salt Lake vs Vancouver Whitecaps
+5. Real Salt Lake vs Vancouver Whitecaps
    Kick-off: Sat 28 Nov 05:00 SAST
    Competition: USA · MLS: Play-off 2026
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 74.6%
-   Sportybet decimal odds: 1.17
+   Model probability: 74.5%
+   Sportybet decimal odds: 1.19
    Data quality: High
-   Other model probabilities: O1.5=0.746; O2.5=0.491; BTTS=0.53
+   Other model probabilities: O1.5=0.745; O2.5=0.49; BTTS=0.529
 
-65. Preston Lions vs APIA Leichhardt Tigers
+6. Preston Lions vs APIA Leichhardt Tigers
    Kick-off: Sat 28 Nov 06:00 SAST
    Competition: Australia · Australian Championship 2026: Final Stage
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 83.6%
-   Sportybet decimal odds: 1.20
+   Model probability: 82.8%
+   Sportybet decimal odds: 1.21
    Data quality: Medium
-   Other model probabilities: O1.5=0.836; O2.5=0.624; BTTS=0.626
+   Other model probabilities: O1.5=0.828; O2.5=0.611; BTTS=0.615
 
-66. Kyoto Sanga FC vs Cerezo Osaka
+7. Kyoto Sanga FC vs Cerezo Osaka
    Kick-off: Sat 28 Nov 07:00 SAST
    Competition: Japan · J1 League
    Selection: Match total over 1.5 goals [O15]
@@ -609,16 +78,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.829; O2.5=0.613; BTTS=0.605
 
-67. Shimizu S-Pulse vs Urawa Red Diamonds
+8. Shimizu S-Pulse vs Urawa Red Diamonds
    Kick-off: Sat 28 Nov 07:00 SAST
    Competition: Japan · J1 League
    Selection: Match total over 1.5 goals [O15]
    Model probability: 78.1%
-   Sportybet decimal odds: 1.32
+   Sportybet decimal odds: 1.31
    Data quality: High
    Other model probabilities: O1.5=0.781; O2.5=0.54; BTTS=0.55
 
-68. Omiya Ardija vs FC Imabari
+9. Omiya Ardija vs FC Imabari
    Kick-off: Sat 28 Nov 07:00 SAST
    Competition: Japan · J2 League
    Selection: Match total over 1.5 goals [O15]
@@ -627,16 +96,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.798; O2.5=0.564; BTTS=0.545
 
-69. Kochi United SC vs Nara Club
+10. Kochi United SC vs Nara Club
    Kick-off: Sat 28 Nov 07:00 SAST
    Competition: Japan · J3 League
    Selection: Match total over 1.5 goals [O15]
    Model probability: 77.8%
-   Sportybet decimal odds: 1.23
+   Sportybet decimal odds: 1.19
    Data quality: High
-   Other model probabilities: O1.5=0.778; O2.5=0.536; BTTS=0.541
+   Other model probabilities: O1.5=0.778; O2.5=0.536; BTTS=0.54
 
-70. Gimhae vs Seongnam FC
+11. Gimhae vs Seongnam FC
    Kick-off: Sat 28 Nov 07:00 SAST
    Competition: Republic of Korea · K League 2
    Selection: Match total over 1.5 goals [O15]
@@ -645,43 +114,43 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.804; O2.5=0.574; BTTS=0.584
 
-71. Kashima Antlers vs Fagiano Okayama FC
+12. Kashima Antlers vs Fagiano Okayama FC
    Kick-off: Sat 28 Nov 08:00 SAST
    Competition: Japan · J1 League
    Selection: Match total over 1.5 goals [O15]
    Model probability: 78.5%
-   Sportybet decimal odds: 1.31
+   Sportybet decimal odds: 1.29
    Data quality: High
    Other model probabilities: O1.5=0.785; O2.5=0.546; BTTS=0.551
 
-72. Vissel Kobe vs JEF United Chiba
+13. Vissel Kobe vs JEF United Chiba
    Kick-off: Sat 28 Nov 08:00 SAST
    Competition: Japan · J1 League
    Selection: Match total over 1.5 goals [O15]
    Model probability: 78.4%
-   Sportybet decimal odds: 1.28
+   Sportybet decimal odds: 1.27
    Data quality: High
-   Other model probabilities: O1.5=0.784; O2.5=0.545; BTTS=0.556
+   Other model probabilities: O1.5=0.784; O2.5=0.545; BTTS=0.557
 
-73. Kashiwa Reysol vs Sanfrecce Hiroshima
+14. Kashiwa Reysol vs Sanfrecce Hiroshima
    Kick-off: Sat 28 Nov 09:00 SAST
    Competition: Japan · J1 League
    Selection: Match total over 1.5 goals [O15]
    Model probability: 77.0%
-   Sportybet decimal odds: 1.21
+   Sportybet decimal odds: 1.22
    Data quality: High
    Other model probabilities: O1.5=0.77; O2.5=0.524; BTTS=0.566
 
-74. Bali United vs Bhayangkara FC
+15. Bali United vs Bhayangkara FC
    Kick-off: Sat 28 Nov 10:30 SAST
    Competition: Indonesia · Super League
    Selection: Match total over 1.5 goals [O15]
    Model probability: 81.9%
    Sportybet decimal odds: 1.17
    Data quality: High
-   Other model probabilities: O1.5=0.819; O2.5=0.598; BTTS=0.554
+   Other model probabilities: O1.5=0.819; O2.5=0.598; BTTS=0.555
 
-75. PSIM Yogyakarta vs Persijap Jepara
+16. PSIM Yogyakarta vs Persijap Jepara
    Kick-off: Sat 28 Nov 10:30 SAST
    Competition: Indonesia · Super League
    Selection: Match total over 1.5 goals [O15]
@@ -690,43 +159,43 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.721; O2.5=0.459; BTTS=0.486
 
-76. PSM Makassar vs Dewa United
+17. PSM Makassar vs Dewa United
    Kick-off: Sat 28 Nov 10:30 SAST
    Competition: Indonesia · Super League
    Selection: Match total over 1.5 goals [O15]
    Model probability: 74.9%
-   Sportybet decimal odds: 1.25
+   Sportybet decimal odds: 1.24
    Data quality: High
-   Other model probabilities: O1.5=0.749; O2.5=0.496; BTTS=0.542
+   Other model probabilities: O1.5=0.749; O2.5=0.496; BTTS=0.543
 
-77. Central Coast Mariners vs Auckland FC
+18. Central Coast Mariners vs Auckland FC
    Kick-off: Sat 28 Nov 10:40 SAST
    Competition: Australia · A-League
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 79.4%
+   Model probability: 79.3%
    Sportybet decimal odds: 1.21
    Data quality: High
-   Other model probabilities: O1.5=0.794; O2.5=0.558; BTTS=0.593
+   Other model probabilities: O1.5=0.793; O2.5=0.557; BTTS=0.592
 
-78. Negeri Sembilan vs Terengganu
+19. Negeri Sembilan vs Terengganu
    Kick-off: Sat 28 Nov 10:45 SAST
    Competition: Malaysia · Super League
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 75.3%
-   Sportybet decimal odds: 1.24
+   Model probability: 75.5%
+   Sportybet decimal odds: 1.22
    Data quality: High
-   Other model probabilities: O1.5=0.753; O2.5=0.501; BTTS=0.548
+   Other model probabilities: O1.5=0.755; O2.5=0.504; BTTS=0.549
 
-79. Sabah FC vs Selangor
+20. Sabah FC vs Selangor
    Kick-off: Sat 28 Nov 11:00 SAST
    Competition: Malaysia · Super League
    Selection: Match total over 1.5 goals [O15]
    Model probability: 79.4%
    Sportybet decimal odds: 1.16
    Data quality: High
-   Other model probabilities: O1.5=0.794; O2.5=0.559; BTTS=0.532
+   Other model probabilities: O1.5=0.794; O2.5=0.559; BTTS=0.533
 
-80. ASA Targu Mures vs CSM Olimpia Satu Mare
+21. ASA Targu Mures vs CSM Olimpia Satu Mare
    Kick-off: Sat 28 Nov 11:00 SAST
    Competition: Romania · Liga II
    Selection: Match total over 1.5 goals [O15]
@@ -735,7 +204,7 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.772; O2.5=0.526; BTTS=0.569
 
-81. CS Afumati vs CSM Resita
+22. CS Afumati vs CSM Resita
    Kick-off: Sat 28 Nov 11:00 SAST
    Competition: Romania · Liga II
    Selection: Match total over 1.5 goals [O15]
@@ -744,16 +213,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.759; O2.5=0.508; BTTS=0.552
 
-82. Concordia Chiajna vs CSL Stefanesti
+23. Concordia Chiajna vs CSL Stefanesti
    Kick-off: Sat 28 Nov 11:00 SAST
    Competition: Romania · Liga II
    Selection: Match total over 2.5 goals [O25]
-   Model probability: 72.2%
+   Model probability: 72.1%
    Sportybet decimal odds: 1.29
    Data quality: High
-   Other model probabilities: O1.5=0.89; O2.5=0.722; BTTS=0.454
+   Other model probabilities: O1.5=0.89; O2.5=0.721; BTTS=0.454
 
-83. FC Unirea 2004 Slobozia vs Popesti Leordeni
+24. FC Unirea 2004 Slobozia vs Popesti Leordeni
    Kick-off: Sat 28 Nov 11:00 SAST
    Competition: Romania · Liga II
    Selection: Match total over 1.5 goals [O15]
@@ -762,16 +231,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: Medium
    Other model probabilities: O1.5=0.799; O2.5=0.565; BTTS=0.6
 
-84. Metalul Buzau vs FC Bacau
+25. Metalul Buzau vs FC Bacau
    Kick-off: Sat 28 Nov 11:00 SAST
    Competition: Romania · Liga II
    Selection: Match total over 1.5 goals [O15]
    Model probability: 71.8%
-   Sportybet decimal odds: 1.22
+   Sportybet decimal odds: 1.19
    Data quality: High
    Other model probabilities: O1.5=0.718; O2.5=0.455; BTTS=0.495
 
-85. BATE Borisov vs Isloch
+26. BATE Borisov vs Isloch
    Kick-off: Sat 28 Nov 12:00 SAST
    Competition: Belarus · Premier League
    Selection: Match total over 1.5 goals [O15]
@@ -780,16 +249,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.769; O2.5=0.524; BTTS=0.483
 
-86. Belshina Bobruisk vs Maxline Vitebsk
+27. Belshina Bobruisk vs Maxline Vitebsk
    Kick-off: Sat 28 Nov 12:00 SAST
    Competition: Belarus · Premier League
    Selection: Away win [A]
-   Model probability: 73.3%
+   Model probability: 73.2%
    Sportybet decimal odds: 1.22
    Data quality: High
    Other model probabilities: O1.5=0.836; O2.5=0.625; BTTS=0.502
 
-87. FC Minsk vs Dnepr Mogilev
+28. FC Minsk vs Dnepr Mogilev
    Kick-off: Sat 28 Nov 12:00 SAST
    Competition: Belarus · Premier League
    Selection: Match total over 1.5 goals [O15]
@@ -798,7 +267,7 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.748; O2.5=0.494; BTTS=0.545
 
-88. Karacabey Belediye Spor vs Sakaryaspor
+29. Karacabey Belediye Spor vs Sakaryaspor
    Kick-off: Sat 28 Nov 12:00 SAST
    Competition: Turkiye · 2nd Lig: Red Group
    Selection: Match total over 1.5 goals [O15]
@@ -807,16 +276,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.83; O2.5=0.613; BTTS=0.633
 
-89. Serik Belediyespor vs Yeni Orduspor
+30. Serik Belediyespor vs Yeni Orduspor
    Kick-off: Sat 28 Nov 12:00 SAST
    Competition: Turkiye · 2nd Lig: Red Group
    Selection: Match total over 1.5 goals [O15]
    Model probability: 79.8%
-   Sportybet decimal odds: 1.20
+   Sportybet decimal odds: 1.19
    Data quality: Medium
    Other model probabilities: O1.5=0.798; O2.5=0.565; BTTS=0.515
 
-90. Isparta 32 Spor vs Inegol Kafkas
+31. Isparta 32 Spor vs Inegol Kafkas
    Kick-off: Sat 28 Nov 12:00 SAST
    Competition: Turkiye · 2nd Lig: White Group
    Selection: Match total over 1.5 goals [O15]
@@ -825,16 +294,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: Medium
    Other model probabilities: O1.5=0.788; O2.5=0.55; BTTS=0.583
 
-91. FC Kuressaare vs Viimsi JK
+32. FC Kuressaare vs Viimsi JK
    Kick-off: Sat 28 Nov 12:30 SAST
    Competition: Estonia · Meistriliiga: Qualification Play-offs
    Selection: Match total over 1.5 goals [O15]
    Model probability: 70.3%
    Sportybet decimal odds: 1.23
    Data quality: High
-   Other model probabilities: O1.5=0.703; O2.5=0.436; BTTS=0.469
+   Other model probabilities: O1.5=0.703; O2.5=0.437; BTTS=0.469
 
-92. Bandirmaspor vs Batman Petrolspor
+33. Bandirmaspor vs Batman Petrolspor
    Kick-off: Sat 28 Nov 12:30 SAST
    Competition: Turkiye · 1st Lig
    Selection: Match total over 1.5 goals [O15]
@@ -843,7 +312,7 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.815; O2.5=0.59; BTTS=0.618
 
-93. Sivasspor vs Bodrum FK
+34. Sivasspor vs Bodrum FK
    Kick-off: Sat 28 Nov 12:30 SAST
    Competition: Turkiye · 1st Lig
    Selection: Match total over 1.5 goals [O15]
@@ -852,25 +321,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.798; O2.5=0.564; BTTS=0.575
 
-94. Arsimi vs FK Vardar Skopje
+35. Arsimi vs FK Vardar Skopje
    Kick-off: Sat 28 Nov 13:00 SAST
    Competition: North Macedonia · 1st League
    Selection: Match total over 1.5 goals [O15]
    Model probability: 76.0%
-   Sportybet decimal odds: 1.17
+   Sportybet decimal odds: 1.19
    Data quality: High
-   Other model probabilities: O1.5=0.76; O2.5=0.511; BTTS=0.49
+   Other model probabilities: O1.5=0.76; O2.5=0.51; BTTS=0.489
 
-95. Gornik Leczna vs Swit Szczecin
-   Kick-off: Sat 28 Nov 13:00 SAST
-   Competition: Poland · II Liga
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 84.3%
-   Sportybet decimal odds: 1.16
-   Data quality: High
-   Other model probabilities: O1.5=0.843; O2.5=0.636; BTTS=0.546
-
-96. AVS Futebol SAD vs Leixoes
+36. AVS Futebol SAD vs Leixoes
    Kick-off: Sat 28 Nov 13:00 SAST
    Competition: Portugal · Liga Portugal 2
    Selection: Match total over 1.5 goals [O15]
@@ -879,43 +339,43 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.751; O2.5=0.498; BTTS=0.546
 
-97. Pattani FC vs Chiangrai United
+37. Pattani FC vs Chiangrai United
    Kick-off: Sat 28 Nov 13:00 SAST
    Competition: Thailand · Thai League
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 77.6%
+   Model probability: 77.7%
    Sportybet decimal odds: 1.25
    Data quality: High
-   Other model probabilities: O1.5=0.776; O2.5=0.533; BTTS=0.552
+   Other model probabilities: O1.5=0.777; O2.5=0.534; BTTS=0.553
 
-98. Dynamo Kyiv vs Chornomorets Odesa
+38. Dynamo Kyiv vs Chornomorets Odesa
    Kick-off: Sat 28 Nov 13:00 SAST
    Competition: Ukraine · Premier League
    Selection: Match total over 1.5 goals [O15]
    Model probability: 72.6%
-   Sportybet decimal odds: 1.17
+   Sportybet decimal odds: 1.19
    Data quality: High
-   Other model probabilities: O1.5=0.726; O2.5=0.466; BTTS=0.427
+   Other model probabilities: O1.5=0.726; O2.5=0.466; BTTS=0.426
 
-99. Neftchi Fargona vs Dinamo Samarkand
+39. Neftchi Fargona vs Dinamo Samarkand
    Kick-off: Sat 28 Nov 13:15 SAST
    Competition: Uzbekistan · Super League
    Selection: Match total over 1.5 goals [O15]
    Model probability: 82.2%
    Sportybet decimal odds: 1.18
    Data quality: High
-   Other model probabilities: O1.5=0.822; O2.5=0.601; BTTS=0.603
+   Other model probabilities: O1.5=0.822; O2.5=0.601; BTTS=0.604
 
-100. Olimpia Grudziadz vs Avia Swidnik
+40. Olimpia Grudziadz vs Avia Swidnik
    Kick-off: Sat 28 Nov 13:30 SAST
    Competition: Poland · II Liga
    Selection: Match total over 1.5 goals [O15]
    Model probability: 80.1%
    Sportybet decimal odds: 1.17
    Data quality: High
-   Other model probabilities: O1.5=0.801; O2.5=0.568; BTTS=0.592
+   Other model probabilities: O1.5=0.801; O2.5=0.569; BTTS=0.593
 
-101. Dresden vs St Pauli
+41. Dresden vs St Pauli
    Kick-off: Sat 28 Nov 14:00 SAST
    Competition: Germany · 2. Bundesliga
    Selection: Match total over 1.5 goals [O15]
@@ -924,16 +384,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.784; O2.5=0.544; BTTS=0.544
 
-102. Holstein Kiel vs Kaiserslautern
+42. Holstein Kiel vs Kaiserslautern
    Kick-off: Sat 28 Nov 14:00 SAST
    Competition: Germany · 2. Bundesliga
    Selection: Home team over 3.5 corners [CHO35]
    Model probability: 77.4%
-   Sportybet decimal odds: 1.27
+   Sportybet decimal odds: 1.26
    Data quality: High
-   Other model probabilities: O1.5=0.655; O2.5=0.38; BTTS=0.453
+   Other model probabilities: O1.5=0.655; O2.5=0.381; BTTS=0.454
 
-103. Kazincbarcika SC vs Tiszakecske FC
+43. Kazincbarcika SC vs Tiszakecske FC
    Kick-off: Sat 28 Nov 14:00 SAST
    Competition: Hungary · NB II
    Selection: Match total over 1.5 goals [O15]
@@ -942,7 +402,7 @@ UPCOMING PRICED SHORTLIST
    Data quality: Medium
    Other model probabilities: O1.5=0.803; O2.5=0.572; BTTS=0.605
 
-104. Kozarmisleny vs Bvsc-Zuglo
+44. Kozarmisleny vs Bvsc-Zuglo
    Kick-off: Sat 28 Nov 14:00 SAST
    Competition: Hungary · NB II
    Selection: Match total over 1.5 goals [O15]
@@ -951,7 +411,7 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.722; O2.5=0.459; BTTS=0.513
 
-105. Mezokovesd SE vs Szentlorinc
+45. Mezokovesd SE vs Szentlorinc
    Kick-off: Sat 28 Nov 14:00 SAST
    Competition: Hungary · NB II
    Selection: Match total over 1.5 goals [O15]
@@ -960,16 +420,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.826; O2.5=0.609; BTTS=0.547
 
-106. Persija Jakarta vs Garudayaksa FC
+46. Persija Jakarta vs Garudayaksa FC
    Kick-off: Sat 28 Nov 14:00 SAST
    Competition: Indonesia · Super League
    Selection: Match total over 1.5 goals [O15]
    Model probability: 84.2%
    Sportybet decimal odds: 1.16
    Data quality: High
-   Other model probabilities: O1.5=0.842; O2.5=0.635; BTTS=0.52
+   Other model probabilities: O1.5=0.842; O2.5=0.635; BTTS=0.521
 
-107. Otrant vs Mornar
+47. Otrant vs Mornar
    Kick-off: Sat 28 Nov 14:00 SAST
    Competition: Montenegro · 1. CFL
    Selection: Match total over 1.5 goals [O15]
@@ -978,7 +438,7 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.73; O2.5=0.47; BTTS=0.521
 
-108. FK Borac Cacak vs FK Dubocica
+48. FK Borac Cacak vs FK Dubocica
    Kick-off: Sat 28 Nov 14:00 SAST
    Competition: Serbia · Prva Liga
    Selection: Match total over 1.5 goals [O15]
@@ -987,7 +447,7 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.712; O2.5=0.448; BTTS=0.451
 
-109. FK Graficar vs Proleter 023
+49. FK Graficar vs Proleter 023
    Kick-off: Sat 28 Nov 14:00 SAST
    Competition: Serbia · Prva Liga
    Selection: Match total over 1.5 goals [O15]
@@ -996,7 +456,7 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.766; O2.5=0.518; BTTS=0.554
 
-110. Javor vs FK Spartak Subotica
+50. Javor vs FK Spartak Subotica
    Kick-off: Sat 28 Nov 14:00 SAST
    Competition: Serbia · Prva Liga
    Selection: Match total over 1.5 goals [O15]
@@ -1005,7 +465,7 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.823; O2.5=0.603; BTTS=0.557
 
-111. OFK Vrsac vs Jedinstvo Ub
+51. OFK Vrsac vs Jedinstvo Ub
    Kick-off: Sat 28 Nov 14:00 SAST
    Competition: Serbia · Prva Liga
    Selection: Match total over 1.5 goals [O15]
@@ -1014,115 +474,115 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.723; O2.5=0.462; BTTS=0.491
 
-112. Teleoptik vs FK Smederevo 1924
+52. Teleoptik vs FK Smederevo 1924
    Kick-off: Sat 28 Nov 14:00 SAST
    Competition: Serbia · Prva Liga
    Selection: Match total over 1.5 goals [O15]
    Model probability: 74.6%
    Sportybet decimal odds: 1.17
    Data quality: High
-   Other model probabilities: O1.5=0.746; O2.5=0.491; BTTS=0.541
+   Other model probabilities: O1.5=0.746; O2.5=0.491; BTTS=0.542
 
-113. Corluspor 1947 vs Sebat Genclik Spor
+53. Corluspor 1947 vs Sebat Genclik Spor
    Kick-off: Sat 28 Nov 14:00 SAST
    Competition: Turkiye · 2nd Lig: White Group
    Selection: Match total over 1.5 goals [O15]
    Model probability: 82.3%
-   Sportybet decimal odds: 1.27
+   Sportybet decimal odds: 1.19
    Data quality: High
    Other model probabilities: O1.5=0.823; O2.5=0.603; BTTS=0.619
 
-114. Ha Noi FC vs Hong Linh Ha Tinh
+54. Ha Noi FC vs Hong Linh Ha Tinh
    Kick-off: Sat 28 Nov 14:15 SAST
    Competition: Vietnam · V-League
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 78.3%
-   Sportybet decimal odds: 1.25
+   Model probability: 78.1%
+   Sportybet decimal odds: 1.26
    Data quality: High
-   Other model probabilities: O1.5=0.783; O2.5=0.542; BTTS=0.569
+   Other model probabilities: O1.5=0.781; O2.5=0.54; BTTS=0.567
 
-115. Sloga Doboj vs Radnik Bijeljina
+55. Sloga Doboj vs Radnik Bijeljina
    Kick-off: Sat 28 Nov 14:30 SAST
    Competition: Bosnia and Herzegovina · Premier League
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 75.4%
+   Model probability: 75.3%
    Sportybet decimal odds: 1.36
    Data quality: High
-   Other model probabilities: O1.5=0.754; O2.5=0.502; BTTS=0.533
+   Other model probabilities: O1.5=0.753; O2.5=0.501; BTTS=0.533
 
-116. Montana vs Sportist Svoge
+56. Montana vs Sportist Svoge
    Kick-off: Sat 28 Nov 14:30 SAST
    Competition: Bulgaria · Vtora Liga
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 74.7%
+   Model probability: 74.8%
    Sportybet decimal odds: 1.30
    Data quality: High
-   Other model probabilities: O1.5=0.747; O2.5=0.493; BTTS=0.541
+   Other model probabilities: O1.5=0.748; O2.5=0.493; BTTS=0.541
 
-117. Pirin Blagoevgrad vs Dobrudzha Dobrich
+57. Pirin Blagoevgrad vs Dobrudzha Dobrich
    Kick-off: Sat 28 Nov 14:30 SAST
    Competition: Bulgaria · Vtora Liga
    Selection: Match total over 1.5 goals [O15]
    Model probability: 75.3%
    Sportybet decimal odds: 1.28
    Data quality: High
-   Other model probabilities: O1.5=0.753; O2.5=0.5; BTTS=0.548
+   Other model probabilities: O1.5=0.753; O2.5=0.501; BTTS=0.548
 
-118. Ayia Napa vs PAEEK
+58. Ayia Napa vs PAEEK
    Kick-off: Sat 28 Nov 14:30 SAST
    Competition: Cyprus · 2nd Division
    Selection: Match total over 1.5 goals [O15]
    Model probability: 79.0%
    Sportybet decimal odds: 1.22
    Data quality: High
-   Other model probabilities: O1.5=0.79; O2.5=0.554; BTTS=0.477
+   Other model probabilities: O1.5=0.79; O2.5=0.554; BTTS=0.478
 
-119. Iraklis Gerolakkou vs Ethnikos Achnas
+59. Iraklis Gerolakkou vs Ethnikos Achnas
    Kick-off: Sat 28 Nov 14:30 SAST
    Competition: Cyprus · 2nd Division
    Selection: Match total over 1.5 goals [O15]
    Model probability: 74.6%
    Sportybet decimal odds: 1.21
    Data quality: Medium
-   Other model probabilities: O1.5=0.746; O2.5=0.492; BTTS=0.464
+   Other model probabilities: O1.5=0.746; O2.5=0.493; BTTS=0.464
 
-120. HB Koege vs Aarhus Fremad
+60. HB Koege vs Aarhus Fremad
    Kick-off: Sat 28 Nov 14:30 SAST
    Competition: Denmark · 1st Division
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 70.3%
+   Model probability: 70.4%
    Sportybet decimal odds: 1.26
    Data quality: High
-   Other model probabilities: O1.5=0.703; O2.5=0.437; BTTS=0.493
+   Other model probabilities: O1.5=0.704; O2.5=0.437; BTTS=0.493
 
-121. Blackburn vs Charlton
-   Kick-off: Sat 28 Nov 14:30 SAST
-   Competition: England · Championship
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 78.8%
-   Sportybet decimal odds: 1.32
-   Data quality: High
-   Other model probabilities: O1.5=0.788; O2.5=0.551; BTTS=0.553
-
-122. Lincoln vs Wolves
+61. Blackburn vs Charlton
    Kick-off: Sat 28 Nov 14:30 SAST
    Competition: England · Championship
    Selection: Match total over 1.5 goals [O15]
    Model probability: 78.9%
-   Sportybet decimal odds: 1.25
+   Sportybet decimal odds: 1.32
    Data quality: High
-   Other model probabilities: O1.5=0.789; O2.5=0.55; BTTS=0.577
+   Other model probabilities: O1.5=0.789; O2.5=0.551; BTTS=0.553
 
-123. Preston vs Norwich
+62. Lincoln vs Wolves
    Kick-off: Sat 28 Nov 14:30 SAST
    Competition: England · Championship
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 83.4%
+   Model probability: 78.9%
+   Sportybet decimal odds: 1.27
+   Data quality: High
+   Other model probabilities: O1.5=0.789; O2.5=0.551; BTTS=0.577
+
+63. Preston vs Norwich
+   Kick-off: Sat 28 Nov 14:30 SAST
+   Competition: England · Championship
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 83.3%
    Sportybet decimal odds: 1.18
    Data quality: High
-   Other model probabilities: O1.5=0.834; O2.5=0.62; BTTS=0.596
+   Other model probabilities: O1.5=0.833; O2.5=0.62; BTTS=0.596
 
-124. Milton Keynes Dons vs Notts County
+64. Milton Keynes Dons vs Notts County
    Kick-off: Sat 28 Nov 14:30 SAST
    Competition: England · League One
    Selection: Match total over 1.5 goals [O15]
@@ -1131,16 +591,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.784; O2.5=0.545; BTTS=0.541
 
-125. Peterboro vs Cambridge
+65. Peterboro vs Cambridge
    Kick-off: Sat 28 Nov 14:30 SAST
    Competition: England · League One
    Selection: Match total over 1.5 goals [O15]
    Model probability: 77.5%
-   Sportybet decimal odds: 1.18
+   Sportybet decimal odds: 1.19
    Data quality: High
    Other model probabilities: O1.5=0.775; O2.5=0.531; BTTS=0.573
 
-126. Bristol Rvs vs Tranmere
+66. Bristol Rvs vs Tranmere
    Kick-off: Sat 28 Nov 14:30 SAST
    Competition: England · League Two
    Selection: Match total over 1.5 goals [O15]
@@ -1149,97 +609,97 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.709; O2.5=0.444; BTTS=0.5
 
-127. Exeter vs Crawley Town
+67. Exeter vs Crawley Town
    Kick-off: Sat 28 Nov 14:30 SAST
    Competition: England · League Two
    Selection: Match total over 1.5 goals [O15]
    Model probability: 71.6%
    Sportybet decimal odds: 1.30
    Data quality: High
-   Other model probabilities: O1.5=0.716; O2.5=0.452; BTTS=0.482
+   Other model probabilities: O1.5=0.716; O2.5=0.453; BTTS=0.482
 
-128. Woking vs Barrow
+68. Woking vs Barrow
    Kick-off: Sat 28 Nov 14:30 SAST
    Competition: England · National League
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 83.9%
+   Model probability: 83.8%
    Sportybet decimal odds: 1.21
    Data quality: High
-   Other model probabilities: O1.5=0.839; O2.5=0.628; BTTS=0.639
+   Other model probabilities: O1.5=0.838; O2.5=0.627; BTTS=0.639
 
-129. Vasas Budapest vs Budapest Honved
+69. Vasas Budapest vs Budapest Honved
    Kick-off: Sat 28 Nov 14:30 SAST
    Competition: Hungary · NB I
    Selection: Match total over 1.5 goals [O15]
    Model probability: 76.2%
    Sportybet decimal odds: 1.19
    Data quality: High
-   Other model probabilities: O1.5=0.762; O2.5=0.512; BTTS=0.558
+   Other model probabilities: O1.5=0.762; O2.5=0.513; BTTS=0.559
 
-130. FC Voluntari vs CFR Cluj
+70. FC Voluntari vs CFR Cluj
    Kick-off: Sat 28 Nov 14:30 SAST
    Competition: Romania · Liga 1
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 79.2%
+   Model probability: 79.1%
    Sportybet decimal odds: 1.26
    Data quality: High
-   Other model probabilities: O1.5=0.792; O2.5=0.555; BTTS=0.592
+   Other model probabilities: O1.5=0.791; O2.5=0.553; BTTS=0.59
 
-131. Lamphun Warrior vs Chonburi
+71. Lamphun Warrior vs Chonburi
    Kick-off: Sat 28 Nov 14:30 SAST
    Competition: Thailand · Thai League
    Selection: Match total over 1.5 goals [O15]
    Model probability: 75.6%
    Sportybet decimal odds: 1.23
    Data quality: High
-   Other model probabilities: O1.5=0.756; O2.5=0.504; BTTS=0.55
+   Other model probabilities: O1.5=0.756; O2.5=0.504; BTTS=0.551
 
-132. Aliaga vs Kastamonuspor 1966
+72. Aliaga vs Kastamonuspor 1966
    Kick-off: Sat 28 Nov 14:30 SAST
    Competition: Turkiye · 2nd Lig: White Group
    Selection: Match total over 2.5 goals [O25]
    Model probability: 75.9%
    Sportybet decimal odds: 1.17
    Data quality: High
-   Other model probabilities: O1.5=0.909; O2.5=0.759; BTTS=0.465
+   Other model probabilities: O1.5=0.909; O2.5=0.759; BTTS=0.466
 
-133. Marko vs PAOK Thessaloniki FC B
+73. Barry Town vs Caernarfon
+   Kick-off: Sat 28 Nov 14:30 SAST
+   Competition: Wales · JD Cymru Premier
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 87.5%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.875; O2.5=0.691; BTTS=0.695
+
+74. Marko vs PAOK Thessaloniki FC B
    Kick-off: Sat 28 Nov 14:45 SAST
    Competition: Greece · Super League 2
    Selection: Home win [H]
    Model probability: 76.6%
-   Sportybet decimal odds: 1.28
+   Sportybet decimal odds: 1.20
    Data quality: High
    Other model probabilities: O1.5=0.767; O2.5=0.523; BTTS=0.365
 
-134. SK Prostejov vs Zizkov
+75. SK Prostejov vs Zizkov
    Kick-off: Sat 28 Nov 15:00 SAST
    Competition: Czech Republic · 2nd league
    Selection: Match total over 1.5 goals [O15]
    Model probability: 73.7%
    Sportybet decimal odds: 1.21
    Data quality: High
-   Other model probabilities: O1.5=0.737; O2.5=0.48; BTTS=0.523
+   Other model probabilities: O1.5=0.737; O2.5=0.48; BTTS=0.522
 
-135. 1. FC Saarbrucken vs Alemannia Aachen
-   Kick-off: Sat 28 Nov 15:00 SAST
-   Competition: Germany · 3. Liga
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 83.4%
-   Sportybet decimal odds: 1.17
-   Data quality: High
-   Other model probabilities: O1.5=0.834; O2.5=0.621; BTTS=0.642
-
-136. Preussen Muenster vs SC Verl
+76. Preussen Muenster vs SC Verl
    Kick-off: Sat 28 Nov 15:00 SAST
    Competition: Germany · 3. Liga
    Selection: Match total over 1.5 goals [O15]
    Model probability: 84.4%
-   Sportybet decimal odds: 1.17
+   Sportybet decimal odds: 1.18
    Data quality: High
    Other model probabilities: O1.5=0.844; O2.5=0.637; BTTS=0.652
 
-137. Wurzburger Kickers vs Fortuna Dusseldorf
+77. Wurzburger Kickers vs Fortuna Dusseldorf
    Kick-off: Sat 28 Nov 15:00 SAST
    Competition: Germany · 3. Liga
    Selection: Match total over 1.5 goals [O15]
@@ -1248,61 +708,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.793; O2.5=0.557; BTTS=0.576
 
-138. Ansbach vs FC Memmingen
-   Kick-off: Sat 28 Nov 15:00 SAST
-   Competition: Germany · Regionalliga Bayern
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 70.6%
-   Sportybet decimal odds: 1.21
-   Data quality: High
-   Other model probabilities: O1.5=0.706; O2.5=0.441; BTTS=0.44
-
-139. TSV Schwaben Augsburg vs FV Illertissen
+78. TSV Schwaben Augsburg vs FV Illertissen
    Kick-off: Sat 28 Nov 15:00 SAST
    Competition: Germany · Regionalliga Bayern
    Selection: Match total over 1.5 goals [O15]
    Model probability: 74.8%
-   Sportybet decimal odds: 1.20
+   Sportybet decimal odds: 1.18
    Data quality: High
-   Other model probabilities: O1.5=0.748; O2.5=0.494; BTTS=0.528
+   Other model probabilities: O1.5=0.748; O2.5=0.494; BTTS=0.529
 
-140. SC Weiche Flensburg vs HSC Hannover
-   Kick-off: Sat 28 Nov 15:00 SAST
-   Competition: Germany · Regionalliga Nord
-   Selection: Match total over 2.5 goals [O25]
-   Model probability: 72.0%
-   Sportybet decimal odds: 1.33
-   Data quality: High
-   Other model probabilities: O1.5=0.89; O2.5=0.72; BTTS=0.624
-
-141. Schoeningen vs Werder Bremen II
-   Kick-off: Sat 28 Nov 15:00 SAST
-   Competition: Germany · Regionalliga Nord
-   Selection: Match total over 2.5 goals [O25]
-   Model probability: 71.9%
-   Sportybet decimal odds: 1.38
-   Data quality: High
-   Other model probabilities: O1.5=0.89; O2.5=0.719; BTTS=0.718
-
-142. SC Wiedenbrueck vs FC Cologne II
-   Kick-off: Sat 28 Nov 15:00 SAST
-   Competition: Germany · Regionalliga West
-   Selection: Match total over 2.5 goals [O25]
-   Model probability: 74.1%
-   Sportybet decimal odds: 1.45
-   Data quality: High
-   Other model probabilities: O1.5=0.901; O2.5=0.741; BTTS=0.709
-
-143. SV Roedinghausen vs Borussia M'gladbach II
-   Kick-off: Sat 28 Nov 15:00 SAST
-   Competition: Germany · Regionalliga West
-   Selection: Match total over 2.5 goals [O25]
-   Model probability: 72.0%
-   Sportybet decimal odds: 1.48
-   Data quality: High
-   Other model probabilities: O1.5=0.891; O2.5=0.72; BTTS=0.652
-
-144. Panserraikos FC vs Pyrgos AFC
+79. Panserraikos FC vs Pyrgos AFC
    Kick-off: Sat 28 Nov 15:00 SAST
    Competition: Greece · Super League 2
    Selection: Match total over 1.5 goals [O15]
@@ -1311,16 +726,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: Medium
    Other model probabilities: O1.5=0.761; O2.5=0.512; BTTS=0.525
 
-145. Bnei Sakhnin vs Maccabi Haifa
+80. Bnei Sakhnin vs Maccabi Haifa
    Kick-off: Sat 28 Nov 15:00 SAST
    Competition: Israel · Premier League
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 77.9%
+   Model probability: 77.8%
    Sportybet decimal odds: 1.21
    Data quality: High
-   Other model probabilities: O1.5=0.779; O2.5=0.536; BTTS=0.576
+   Other model probabilities: O1.5=0.778; O2.5=0.536; BTTS=0.576
 
-146. Koninklijke HFC vs Rkav Volendam
+81. Koninklijke HFC vs Rkav Volendam
    Kick-off: Sat 28 Nov 15:00 SAST
    Competition: Netherlands · Tweede Divisie
    Selection: Match total over 1.5 goals [O15]
@@ -1329,16 +744,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.85; O2.5=0.647; BTTS=0.662
 
-147. Al-Wakra vs Al-Sadd
+82. Al-Wakra vs Al-Sadd
    Kick-off: Sat 28 Nov 15:00 SAST
    Competition: Qatar · Qatar Stars League
    Selection: Match total over 2.5 goals [O25]
-   Model probability: 74.7%
+   Model probability: 74.5%
    Sportybet decimal odds: 1.28
    Data quality: High
-   Other model probabilities: O1.5=0.904; O2.5=0.747; BTTS=0.713
+   Other model probabilities: O1.5=0.904; O2.5=0.745; BTTS=0.712
 
-148. FK Radnik Surdulica vs Vojvodina
+83. FK Radnik Surdulica vs Vojvodina
    Kick-off: Sat 28 Nov 15:00 SAST
    Competition: Serbia · Super Liga
    Selection: Match total over 1.5 goals [O15]
@@ -1347,7 +762,7 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.768; O2.5=0.521; BTTS=0.543
 
-149. FK Zemun vs FK Radnicki 1923
+84. FK Zemun vs FK Radnicki 1923
    Kick-off: Sat 28 Nov 15:00 SAST
    Competition: Serbia · Super Liga
    Selection: Match total over 1.5 goals [O15]
@@ -1356,7 +771,7 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.718; O2.5=0.455; BTTS=0.497
 
-150. Betis vs Vallecano
+85. Betis vs Vallecano
    Kick-off: Sat 28 Nov 15:00 SAST
    Competition: Spain · La Liga
    Selection: Match total over 1.5 goals [O15]
@@ -1365,16 +780,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.811; O2.5=0.585; BTTS=0.555
 
-151. Las Palmas vs Andorra
+86. Las Palmas vs Andorra
    Kick-off: Sat 28 Nov 15:00 SAST
    Competition: Spain · Segunda División
    Selection: Match total over 1.5 goals [O15]
    Model probability: 78.0%
-   Sportybet decimal odds: 1.24
+   Sportybet decimal odds: 1.22
    Data quality: High
-   Other model probabilities: O1.5=0.78; O2.5=0.537; BTTS=0.569
+   Other model probabilities: O1.5=0.78; O2.5=0.538; BTTS=0.57
 
-152. Samsunspor vs Genclerbirligi
+87. Samsunspor vs Genclerbirligi
    Kick-off: Sat 28 Nov 15:00 SAST
    Competition: Turkey · Süper Lig
    Selection: Match total over 1.5 goals [O15]
@@ -1383,7 +798,7 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.756; O2.5=0.504; BTTS=0.548
 
-153. Van Spor Kulubu vs Bursaspor
+88. Van Spor Kulubu vs Bursaspor
    Kick-off: Sat 28 Nov 15:00 SAST
    Competition: Turkiye · 1st Lig
    Selection: Match total over 1.5 goals [O15]
@@ -1392,25 +807,25 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.792; O2.5=0.557; BTTS=0.511
 
-154. Botev Vratsa vs Ludogorets Razgrad
+89. Botev Vratsa vs Ludogorets Razgrad
    Kick-off: Sat 28 Nov 15:15 SAST
    Competition: Bulgaria · Parva Liga
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 72.2%
+   Model probability: 72.1%
    Sportybet decimal odds: 1.32
    Data quality: High
-   Other model probabilities: O1.5=0.722; O2.5=0.461; BTTS=0.436
+   Other model probabilities: O1.5=0.721; O2.5=0.46; BTTS=0.435
 
-155. Carpi vs Lecco
+90. Carpi vs Lecco
    Kick-off: Sat 28 Nov 15:30 SAST
    Competition: Italy · Serie C: Group A
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 80.5%
+   Model probability: 80.4%
    Sportybet decimal odds: 1.26
    Data quality: High
-   Other model probabilities: O1.5=0.805; O2.5=0.576; BTTS=0.514
+   Other model probabilities: O1.5=0.804; O2.5=0.575; BTTS=0.514
 
-156. Novara vs Alcione
+91. Novara vs Alcione
    Kick-off: Sat 28 Nov 15:30 SAST
    Competition: Italy · Serie C: Group A
    Selection: Match total over 1.5 goals [O15]
@@ -1419,7 +834,7 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.759; O2.5=0.508; BTTS=0.55
 
-157. Gubbio vs Vado
+92. Gubbio vs Vado
    Kick-off: Sat 28 Nov 15:30 SAST
    Competition: Italy · Serie C: Group B
    Selection: Match total over 1.5 goals [O15]
@@ -1428,16 +843,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.718; O2.5=0.455; BTTS=0.499
 
-158. Guidonia Montecelio vs Campobasso
+93. Guidonia Montecelio vs Campobasso
    Kick-off: Sat 28 Nov 15:30 SAST
    Competition: Italy · Serie C: Group B
    Selection: Match total over 1.5 goals [O15]
    Model probability: 82.8%
    Sportybet decimal odds: 1.25
    Data quality: High
-   Other model probabilities: O1.5=0.828; O2.5=0.611; BTTS=0.602
+   Other model probabilities: O1.5=0.828; O2.5=0.61; BTTS=0.602
 
-159. Pescara Calcio vs Pianese
+94. Pescara Calcio vs Pianese
    Kick-off: Sat 28 Nov 15:30 SAST
    Competition: Italy · Serie C: Group B
    Selection: Match total over 1.5 goals [O15]
@@ -1446,7 +861,7 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.737; O2.5=0.48; BTTS=0.5
 
-160. GVVV Veenendaal vs Barendrecht
+95. GVVV Veenendaal vs Barendrecht
    Kick-off: Sat 28 Nov 15:30 SAST
    Competition: Netherlands · Tweede Divisie
    Selection: Match total over 2.5 goals [O25]
@@ -1455,7 +870,7 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.886; O2.5=0.712; BTTS=0.684
 
-161. HHC Hardenberg vs Katwijk
+96. HHC Hardenberg vs Katwijk
    Kick-off: Sat 28 Nov 15:30 SAST
    Competition: Netherlands · Tweede Divisie
    Selection: Match total over 1.5 goals [O15]
@@ -1464,25 +879,34 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.833; O2.5=0.62; BTTS=0.58
 
-162. Cape Town City FC vs Venda
+97. Cape Town City FC vs Venda
    Kick-off: Sat 28 Nov 15:30 SAST
    Competition: South Africa · 1st Division
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 72.2%
+   Model probability: 72.1%
    Sportybet decimal odds: 1.42
    Data quality: Medium
-   Other model probabilities: O1.5=0.722; O2.5=0.46; BTTS=0.485
+   Other model probabilities: O1.5=0.721; O2.5=0.459; BTTS=0.484
 
-163. Widzew Lodz vs Zaglebie Lubin
+98. Widzew Lodz vs Zaglebie Lubin
    Kick-off: Sat 28 Nov 15:45 SAST
    Competition: Poland · Ekstraklasa
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 75.8%
+   Model probability: 75.9%
    Sportybet decimal odds: 1.26
    Data quality: High
-   Other model probabilities: O1.5=0.758; O2.5=0.508; BTTS=0.556
+   Other model probabilities: O1.5=0.759; O2.5=0.509; BTTS=0.557
 
-164. Tafic vs Township Rollers
+99. Urartu FC vs Shirak
+   Kick-off: Sat 28 Nov 16:00 SAST
+   Competition: Armenia · Premier League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 74.5%
+   Sportybet decimal odds: 1.25
+   Data quality: High
+   Other model probabilities: O1.5=0.745; O2.5=0.491; BTTS=0.513
+
+100. Tafic vs Township Rollers
    Kick-off: Sat 28 Nov 16:00 SAST
    Competition: Botswana · Premier League
    Selection: Match total over 1.5 goals [O15]
@@ -1491,7 +915,7 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.735; O2.5=0.477; BTTS=0.521
 
-165. NK Lokomotiva vs Slaven
+101. NK Lokomotiva vs Slaven
    Kick-off: Sat 28 Nov 16:00 SAST
    Competition: Croatia · HNL
    Selection: Match total over 1.5 goals [O15]
@@ -1500,43 +924,43 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.771; O2.5=0.525; BTTS=0.569
 
-166. Mlada Boleslav vs SK Sigma Olomouc
+102. Mlada Boleslav vs SK Sigma Olomouc
    Kick-off: Sat 28 Nov 16:00 SAST
    Competition: Czech Republic · 1st League
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 77.5%
+   Model probability: 77.6%
    Sportybet decimal odds: 1.21
    Data quality: High
-   Other model probabilities: O1.5=0.775; O2.5=0.532; BTTS=0.509
+   Other model probabilities: O1.5=0.776; O2.5=0.533; BTTS=0.509
 
-167. Teplice vs Slovan Liberec
+103. Teplice vs Slovan Liberec
    Kick-off: Sat 28 Nov 16:00 SAST
    Competition: Czech Republic · 1st League
    Selection: Home team over 3.5 corners [CHO35]
-   Model probability: 70.8%
-   Sportybet decimal odds: 1.48
+   Model probability: 70.7%
+   Sportybet decimal odds: 1.45
    Data quality: High
-   Other model probabilities: O1.5=0.686; O2.5=0.417; BTTS=0.452
+   Other model probabilities: O1.5=0.687; O2.5=0.418; BTTS=0.453
 
-168. Chennaiyin FC vs Mumbai City FC
+104. Chennaiyin FC vs Mumbai City FC
    Kick-off: Sat 28 Nov 16:00 SAST
    Competition: India · Super League
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 70.3%
+   Model probability: 70.2%
    Sportybet decimal odds: 1.24
    Data quality: High
-   Other model probabilities: O1.5=0.703; O2.5=0.436; BTTS=0.498
+   Other model probabilities: O1.5=0.702; O2.5=0.435; BTTS=0.497
 
-169. Frosinone vs Parma
+105. Frosinone vs Parma
    Kick-off: Sat 28 Nov 16:00 SAST
    Competition: Italy · Serie A
    Selection: Match total over 8.5 corners [CO85]
-   Model probability: 76.9%
+   Model probability: 76.8%
    Sportybet decimal odds: 1.30
    Data quality: High
-   Other model probabilities: O1.5=0.853; O2.5=0.654; BTTS=0.527
+   Other model probabilities: O1.5=0.854; O2.5=0.655; BTTS=0.528
 
-170. Ascoli vs Virtus Entella
+106. Ascoli vs Virtus Entella
    Kick-off: Sat 28 Nov 16:00 SAST
    Competition: Italy · Serie B
    Selection: Match total over 1.5 goals [O15]
@@ -1545,43 +969,43 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.722; O2.5=0.46; BTTS=0.478
 
-171. Carrarese vs Juve Stabia
+107. Carrarese vs Juve Stabia
    Kick-off: Sat 28 Nov 16:00 SAST
    Competition: Italy · Serie B
    Selection: Home team over 3.5 corners [CHO35]
    Model probability: 73.9%
    Sportybet decimal odds: 1.25
    Data quality: High
-   Other model probabilities: O1.5=0.664; O2.5=0.391; BTTS=0.459
+   Other model probabilities: O1.5=0.664; O2.5=0.391; BTTS=0.46
 
-172. Empoli vs Verona
+108. Empoli vs Verona
    Kick-off: Sat 28 Nov 16:00 SAST
    Competition: Italy · Serie B
    Selection: Match total over 1.5 goals [O15]
    Model probability: 73.6%
    Sportybet decimal odds: 1.25
    Data quality: High
-   Other model probabilities: O1.5=0.736; O2.5=0.477; BTTS=0.529
+   Other model probabilities: O1.5=0.736; O2.5=0.478; BTTS=0.529
 
-173. Al-Arabi vs Al-Faisaly
+109. Al-Arabi vs Al-Faisaly
    Kick-off: Sat 28 Nov 16:00 SAST
    Competition: Jordan · Pro League
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 71.8%
-   Sportybet decimal odds: 1.22
+   Model probability: 71.5%
+   Sportybet decimal odds: 1.26
    Data quality: Medium
-   Other model probabilities: O1.5=0.718; O2.5=0.456; BTTS=0.455
+   Other model probabilities: O1.5=0.715; O2.5=0.451; BTTS=0.453
 
-174. Floriana vs Hamrun Spartans
+110. Floriana vs Hamrun Spartans
    Kick-off: Sat 28 Nov 16:00 SAST
    Competition: Malta · Malta Premier: Closing Championship Group
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 79.1%
+   Model probability: 79.2%
    Sportybet decimal odds: 1.27
    Data quality: High
-   Other model probabilities: O1.5=0.791; O2.5=0.554; BTTS=0.589
+   Other model probabilities: O1.5=0.792; O2.5=0.555; BTTS=0.589
 
-175. IJsselmeervogels vs Jong Sparta Rotterdam
+111. IJsselmeervogels vs Jong Sparta Rotterdam
    Kick-off: Sat 28 Nov 16:00 SAST
    Competition: Netherlands · Tweede Divisie
    Selection: Match total over 2.5 goals [O25]
@@ -1590,16 +1014,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.883; O2.5=0.706; BTTS=0.681
 
-176. Kloetinge vs Jong Almere City FC
+112. Kloetinge vs Jong Almere City FC
    Kick-off: Sat 28 Nov 16:00 SAST
    Competition: Netherlands · Tweede Divisie
    Selection: Match total over 2.5 goals [O25]
    Model probability: 77.8%
-   Sportybet decimal odds: 1.39
+   Sportybet decimal odds: 1.36
    Data quality: High
    Other model probabilities: O1.5=0.92; O2.5=0.778; BTTS=0.757
 
-177. Quick Boys vs De Treffers
+113. Quick Boys vs De Treffers
    Kick-off: Sat 28 Nov 16:00 SAST
    Competition: Netherlands · Tweede Divisie
    Selection: Match total over 1.5 goals [O15]
@@ -1608,88 +1032,115 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.882; O2.5=0.703; BTTS=0.631
 
-178. Crusaders vs Linfield
+114. Crusaders vs Linfield
    Kick-off: Sat 28 Nov 16:00 SAST
    Competition: Northern Ireland · Premiership
    Selection: Away win [A]
    Model probability: 78.2%
-   Sportybet decimal odds: 1.27
+   Sportybet decimal odds: 1.28
    Data quality: High
    Other model probabilities: O1.5=0.853; O2.5=0.654; BTTS=0.478
 
-179. Chaves vs Tondela
+115. Chaves vs Tondela
    Kick-off: Sat 28 Nov 16:00 SAST
    Competition: Portugal · Liga Portugal 2
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 75.3%
+   Model probability: 75.4%
    Sportybet decimal odds: 1.32
    Data quality: High
-   Other model probabilities: O1.5=0.753; O2.5=0.501; BTTS=0.545
+   Other model probabilities: O1.5=0.754; O2.5=0.502; BTTS=0.546
 
-180. Norrby vs Lunds BK
+116. Cosmos vs San Giovanni
+   Kick-off: Sat 28 Nov 16:00 SAST
+   Competition: San Marino · Campionato Sammarinese
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 80.8%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.808; O2.5=0.582; BTTS=0.444
+
+117. Faetano vs SS Pennarossa
+   Kick-off: Sat 28 Nov 16:00 SAST
+   Competition: San Marino · Campionato Sammarinese
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.9%
+   Sportybet decimal odds: 1.17
+   Data quality: High
+   Other model probabilities: O1.5=0.789; O2.5=0.552; BTTS=0.541
+
+118. Folgore vs FC Fiorentino
+   Kick-off: Sat 28 Nov 16:00 SAST
+   Competition: San Marino · Campionato Sammarinese
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 80.8%
+   Sportybet decimal odds: 1.18
+   Data quality: High
+   Other model probabilities: O1.5=0.808; O2.5=0.579; BTTS=0.579
+
+119. Juvenes/Dogana vs S.S. Murata
+   Kick-off: Sat 28 Nov 16:00 SAST
+   Competition: San Marino · Campionato Sammarinese
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 80.6%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.806; O2.5=0.579; BTTS=0.484
+
+120. Norrby vs Lunds BK
    Kick-off: Sat 28 Nov 16:00 SAST
    Competition: Sweden · Superettan: Qualification Play-offs
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 81.7%
-   Sportybet decimal odds: 1.33
+   Model probability: 81.6%
+   Sportybet decimal odds: 1.30
    Data quality: High
-   Other model probabilities: O1.5=0.817; O2.5=0.593; BTTS=0.574
+   Other model probabilities: O1.5=0.816; O2.5=0.593; BTTS=0.574
 
-181. ASK Voitsberg vs Young Violets
+121. ASK Voitsberg vs Young Violets
    Kick-off: Sat 28 Nov 16:30 SAST
    Competition: Austria · 2. Liga
    Selection: Match total over 1.5 goals [O15]
    Model probability: 83.9%
-   Sportybet decimal odds: 1.17
+   Sportybet decimal odds: 1.18
    Data quality: High
-   Other model probabilities: O1.5=0.839; O2.5=0.629; BTTS=0.634
+   Other model probabilities: O1.5=0.839; O2.5=0.628; BTTS=0.634
 
-182. Amstetten vs SKN St. Poelten
+122. Amstetten vs SKN St. Poelten
    Kick-off: Sat 28 Nov 16:30 SAST
    Competition: Austria · 2. Liga
    Selection: Match total over 1.5 goals [O15]
    Model probability: 77.8%
    Sportybet decimal odds: 1.20
    Data quality: High
-   Other model probabilities: O1.5=0.778; O2.5=0.536; BTTS=0.575
+   Other model probabilities: O1.5=0.778; O2.5=0.535; BTTS=0.575
 
-183. Aigle Moungo vs PWD Bamenda
-   Kick-off: Sat 28 Nov 16:30 SAST
-   Competition: Cameroon · Elite 1
-   Selection: Match total over 1.5 goals [O15]
-   Model probability: 80.1%
-   Sportybet decimal odds: 1.16
-   Data quality: High
-   Other model probabilities: O1.5=0.801; O2.5=0.569; BTTS=0.593
-
-184. Mainz vs Union Berlin
+123. Mainz vs Union Berlin
    Kick-off: Sat 28 Nov 16:30 SAST
    Competition: Germany · Bundesliga
    Selection: Match total over 1.5 goals [O15]
    Model probability: 87.4%
    Sportybet decimal odds: 1.18
    Data quality: High
-   Other model probabilities: O1.5=0.874; O2.5=0.691; BTTS=0.582
+   Other model probabilities: O1.5=0.874; O2.5=0.69; BTTS=0.581
 
-185. Paderborn vs Schalke 04
+124. Paderborn vs Schalke 04
    Kick-off: Sat 28 Nov 16:30 SAST
    Competition: Germany · Bundesliga
    Selection: Match total over 1.5 goals [O15]
    Model probability: 75.4%
    Sportybet decimal odds: 1.26
    Data quality: High
-   Other model probabilities: O1.5=0.754; O2.5=0.502; BTTS=0.549
+   Other model probabilities: O1.5=0.754; O2.5=0.501; BTTS=0.549
 
-186. FC Cologne vs Elversberg
+125. FC Cologne vs Elversberg
    Kick-off: Sat 28 Nov 16:30 SAST
    Competition: Germany · Bundesliga
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 80.6%
-   Sportybet decimal odds: 1.20
+   Model probability: 80.7%
+   Sportybet decimal odds: 1.21
    Data quality: High
-   Other model probabilities: O1.5=0.806; O2.5=0.577; BTTS=0.606
+   Other model probabilities: O1.5=0.807; O2.5=0.578; BTTS=0.607
 
-187. Odra Opole vs Polonia Warsaw
+126. Odra Opole vs Polonia Warsaw
    Kick-off: Sat 28 Nov 16:30 SAST
    Competition: Poland · I Liga
    Selection: Match total over 1.5 goals [O15]
@@ -1698,25 +1149,25 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.766; O2.5=0.52; BTTS=0.497
 
-188. Podbeskidzie Bielsko-Biala vs Pogon Grodzisk Mazowiecki
+127. Podbeskidzie Bielsko-Biala vs Pogon Grodzisk Mazowiecki
    Kick-off: Sat 28 Nov 16:30 SAST
    Competition: Poland · I Liga
    Selection: Match total over 1.5 goals [O15]
-   Model probability: 76.1%
+   Model probability: 76.0%
    Sportybet decimal odds: 1.20
    Data quality: High
-   Other model probabilities: O1.5=0.761; O2.5=0.511; BTTS=0.545
+   Other model probabilities: O1.5=0.76; O2.5=0.511; BTTS=0.544
 
-189. Termalica Nieciecza vs Stal Rzeszow
+128. Termalica Nieciecza vs Stal Rzeszow
    Kick-off: Sat 28 Nov 16:30 SAST
    Competition: Poland · I Liga
    Selection: Match total over 1.5 goals [O15]
    Model probability: 81.7%
    Sportybet decimal odds: 1.17
    Data quality: High
-   Other model probabilities: O1.5=0.817; O2.5=0.594; BTTS=0.612
+   Other model probabilities: O1.5=0.817; O2.5=0.593; BTTS=0.611
 
-190. Dukla Banska Bystrica vs Ruzomberok
+129. Dukla Banska Bystrica vs Ruzomberok
    Kick-off: Sat 28 Nov 16:30 SAST
    Competition: Slovakia · Super Liga
    Selection: Match total over 1.5 goals [O15]
@@ -1725,16 +1176,16 @@ UPCOMING PRICED SHORTLIST
    Data quality: High
    Other model probabilities: O1.5=0.749; O2.5=0.495; BTTS=0.537
 
-191. Komarno vs Zilina
+130. Komarno vs Zilina
    Kick-off: Sat 28 Nov 16:30 SAST
    Competition: Slovakia · Super Liga
    Selection: Match total over 1.5 goals [O15]
    Model probability: 79.6%
-   Sportybet decimal odds: 1.18
+   Sportybet decimal odds: 1.17
    Data quality: High
    Other model probabilities: O1.5=0.796; O2.5=0.562; BTTS=0.546
 
-192. Zeleziarne Podbrezova vs DAC 1904 Dunajska Streda
+131. Zeleziarne Podbrezova vs DAC 1904 Dunajska Streda
    Kick-off: Sat 28 Nov 16:30 SAST
    Competition: Slovakia · Super Liga
    Selection: Match total over 1.5 goals [O15]
@@ -1742,6 +1193,1635 @@ UPCOMING PRICED SHORTLIST
    Sportybet decimal odds: 1.16
    Data quality: High
    Other model probabilities: O1.5=0.848; O2.5=0.645; BTTS=0.604
+
+132. Sitra vs Al Ahli
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: Bahrain · Premier League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 70.5%
+   Sportybet decimal odds: 1.37
+   Data quality: High
+   Other model probabilities: O1.5=0.705; O2.5=0.439; BTTS=0.496
+
+133. Westerlo vs RAAL La Louviere
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: Belgium · Pro League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 87.7%
+   Sportybet decimal odds: 1.22
+   Data quality: High
+   Other model probabilities: O1.5=0.877; O2.5=0.694; BTTS=0.657
+
+134. FK Velez Mostar vs Zeljeznicar
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: Bosnia and Herzegovina · Premier League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 71.0%
+   Sportybet decimal odds: 1.35
+   Data quality: High
+   Other model probabilities: O1.5=0.71; O2.5=0.445; BTTS=0.469
+
+135. Birmingham vs Bolton
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Championship
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 82.1%
+   Sportybet decimal odds: 1.18
+   Data quality: High
+   Other model probabilities: O1.5=0.821; O2.5=0.6; BTTS=0.538
+
+136. Derby vs Watford
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Championship
+   Selection: Home team over 3.5 corners [CHO35]
+   Model probability: 77.9%
+   Sportybet decimal odds: 1.23
+   Data quality: High
+   Other model probabilities: O1.5=0.756; O2.5=0.506; BTTS=0.498
+
+137. Millwall vs Burnley
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Championship
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 84.3%
+   Sportybet decimal odds: 1.22
+   Data quality: High
+   Other model probabilities: O1.5=0.843; O2.5=0.636; BTTS=0.634
+
+138. QPR vs Sheffield United
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Championship
+   Selection: Home team over 3.5 corners [CHO35]
+   Model probability: 78.7%
+   Sportybet decimal odds: 1.24
+   Data quality: High
+   Other model probabilities: O1.5=0.785; O2.5=0.545; BTTS=0.576
+
+139. West Ham vs Stoke
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Championship
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 80.7%
+   Sportybet decimal odds: 1.23
+   Data quality: High
+   Other model probabilities: O1.5=0.807; O2.5=0.578; BTTS=0.609
+
+140. Wrexham vs Portsmouth
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Championship
+   Selection: Home team over 3.5 corners [CHO35]
+   Model probability: 71.0%
+   Sportybet decimal odds: 1.26
+   Data quality: High
+   Other model probabilities: O1.5=0.708; O2.5=0.442; BTTS=0.501
+
+141. West Bromwich Albion vs Bristol City
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Championship
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 79.2%
+   Sportybet decimal odds: 1.29
+   Data quality: High
+   Other model probabilities: O1.5=0.792; O2.5=0.557; BTTS=0.52
+
+142. Dartford vs Cray Wanderers
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Isthmian League Premier Division
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 87.2%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.872; O2.5=0.686; BTTS=0.687
+
+143. Leatherhead vs Lewes
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Isthmian League Premier Division
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 82.4%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.824; O2.5=0.605; BTTS=0.614
+
+144. Three Bridges vs Wingate & Finchley
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Isthmian League Premier Division
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 84.4%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.844; O2.5=0.636; BTTS=0.635
+
+145. AFC Wimbledon vs Barnsley
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · League One
+   Selection: Home team over 3.5 corners [CHO35]
+   Model probability: 77.6%
+   Sportybet decimal odds: 1.29
+   Data quality: High
+   Other model probabilities: O1.5=0.701; O2.5=0.434; BTTS=0.496
+
+146. Bromley vs Burton
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · League One
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.0%
+   Sportybet decimal odds: 1.25
+   Data quality: High
+   Other model probabilities: O1.5=0.77; O2.5=0.523; BTTS=0.561
+
+147. Luton vs Oxford
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · League One
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.3%
+   Sportybet decimal odds: 1.19
+   Data quality: High
+   Other model probabilities: O1.5=0.773; O2.5=0.528; BTTS=0.57
+
+148. Sheffield Weds vs Reading
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · League One
+   Selection: Away team over 3.5 corners [CAO35]
+   Model probability: 74.5%
+   Sportybet decimal odds: 1.36
+   Data quality: High
+   Other model probabilities: O1.5=0.739; O2.5=0.482; BTTS=0.522
+
+149. Stevenage vs Blackpool
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · League One
+   Selection: Away team over 3.5 corners [CAO35]
+   Model probability: 76.3%
+   Sportybet decimal odds: 1.45
+   Data quality: High
+   Other model probabilities: O1.5=0.736; O2.5=0.479; BTTS=0.468
+
+150. Wigan vs Plymouth
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · League One
+   Selection: Home team over 3.5 corners [CHO35]
+   Model probability: 74.1%
+   Sportybet decimal odds: 1.29
+   Data quality: High
+   Other model probabilities: O1.5=0.732; O2.5=0.473; BTTS=0.528
+
+151. Colchester vs York
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · League Two
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 71.3%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.713; O2.5=0.448; BTTS=0.509
+
+152. Crewe vs Grimsby
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · League Two
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 83.3%
+   Sportybet decimal odds: 1.22
+   Data quality: High
+   Other model probabilities: O1.5=0.833; O2.5=0.618; BTTS=0.632
+
+153. Fleetwood Town vs Accrington
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · League Two
+   Selection: Home team over 3.5 corners [CHO35]
+   Model probability: 74.3%
+   Sportybet decimal odds: 1.25
+   Data quality: High
+   Other model probabilities: O1.5=0.742; O2.5=0.486; BTTS=0.52
+
+154. Port Vale vs Newport County
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · League Two
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 72.7%
+   Sportybet decimal odds: 1.34
+   Data quality: High
+   Other model probabilities: O1.5=0.727; O2.5=0.466; BTTS=0.511
+
+155. Rochdale vs Barnet
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · League Two
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 82.9%
+   Sportybet decimal odds: 1.18
+   Data quality: High
+   Other model probabilities: O1.5=0.829; O2.5=0.613; BTTS=0.572
+
+156. Rotherham vs Oldham
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · League Two
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 75.7%
+   Sportybet decimal odds: 1.28
+   Data quality: High
+   Other model probabilities: O1.5=0.757; O2.5=0.505; BTTS=0.554
+
+157. Salford vs Gillingham
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · League Two
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 79.6%
+   Sportybet decimal odds: 1.21
+   Data quality: High
+   Other model probabilities: O1.5=0.796; O2.5=0.562; BTTS=0.539
+
+158. Shrewsbury vs Cheltenham
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · League Two
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 81.2%
+   Sportybet decimal odds: 1.32
+   Data quality: High
+   Other model probabilities: O1.5=0.812; O2.5=0.586; BTTS=0.592
+
+159. Swindon vs Chesterfield
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · League Two
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.8%
+   Sportybet decimal odds: 1.18
+   Data quality: High
+   Other model probabilities: O1.5=0.778; O2.5=0.536; BTTS=0.573
+
+160. Walsall vs Northampton
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · League Two
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 74.2%
+   Sportybet decimal odds: 1.26
+   Data quality: High
+   Other model probabilities: O1.5=0.742; O2.5=0.487; BTTS=0.512
+
+161. Altrincham vs Worthing
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 84.9%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.849; O2.5=0.645; BTTS=0.659
+
+162. Boreham Wood vs Gateshead
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League
+   Selection: Match total over 2.5 goals [O25]
+   Model probability: 80.5%
+   Sportybet decimal odds: 1.21
+   Data quality: High
+   Other model probabilities: O1.5=0.931; O2.5=0.805; BTTS=0.492
+
+163. Boston Utd vs Kidderminster
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 72.7%
+   Sportybet decimal odds: 1.22
+   Data quality: High
+   Other model probabilities: O1.5=0.727; O2.5=0.466; BTTS=0.523
+
+164. Carlisle vs Sutton
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 76.0%
+   Sportybet decimal odds: 1.18
+   Data quality: High
+   Other model probabilities: O1.5=0.76; O2.5=0.51; BTTS=0.518
+
+165. Eastleigh vs Halifax
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 80.9%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.809; O2.5=0.581; BTTS=0.594
+
+166. Harrogate vs Yeovil
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 84.1%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.841; O2.5=0.632; BTTS=0.645
+
+167. Hornchurch vs Solihull
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.0%
+   Sportybet decimal odds: 1.22
+   Data quality: High
+   Other model probabilities: O1.5=0.78; O2.5=0.538; BTTS=0.56
+
+168. AFC Telford United vs South Shields
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League: North
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 84.8%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.848; O2.5=0.643; BTTS=0.656
+
+169. Buxton vs Spennymoor Town
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League: North
+   Selection: Home win [H]
+   Model probability: 71.2%
+   Sportybet decimal odds: 1.38
+   Data quality: High
+   Other model probabilities: O1.5=0.856; O2.5=0.659; BTTS=0.553
+
+170. Chorley vs Harborough Town FC
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League: North
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 75.6%
+   Sportybet decimal odds: 1.22
+   Data quality: High
+   Other model probabilities: O1.5=0.756; O2.5=0.505; BTTS=0.545
+
+171. Darlington vs Brackley Town
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League: North
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 79.1%
+   Sportybet decimal odds: 1.19
+   Data quality: High
+   Other model probabilities: O1.5=0.791; O2.5=0.554; BTTS=0.582
+
+172. Hebburn Town vs Bedford Town
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League: North
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.1%
+   Sportybet decimal odds: 1.21
+   Data quality: High
+   Other model probabilities: O1.5=0.771; O2.5=0.526; BTTS=0.556
+
+173. Marine vs Hednesford
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League: North
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.9%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.789; O2.5=0.551; BTTS=0.589
+
+174. Morecambe vs Spalding United
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League: North
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.4%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.784; O2.5=0.544; BTTS=0.55
+
+175. Oxford City vs Southport
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League: North
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 80.9%
+   Sportybet decimal odds: 1.19
+   Data quality: High
+   Other model probabilities: O1.5=0.809; O2.5=0.581; BTTS=0.538
+
+176. Braintree Town vs AFC Totton
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League: South
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 79.6%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.796; O2.5=0.561; BTTS=0.596
+
+177. Dorking Wanderers vs Farnborough
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League: South
+   Selection: Match total over 2.5 goals [O25]
+   Model probability: 80.2%
+   Sportybet decimal odds: 1.32
+   Data quality: High
+   Other model probabilities: O1.5=0.93; O2.5=0.802; BTTS=0.691
+
+178. Maidstone United vs Chesham United
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League: South
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 80.7%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.807; O2.5=0.579; BTTS=0.588
+
+179. Salisbury FC vs Dagenham & Redbridge
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · National League: South
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 71.3%
+   Sportybet decimal odds: 1.22
+   Data quality: High
+   Other model probabilities: O1.5=0.713; O2.5=0.45; BTTS=0.464
+
+180. Ashton United vs Stockton Town
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Northern Premier League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.7%
+   Sportybet decimal odds: 1.18
+   Data quality: High
+   Other model probabilities: O1.5=0.787; O2.5=0.549; BTTS=0.587
+
+181. Curzon Ashton vs Bury
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Northern Premier League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 79.7%
+   Sportybet decimal odds: 1.16
+   Data quality: Medium
+   Other model probabilities: O1.5=0.797; O2.5=0.563; BTTS=0.59
+
+182. Gainsborough vs Alfreton Town
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Northern Premier League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 83.6%
+   Sportybet decimal odds: 1.19
+   Data quality: High
+   Other model probabilities: O1.5=0.836; O2.5=0.625; BTTS=0.588
+
+183. Guiseley vs Whitby
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Northern Premier League
+   Selection: Home win [H]
+   Model probability: 77.0%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.91; O2.5=0.759; BTTS=0.602
+
+184. Hyde United vs Warrington Town
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Northern Premier League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 81.3%
+   Sportybet decimal odds: 1.21
+   Data quality: High
+   Other model probabilities: O1.5=0.813; O2.5=0.587; BTTS=0.612
+
+185. Ilkeston Town vs Emley
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Northern Premier League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 75.5%
+   Sportybet decimal odds: 1.21
+   Data quality: High
+   Other model probabilities: O1.5=0.755; O2.5=0.503; BTTS=0.543
+
+186. Leeds vs Coventry
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Premier League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 75.6%
+   Sportybet decimal odds: 1.22
+   Data quality: High
+   Other model probabilities: O1.5=0.756; O2.5=0.505; BTTS=0.509
+
+187. Man United vs Brentford
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Premier League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.3%
+   Sportybet decimal odds: 1.19
+   Data quality: High
+   Other model probabilities: O1.5=0.783; O2.5=0.543; BTTS=0.582
+
+188. Banbury United vs Halesowen Town FC
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Southern League Premier: Central
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 80.6%
+   Sportybet decimal odds: 1.21
+   Data quality: High
+   Other model probabilities: O1.5=0.806; O2.5=0.576; BTTS=0.569
+
+189. Bishop's Stortford vs Peterborough Sports
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Southern League Premier: Central
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 81.8%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.818; O2.5=0.595; BTTS=0.614
+
+190. Leamington vs Alvechurch
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Southern League Premier: Central
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 85.3%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.853; O2.5=0.652; BTTS=0.648
+
+191. Racing Club Warwick vs Kettering Town
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Southern League Premier: Central
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 80.3%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.803; O2.5=0.572; BTTS=0.605
+
+192. Redditch United vs Bury Town
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Southern League Premier: Central
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 86.5%
+   Sportybet decimal odds: 1.17
+   Data quality: High
+   Other model probabilities: O1.5=0.865; O2.5=0.672; BTTS=0.673
+
+193. Stamford AFC vs Leighton Town
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Southern League Premier: Central
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 76.4%
+   Sportybet decimal odds: 1.19
+   Data quality: High
+   Other model probabilities: O1.5=0.764; O2.5=0.516; BTTS=0.548
+
+194. Basingstoke vs Gloucester City
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Southern League Premier: South
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 82.5%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.825; O2.5=0.605; BTTS=0.631
+
+195. Berkhamsted vs Evesham United
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Southern League Premier: South
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 85.7%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.857; O2.5=0.66; BTTS=0.564
+
+196. Bracknell Town vs Wimborne Town
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Southern League Premier: South
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 80.8%
+   Sportybet decimal odds: 1.18
+   Data quality: High
+   Other model probabilities: O1.5=0.808; O2.5=0.58; BTTS=0.571
+
+197. Chichester City vs Uxbridge
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Southern League Premier: South
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 82.7%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.827; O2.5=0.61; BTTS=0.628
+
+198. Chippenham Town vs Bath City
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Southern League Premier: South
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 79.2%
+   Sportybet decimal odds: 1.22
+   Data quality: High
+   Other model probabilities: O1.5=0.792; O2.5=0.555; BTTS=0.587
+
+199. Hanwell Town vs Frome Town
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Southern League Premier: South
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 84.7%
+   Sportybet decimal odds: 1.18
+   Data quality: High
+   Other model probabilities: O1.5=0.847; O2.5=0.642; BTTS=0.641
+
+200. Plymouth Parkway vs Sholing
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Southern League Premier: South
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 80.8%
+   Sportybet decimal odds: 1.17
+   Data quality: High
+   Other model probabilities: O1.5=0.808; O2.5=0.579; BTTS=0.572
+
+201. Poole Town vs Havant & Waterlooville
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Southern League Premier: South
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 82.0%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.82; O2.5=0.598; BTTS=0.62
+
+202. Taunton Town vs Gosport Borough
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: England · Southern League Premier: South
+   Selection: Match total over 2.5 goals [O25]
+   Model probability: 74.2%
+   Sportybet decimal odds: 1.39
+   Data quality: High
+   Other model probabilities: O1.5=0.902; O2.5=0.742; BTTS=0.676
+
+203. Hallescher FC vs Greifswalder FC
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: Germany · Regionalliga Nordost
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 82.0%
+   Sportybet decimal odds: 1.18
+   Data quality: High
+   Other model probabilities: O1.5=0.82; O2.5=0.598; BTTS=0.617
+
+204. Volos NFC vs Asteras Tripolis
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: Greece · Super League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 73.5%
+   Sportybet decimal odds: 1.39
+   Data quality: High
+   Other model probabilities: O1.5=0.735; O2.5=0.476; BTTS=0.531
+
+205. Plateau United vs Ikorodu City
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: Nigeria · NPFL
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.1%
+   Sportybet decimal odds: 1.21
+   Data quality: High
+   Other model probabilities: O1.5=0.771; O2.5=0.526; BTTS=0.499
+
+206. Loughgall vs Strabane Athletic
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: Northern Ireland · Championship
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 76.4%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.764; O2.5=0.516; BTTS=0.526
+
+207. Bangor vs Carrick Rangers
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: Northern Ireland · Premiership
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.7%
+   Sportybet decimal odds: 1.19
+   Data quality: High
+   Other model probabilities: O1.5=0.787; O2.5=0.548; BTTS=0.587
+
+208. Limavady vs Portadown
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: Northern Ireland · Premiership
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 80.0%
+   Sportybet decimal odds: 1.21
+   Data quality: High
+   Other model probabilities: O1.5=0.8; O2.5=0.568; BTTS=0.555
+
+209. Varzim vs Trofense
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: Portugal · Liga 3: Group A
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 80.4%
+   Sportybet decimal odds: 1.31
+   Data quality: High
+   Other model probabilities: O1.5=0.804; O2.5=0.574; BTTS=0.571
+
+210. Corvinul Hunedoara vs FCV Farul Constanta
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: Romania · Liga 1
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 74.1%
+   Sportybet decimal odds: 1.28
+   Data quality: High
+   Other model probabilities: O1.5=0.741; O2.5=0.485; BTTS=0.505
+
+211. Aberdeen vs Dundee
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: Scotland · Premiership
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.7%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.787; O2.5=0.548; BTTS=0.586
+
+212. St Mirren vs Kilmarnock
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: Scotland · Premiership
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.1%
+   Sportybet decimal odds: 1.19
+   Data quality: High
+   Other model probabilities: O1.5=0.781; O2.5=0.539; BTTS=0.579
+
+213. Cukaricki vs Mladost Lucani
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: Serbia · Super Liga
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 79.9%
+   Sportybet decimal odds: 1.26
+   Data quality: High
+   Other model probabilities: O1.5=0.799; O2.5=0.568; BTTS=0.479
+
+214. Eibar B vs Marino Luanco
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: Spain · Segunda Division RFEF: Group 1
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.1%
+   Sportybet decimal odds: 1.28
+   Data quality: High
+   Other model probabilities: O1.5=0.781; O2.5=0.541; BTTS=0.492
+
+215. SD Amorebieta vs UD Llanera
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: Spain · Segunda Division RFEF: Group 1
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 81.3%
+   Sportybet decimal odds: 1.19
+   Data quality: Medium
+   Other model probabilities: O1.5=0.813; O2.5=0.587; BTTS=0.587
+
+216. Ebro vs Espanyol B
+   Kick-off: Sat 28 Nov 17:00 SAST
+   Competition: Spain · Segunda Division RFEF: Group 2
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 73.3%
+   Sportybet decimal odds: 1.32
+   Data quality: High
+   Other model probabilities: O1.5=0.733; O2.5=0.473; BTTS=0.528
+
+217. Malaga vs Ath Bilbao
+   Kick-off: Sat 28 Nov 17:15 SAST
+   Competition: Spain · La Liga
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 76.8%
+   Sportybet decimal odds: 1.27
+   Data quality: High
+   Other model probabilities: O1.5=0.768; O2.5=0.52; BTTS=0.562
+
+218. Albacete vs Tenerife
+   Kick-off: Sat 28 Nov 17:15 SAST
+   Competition: Spain · Segunda División
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 73.3%
+   Sportybet decimal odds: 1.35
+   Data quality: High
+   Other model probabilities: O1.5=0.733; O2.5=0.474; BTTS=0.529
+
+219. Eldense vs Girona
+   Kick-off: Sat 28 Nov 17:15 SAST
+   Competition: Spain · Segunda División
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 71.8%
+   Sportybet decimal odds: 1.33
+   Data quality: High
+   Other model probabilities: O1.5=0.718; O2.5=0.456; BTTS=0.5
+
+220. Sonnenhof Grossaspach vs MSV Duisburg
+   Kick-off: Sat 28 Nov 17:30 SAST
+   Competition: Germany · 3. Liga
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 88.6%
+   Sportybet decimal odds: 1.19
+   Data quality: High
+   Other model probabilities: O1.5=0.886; O2.5=0.711; BTTS=0.676
+
+221. Hapoel Ramat Gan vs Hapoel Ironi Kiryat Shmona
+   Kick-off: Sat 28 Nov 17:30 SAST
+   Competition: Israel · Premier League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 76.8%
+   Sportybet decimal odds: 1.26
+   Data quality: High
+   Other model probabilities: O1.5=0.768; O2.5=0.521; BTTS=0.564
+
+222. Excelsior vs Telstar
+   Kick-off: Sat 28 Nov 17:30 SAST
+   Competition: Netherlands · Eredivisie
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 87.6%
+   Sportybet decimal odds: 1.21
+   Data quality: High
+   Other model probabilities: O1.5=0.876; O2.5=0.692; BTTS=0.683
+
+223. Farense vs Uniao de Leiria
+   Kick-off: Sat 28 Nov 17:30 SAST
+   Competition: Portugal · Liga Portugal 2
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 81.6%
+   Sportybet decimal odds: 1.24
+   Data quality: High
+   Other model probabilities: O1.5=0.816; O2.5=0.591; BTTS=0.619
+
+224. Arouca vs Rio Ave
+   Kick-off: Sat 28 Nov 17:30 SAST
+   Competition: Portugal · Primeira Liga
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.1%
+   Sportybet decimal odds: 1.32
+   Data quality: High
+   Other model probabilities: O1.5=0.781; O2.5=0.542; BTTS=0.449
+
+225. Moreirense vs Santa Clara
+   Kick-off: Sat 28 Nov 17:30 SAST
+   Competition: Portugal · Primeira Liga
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 72.7%
+   Sportybet decimal odds: 1.46
+   Data quality: High
+   Other model probabilities: O1.5=0.727; O2.5=0.467; BTTS=0.486
+
+226. Logrones vs Barakaldo
+   Kick-off: Sat 28 Nov 17:30 SAST
+   Competition: Spain · Primera Division RFEF: Group 1
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 71.8%
+   Sportybet decimal odds: 1.29
+   Data quality: High
+   Other model probabilities: O1.5=0.718; O2.5=0.456; BTTS=0.494
+
+227. Unionistas de Salamanca vs RC Deportivo Fabril
+   Kick-off: Sat 28 Nov 17:30 SAST
+   Competition: Spain · Primera Division RFEF: Group 1
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 80.5%
+   Sportybet decimal odds: 1.23
+   Data quality: High
+   Other model probabilities: O1.5=0.805; O2.5=0.574; BTTS=0.603
+
+228. Algeciras vs SD Huesca
+   Kick-off: Sat 28 Nov 17:30 SAST
+   Competition: Spain · Primera Division RFEF: Group 2
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 75.1%
+   Sportybet decimal odds: 1.35
+   Data quality: High
+   Other model probabilities: O1.5=0.751; O2.5=0.498; BTTS=0.501
+
+229. UD Ibiza vs Atletico Madrid B
+   Kick-off: Sat 28 Nov 17:30 SAST
+   Competition: Spain · Primera Division RFEF: Group 2
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.2%
+   Sportybet decimal odds: 1.19
+   Data quality: High
+   Other model probabilities: O1.5=0.782; O2.5=0.541; BTTS=0.552
+
+230. Cherno More Varna vs Botev Plovdiv
+   Kick-off: Sat 28 Nov 17:45 SAST
+   Competition: Bulgaria · Parva Liga
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 73.4%
+   Sportybet decimal odds: 1.34
+   Data quality: High
+   Other model probabilities: O1.5=0.734; O2.5=0.475; BTTS=0.527
+
+231. MTK Budapest vs Ujpest
+   Kick-off: Sat 28 Nov 17:45 SAST
+   Competition: Hungary · NB I
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 79.1%
+   Sportybet decimal odds: 1.17
+   Data quality: High
+   Other model probabilities: O1.5=0.791; O2.5=0.554; BTTS=0.591
+
+232. FC Noah vs BKMA
+   Kick-off: Sat 28 Nov 18:00 SAST
+   Competition: Armenia · Premier League
+   Selection: Match total over 2.5 goals [O25]
+   Model probability: 70.6%
+   Sportybet decimal odds: 1.28
+   Data quality: High
+   Other model probabilities: O1.5=0.882; O2.5=0.706; BTTS=0.474
+
+233. Austria Wien vs Wolfsberger AC
+   Kick-off: Sat 28 Nov 18:00 SAST
+   Competition: Austria · Bundesliga
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 76.2%
+   Sportybet decimal odds: 1.22
+   Data quality: High
+   Other model probabilities: O1.5=0.762; O2.5=0.514; BTTS=0.488
+
+234. APOEL Nicosia vs Ypsonas
+   Kick-off: Sat 28 Nov 18:00 SAST
+   Competition: Cyprus · 1st Division
+   Selection: Home win [H]
+   Model probability: 71.6%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.882; O2.5=0.705; BTTS=0.594
+
+235. Anorthosis vs Karmiotissa Pano Polemidion
+   Kick-off: Sat 28 Nov 18:00 SAST
+   Competition: Cyprus · 1st Division
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 74.6%
+   Sportybet decimal odds: 1.27
+   Data quality: High
+   Other model probabilities: O1.5=0.746; O2.5=0.492; BTTS=0.532
+
+236. Gyirmot vs Fehervar FC
+   Kick-off: Sat 28 Nov 18:00 SAST
+   Competition: Hungary · NB II
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.5%
+   Sportybet decimal odds: 1.26
+   Data quality: High
+   Other model probabilities: O1.5=0.775; O2.5=0.531; BTTS=0.565
+
+237. Hapoel Haifa vs Ironi Tiberias
+   Kick-off: Sat 28 Nov 18:00 SAST
+   Competition: Israel · Premier League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 76.8%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.768; O2.5=0.521; BTTS=0.566
+
+238. Arka Gdynia vs Ruch Chorzow
+   Kick-off: Sat 28 Nov 18:00 SAST
+   Competition: Poland · I Liga
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 73.3%
+   Sportybet decimal odds: 1.27
+   Data quality: High
+   Other model probabilities: O1.5=0.733; O2.5=0.474; BTTS=0.53
+
+239. Kruger United vs Mamelodi Sundowns FC
+   Kick-off: Sat 28 Nov 18:00 SAST
+   Competition: South Africa · Premiership
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 80.0%
+   Sportybet decimal odds: 1.23
+   Data quality: Medium
+   Other model probabilities: O1.5=0.8; O2.5=0.569; BTTS=0.518
+
+240. Atletico Astorga vs Deportivo Alaves B
+   Kick-off: Sat 28 Nov 18:00 SAST
+   Competition: Spain · Segunda Division RFEF: Group 1
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.9%
+   Sportybet decimal odds: 1.26
+   Data quality: High
+   Other model probabilities: O1.5=0.789; O2.5=0.551; BTTS=0.568
+
+241. Arnedo vs Reus FC Reddis
+   Kick-off: Sat 28 Nov 18:00 SAST
+   Competition: Spain · Segunda Division RFEF: Group 2
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 74.5%
+   Sportybet decimal odds: 1.27
+   Data quality: Medium
+   Other model probabilities: O1.5=0.745; O2.5=0.49; BTTS=0.519
+
+242. Angers vs Lens
+   Kick-off: Sat 28 Nov 18:15 SAST
+   Competition: France · Ligue 1
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 81.1%
+   Sportybet decimal odds: 1.23
+   Data quality: High
+   Other model probabilities: O1.5=0.811; O2.5=0.585; BTTS=0.532
+
+243. Vicenza vs Cesena
+   Kick-off: Sat 28 Nov 18:15 SAST
+   Competition: Italy · Serie B
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.2%
+   Sportybet decimal odds: 1.30
+   Data quality: High
+   Other model probabilities: O1.5=0.782; O2.5=0.54; BTTS=0.571
+
+244. Universidad Catolica vs Independiente del Valle
+   Kick-off: Sat 28 Nov 18:30 SAST
+   Competition: Ecuador · Serie A: Championship Group
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 75.9%
+   Sportybet decimal odds: 1.26
+   Data quality: High
+   Other model probabilities: O1.5=0.759; O2.5=0.509; BTTS=0.529
+
+245. Lumezzane vs Desenzano
+   Kick-off: Sat 28 Nov 18:30 SAST
+   Competition: Italy · Serie C: Group A
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 74.1%
+   Sportybet decimal odds: 1.24
+   Data quality: High
+   Other model probabilities: O1.5=0.741; O2.5=0.484; BTTS=0.533
+
+246. Ospitaletto vs Union Brescia
+   Kick-off: Sat 28 Nov 18:30 SAST
+   Competition: Italy · Serie C: Group A
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 71.8%
+   Sportybet decimal odds: 1.35
+   Data quality: High
+   Other model probabilities: O1.5=0.718; O2.5=0.456; BTTS=0.499
+
+247. Zabbar St. Patrick vs Balzan FC
+   Kick-off: Sat 28 Nov 18:30 SAST
+   Competition: Malta · Malta Premier: Closing Relegation Group
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 79.3%
+   Sportybet decimal odds: 1.25
+   Data quality: Medium
+   Other model probabilities: O1.5=0.793; O2.5=0.557; BTTS=0.579
+
+248. Slask Wroclaw vs GKS Katowice
+   Kick-off: Sat 28 Nov 18:30 SAST
+   Competition: Poland · Ekstraklasa
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.6%
+   Sportybet decimal odds: 1.17
+   Data quality: High
+   Other model probabilities: O1.5=0.776; O2.5=0.532; BTTS=0.561
+
+249. Mura vs Maribor
+   Kick-off: Sat 28 Nov 18:30 SAST
+   Competition: Slovenia · Prva Liga
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 72.4%
+   Sportybet decimal odds: 1.30
+   Data quality: High
+   Other model probabilities: O1.5=0.724; O2.5=0.463; BTTS=0.506
+
+250. Unisport vs Gazelle
+   Kick-off: Sat 28 Nov 19:00 SAST
+   Competition: Cameroon · Elite 1
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.8%
+   Sportybet decimal odds: 1.23
+   Data quality: High
+   Other model probabilities: O1.5=0.788; O2.5=0.551; BTTS=0.539
+
+251. Osijek vs Rijeka
+   Kick-off: Sat 28 Nov 19:00 SAST
+   Competition: Croatia · HNL
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.1%
+   Sportybet decimal odds: 1.30
+   Data quality: High
+   Other model probabilities: O1.5=0.781; O2.5=0.539; BTTS=0.575
+
+252. Hradec Kralove vs Bohemians 1905
+   Kick-off: Sat 28 Nov 19:00 SAST
+   Competition: Czech Republic · 1st League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 76.2%
+   Sportybet decimal odds: 1.24
+   Data quality: High
+   Other model probabilities: O1.5=0.762; O2.5=0.513; BTTS=0.556
+
+253. Maccabi Tel Aviv vs Hapoel Petah Tikva
+   Kick-off: Sat 28 Nov 19:00 SAST
+   Competition: Israel · Premier League
+   Selection: Home win [H]
+   Model probability: 74.0%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.84; O2.5=0.632; BTTS=0.502
+
+254. Torino vs Lazio
+   Kick-off: Sat 28 Nov 19:00 SAST
+   Competition: Italy · Serie A
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 82.4%
+   Sportybet decimal odds: 1.29
+   Data quality: High
+   Other model probabilities: O1.5=0.824; O2.5=0.605; BTTS=0.546
+
+255. H2O Purepechas vs Irapuato
+   Kick-off: Sat 28 Nov 19:00 SAST
+   Competition: Mexico · Primera Premier
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 75.2%
+   Sportybet decimal odds: 1.24
+   Data quality: High
+   Other model probabilities: O1.5=0.752; O2.5=0.501; BTTS=0.449
+
+256. Rosenborg vs Molde
+   Kick-off: Sat 28 Nov 19:00 SAST
+   Competition: Norway · Eliteserien
+   Selection: Match total over 2.5 goals [O25]
+   Model probability: 81.6%
+   Sportybet decimal odds: 1.28
+   Data quality: High
+   Other model probabilities: O1.5=0.937; O2.5=0.816; BTTS=0.754
+
+257. FC Wil 1900 vs Yverdon
+   Kick-off: Sat 28 Nov 19:00 SAST
+   Competition: Switzerland · Challenge League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 79.2%
+   Sportybet decimal odds: 1.18
+   Data quality: High
+   Other model probabilities: O1.5=0.792; O2.5=0.555; BTTS=0.582
+
+258. FC Vaduz vs FC Zurich
+   Kick-off: Sat 28 Nov 19:00 SAST
+   Competition: Switzerland · Super League
+   Selection: Match total over 2.5 goals [O25]
+   Model probability: 71.0%
+   Sportybet decimal odds: 1.39
+   Data quality: High
+   Other model probabilities: O1.5=0.886; O2.5=0.71; BTTS=0.702
+
+259. Cercle Brugge vs Mechelen
+   Kick-off: Sat 28 Nov 19:15 SAST
+   Competition: Belgium · Pro League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 81.2%
+   Sportybet decimal odds: 1.22
+   Data quality: High
+   Other model probabilities: O1.5=0.812; O2.5=0.586; BTTS=0.594
+
+260. Pacos de Ferreira vs AD Marco 09
+   Kick-off: Sat 28 Nov 19:15 SAST
+   Competition: Portugal · Liga 3: Group A
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 73.3%
+   Sportybet decimal odds: 1.33
+   Data quality: Medium
+   Other model probabilities: O1.5=0.733; O2.5=0.474; BTTS=0.53
+
+261. Holywell Town vs Llandudno FC
+   Kick-off: Sat 28 Nov 19:15 SAST
+   Competition: Wales · JD Cymru Premier
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 84.1%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.841; O2.5=0.632; BTTS=0.639
+
+262. Siroki Brijeg vs Zrinjski Mostar
+   Kick-off: Sat 28 Nov 19:30 SAST
+   Competition: Bosnia and Herzegovina · Premier League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 73.0%
+   Sportybet decimal odds: 1.34
+   Data quality: High
+   Other model probabilities: O1.5=0.73; O2.5=0.472; BTTS=0.442
+
+263. Ipswich vs Aston Villa
+   Kick-off: Sat 28 Nov 19:30 SAST
+   Competition: England · Premier League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 80.1%
+   Sportybet decimal odds: 1.19
+   Data quality: High
+   Other model probabilities: O1.5=0.801; O2.5=0.569; BTTS=0.595
+
+264. Al Ahli vs Al Taawoun
+   Kick-off: Sat 28 Nov 19:30 SAST
+   Competition: Saudi Arabia · Saudi Professional League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 84.1%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.841; O2.5=0.633; BTTS=0.566
+
+265. Elche vs Ath Madrid
+   Kick-off: Sat 28 Nov 19:30 SAST
+   Competition: Spain · La Liga
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.7%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.787; O2.5=0.549; BTTS=0.533
+
+266. Eibar vs Burgos
+   Kick-off: Sat 28 Nov 19:30 SAST
+   Competition: Spain · Segunda División
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 74.3%
+   Sportybet decimal odds: 1.35
+   Data quality: High
+   Other model probabilities: O1.5=0.743; O2.5=0.487; BTTS=0.535
+
+267. PSV Eindhoven vs Go Ahead Eagles
+   Kick-off: Sat 28 Nov 19:45 SAST
+   Competition: Netherlands · Eredivisie
+   Selection: Home win [H]
+   Model probability: 83.6%
+   Sportybet decimal odds: 1.23
+   Data quality: High
+   Other model probabilities: O1.5=0.94; O2.5=0.826; BTTS=0.607
+
+268. Motherwell vs Hibernian
+   Kick-off: Sat 28 Nov 19:45 SAST
+   Competition: Scotland · Premiership
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.4%
+   Sportybet decimal odds: 1.22
+   Data quality: High
+   Other model probabilities: O1.5=0.774; O2.5=0.529; BTTS=0.555
+
+269. Lugo vs UD Ourense
+   Kick-off: Sat 28 Nov 19:45 SAST
+   Competition: Spain · Primera Division RFEF: Group 1
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.1%
+   Sportybet decimal odds: 1.23
+   Data quality: High
+   Other model probabilities: O1.5=0.771; O2.5=0.526; BTTS=0.463
+
+270. Real Union vs Arenas Getxo
+   Kick-off: Sat 28 Nov 19:45 SAST
+   Competition: Spain · Primera Division RFEF: Group 1
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 79.2%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.792; O2.5=0.556; BTTS=0.557
+
+271. Alcorcon vs Real Zaragoza
+   Kick-off: Sat 28 Nov 19:45 SAST
+   Competition: Spain · Primera Division RFEF: Group 2
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.4%
+   Sportybet decimal odds: 1.28
+   Data quality: High
+   Other model probabilities: O1.5=0.774; O2.5=0.529; BTTS=0.571
+
+272. Juventud Torremolinos CF vs Cartagena
+   Kick-off: Sat 28 Nov 19:45 SAST
+   Competition: Spain · Primera Division RFEF: Group 2
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 70.8%
+   Sportybet decimal odds: 1.29
+   Data quality: High
+   Other model probabilities: O1.5=0.708; O2.5=0.443; BTTS=0.505
+
+273. Kifisia vs Kalamata
+   Kick-off: Sat 28 Nov 20:00 SAST
+   Competition: Greece · Super League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.7%
+   Sportybet decimal odds: 1.28
+   Data quality: High
+   Other model probabilities: O1.5=0.777; O2.5=0.534; BTTS=0.562
+
+274. Ballymena United vs Cliftonville
+   Kick-off: Sat 28 Nov 20:00 SAST
+   Competition: Northern Ireland · Premiership
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 79.7%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.797; O2.5=0.562; BTTS=0.586
+
+275. Lusitania Lourosa vs Vizela
+   Kick-off: Sat 28 Nov 20:00 SAST
+   Competition: Portugal · Liga Portugal 2
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 76.4%
+   Sportybet decimal odds: 1.32
+   Data quality: High
+   Other model probabilities: O1.5=0.764; O2.5=0.516; BTTS=0.551
+
+276. Sporting CP B vs Amarante FC
+   Kick-off: Sat 28 Nov 20:00 SAST
+   Competition: Portugal · Liga Portugal 2
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 71.8%
+   Sportybet decimal odds: 1.35
+   Data quality: High
+   Other model probabilities: O1.5=0.718; O2.5=0.455; BTTS=0.472
+
+277. Academico Viseu vs Alverca
+   Kick-off: Sat 28 Nov 20:00 SAST
+   Competition: Portugal · Primeira Liga
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 74.4%
+   Sportybet decimal odds: 1.33
+   Data quality: High
+   Other model probabilities: O1.5=0.744; O2.5=0.489; BTTS=0.531
+
+278. FCSB vs Miercurea Ciuc
+   Kick-off: Sat 28 Nov 20:00 SAST
+   Competition: Romania · Liga 1
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 73.6%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.736; O2.5=0.479; BTTS=0.455
+
+279. Kisvarda FC vs Nyiregyhaza Spartacus FC
+   Kick-off: Sat 28 Nov 20:15 SAST
+   Competition: Hungary · NB I
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 73.3%
+   Sportybet decimal odds: 1.23
+   Data quality: High
+   Other model probabilities: O1.5=0.733; O2.5=0.474; BTTS=0.526
+
+280. Beitar Jerusalem vs Hapoel Jerusalem
+   Kick-off: Sat 28 Nov 20:15 SAST
+   Competition: Israel · Premier League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 81.5%
+   Sportybet decimal odds: 1.16
+   Data quality: High
+   Other model probabilities: O1.5=0.815; O2.5=0.591; BTTS=0.581
+
+281. Austria Lustenau vs Rapid Wien
+   Kick-off: Sat 28 Nov 20:30 SAST
+   Competition: Austria · Bundesliga
+   Selection: Away win [A]
+   Model probability: 73.8%
+   Sportybet decimal odds: 1.31
+   Data quality: High
+   Other model probabilities: O1.5=0.87; O2.5=0.683; BTTS=0.553
+
+282. Palermo vs Benevento
+   Kick-off: Sat 28 Nov 20:30 SAST
+   Competition: Italy · Serie B
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 79.6%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.796; O2.5=0.562; BTTS=0.559
+
+283. KSC Lokeren vs Beerschot
+   Kick-off: Sat 28 Nov 21:00 SAST
+   Competition: Belgium · Challenger Pro League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 82.2%
+   Sportybet decimal odds: 1.18
+   Data quality: High
+   Other model probabilities: O1.5=0.822; O2.5=0.602; BTTS=0.599
+
+284. K. Lyra-Lierse vs Tienen
+   Kick-off: Sat 28 Nov 21:00 SAST
+   Competition: Belgium · National Division 1 VV
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 81.9%
+   Sportybet decimal odds: 1.19
+   Data quality: High
+   Other model probabilities: O1.5=0.819; O2.5=0.596; BTTS=0.624
+
+285. KSK Heist vs Roeselare
+   Kick-off: Sat 28 Nov 21:00 SAST
+   Competition: Belgium · National Division 1 VV
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 76.3%
+   Sportybet decimal odds: 1.19
+   Data quality: High
+   Other model probabilities: O1.5=0.763; O2.5=0.514; BTTS=0.522
+
+286. Thes Sport vs KFC Merelbeke
+   Kick-off: Sat 28 Nov 21:00 SAST
+   Competition: Belgium · National Division 1 VV
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 75.8%
+   Sportybet decimal odds: 1.17
+   Data quality: High
+   Other model probabilities: O1.5=0.758; O2.5=0.508; BTTS=0.534
+
+287. GV San Jose vs Real Potosi
+   Kick-off: Sat 28 Nov 21:00 SAST
+   Competition: Bolivia · Primera Division
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 78.0%
+   Sportybet decimal odds: 1.27
+   Data quality: High
+   Other model probabilities: O1.5=0.78; O2.5=0.539; BTTS=0.527
+
+288. CSD Macara vs LDU de Quito
+   Kick-off: Sat 28 Nov 21:00 SAST
+   Competition: Ecuador · Serie A: Championship Group
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 76.1%
+   Sportybet decimal odds: 1.30
+   Data quality: High
+   Other model probabilities: O1.5=0.761; O2.5=0.512; BTTS=0.531
+
+289. CF Esperanca vs FC Rangers
+   Kick-off: Sat 28 Nov 21:30 SAST
+   Competition: Andorra · 1st Division
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.1%
+   Sportybet decimal odds: 1.19
+   Data quality: High
+   Other model probabilities: O1.5=0.771; O2.5=0.526; BTTS=0.548
+
+290. Osnabruck vs Hannover
+   Kick-off: Sat 28 Nov 21:30 SAST
+   Competition: Germany · 2. Bundesliga
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 75.2%
+   Sportybet decimal odds: 1.19
+   Data quality: High
+   Other model probabilities: O1.5=0.752; O2.5=0.499; BTTS=0.544
+
+291. Servette vs Lausanne
+   Kick-off: Sat 28 Nov 21:30 SAST
+   Competition: Switzerland · Super League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.7%
+   Sportybet decimal odds: 1.24
+   Data quality: High
+   Other model probabilities: O1.5=0.777; O2.5=0.535; BTTS=0.554
+
+292. Houston Dynamo vs San Jose Earthquakes
+   Kick-off: Sat 28 Nov 21:30 SAST
+   Competition: USA · MLS: Play-off 2026
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 74.5%
+   Sportybet decimal odds: 1.19
+   Data quality: High
+   Other model probabilities: O1.5=0.745; O2.5=0.49; BTTS=0.539
+
+293. Charleroi vs Beveren
+   Kick-off: Sat 28 Nov 21:45 SAST
+   Competition: Belgium · Pro League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 87.4%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.874; O2.5=0.69; BTTS=0.602
+
+294. Lommel SK vs Waregem
+   Kick-off: Sat 28 Nov 21:45 SAST
+   Competition: Belgium · Pro League
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 81.2%
+   Sportybet decimal odds: 1.18
+   Data quality: High
+   Other model probabilities: O1.5=0.812; O2.5=0.587; BTTS=0.558
+
+295. Le Havre vs Strasbourg
+   Kick-off: Sat 28 Nov 21:45 SAST
+   Competition: France · Ligue 1
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 83.6%
+   Sportybet decimal odds: 1.23
+   Data quality: High
+   Other model probabilities: O1.5=0.836; O2.5=0.624; BTTS=0.625
+
+296. Le Mans vs Lille
+   Kick-off: Sat 28 Nov 21:45 SAST
+   Competition: France · Ligue 1
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 75.3%
+   Sportybet decimal odds: 1.37
+   Data quality: High
+   Other model probabilities: O1.5=0.753; O2.5=0.5; BTTS=0.525
+
+297. Nice vs Troyes
+   Kick-off: Sat 28 Nov 21:45 SAST
+   Competition: France · Ligue 1
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.2%
+   Sportybet decimal odds: 1.24
+   Data quality: High
+   Other model probabilities: O1.5=0.772; O2.5=0.526; BTTS=0.553
+
+298. Inter vs Genoa
+   Kick-off: Sat 28 Nov 21:45 SAST
+   Competition: Italy · Serie A
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 82.0%
+   Sportybet decimal odds: 1.18
+   Data quality: High
+   Other model probabilities: O1.5=0.82; O2.5=0.599; BTTS=0.543
+
+299. Cambuur vs Sparta Rotterdam
+   Kick-off: Sat 28 Nov 22:00 SAST
+   Competition: Netherlands · Eredivisie
+   Selection: Match total over 2.5 goals [O25]
+   Model probability: 77.8%
+   Sportybet decimal odds: 1.41
+   Data quality: High
+   Other model probabilities: O1.5=0.92; O2.5=0.778; BTTS=0.744
+
+300. Valladolid vs Sociedad B
+   Kick-off: Sat 28 Nov 22:00 SAST
+   Competition: Spain · Segunda División
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 81.1%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.811; O2.5=0.584; BTTS=0.574
+
+301. Guimaraes vs Estrela
+   Kick-off: Sat 28 Nov 22:30 SAST
+   Competition: Portugal · Primeira Liga
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 76.9%
+   Sportybet decimal odds: 1.27
+   Data quality: High
+   Other model probabilities: O1.5=0.769; O2.5=0.523; BTTS=0.544
+
+302. Magallanes vs San Marcos
+   Kick-off: Sat 28 Nov 23:00 SAST
+   Competition: Chile · Primera B: Promotion Playoff
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 76.0%
+   Sportybet decimal odds: 1.28
+   Data quality: High
+   Other model probabilities: O1.5=0.76; O2.5=0.51; BTTS=0.558
+
+303. Coquimbo Unido vs Club Deportes Limache
+   Kick-off: Sat 28 Nov 23:00 SAST
+   Competition: Chile · Primera División
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 79.4%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.794; O2.5=0.559; BTTS=0.57
+
+304. Aurora FC vs Coban Imperial
+   Kick-off: Sat 28 Nov 23:00 SAST
+   Competition: Guatemala · Liga Nacional: Apertura
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.3%
+   Sportybet decimal odds: 1.29
+   Data quality: High
+   Other model probabilities: O1.5=0.773; O2.5=0.529; BTTS=0.552
+
+305. Comunicaciones FC vs Club Xelaju
+   Kick-off: Sat 28 Nov 23:00 SAST
+   Competition: Guatemala · Liga Nacional: Apertura
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 70.6%
+   Sportybet decimal odds: 1.27
+   Data quality: High
+   Other model probabilities: O1.5=0.706; O2.5=0.44; BTTS=0.502
+
+306. San Pedro vs Guastatoya
+   Kick-off: Sat 28 Nov 23:00 SAST
+   Competition: Guatemala · Liga Nacional: Apertura
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 71.3%
+   Sportybet decimal odds: 1.34
+   Data quality: High
+   Other model probabilities: O1.5=0.713; O2.5=0.449; BTTS=0.476
+
+307. Deportes Quindio vs Boca Juniors de Cali
+   Kick-off: Sat 28 Nov 23:30 SAST
+   Competition: Colombia · Primera B: Clausura Final Stage
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 73.2%
+   Sportybet decimal odds: 1.36
+   Data quality: Medium
+   Other model probabilities: O1.5=0.732; O2.5=0.474; BTTS=0.483
+
+308. Barcelona SC vs Aucas
+   Kick-off: Sat 28 Nov 23:30 SAST
+   Competition: Ecuador · Serie A: Championship Group
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 72.2%
+   Sportybet decimal odds: 1.38
+   Data quality: High
+   Other model probabilities: O1.5=0.722; O2.5=0.46; BTTS=0.51
+
+309. Guerreros de Autlan vs Atletico Saltillo Soccer
+   Kick-off: Sun 29 Nov 00:00 SAST
+   Competition: Mexico · Liga Premier: Serie A Clausura
+   Selection: Match total over 2.5 goals [O25]
+   Model probability: 79.5%
+   Sportybet decimal odds: 1.26
+   Data quality: High
+   Other model probabilities: O1.5=0.927; O2.5=0.795; BTTS=0.63
+
+310. Deportivo Madryn vs CA Gimnasia de Jujuy
+   Kick-off: Sun 29 Nov 01:00 SAST
+   Competition: Argentina · Primera Nacional: Promotion Play-off
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 81.1%
+   Sportybet decimal odds: 1.35
+   Data quality: High
+   Other model probabilities: O1.5=0.811; O2.5=0.585; BTTS=0.571
+
+311. Deportiva Venados vs Chapulineros de Oaxaca
+   Kick-off: Sun 29 Nov 01:00 SAST
+   Competition: Mexico · Primera Premier
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 82.7%
+   Sportybet decimal odds: 1.20
+   Data quality: High
+   Other model probabilities: O1.5=0.827; O2.5=0.609; BTTS=0.607
+
+312. Sportivo Trinidense vs CD Recoleta
+   Kick-off: Sun 29 Nov 01:00 SAST
+   Competition: Paraguay · Division Profesional: Clausura
+   Selection: Match total over 1.5 goals [O15]
+   Model probability: 77.4%
+   Sportybet decimal odds: 1.18
+   Data quality: High
+   Other model probabilities: O1.5=0.774; O2.5=0.529; BTTS=0.53
 
 AI ANALYSIS INSTRUCTIONS
 Independently research each listed match. Do not copy the scanner market automatically.
